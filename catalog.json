@@ -1,0 +1,3431 @@
+{
+  "version": 1,
+  "generated": "2026-09-03",
+  "lesson_count": 71,
+  "tags": [
+    "ai-agents",
+    "ai-agents/evals",
+    "ai-agents/failure-modes",
+    "ai-agents/harnesses",
+    "ai-agents/product",
+    "ai-agents/tools",
+    "algorithms",
+    "algorithms/arrays",
+    "algorithms/backtracking",
+    "algorithms/binary-search",
+    "algorithms/dynamic-programming",
+    "algorithms/graphs",
+    "algorithms/greedy",
+    "algorithms/hash-maps",
+    "algorithms/heaps",
+    "algorithms/intervals",
+    "algorithms/linked-lists",
+    "algorithms/sliding-window",
+    "algorithms/stacks",
+    "algorithms/strings",
+    "algorithms/trees",
+    "algorithms/tries",
+    "algorithms/two-pointers",
+    "algorithms/union-find",
+    "cs",
+    "cs/complexity",
+    "cs/concurrency",
+    "cs/data-structures",
+    "cs/databases",
+    "cs/networking",
+    "cs/os",
+    "interviews",
+    "interviews/ai",
+    "interviews/frontend",
+    "interviews/leetcode",
+    "interviews/system-design",
+    "system-design",
+    "system-design/caching",
+    "system-design/consistency",
+    "system-design/foundations",
+    "system-design/genai",
+    "system-design/messaging",
+    "system-design/product-cases",
+    "system-design/realtime",
+    "system-design/storage"
+  ],
+  "tag_tree": {
+    "ai-agents": {
+      "children": {
+        "evals": {
+          "children": {}
+        },
+        "failure-modes": {
+          "children": {}
+        },
+        "harnesses": {
+          "children": {}
+        },
+        "product": {
+          "children": {}
+        },
+        "tools": {
+          "children": {}
+        }
+      }
+    },
+    "algorithms": {
+      "children": {
+        "arrays": {
+          "children": {}
+        },
+        "backtracking": {
+          "children": {}
+        },
+        "binary-search": {
+          "children": {}
+        },
+        "dynamic-programming": {
+          "children": {}
+        },
+        "graphs": {
+          "children": {}
+        },
+        "greedy": {
+          "children": {}
+        },
+        "hash-maps": {
+          "children": {}
+        },
+        "heaps": {
+          "children": {}
+        },
+        "intervals": {
+          "children": {}
+        },
+        "linked-lists": {
+          "children": {}
+        },
+        "sliding-window": {
+          "children": {}
+        },
+        "stacks": {
+          "children": {}
+        },
+        "strings": {
+          "children": {}
+        },
+        "trees": {
+          "children": {}
+        },
+        "tries": {
+          "children": {}
+        },
+        "two-pointers": {
+          "children": {}
+        },
+        "union-find": {
+          "children": {}
+        }
+      }
+    },
+    "cs": {
+      "children": {
+        "complexity": {
+          "children": {}
+        },
+        "concurrency": {
+          "children": {}
+        },
+        "data-structures": {
+          "children": {}
+        },
+        "databases": {
+          "children": {}
+        },
+        "networking": {
+          "children": {}
+        },
+        "os": {
+          "children": {}
+        }
+      }
+    },
+    "interviews": {
+      "children": {
+        "ai": {
+          "children": {}
+        },
+        "frontend": {
+          "children": {}
+        },
+        "leetcode": {
+          "children": {}
+        },
+        "system-design": {
+          "children": {}
+        }
+      }
+    },
+    "system-design": {
+      "children": {
+        "caching": {
+          "children": {}
+        },
+        "consistency": {
+          "children": {}
+        },
+        "foundations": {
+          "children": {}
+        },
+        "genai": {
+          "children": {}
+        },
+        "messaging": {
+          "children": {}
+        },
+        "product-cases": {
+          "children": {}
+        },
+        "realtime": {
+          "children": {}
+        },
+        "storage": {
+          "children": {}
+        }
+      }
+    }
+  },
+  "lessons": [
+    {
+      "id": "agent-mistakes",
+      "title": "Mistakes coding agents keep making",
+      "slug": "agent-mistakes",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "Coding agents fail in a short list of ruts — skipping repro, editing the wrong file, looping tools, hallucinating APIs — and evals plus harness design should hunt those ruts by name.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/failure-modes",
+        "ai-agents/evals",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "eval-harness-vs-agent-harness"
+      ],
+      "related": [
+        "tool-calling",
+        "coding-agent-evals",
+        "traces-trajectories",
+        "how-to-run-proper-evals",
+        "interview-ai-round"
+      ],
+      "path": "lessons/ai-agents/agent-mistakes.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate reports of 2026 AI-assisted coding rounds score whether you verify the model's patch instead of pasting it.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "Public coding-agent and eval writeups catalog tool loops, skipped repro, and prompt-only \"fixes\" as first-class failure modes.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "Public coding-agent and eval writeups catalog tool loops, skipped repro, and prompt-only \"fixes\" as first-class failure modes.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "arrays-vs-linked-lists",
+      "title": "Contiguous slots versus pointer chasing",
+      "slug": "arrays-vs-linked-lists",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "Arrays buy random access and cache lines; linked lists buy cheap splices if you already hold the node.",
+      "tags": [
+        "cs",
+        "cs/data-structures",
+        "cs/os",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "big-o"
+      ],
+      "related": [
+        "big-o",
+        "hashing-internals",
+        "os-memory",
+        "two-pointers"
+      ],
+      "path": "lessons/cs/arrays-vs-linked-lists.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "OA and phone-screen writeups still mix array two-pointer prompts with \"reverse a linked list\" / cycle detection as default list warmups.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA and phone-screen writeups still mix array two-pointer prompts with \"reverse a linked list\" / cycle detection as default list warmups.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "bfs",
+      "title": "Expand level by level",
+      "slug": "bfs",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "Use a queue to visit nodes in distance order so the first time you reach a node is the shortest unweighted path.",
+      "tags": [
+        "algorithms",
+        "algorithms/graphs",
+        "algorithms/trees",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "trees-graphs"
+      ],
+      "related": [
+        "dfs-backtracking",
+        "number-of-islands",
+        "topological-sort",
+        "trees-graphs"
+      ],
+      "path": "lessons/algorithms/patterns/bfs.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate reports list grid BFS (islands, nearest gate, word ladder) as a common onsite coding prompt.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA and phone-screen writeups keep using shortest-path-in-a-warehouse-grid as a graph warmup.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA and phone-screen writeups keep using shortest-path-in-a-warehouse-grid as a graph warmup.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "big-o",
+      "title": "Big-O as a conversation",
+      "slug": "big-o",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "Big-O is how you name the bottleneck and compare plans, not a stopwatch reading.",
+      "tags": [
+        "cs",
+        "cs/complexity",
+        "cs/data-structures",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [],
+      "related": [
+        "hashing-internals",
+        "arrays-vs-linked-lists",
+        "two-sum",
+        "hash-maps"
+      ],
+      "path": "lessons/cs/big-o.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Phone-screen writeups still open with \"what's the complexity\" before a line of code lands; candidates report justifying O(n) vs O(n log n) out loud.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Phone-screen writeups still open with \"what's the complexity\" before a line of code lands; candidates report justifying O(n) vs O(n log n) out loud.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "binary-search-on-answer",
+      "title": "Binary search the feasible number",
+      "slug": "binary-search-on-answer",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "Search the numeric answer, not the array index, by testing a monotonic feasibility predicate.",
+      "tags": [
+        "algorithms",
+        "algorithms/binary-search",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "big-o"
+      ],
+      "related": [
+        "coin-change",
+        "heaps-top-k",
+        "kth-largest",
+        "dp-1d"
+      ],
+      "path": "lessons/algorithms/patterns/binary-search-on-answer.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Candidate onsite reports keep describing \"minimum speed / capacity to finish by deadline\" prompts as binary-search-on-answer.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Tagged-list threads list koko-style eating / split-array variants as medium follow-ups after vanilla binary search.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Tagged-list threads list koko-style eating / split-array variants as medium follow-ups after vanilla binary search.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "caching",
+      "title": "Remembering the expensive answer nearby",
+      "slug": "caching",
+      "kind": "concept",
+      "track": "system-design",
+      "difficulty": "intro",
+      "estimated_minutes": 14,
+      "summary": "A cache is a correctness and stampede problem first, and a latency trick second.",
+      "tags": [
+        "system-design",
+        "system-design/foundations",
+        "system-design/caching",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework"
+      ],
+      "related": [
+        "load-balancing",
+        "sharding",
+        "url-shortener",
+        "news-feed",
+        "search-autocomplete"
+      ],
+      "path": "lessons/system-design/foundations/caching.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported feed and messenger loops and prep-site frequency lists treat cache placement (timeline, session, presence) as a default mid-round probe.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Candidate-reported L5 URL-shortener and rate-limiter prompts almost always ask what is cached, the TTL, and what happens on a miss storm.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Candidate-reported L5 URL-shortener and rate-limiter prompts almost always ask what is cached, the TTL, and what happens on a miss storm.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "cap-and-consistency",
+      "title": "CAP as a conversation, not a religion",
+      "slug": "cap-and-consistency",
+      "kind": "concept",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "CAP is a question about a specific partition and a specific read, not a team personality type you declare at minute two.",
+      "tags": [
+        "system-design",
+        "system-design/foundations",
+        "system-design/consistency",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework"
+      ],
+      "related": [
+        "sharding",
+        "queues-delivery",
+        "transactions-isolation",
+        "payment-idempotency",
+        "chat-system"
+      ],
+      "path": "lessons/system-design/foundations/cap-and-consistency.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Candidate-reported loops and prep-site frequency writeups punish CAP slogans and reward saying which read is stale, for how long, and under which failure.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Candidate-reported L5/L6 designs (payments-adjacent, stores) probe whether you would reject a write rather than double-charge or lose an order during a replica blip.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Candidate-reported L5/L6 designs (payments-adjacent, stores) probe whether you would reject a write rather than double-charge or lose an order during a replica blip.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "capability-vs-regression",
+      "title": "Capability evals climb; regression evals guard",
+      "slug": "capability-vs-regression",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Capability suites ask whether the agent can do new hard jobs; regression suites ask whether yesterday's jobs still pass. Averaging them hides both stories.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "how-to-run-proper-evals"
+      ],
+      "related": [
+        "how-to-run-proper-evals",
+        "pass-at-k",
+        "coding-agent-evals",
+        "online-offline-evals",
+        "eval-harness-vs-agent-harness"
+      ],
+      "path": "lessons/ai-agents/capability-vs-regression.md",
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "The 2026 agent-eval essay separates capability measurement from regression gates as different products of the same harness.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "The 2026 agent-eval essay separates capability measurement from regression gates as different products of the same harness.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "chat-system",
+      "title": "Ordered delivery for a 1:1 and small-group messenger",
+      "slug": "chat-system",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 20,
+      "summary": "Kettle is a messenger with per-conversation order, presence as a lie budget, and at-least-once delivery with client-generated message ids.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/realtime",
+        "system-design/messaging",
+        "system-design/consistency",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "queues-delivery",
+        "cap-and-consistency"
+      ],
+      "related": [
+        "queues-delivery",
+        "news-feed",
+        "notification-system",
+        "cap-and-consistency",
+        "http-and-tcp"
+      ],
+      "path": "lessons/system-design/cases/chat-system.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported product loops and prep-site frequency lists treat messenger-style chat as a high-frequency Meta prompt, with ordering and presence as the usual deep dives.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported product loops and prep-site frequency lists treat messenger-style chat as a high-frequency Meta prompt, with ordering and presence as the usual deep dives.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "coding-agent-evals",
+      "title": "Fail-to-pass is not the whole coding eval",
+      "slug": "coding-agent-evals",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "A coding-agent task is a dirty repo plus hidden tests — the bug must go red-to-green and the old suite must stay green. Do not paste SWE-bench into your product.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "ai-agents/harnesses",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "how-to-run-proper-evals"
+      ],
+      "related": [
+        "how-to-run-proper-evals",
+        "graders",
+        "capability-vs-regression",
+        "vendor-vs-user-harness",
+        "agent-mistakes",
+        "eval-harness-vs-agent-harness"
+      ],
+      "path": "lessons/ai-agents/coding-agent-evals.md",
+      "company_signal": [
+        {
+          "name": "OpenAI / Anthropic",
+          "evidence": "SWE-bench Verified and Terminal-Bench are the cited coding-agent outcome graders in 2026 platform interviews and vendor blogs.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "OpenAI / Anthropic",
+          "evidence": "SWE-bench Verified and Terminal-Bench are the cited coding-agent outcome graders in 2026 platform interviews and vendor blogs.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "coin-change",
+      "title": "Fewest tokens for a fare",
+      "slug": "coin-change",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Fill a one-dimensional table of fewest tokens for each amount so greedy mistakes cannot hide in a local choice.",
+      "tags": [
+        "algorithms",
+        "algorithms/dynamic-programming",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "dp-1d"
+      ],
+      "related": [
+        "dp-1d",
+        "binary-search-on-answer",
+        "heaps-top-k",
+        "dfs-backtracking"
+      ],
+      "path": "lessons/algorithms/problems/coin-change.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA reports list coin-change / fewest-denominations as the standard 1D DP medium.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Phone-screen writeups describe unbounded-knapsack fare/coin variants as a common DP ask.",
+          "year": 2025,
+          "confidence": "medium"
+        },
+        {
+          "name": "Google",
+          "evidence": "Phone-screen writeups describe unbounded-knapsack fare/coin variants as a common DP ask.",
+          "year": 2025,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "course-order",
+      "title": "Training modules with prereqs",
+      "slug": "course-order",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Peel directed modules with indegree zero until none remain; a leftover node is a cycle and the catalog is impossible.",
+      "tags": [
+        "algorithms",
+        "algorithms/graphs",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "topological-sort",
+        "bfs"
+      ],
+      "related": [
+        "topological-sort",
+        "bfs",
+        "dfs-backtracking",
+        "union-find"
+      ],
+      "path": "lessons/algorithms/problems/course-order.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate reports list course-schedule / return-the-order as the standard topo-sort coding prompt.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Onsite writeups describe build-order and task-prereq graphs in the same family.",
+          "year": 2025,
+          "confidence": "medium"
+        },
+        {
+          "name": "Google",
+          "evidence": "Onsite writeups describe build-order and task-prereq graphs in the same family.",
+          "year": 2025,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "dfs-backtracking",
+      "title": "Explore, undo, try the next branch",
+      "slug": "dfs-backtracking",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "Walk a decision tree depth-first, pushing a choice onto the path and popping it before the next try.",
+      "tags": [
+        "algorithms",
+        "algorithms/backtracking",
+        "algorithms/graphs",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "trees-graphs"
+      ],
+      "related": [
+        "bfs",
+        "number-of-islands",
+        "trie",
+        "valid-brackets"
+      ],
+      "path": "lessons/algorithms/patterns/dfs-backtracking.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate onsite reports frequently mention permutations, subsets, and board-search prompts as backtracking.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Phone-screen writeups describe word-search / combination-sum style DFS as a recurring medium.",
+          "year": 2025,
+          "confidence": "medium"
+        },
+        {
+          "name": "Google",
+          "evidence": "Phone-screen writeups describe word-search / combination-sum style DFS as a recurring medium.",
+          "year": 2025,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "dp-1d",
+      "title": "Reuse the last few answers",
+      "slug": "dp-1d",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "When a subproblem depends on a prefix of the input, store one number per prefix instead of recomputing the tree.",
+      "tags": [
+        "algorithms",
+        "algorithms/dynamic-programming",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "big-o"
+      ],
+      "related": [
+        "coin-change",
+        "dp-2d",
+        "binary-search-on-answer",
+        "dfs-backtracking"
+      ],
+      "path": "lessons/algorithms/patterns/dp-1d.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA reports keep listing house-robber / climb-stairs / coin-change as the 1D DP cluster.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Phone-screen writeups describe \"min cost to reach n\" style recurrences as a common medium.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Google",
+          "evidence": "Phone-screen writeups describe \"min cost to reach n\" style recurrences as a common medium.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "dp-2d",
+      "title": "Fill a grid of overlapping subproblems",
+      "slug": "dp-2d",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "When the state needs two indices, fill a table in an order that only reads already-solved cells.",
+      "tags": [
+        "algorithms",
+        "algorithms/dynamic-programming",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "dp-1d"
+      ],
+      "related": [
+        "dp-1d",
+        "dfs-backtracking",
+        "bfs",
+        "longest-unique-window"
+      ],
+      "path": "lessons/algorithms/patterns/dp-2d.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Candidate reports list unique-paths / edit-distance / LCS-style tables as a common onsite DP.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Tagged-list threads keep grid-path and string-alignment DPs in the medium/hard band.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Tagged-list threads keep grid-path and string-alignment DPs in the medium/hard band.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "encoding-unicode",
+      "title": "Bytes are not characters",
+      "slug": "encoding-unicode",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "core",
+      "estimated_minutes": 13,
+      "summary": "Unicode assigns code points to characters; UTF-8 and UTF-16 encode those points as bytes. Length, truncation, and HTTP headers all lie if you mix the layers.",
+      "tags": [
+        "cs",
+        "cs/data-structures",
+        "cs/networking",
+        "interviews/frontend"
+      ],
+      "prerequisites": [],
+      "related": [
+        "http-and-tcp",
+        "hashing-internals",
+        "floating-point",
+        "two-pointers"
+      ],
+      "path": "lessons/cs/encoding-unicode.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Frontend and API screens still catch candidates on string length, emoji, and \"why did this JSON filename break in transit.\"",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Google",
+          "evidence": "Frontend and API screens still catch candidates on string length, emoji, and \"why did this JSON filename break in transit.\"",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "eval-harness-vs-agent-harness",
+      "title": "Eval harness versus agent harness",
+      "slug": "eval-harness-vs-agent-harness",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "The agent harness is how a model acts; the eval harness is how you score those actions. Mixing them up makes interview answers and production metrics lie.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/harnesses",
+        "ai-agents/evals",
+        "interviews/ai"
+      ],
+      "prerequisites": [],
+      "related": [
+        "how-to-run-proper-evals",
+        "graders",
+        "vendor-vs-user-harness",
+        "coding-agent-evals",
+        "outcome-vs-transcript"
+      ],
+      "path": "lessons/ai-agents/eval-harness-vs-agent-harness.md",
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "Public engineering essay \"Demystifying evals for AI agents\" (Jan 2026) defines both terms and is now a common citation in AI-platform interviews.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "OpenAI / coding-agent vendors",
+          "evidence": "Candidate reports and harness-benchmark writeups treat Claude Code, Codex, etc. as agent harnesses wrapping a model.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "OpenAI / coding-agent vendors",
+          "evidence": "Candidate reports and harness-benchmark writeups treat Claude Code, Codex, etc. as agent harnesses wrapping a model.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "fast-slow-pointers",
+      "title": "Two speeds, one list",
+      "slug": "fast-slow-pointers",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Move two pointers at different speeds to find a cycle, a midpoint, or the k-th node from the end without extra memory.",
+      "tags": [
+        "algorithms",
+        "algorithms/two-pointers",
+        "algorithms/linked-lists",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "arrays-vs-linked-lists",
+        "two-pointers"
+      ],
+      "related": [
+        "two-pointers",
+        "arrays-vs-linked-lists",
+        "lru-cache",
+        "valid-brackets"
+      ],
+      "path": "lessons/algorithms/patterns/fast-slow-pointers.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Linked-list cycle and \"middle of the list\" variants show up constantly in candidate OA reports.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Microsoft",
+          "evidence": "Tagged-list threads still treat tortoise-and-hare list questions as a phone-screen staple.",
+          "year": 2025,
+          "confidence": "medium"
+        },
+        {
+          "name": "Microsoft",
+          "evidence": "Tagged-list threads still treat tortoise-and-hare list questions as a phone-screen staple.",
+          "year": 2025,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "feature-flags",
+      "title": "Shipping dark, flipping in production",
+      "slug": "feature-flags",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "intro",
+      "estimated_minutes": 14,
+      "summary": "Switchyard evaluates flags from a local snapshot so a config change is a versioned publish, not a 2M QPS dependency.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/caching",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "caching"
+      ],
+      "related": [
+        "caching",
+        "rate-limiter",
+        "interview-framework",
+        "job-scheduler",
+        "news-feed"
+      ],
+      "path": "lessons/system-design/cases/feature-flags.md",
+      "company_signal": [
+        {
+          "name": "Stripe",
+          "evidence": "Candidate-reported loops treat feature-flag / config-evaluation systems as a recurring mid-level prompt.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Prep-site frequency and candidate reports on feed/product ramps mention percentage rollouts and kill switches as follow-ups.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Prep-site frequency and candidate reports on feed/product ramps mention percentage rollouts and kill switches as follow-ups.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "floating-point",
+      "title": "Floats are scientific notation, not decimals",
+      "slug": "floating-point",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "IEEE-754 floats store a sign, a power of two, and a short mantissa; most decimals never land exactly, and money should not live there.",
+      "tags": [
+        "cs",
+        "cs/complexity",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [],
+      "related": [
+        "encoding-unicode",
+        "big-o",
+        "hashing-internals"
+      ],
+      "path": "lessons/cs/floating-point.md",
+      "company_signal": [
+        {
+          "name": "Stripe",
+          "evidence": "Payments screens and take-homes still ding candidates who store currency in float or compare totals with `===`.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Stripe",
+          "evidence": "Payments screens and take-homes still ding candidates who store currency in float or compare totals with `===`.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "graders",
+      "title": "Code graders, model judges, and humans",
+      "slug": "graders",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Prefer a code check on world state; use an LLM judge for fuzzy qualities you have calibrated; keep humans as the gold you sample against.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "eval-harness-vs-agent-harness"
+      ],
+      "related": [
+        "how-to-run-proper-evals",
+        "llm-as-judge-calibration",
+        "outcome-vs-transcript",
+        "coding-agent-evals",
+        "pass-at-k"
+      ],
+      "path": "lessons/ai-agents/graders.md",
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "The 2026 agent-eval essay treats code, model, and human graders as the three workable scoring methods and ranks them by objectivity.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "The 2026 agent-eval essay treats code, model, and human graders as the three workable scoring methods and ranks them by objectivity.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "hash-maps",
+      "title": "Hash maps as an index",
+      "slug": "hash-maps",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "Trade linear scans for expected constant lookups by storing the fact you will need later.",
+      "tags": [
+        "algorithms",
+        "algorithms/hash-maps",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "hashing-internals"
+      ],
+      "related": [
+        "two-sum",
+        "lru-cache",
+        "hashing-internals",
+        "three-sum"
+      ],
+      "path": "lessons/algorithms/patterns/hash-maps.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate reports treat complement-index and frequency-map problems as the default first phone-screen question.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA writeups repeatedly mention counting / grouping with maps before any graph question.",
+          "year": 2025,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA writeups repeatedly mention counting / grouping with maps before any graph question.",
+          "year": 2025,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "hashing-internals",
+      "title": "Why a map is \"O(1)\" until it isn't",
+      "slug": "hashing-internals",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "A hash table is an array of buckets plus a function that turns keys into indexes; collisions and resizes are why we say expected O(1).",
+      "tags": [
+        "cs",
+        "cs/data-structures",
+        "cs/complexity",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "big-o",
+        "arrays-vs-linked-lists"
+      ],
+      "related": [
+        "big-o",
+        "arrays-vs-linked-lists",
+        "indexes",
+        "hash-maps",
+        "two-sum"
+      ],
+      "path": "lessons/cs/hashing-internals.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Pair-sum / frequency-map phone screens routinely follow up with \"why is this O(n)?\" and \"what if every key collides?\"",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Pair-sum / frequency-map phone screens routinely follow up with \"why is this O(n)?\" and \"what if every key collides?\"",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "heaps-top-k",
+      "title": "Keep only the interesting k",
+      "slug": "heaps-top-k",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Stream n items through a size-k heap so you never sort the whole input just to name the extremes.",
+      "tags": [
+        "algorithms",
+        "algorithms/heaps",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "big-o"
+      ],
+      "related": [
+        "kth-largest",
+        "binary-search-on-answer",
+        "hash-maps",
+        "merge-intervals"
+      ],
+      "path": "lessons/algorithms/patterns/heaps-top-k.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA reports list top-k frequent / k-th largest as a default heap question.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen writeups describe \"k closest\" and \"k frequent\" as common twenty-minute prompts.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen writeups describe \"k closest\" and \"k frequent\" as common twenty-minute prompts.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "how-to-run-proper-evals",
+      "title": "Start evals from real failures, not a synthetic pile",
+      "slug": "how-to-run-proper-evals",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "A useful agent eval is a small set of fully specified, already-solved failures run in clean rooms and graded on world state, then read by a human.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "eval-harness-vs-agent-harness"
+      ],
+      "related": [
+        "eval-harness-vs-agent-harness",
+        "graders",
+        "outcome-vs-transcript",
+        "capability-vs-regression",
+        "coding-agent-evals",
+        "interview-ai-round"
+      ],
+      "path": "lessons/ai-agents/how-to-run-proper-evals.md",
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "Public 2026 eval essay argues for starting with a few dozen real tasks, isolated trials, and outcome graders rather than huge synthetic banks.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "OpenAI",
+          "evidence": "Candidate reports of \"design an eval\" follow-ups in AI-platform loops track this same recipe.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "OpenAI",
+          "evidence": "Candidate reports of \"design an eval\" follow-ups in AI-platform loops track this same recipe.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "http-and-tcp",
+      "title": "HTTP is a conversation, TCP is the pipe",
+      "slug": "http-and-tcp",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "TCP delivers a reliable byte stream; HTTP is a request/response language on top of that stream (or on QUIC instead).",
+      "tags": [
+        "cs",
+        "cs/networking",
+        "interviews/system-design"
+      ],
+      "prerequisites": [],
+      "related": [
+        "processes-threads",
+        "encoding-unicode",
+        "caching",
+        "cap-and-consistency"
+      ],
+      "path": "lessons/cs/http-and-tcp.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "API-design and service-design screens still ask what lives on TCP vs HTTP, idempotency of methods, and why a retry doubled a charge.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "API-design and service-design screens still ask what lives on TCP vs HTTP, idempotency of methods, and why a retry doubled a charge.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "indexes",
+      "title": "Indexes are precomputed answers",
+      "slug": "indexes",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "An index is extra storage that turns a scan into a seek; you pay for it on every write, and the wrong index is worse than none.",
+      "tags": [
+        "cs",
+        "cs/databases",
+        "cs/data-structures",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "hashing-internals",
+        "trees-graphs"
+      ],
+      "related": [
+        "hashing-internals",
+        "trees-graphs",
+        "transactions-isolation",
+        "sharding",
+        "two-sum"
+      ],
+      "path": "lessons/cs/indexes.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Service-design and backend screens still ask \"what index would you add\" and \"why did this write get slower after the index.\"",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Service-design and backend screens still ask \"what index would you add\" and \"why did this write get slower after the index.\"",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "interview-ai-round",
+      "title": "How the 2026 AI interview round actually works",
+      "slug": "interview-ai-round",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "2026 loops mix AI-assisted coding, \"design an eval,\" and \"why did the agent regress.\" They score whether you can use a model without surrendering correctness or measurement.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "eval-harness-vs-agent-harness"
+      ],
+      "related": [
+        "how-to-run-proper-evals",
+        "eval-harness-vs-agent-harness",
+        "agent-mistakes",
+        "capability-vs-regression",
+        "coding-agent-evals"
+      ],
+      "path": "lessons/ai-agents/interview-ai-round.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate reports (2025–2026) describe an AI-assisted coding round where a model is available in the editor and the grader is still your tests and explanation.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "OpenAI / Anthropic / AI-platform teams",
+          "evidence": "Repeated prep-site and Blind-style reports of \"design an eval for this agent\" and \"debug this regression from a trace,\" not trivia about a vendor API.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "OpenAI / Anthropic / AI-platform teams",
+          "evidence": "Repeated prep-site and Blind-style reports of \"design an eval for this agent\" and \"debug this regression from a trace,\" not trivia about a vendor API.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "interview-framework",
+      "title": "Forty-five minutes is a navigation problem",
+      "slug": "interview-framework",
+      "kind": "strategy",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 18,
+      "summary": "A system-design round is scored on what you choose to deepen, not on how many boxes you draw.",
+      "tags": [
+        "system-design",
+        "system-design/foundations",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [],
+      "related": [
+        "url-shortener",
+        "news-feed",
+        "load-balancing",
+        "caching",
+        "sharding"
+      ],
+      "path": "lessons/system-design/foundations/interview-framework.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Candidate-reported L5/L6 loops and prep-site frequency writeups emphasize surviving a scale challenge and going deep on one bottleneck, not touring every box.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Candidate-reported L5 loops treat operational ownership, box-death, and customer-visible failure as the real score, often on a staple like a URL shortener.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported product-architecture prompts (news feed, messenger) and prep-site frequency lists reward fanout and product tradeoffs over generic cloud diagrams.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported product-architecture prompts (news feed, messenger) and prep-site frequency lists reward fanout and product tradeoffs over generic cloud diagrams.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "job-scheduler",
+      "title": "Cron, ad-hoc, leases, and retries",
+      "slug": "job-scheduler",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 18,
+      "summary": "Clockyard runs cron and one-off work at 10k jobs/s by leasing, heartbeating, and putting poison on a dead-letter lane.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/messaging",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "queues-delivery"
+      ],
+      "related": [
+        "queues-delivery",
+        "notification-system",
+        "llm-serving",
+        "interview-framework",
+        "video-streaming"
+      ],
+      "path": "lessons/system-design/cases/job-scheduler.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported Hello Interview Meta loops describe a job scheduler (about 10k jobs/s, cron plus ad-hoc, retries, leases) as a recurring prompt.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported Hello Interview Meta loops describe a job scheduler (about 10k jobs/s, cron plus ad-hoc, retries, leases) as a recurring prompt.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "kth-largest",
+      "title": "k-th busiest dock",
+      "slug": "kth-largest",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "intro",
+      "estimated_minutes": 10,
+      "summary": "Stream scores through a min-heap of size k so the root is the k-th largest without sorting the whole hour.",
+      "tags": [
+        "algorithms",
+        "algorithms/heaps",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "heaps-top-k"
+      ],
+      "related": [
+        "heaps-top-k",
+        "binary-search-on-answer",
+        "two-pointers",
+        "hash-maps"
+      ],
+      "path": "lessons/algorithms/problems/kth-largest.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA reports list k-th largest / top-k as a default heap question.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen writeups describe k-th largest in a stream as a common follow-up after a static sort.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen writeups describe k-th largest in a stream as a common follow-up after a static sort.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "llm-as-judge-calibration",
+      "title": "Calibrate the judge before you trust the score",
+      "slug": "llm-as-judge-calibration",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "deep",
+      "estimated_minutes": 14,
+      "summary": "An LLM judge is another model with biases. Pin a rubric, measure agreement on a human gold set, then freeze the judge so it cannot drift with the agent.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "graders"
+      ],
+      "related": [
+        "graders",
+        "outcome-vs-transcript",
+        "how-to-run-proper-evals",
+        "online-offline-evals",
+        "pass-at-k"
+      ],
+      "path": "lessons/ai-agents/llm-as-judge-calibration.md",
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "The 2026 agent-eval essay treats model graders as useful only when the quality is fuzzy and the judge is validated.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "The 2026 agent-eval essay treats model graders as useful only when the quality is fuzzy and the judge is validated.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "llm-serving",
+      "title": "Batching tokens onto scarce GPUs",
+      "slug": "llm-serving",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "deep",
+      "estimated_minutes": 20,
+      "summary": "Kiln serves tokens by batching, paging a KV cache, and queuing work because the GPU, not the JSON API, is the scarce resource.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/genai",
+        "system-design/messaging",
+        "interviews",
+        "interviews/system-design",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "queues-delivery",
+        "job-scheduler"
+      ],
+      "related": [
+        "job-scheduler",
+        "queues-delivery",
+        "eval-harness-vs-agent-harness",
+        "tool-calling",
+        "interview-framework"
+      ],
+      "path": "lessons/system-design/cases/llm-serving.md",
+      "company_signal": [
+        {
+          "name": "OpenAI",
+          "evidence": "Candidate-reported 2025–26 roundups describe GPU job scheduling (Sora-style long generations) as a cousin of token serving; confidence is low-medium.",
+          "year": 2026,
+          "confidence": "low"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "Prep-site frequency and public harness essays make \"how the serving loop batches and tools\" a 2025–26 interview category, distinct from classic CRUD design.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "Prep-site frequency and public harness essays make \"how the serving loop batches and tools\" a 2025–26 interview category, distinct from classic CRUD design.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "load-balancing",
+      "title": "Spreading work without creating a new bottleneck",
+      "slug": "load-balancing",
+      "kind": "concept",
+      "track": "system-design",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "A load balancer is a traffic policy plus a health story, not a box you sprinkle in front of \"the app.\"",
+      "tags": [
+        "system-design",
+        "system-design/foundations",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework"
+      ],
+      "related": [
+        "caching",
+        "sharding",
+        "interview-framework",
+        "http-and-tcp",
+        "rate-limiter"
+      ],
+      "path": "lessons/system-design/foundations/load-balancing.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate-reported L4/L5 designs and prep-site frequency notes almost always expect a balancer plus a health-check story, even on junior prompts.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Candidate-reported loops push past \"add a load balancer\" into connection draining, shard-aware routing, and whether L4 or L7 is the right layer.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Google",
+          "evidence": "Candidate-reported loops push past \"add a load balancer\" into connection draining, shard-aware routing, and whether L4 or L7 is the right layer.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "locks-and-concurrency",
+      "title": "Locks buy correctness, not speed",
+      "slug": "locks-and-concurrency",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "core",
+      "estimated_minutes": 15,
+      "summary": "A lock serializes a critical section so invariants survive concurrent writers; too much locking is a deadlock, too little is a race.",
+      "tags": [
+        "cs",
+        "cs/concurrency",
+        "cs/os",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "processes-threads"
+      ],
+      "related": [
+        "processes-threads",
+        "transactions-isolation",
+        "os-memory",
+        "cap-and-consistency"
+      ],
+      "path": "lessons/cs/locks-and-concurrency.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Backend and infra screens still use \"this counter is wrong under load\" as a concurrency warmup, then follow into deadlock and lock granularity.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Backend and infra screens still use \"this counter is wrong under load\" as a concurrency warmup, then follow into deadlock and lock granularity.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "longest-unique-window",
+      "title": "Longest unique radio run",
+      "slug": "longest-unique-window",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Slide a window over a stream of symbols, jumping the left edge past the last repeat so the live slice stays unique.",
+      "tags": [
+        "algorithms",
+        "algorithms/strings",
+        "algorithms/sliding-window",
+        "algorithms/hash-maps",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "sliding-window",
+        "hash-maps"
+      ],
+      "related": [
+        "sliding-window",
+        "hash-maps",
+        "two-pointers",
+        "dp-1d"
+      ],
+      "path": "lessons/algorithms/problems/longest-unique-window.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate phone-screen reports keep listing longest unique substring as the sliding-window warmup.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Tagged-list threads treat unique-window string problems as a default OA easy/medium.",
+          "year": 2025,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Tagged-list threads treat unique-window string problems as a default OA easy/medium.",
+          "year": 2025,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "lru-cache",
+      "title": "Scanner memory with eviction",
+      "slug": "lru-cache",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "Pair a hash map with a doubly linked list so get and put both move a key to most-recent and evict the tail in constant time.",
+      "tags": [
+        "algorithms",
+        "algorithms/hash-maps",
+        "algorithms/linked-lists",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "hash-maps",
+        "arrays-vs-linked-lists"
+      ],
+      "related": [
+        "hash-maps",
+        "arrays-vs-linked-lists",
+        "indexes",
+        "hashing-internals"
+      ],
+      "path": "lessons/algorithms/problems/lru-cache.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate reports list LRU implementation as a recurring OA/phone-screen systems-flavored coding question.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Onsite writeups describe \"implement a cache with eviction\" as a common design-in-code prompt.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Onsite writeups describe \"implement a cache with eviction\" as a common design-in-code prompt.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "merge-intervals",
+      "title": "Collapse overlapping ranges",
+      "slug": "merge-intervals",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Sort ranges by start time, then walk once, merging anything that overlaps the current open interval.",
+      "tags": [
+        "algorithms",
+        "algorithms/intervals",
+        "algorithms/greedy",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "two-pointers"
+      ],
+      "related": [
+        "two-pointers",
+        "heaps-top-k",
+        "monotonic-stack",
+        "topological-sort"
+      ],
+      "path": "lessons/algorithms/patterns/merge-intervals.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate reports list meeting-merge and calendar-conflict prompts as a recurring medium.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA writeups describe \"merge busy windows / insert an interval\" as a tagged favorite.",
+          "year": 2025,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA writeups describe \"merge busy windows / insert an interval\" as a tagged favorite.",
+          "year": 2025,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "monotonic-stack",
+      "title": "The next greater is waiting on a stack",
+      "slug": "monotonic-stack",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Keep a stack of decreasing (or increasing) candidates so each item finds its next greater or smaller in amortized constant time.",
+      "tags": [
+        "algorithms",
+        "algorithms/stacks",
+        "algorithms/arrays",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "arrays-vs-linked-lists"
+      ],
+      "related": [
+        "valid-brackets",
+        "merge-intervals",
+        "two-pointers",
+        "heaps-top-k"
+      ],
+      "path": "lessons/algorithms/patterns/monotonic-stack.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Candidate reports list next-greater / daily-temperature style stack prompts as a common medium.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Tagged-list threads keep histogram-rectangle and next-greater-element in OA circulation.",
+          "year": 2025,
+          "confidence": "medium"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Tagged-list threads keep histogram-rectangle and next-greater-element in OA circulation.",
+          "year": 2025,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "news-feed",
+      "title": "Hybrid fanout when some authors are stadiums",
+      "slug": "news-feed",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 20,
+      "summary": "Fieldnote's home stream is a fanout problem; naive write-fanout dies on stadium authors, so v1 is hybrid.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/caching",
+        "system-design/messaging",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "caching",
+        "queues-delivery"
+      ],
+      "related": [
+        "interview-framework",
+        "caching",
+        "queues-delivery",
+        "chat-system",
+        "notification-system"
+      ],
+      "path": "lessons/system-design/cases/news-feed.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported product-architecture loops and prep-site frequency (Exponent / Hello Interview) treat news feed as the most reported Meta prompt.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported product-architecture loops and prep-site frequency (Exponent / Hello Interview) treat news feed as the most reported Meta prompt.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "notification-system",
+      "title": "Fan-out that survives flaky devices",
+      "slug": "notification-system",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "Herald accepts an event once, fans it into per-device attempts, and treats every channel as at-least-once with a dead-letter lane.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/messaging",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "queues-delivery"
+      ],
+      "related": [
+        "queues-delivery",
+        "chat-system",
+        "job-scheduler",
+        "rate-limiter",
+        "news-feed"
+      ],
+      "path": "lessons/system-design/cases/notification-system.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate-reported L5 loops and prep-site frequency lists treat notification/fan-out systems as a standard operations-heavy prompt (retries, channels, DLQ).",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported messenger and feed follow-ups often pivot into \"how does the push get to the phone.\"",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported messenger and feed follow-ups often pivot into \"how does the push get to the phone.\"",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "number-of-islands",
+      "title": "Pallet clusters on a flooded floor",
+      "slug": "number-of-islands",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Flood-fill each unvisited pallet cell and count how many times you start a new fill; that count is the number of clusters.",
+      "tags": [
+        "algorithms",
+        "algorithms/graphs",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "bfs",
+        "dfs-backtracking"
+      ],
+      "related": [
+        "bfs",
+        "dfs-backtracking",
+        "union-find",
+        "trees-graphs"
+      ],
+      "path": "lessons/algorithms/problems/number-of-islands.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA and phone-screen reports list grid island-count as a default graph easy/medium.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Onsite writeups describe island / flood-fill grids as a common first graph question.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Onsite writeups describe island / flood-fill grids as a common first graph question.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "online-offline-evals",
+      "title": "Offline gates and online drift",
+      "slug": "online-offline-evals",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Offline evals are a frozen, isolated suite you can compare across commits; online evals watch live traffic for drift. You ship with both or you fly on one instrument.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "ai-agents/product",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "how-to-run-proper-evals"
+      ],
+      "related": [
+        "how-to-run-proper-evals",
+        "capability-vs-regression",
+        "traces-trajectories",
+        "pass-at-k",
+        "llm-as-judge-calibration"
+      ],
+      "path": "lessons/ai-agents/online-offline-evals.md",
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "Public eval writing treats isolated offline suites as the scientific unit; production monitoring is a separate loop.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "Public eval writing treats isolated offline suites as the scientific unit; production monitoring is a separate loop.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "os-memory",
+      "title": "Virtual memory is a lie the CPU believes",
+      "slug": "os-memory",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "Each process sees a private virtual address space; the OS maps pages to RAM or disk, and cache lines make layout matter more than Big-O admits.",
+      "tags": [
+        "cs",
+        "cs/os",
+        "cs/data-structures",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "arrays-vs-linked-lists"
+      ],
+      "related": [
+        "processes-threads",
+        "arrays-vs-linked-lists",
+        "recursion-call-stack",
+        "caching"
+      ],
+      "path": "lessons/cs/os-memory.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Systems-flavored screens still ask virtual vs physical, page faults, and why a linked-list scan thrashes cache compared to an array.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Google",
+          "evidence": "Systems-flavored screens still ask virtual vs physical, page faults, and why a linked-list scan thrashes cache compared to an array.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "outcome-vs-transcript",
+      "title": "Grade the world, not the speech",
+      "slug": "outcome-vs-transcript",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "The transcript is what the agent said and called; the outcome is what the environment became. Product success lives in the second, debugging in the first.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "eval-harness-vs-agent-harness"
+      ],
+      "related": [
+        "graders",
+        "traces-trajectories",
+        "how-to-run-proper-evals",
+        "eval-harness-vs-agent-harness",
+        "tool-calling"
+      ],
+      "path": "lessons/ai-agents/outcome-vs-transcript.md",
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "The 2026 agent-eval essay uses outcome versus transcript as the core scoring distinction, including the refund-utterance failure mode.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "The 2026 agent-eval essay uses outcome versus transcript as the core scoring distinction, including the refund-utterance failure mode.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "pass-at-k",
+      "title": "Pass@k is a lottery; pass^k is a contract",
+      "slug": "pass-at-k",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "pass@k asks whether any of k trials worked; pass^k asks whether every trial worked. Products that cannot retry need the second number.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "how-to-run-proper-evals"
+      ],
+      "related": [
+        "how-to-run-proper-evals",
+        "capability-vs-regression",
+        "online-offline-evals",
+        "eval-harness-vs-agent-harness",
+        "coding-agent-evals"
+      ],
+      "path": "lessons/ai-agents/pass-at-k.md",
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "The 2026 agent-eval essay popularized pass@k versus pass^k as the reliability language for agent suites.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "The 2026 agent-eval essay popularized pass@k versus pass^k as the reliability language for agent suites.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "pattern-first-prep",
+      "title": "How to run a pattern-first loop",
+      "slug": "pattern-first-prep",
+      "kind": "strategy",
+      "track": "algorithms",
+      "difficulty": "intro",
+      "estimated_minutes": 14,
+      "summary": "Learn about fourteen reusable templates, then drill two or three problems each, instead of grinding hundreds of one-off prompts.",
+      "tags": [
+        "algorithms",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [],
+      "related": [
+        "two-pointers",
+        "hash-maps",
+        "interview-framework",
+        "two-sum"
+      ],
+      "path": "lessons/algorithms/strategy/pattern-first-prep.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate prep threads repeatedly say phone screens recycle the same pattern families more than they recycle exact prompts.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA writeups and tagged-list discussions treat a short pattern catalog as more predictive than a 500-problem streak.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA writeups and tagged-list discussions treat a short pattern catalog as more predictive than a 500-problem streak.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "payment-idempotency",
+      "title": "Making a double-click charge once",
+      "slug": "payment-idempotency",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "Till treats a charge as a ledger append fenced by an idempotency key so a double-click, a retry, and a webhook replay all collapse to one effect.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/consistency",
+        "system-design/messaging",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "queues-delivery",
+        "cap-and-consistency"
+      ],
+      "related": [
+        "queues-delivery",
+        "cap-and-consistency",
+        "transactions-isolation",
+        "rate-limiter",
+        "job-scheduler"
+      ],
+      "path": "lessons/system-design/cases/payment-idempotency.md",
+      "company_signal": [
+        {
+          "name": "Stripe",
+          "evidence": "Candidate-reported loops and public X threads on idempotency keys treat double-charge / ledger design as a recurring payments prompt.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Prep-site frequency and candidate reports on order/payment adjacent L5 designs probe \"what if the client retries.\"",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Prep-site frequency and candidate reports on order/payment adjacent L5 designs probe \"what if the client retries.\"",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "processes-threads",
+      "title": "Address spaces versus shared work",
+      "slug": "processes-threads",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "core",
+      "estimated_minutes": 13,
+      "summary": "A process is an isolated virtual memory map plus handles; a thread is a stack and a register set that shares that map with its siblings.",
+      "tags": [
+        "cs",
+        "cs/os",
+        "cs/concurrency",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "os-memory"
+      ],
+      "related": [
+        "os-memory",
+        "locks-and-concurrency",
+        "http-and-tcp",
+        "recursion-call-stack"
+      ],
+      "path": "lessons/cs/processes-threads.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Backend screens still ask process vs thread, when to isolate a crash, and why a thread pool is not \"free parallelism.\"",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Backend screens still ask process vs thread, when to isolate a crash, and why a thread pool is not \"free parallelism.\"",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "queues-delivery",
+      "title": "At-least-once, idempotency, and the dead-letter lane",
+      "slug": "queues-delivery",
+      "kind": "concept",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 15,
+      "summary": "Default delivery is at-least-once; exactly-once is at-least-once plus an idempotent consumer and a place for poison.",
+      "tags": [
+        "system-design",
+        "system-design/foundations",
+        "system-design/messaging",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework"
+      ],
+      "related": [
+        "notification-system",
+        "job-scheduler",
+        "chat-system",
+        "payment-idempotency",
+        "cap-and-consistency"
+      ],
+      "path": "lessons/system-design/foundations/queues-delivery.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate-reported L5 loops and prep-site frequency lists treat queues, retries, and poison messages as the operational heart of notification and job designs.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported messenger and feed fanout probes ask what happens when a consumer crashes after sending but before ack.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported messenger and feed fanout probes ask what happens when a consumer crashes after sending but before ack.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "rag-vs-agents",
+      "title": "Retrieval is not an agent loop",
+      "slug": "rag-vs-agents",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "RAG is retrieve-then-generate on a frozen corpus; an agent is a loop that can change the world. Most products need a retriever, a few tools, or both — not a 12-step persona.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/product",
+        "ai-agents/tools",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [],
+      "related": [
+        "tool-calling",
+        "eval-harness-vs-agent-harness",
+        "how-to-run-proper-evals",
+        "outcome-vs-transcript"
+      ],
+      "path": "lessons/ai-agents/rag-vs-agents.md",
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "Anthropic's public essay on building effective agents popularized workflows versus agents and is a common 2026 citation when interviewers ask RAG versus agent.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "Anthropic's public essay on building effective agents popularized workflows versus agents and is a common 2026 citation when interviewers ask RAG versus agent.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "rate-limiter",
+      "title": "Token buckets and sliding windows at the edge",
+      "slug": "rate-limiter",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "QuotaDesk meters ClipForge with local token buckets for cheap shed and a shared sliding window when fairness across boxes matters.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/caching",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "caching",
+        "load-balancing"
+      ],
+      "related": [
+        "caching",
+        "load-balancing",
+        "interview-framework",
+        "http-and-tcp",
+        "payment-idempotency"
+      ],
+      "path": "lessons/system-design/cases/rate-limiter.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate-reported mid-level loops and prep-site frequency (Hello Interview community reports) treat rate limiting as a high-frequency prompt at Amazon, Meta, and Google.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Prep-site frequency and candidate reports pair rate limiting with feed/chat abuse and API gateway talks.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Prep-site frequency and candidate reports pair rate limiting with feed/chat abuse and API gateway talks.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "recursion-call-stack",
+      "title": "Recursion is a stack you didn't allocate",
+      "slug": "recursion-call-stack",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "core",
+      "estimated_minutes": 13,
+      "summary": "Each recursive call pushes a frame; depth is memory, branching is time, and \"just recurse\" blows up when the graph is not a tree.",
+      "tags": [
+        "cs",
+        "cs/data-structures",
+        "cs/os",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "big-o"
+      ],
+      "related": [
+        "trees-graphs",
+        "os-memory",
+        "processes-threads",
+        "big-o"
+      ],
+      "path": "lessons/cs/recursion-call-stack.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Tree/backtracking phone screens still ask candidates to name stack depth and to rewrite a recursive walk as an explicit stack when n is large.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Tree/backtracking phone screens still ask candidates to name stack depth and to rewrite a recursive walk as an explicit stack when n is large.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "ride-hailing",
+      "title": "Matching and surge, not a map with cars on it",
+      "slug": "ride-hailing",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "deep",
+      "estimated_minutes": 22,
+      "summary": "Driftway is a matching problem plus a pricing engine; drawing cars on a map is the shallow version senior interviewers bounce.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/realtime",
+        "system-design/storage",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "sharding",
+        "queues-delivery"
+      ],
+      "related": [
+        "sharding",
+        "queues-delivery",
+        "rate-limiter",
+        "interview-framework",
+        "payment-idempotency"
+      ],
+      "path": "lessons/system-design/cases/ride-hailing.md",
+      "company_signal": [
+        {
+          "name": "Uber",
+          "evidence": "Candidate-reported senior loops (prep-site frequency plus loop writeups) say \"design Uber\" is too shallow; the real ask is the surge-pricing / matching engine.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Uber",
+          "evidence": "Candidate-reported senior loops (prep-site frequency plus loop writeups) say \"design Uber\" is too shallow; the real ask is the surge-pricing / matching engine.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "search-autocomplete",
+      "title": "Prefix ranking under a tight latency budget",
+      "slug": "search-autocomplete",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "intro",
+      "estimated_minutes": 14,
+      "summary": "Lexicon ranks the next few characters as the user types; the serving path is an in-memory prefix index plus a cache, not a full search engine.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/caching",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "caching"
+      ],
+      "related": [
+        "caching",
+        "load-balancing",
+        "rate-limiter",
+        "indexes",
+        "interview-framework"
+      ],
+      "path": "lessons/system-design/cases/search-autocomplete.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Candidate-reported loops and prep-site frequency lists treat typeahead / autocomplete as a Google search-product analog with a hard latency budget.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Candidate-reported loops and prep-site frequency lists treat typeahead / autocomplete as a Google search-product analog with a hard latency budget.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "sharding",
+      "title": "Splitting a keyspace so one box is not the product",
+      "slug": "sharding",
+      "kind": "concept",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "Sharding is how you split a keyspace so growth hits more boxes, and how you avoid turning one celebrity key into one celebrity box.",
+      "tags": [
+        "system-design",
+        "system-design/foundations",
+        "system-design/storage",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework"
+      ],
+      "related": [
+        "caching",
+        "cap-and-consistency",
+        "url-shortener",
+        "ride-hailing",
+        "indexes"
+      ],
+      "path": "lessons/system-design/foundations/sharding.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Candidate-reported loops and prep-site frequency notes treat shard maps, rebalancing, and hot-key handling as the depth probe after a candidate draws \"sharded DB.\"",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported feed and messenger designs get pushed on user-sharded inboxes versus global stores, and on celebrity keys that pin a shard.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Candidate-reported feed and messenger designs get pushed on user-sharded inboxes versus global stores, and on celebrity keys that pin a shard.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "sliding-window",
+      "title": "Grow and shrink a live range",
+      "slug": "sliding-window",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "Maintain a contiguous slice whose invariant you restore by expanding the right edge and shrinking the left.",
+      "tags": [
+        "algorithms",
+        "algorithms/arrays",
+        "algorithms/strings",
+        "algorithms/sliding-window",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "two-pointers",
+        "hash-maps"
+      ],
+      "related": [
+        "longest-unique-window",
+        "two-pointers",
+        "hash-maps",
+        "dp-1d"
+      ],
+      "path": "lessons/algorithms/patterns/sliding-window.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate phone-screen reports and tagged lists keep putting unique-substring / at-most-k-distinct windows in the first thirty minutes.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Prep threads treat variable windows over strings as a default onsite warmup.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Google",
+          "evidence": "Prep threads treat variable windows over strings as a default onsite warmup.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "three-sum",
+      "title": "Three-value search",
+      "slug": "three-sum",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "After sorting, pin one ticket and squeeze the other two with two pointers so every zero-sum triple is found without a cubic scan.",
+      "tags": [
+        "algorithms",
+        "algorithms/arrays",
+        "algorithms/two-pointers",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "two-sum",
+        "two-pointers"
+      ],
+      "related": [
+        "two-sum",
+        "two-pointers",
+        "hash-maps",
+        "big-o"
+      ],
+      "path": "lessons/algorithms/problems/three-sum.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate phone-screen reports and tagged lists keep listing three-value zero-sum as the follow-up to pair-sum.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA writeups treat unique triplets summing to a target as a default medium.",
+          "year": 2025,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA writeups treat unique triplets summing to a target as a default medium.",
+          "year": 2025,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "tool-calling",
+      "title": "Tools that are safe to call twice",
+      "slug": "tool-calling",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "Tool schemas should be tight, retries should be idempotent, and irreversible actions should require a confirm the eval actually checks.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/tools",
+        "ai-agents/harnesses",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "eval-harness-vs-agent-harness"
+      ],
+      "related": [
+        "agent-mistakes",
+        "vendor-vs-user-harness",
+        "eval-harness-vs-agent-harness",
+        "outcome-vs-transcript",
+        "rag-vs-agents"
+      ],
+      "path": "lessons/ai-agents/tool-calling.md",
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "Public agent-harness writing treats tool design (schemas, stop conditions, permissions) as the harness, not the model.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "Public agent-harness writing treats tool design (schemas, stop conditions, permissions) as the harness, not the model.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "topological-sort",
+      "title": "Order by prerequisites",
+      "slug": "topological-sort",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "Linearize a directed acyclic graph so every edge points forward; a leftover cycle means no legal order.",
+      "tags": [
+        "algorithms",
+        "algorithms/graphs",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "bfs",
+        "trees-graphs"
+      ],
+      "related": [
+        "course-order",
+        "bfs",
+        "dfs-backtracking",
+        "union-find"
+      ],
+      "path": "lessons/algorithms/patterns/topological-sort.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate reports list course-schedule / build-order prompts as the usual topo-sort tell.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Onsite writeups describe compilation-order and task-graph questions in the same family.",
+          "year": 2025,
+          "confidence": "medium"
+        },
+        {
+          "name": "Google",
+          "evidence": "Onsite writeups describe compilation-order and task-graph questions in the same family.",
+          "year": 2025,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "traces-trajectories",
+      "title": "Spans, traces, trajectories, and sessions",
+      "slug": "traces-trajectories",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "A span is one call, a trace is one trial's DAG, a trajectory is the ordered agent path, and a session is the user's longer story. Eval, debug, and product metrics do not live on the same noun.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "ai-agents/harnesses",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "eval-harness-vs-agent-harness"
+      ],
+      "related": [
+        "outcome-vs-transcript",
+        "online-offline-evals",
+        "eval-harness-vs-agent-harness",
+        "how-to-run-proper-evals",
+        "llm-as-judge-calibration"
+      ],
+      "path": "lessons/ai-agents/traces-trajectories.md",
+      "company_signal": [
+        {
+          "name": "Arize",
+          "evidence": "Observability writeups in 2026 standardized span/trace language for LLM apps; interviews expect you to add trajectory/session on top.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Arize",
+          "evidence": "Observability writeups in 2026 standardized span/trace language for LLM apps; interviews expect you to add trajectory/session on top.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "transactions-isolation",
+      "title": "Isolation is which lie you agreed to",
+      "slug": "transactions-isolation",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "deep",
+      "estimated_minutes": 16,
+      "summary": "A transaction groups reads and writes into one commit-or-rollback; isolation levels name which concurrent anomalies you are willing to see.",
+      "tags": [
+        "cs",
+        "cs/databases",
+        "cs/concurrency",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "indexes",
+        "locks-and-concurrency"
+      ],
+      "related": [
+        "indexes",
+        "locks-and-concurrency",
+        "cap-and-consistency",
+        "sharding"
+      ],
+      "path": "lessons/cs/transactions-isolation.md",
+      "company_signal": [
+        {
+          "name": "Stripe",
+          "evidence": "Payments and ledger interviews repeatedly probe double-charge, lost updates, and \"what isolation would you pick for this row.\"",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Stripe",
+          "evidence": "Payments and ledger interviews repeatedly probe double-charge, lost updates, and \"what isolation would you pick for this row.\"",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "trees-graphs",
+      "title": "Trees are graphs with a promise",
+      "slug": "trees-graphs",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "A tree is a connected acyclic graph with one path between any pair; the moment a cycle or a second parent appears, you are in graph land.",
+      "tags": [
+        "cs",
+        "cs/data-structures",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "big-o"
+      ],
+      "related": [
+        "recursion-call-stack",
+        "big-o",
+        "hashing-internals",
+        "indexes"
+      ],
+      "path": "lessons/cs/trees-graphs.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Tagged-list prep threads keep BFS/DFS tree and graph prompts (level order, clone graph, course schedule) in the phone-screen rotation.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Tagged-list prep threads keep BFS/DFS tree and graph prompts (level order, clone graph, course schedule) in the phone-screen rotation.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "trie",
+      "title": "Prefix trees as a walking index",
+      "slug": "trie",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Store strings on shared prefix paths so lookup, prefix check, and autocomplete walk character by character.",
+      "tags": [
+        "algorithms",
+        "algorithms/tries",
+        "algorithms/strings",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "hash-maps"
+      ],
+      "related": [
+        "hash-maps",
+        "dfs-backtracking",
+        "indexes",
+        "hashing-internals"
+      ],
+      "path": "lessons/algorithms/patterns/trie.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Candidate reports treat autocomplete / add-and-search-word as the usual trie prompt.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Tagged-list threads keep prefix-tree implementation questions in OA and phone screens.",
+          "year": 2025,
+          "confidence": "medium"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Tagged-list threads keep prefix-tree implementation questions in OA and phone screens.",
+          "year": 2025,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "two-pointers",
+      "title": "Squeeze from both ends",
+      "slug": "two-pointers",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "Walk a sorted sequence from both ends so each comparison discards a whole side of the search.",
+      "tags": [
+        "algorithms",
+        "algorithms/arrays",
+        "algorithms/two-pointers",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "arrays-vs-linked-lists"
+      ],
+      "related": [
+        "two-sum",
+        "three-sum",
+        "sliding-window",
+        "fast-slow-pointers"
+      ],
+      "path": "lessons/algorithms/patterns/two-pointers.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA writeups and tagged-list threads keep listing sorted pair / container problems as two-pointer drills.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen reports often follow a hash-map pair-sum with a \"now the array is sorted\" follow-up.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen reports often follow a hash-map pair-sum with a \"now the array is sorted\" follow-up.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "two-sum",
+      "title": "Pair lookup instead of nested scanning",
+      "slug": "two-sum",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "Find two values that add to a target by remembering the complement you still need, not by checking every pair.",
+      "tags": [
+        "algorithms",
+        "algorithms/arrays",
+        "algorithms/hash-maps",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "hash-maps"
+      ],
+      "related": [
+        "three-sum",
+        "two-pointers",
+        "hash-maps",
+        "big-o"
+      ],
+      "path": "lessons/algorithms/problems/two-sum.md",
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen writeups and LeetCode company tags keep listing pair-sum / complement-index problems as warmups.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Tagged-list prep threads treat this family as a default OA/phone screen.",
+          "year": 2025,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Tagged-list prep threads treat this family as a default OA/phone screen.",
+          "year": 2025,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "union-find",
+      "title": "Cluster membership in nearly constant time",
+      "slug": "union-find",
+      "kind": "pattern",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "Maintain disjoint sets with path compression and union by rank so connectivity queries stay almost O(1).",
+      "tags": [
+        "algorithms",
+        "algorithms/union-find",
+        "algorithms/graphs",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "trees-graphs"
+      ],
+      "related": [
+        "number-of-islands",
+        "bfs",
+        "topological-sort",
+        "trees-graphs"
+      ],
+      "path": "lessons/algorithms/patterns/union-find.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Candidate onsite reports mention connected-components / redundant-connection prompts as union-find tells.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Tagged-list threads list number-of-provinces and similar \"are these accounts the same person\" merges.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Tagged-list threads list number-of-provinces and similar \"are these accounts the same person\" merges.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "url-shortener",
+      "title": "Minting short keys for a read-heavy lookup",
+      "slug": "url-shortener",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "intro",
+      "estimated_minutes": 18,
+      "summary": "ClipForge is a 100:1 read lookup; the design fight is how you mint unique short keys without turning hash collisions into a product.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/caching",
+        "system-design/storage",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "caching"
+      ],
+      "related": [
+        "interview-framework",
+        "caching",
+        "sharding",
+        "load-balancing",
+        "rate-limiter"
+      ],
+      "path": "lessons/system-design/cases/url-shortener.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate-reported L5 staple; prep-site frequency lists treat URL shorteners as the default junior/mid prompt across Amazon, Google, and Meta.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Candidate-reported loops use the same prompt as a scale/depth probe (key space, cache hit math, uniqueness under retry).",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Google",
+          "evidence": "Candidate-reported loops use the same prompt as a scale/depth probe (key space, cache hit math, uniqueness under retry).",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "valid-brackets",
+      "title": "Matched crate tags",
+      "slug": "valid-brackets",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "intro",
+      "estimated_minutes": 10,
+      "summary": "Push opening tags onto a stack and pop only when the matching closer arrives; leftover opens or a mismatched pop means the packing is illegal.",
+      "tags": [
+        "algorithms",
+        "algorithms/stacks",
+        "algorithms/strings",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "arrays-vs-linked-lists"
+      ],
+      "related": [
+        "monotonic-stack",
+        "dfs-backtracking",
+        "two-pointers",
+        "lru-cache"
+      ],
+      "path": "lessons/algorithms/problems/valid-brackets.md",
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA reports list parentheses-validation as a near-universal easy.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen writeups still use nested-tag validation as a five-minute warmup before a harder stack problem.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen writeups still use nested-tag validation as a five-minute warmup before a harder stack problem.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "vendor-vs-user-harness",
+      "title": "The harness you rent versus the harness you write",
+      "slug": "vendor-vs-user-harness",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Claude Code and cousins are a rented loop; AGENTS.md, tests, linters, and CI are the harness you actually own. Fair model comparisons hold one of those fixed.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/harnesses",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "eval-harness-vs-agent-harness"
+      ],
+      "related": [
+        "eval-harness-vs-agent-harness",
+        "tool-calling",
+        "coding-agent-evals",
+        "agent-mistakes",
+        "how-to-run-proper-evals"
+      ],
+      "path": "lessons/ai-agents/vendor-vs-user-harness.md",
+      "company_signal": [
+        {
+          "name": "Thoughtworks / Fowler",
+          "evidence": "Boeckeler's 2026 \"Agent = Model + Harness\" framing, including vendor versus user harness, is widely cited in platform interviews.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "Claude Code is discussed in candidate reports and public posts as a vendor agent harness wrapping a model.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "Claude Code is discussed in candidate reports and public posts as a vendor agent harness wrapping a model.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "video-streaming",
+      "title": "Chunked playback from ingest to CDN",
+      "slug": "video-streaming",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 18,
+      "summary": "Stagecast is a YouTube-shaped pipeline that ingests once, encodes a ladder, ships chunks through a CDN, and keeps the origin off the watch path.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/caching",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "caching",
+        "load-balancing"
+      ],
+      "related": [
+        "caching",
+        "load-balancing",
+        "sharding",
+        "interview-framework",
+        "job-scheduler"
+      ],
+      "path": "lessons/system-design/cases/video-streaming.md",
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Candidate-reported loops and prep-site frequency lists treat video streaming as a Google-flavored (YouTube-shaped) prompt with encoding and CDN depth.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Candidate-reported loops and prep-site frequency lists treat video streaming as a Google-flavored (YouTube-shaped) prompt with encoding and CDN depth.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    }
+  ]
+}
