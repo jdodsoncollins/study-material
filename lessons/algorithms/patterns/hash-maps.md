@@ -118,7 +118,7 @@ Duplicates: two copies of `6` and target `12` work only if the first `6` is alre
 
 ## Cross-links
 
-- [Pair lookup instead of nested scanning](../problems/two-sum.md) (id: two-sum)
+- [Pair lookup instead of nested scanning](../problems/two-sum/lesson.md) (id: two-sum)
 - [Three-value search](../problems/three-sum.md) (id: three-sum)
 - [Scanner memory with eviction](../problems/lru-cache.md) (id: lru-cache)
 - [Hashing internals](../../cs/hashing-internals.md) (id: hashing-internals)

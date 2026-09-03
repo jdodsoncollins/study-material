@@ -101,7 +101,7 @@ When you miss, write one line: cue you ignored, pattern you should have named, p
 - [Fill a grid of overlapping subproblems](../patterns/dp-2d.md) (id: dp-2d)
 - [Order by prerequisites](../patterns/topological-sort.md) (id: topological-sort)
 - [Prefix trees as a walking index](../patterns/trie.md) (id: trie)
-- [Pair lookup instead of nested scanning](../problems/two-sum.md) (id: two-sum)
+- [Pair lookup instead of nested scanning](../problems/two-sum/lesson.md) (id: two-sum)
 - [Interview framework](./interview-framework.md) (id: interview-framework)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
 - [Hashing internals](../../cs/hashing-internals.md) (id: hashing-internals)

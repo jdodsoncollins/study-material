@@ -88,7 +88,7 @@ If they push on "but agents are more general": generality is how you get skipped
 ## Cross-links
 
 - [Tools that are safe to call twice](./tool-calling.md) (id: tool-calling)
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness)
+- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
 - [Outcome versus transcript](./outcome-vs-transcript.md) (id: outcome-vs-transcript)
 - [LLM serving](../system-design/foundations/llm-serving.md) (id: llm-serving)

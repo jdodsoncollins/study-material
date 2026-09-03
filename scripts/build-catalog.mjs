@@ -5,12 +5,18 @@ import path from "node:path";
 const ROOT = path.resolve(import.meta.dirname, "..");
 const LESSONS = path.join(ROOT, "lessons");
 
-function walk(dir) {
+function walkMd(dir) {
   const out = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) out.push(...walk(full));
-    else if (entry.name.endsWith(".md")) out.push(full);
+    const rel = path.relative(ROOT, full).split(path.sep).join("/");
+    if (entry.isDirectory()) {
+      if (entry.name === "viz") continue;
+      out.push(...walkMd(full));
+    } else if (entry.name.endsWith(".md")) {
+      if (rel.includes("/viz/")) continue;
+      out.push(full);
+    }
   }
   return out;
 }
@@ -31,7 +37,6 @@ function parseFrontmatter(text, file) {
     if (!line.trim()) continue;
     const indent = line.match(/^ */)[0].length;
     if (indent === 0 && line.includes(":") && !line.startsWith("- ")) {
-      if (objList && obj) objList.push(obj);
       objList = null;
       obj = null;
       const idx = line.indexOf(":");
@@ -89,22 +94,78 @@ function nestTags(tags) {
   return tree;
 }
 
-const files = walk(LESSONS);
+function expectedId(file) {
+  const base = path.basename(file);
+  if (base === "lesson.md") return path.basename(path.dirname(file));
+  return path.basename(file, ".md");
+}
+
+function lessonDir(file) {
+  const base = path.basename(file);
+  if (base === "lesson.md") return path.dirname(file);
+  return null;
+}
+
+function collectWidgets(dirAbs, relDir) {
+  const vizDir = path.join(dirAbs, "viz");
+  if (!fs.existsSync(vizDir)) return { widgets: [], files: [] };
+  const names = fs.readdirSync(vizDir);
+  const md = names.filter((n) => n.endsWith(".md"));
+  const widgets = md.map((n) => {
+    const stem = n.replace(/\.md$/, "");
+    const stepsName = `${stem}.steps.yaml`;
+    const widget = {
+      id: stem,
+      kind: "mermaid",
+      file: `${relDir}/viz/${n}`,
+    };
+    if (names.includes(stepsName)) widget.steps = `${relDir}/viz/${stepsName}`;
+    return widget;
+  });
+  return { widgets, files: names.map((n) => `${relDir}/viz/${n}`) };
+}
+
+function vizRefs(body) {
+  const ids = new Set();
+  const mustache = /\{\{viz:\s*([a-z0-9-]+)\}\}/gi;
+  let m;
+  while ((m = mustache.exec(body))) ids.add(m[1]);
+  const link = /\]\(viz\/([a-z0-9-]+)\.md\)/gi;
+  while ((m = link.exec(body))) ids.add(m[1]);
+  return ids;
+}
+
+const files = walkMd(LESSONS);
 const lessons = [];
 const errors = [];
 const ids = new Set();
+const allWidgetFiles = new Set();
+const referenced = new Set();
 
 for (const file of files) {
   const rel = path.relative(ROOT, file).split(path.sep).join("/");
   try {
     const text = fs.readFileSync(file, "utf8");
     const { data, body } = parseFrontmatter(text, rel);
-    if (data.id !== path.basename(file, ".md")) {
-      errors.push(`${rel}: id ${data.id} != filename`);
-    }
+    const want = expectedId(file);
+    if (data.id !== want) errors.push(`${rel}: id ${data.id} != ${want}`);
     if (ids.has(data.id)) errors.push(`${rel}: duplicate id ${data.id}`);
     ids.add(data.id);
     if (!body.includes("## Cross-links")) errors.push(`${rel}: missing ## Cross-links`);
+
+    const dirAbs = lessonDir(file);
+    const relDir = dirAbs ? path.relative(ROOT, dirAbs).split(path.sep).join("/") : null;
+    const { widgets, files: wfiles } = dirAbs
+      ? collectWidgets(dirAbs, relDir)
+      : { widgets: [], files: [] };
+    for (const f of wfiles) allWidgetFiles.add(f);
+    const refs = vizRefs(body);
+    for (const r of refs) referenced.add(`${relDir}/viz/${r}.md`);
+    const widgetIds = new Set(widgets.map((w) => w.id));
+    for (const r of refs) {
+      if (!widgetIds.has(r)) errors.push(`${rel}: missing viz/${r}.md`);
+    }
+
     lessons.push({
       id: data.id,
       title: data.title,
@@ -118,6 +179,8 @@ for (const file of files) {
       prerequisites: data.prerequisites ?? [],
       related: data.related ?? [],
       path: rel,
+      dir: relDir,
+      widgets,
       company_signal: data.company_signal ?? [],
       updated: data.updated,
     });
@@ -135,8 +198,14 @@ for (const lesson of lessons) {
   }
 }
 
+for (const f of allWidgetFiles) {
+  if (f.endsWith(".md") && !referenced.has(f)) {
+    errors.push(`${f}: viz file never referenced`);
+  }
+}
+
 const catalog = {
-  version: 1,
+  version: 2,
   generated: new Date().toISOString().slice(0, 10),
   lesson_count: lessons.length,
   tags: allTags,

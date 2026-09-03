@@ -119,6 +119,6 @@ Consistency for users: a user may see old then new within the freshness window. 
 - [Remembering the expensive answer nearby](../foundations/caching.md) (id: caching)
 - [Token buckets and sliding windows at the edge](./rate-limiter.md) (id: rate-limiter)
 - [Cron, ad-hoc, leases, and retries](./job-scheduler.md) (id: job-scheduler)
-- [Hybrid fanout when some authors are stadiums](./news-feed.md) (id: news-feed)
+- [Hybrid fanout when some authors are stadiums](./news-feed/lesson.md) (id: news-feed)
 - [Forty-five minutes is a navigation problem](../foundations/interview-framework.md) (id: interview-framework)
 - [CAP as a conversation, not a religion](../foundations/cap-and-consistency.md) (id: cap-and-consistency)

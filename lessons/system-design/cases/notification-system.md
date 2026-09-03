@@ -125,6 +125,6 @@ Tickets use a 30s lease. Success writes `delivered` to DeliveryLog. Crash before
 - [At-least-once, idempotency, and the dead-letter lane](../foundations/queues-delivery.md) (id: queues-delivery)
 - [Cron, ad-hoc, leases, and retries](./job-scheduler.md) (id: job-scheduler)
 - [Ordered delivery for a 1:1 and small-group messenger](./chat-system.md) (id: chat-system)
-- [Hybrid fanout when some authors are stadiums](./news-feed.md) (id: news-feed)
+- [Hybrid fanout when some authors are stadiums](./news-feed/lesson.md) (id: news-feed)
 - [Token buckets and sliding windows at the edge](./rate-limiter.md) (id: rate-limiter)
 - [Forty-five minutes is a navigation problem](../foundations/interview-framework.md) (id: interview-framework)

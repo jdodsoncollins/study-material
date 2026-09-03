@@ -125,7 +125,7 @@ Group of 50: fanout 50 is cheap. Do not use Fieldnote's stadium path here; the p
 
 - [At-least-once, idempotency, and the dead-letter lane](../foundations/queues-delivery.md) (id: queues-delivery)
 - [CAP as a conversation, not a religion](../foundations/cap-and-consistency.md) (id: cap-and-consistency)
-- [Hybrid fanout when some authors are stadiums](./news-feed.md) (id: news-feed)
+- [Hybrid fanout when some authors are stadiums](./news-feed/lesson.md) (id: news-feed)
 - [Fan-out that survives flaky devices](./notification-system.md) (id: notification-system)
 - [HTTP and TCP as interview tools](../../cs/http-and-tcp.md) (id: http-and-tcp)
 - [Forty-five minutes is a navigation problem](../foundations/interview-framework.md) (id: interview-framework)

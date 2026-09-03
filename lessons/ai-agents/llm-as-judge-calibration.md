@@ -96,5 +96,5 @@ If they ask for a number to quote: quote **false-pass versus gold** on the quali
 - [Outcome versus transcript](./outcome-vs-transcript.md) (id: outcome-vs-transcript)
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
 - [Offline gates and online drift](./online-offline-evals.md) (id: online-offline-evals)
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness)
+- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
 - [Pass@k versus pass^k](./pass-at-k.md) (id: pass-at-k)

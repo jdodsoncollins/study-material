@@ -100,7 +100,7 @@ If they ask what you do next week: add tasks only from new failure clusters, not
 
 ## Cross-links
 
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness)
+- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
 - [Graders: code, model, human](./graders.md) (id: graders)
 - [Outcome versus transcript](./outcome-vs-transcript.md) (id: outcome-vs-transcript)
 - [Capability versus regression](./capability-vs-regression.md) (id: capability-vs-regression)

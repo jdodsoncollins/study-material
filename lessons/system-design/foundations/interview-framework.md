@@ -104,5 +104,5 @@ Then actually check the clock. If they say "assume 100:1 reads," update the cach
 - [Splitting a keyspace so one box is not the product](./sharding.md) (id: sharding)
 - [CAP as a conversation, not a religion](./cap-and-consistency.md) (id: cap-and-consistency)
 - [Minting short keys for a read-heavy lookup](../cases/url-shortener.md) (id: url-shortener)
-- [Hybrid fanout when some authors are stadiums](../cases/news-feed.md) (id: news-feed)
+- [Hybrid fanout when some authors are stadiums](../cases/news-feed/lesson.md) (id: news-feed)
 - [HTTP and TCP as interview tools](../../cs/http-and-tcp.md) (id: http-and-tcp)

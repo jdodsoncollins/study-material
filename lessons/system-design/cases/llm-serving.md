@@ -53,7 +53,7 @@ status: canonical
 
 ## What this round is actually scoring
 
-2025–26 category: can you talk about batching, KV memory, and queues without hand-waving "we will scale the model"? Interviewers also want you to separate **serving** (Kiln) from the **agent harness** (tools, retries, stop conditions) and the **eval harness** (how you score it). See [eval-harness-vs-agent-harness](../../ai-agents/eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness).
+2025–26 category: can you talk about batching, KV memory, and queues without hand-waving "we will scale the model"? Interviewers also want you to separate **serving** (Kiln) from the **agent harness** (tools, retries, stop conditions) and the **eval harness** (how you score it). See [eval-harness-vs-agent-harness](../../ai-agents/eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness).
 
 ## Company signal
 
@@ -129,7 +129,7 @@ Eval: same Kiln, but eval traffic cannot starve interactive. Separate credit poo
 
 - [Cron, ad-hoc, leases, and retries](./job-scheduler.md) (id: job-scheduler)
 - [At-least-once, idempotency, and the dead-letter lane](../foundations/queues-delivery.md) (id: queues-delivery)
-- [Eval harness versus agent harness](../../ai-agents/eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness)
+- [Eval harness versus agent harness](../../ai-agents/eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
 - [Tool calling as a contract](../../ai-agents/tool-calling.md) (id: tool-calling)
 - [Token buckets and sliding windows at the edge](./rate-limiter.md) (id: rate-limiter)
 - [Forty-five minutes is a navigation problem](../foundations/interview-framework.md) (id: interview-framework)

@@ -33,7 +33,7 @@ sources_consulted:
   - Arize and Winder.ai harness comparison posts (2026)
   - Position paper on disclosing the harness when comparing agents
   - X threads on "Agent = Model + Harness"
-updated: 2026-09-02
+updated: 2026-09-03
 status: canonical
 ---
 
@@ -60,6 +60,8 @@ Think of three nested machines:
 2. **Agent harness** — system prompt, tool schemas, permission sandbox, memory/context folding, retry policy, stop conditions. Claude Code, Cursor's agent, Codex, a homegrown ReAct loop: these are harnesses, not models.
 3. **Eval harness** — dataset of tasks, isolated environments, concurrency, graders, dashboards. Harbor, Braintrust, a pytest suite that boots a container per trial: these are eval harnesses.
 
+[Eval loop](viz/loop.md)
+
 A **framework** (LangGraph, Crew) is a library for writing orchestration. A harness is the running body. Frameworks can include a harness; they are not the same noun.
 
 Boeckeler's framing (widely cited in 2026): Agent = Model + Harness. For coding agents there is a **vendor harness** you barely control and a **user harness** you do: `AGENTS.md`, tests, linters, CI gates, review bots.
@@ -82,29 +84,17 @@ Holding the model fixed and swapping only the agent harness has moved Terminal-B
 - Sharing filesystem or git history across trials so later trials cheat.
 - Checking an exact tool-call sequence. Agents find other valid paths; you punish creativity and reward memorizing your sketch.
 - Running the eval agent with different tools than production. You are then measuring a cousin.
-- Quoting pass@1 from one trial as a product SLO. See [pass@k versus pass^k](./pass-at-k.md) (id: pass-at-k).
+- Quoting pass@1 from one trial as a product SLO. See [pass@k versus pass^k](../pass-at-k.md) (id: pass-at-k).
 
 ## How to talk about it
 
 "We treat the shipping loop as the agent harness and keep it identical in CI. The eval harness resets a container, runs k trials, grades environment state with code, and uses an LLM rubric only for tone. If a score jumps after a prompt tweak, I first ask whether the eval harness still matches prod."
 
-If they ask for a sketch, draw:
-
-```
-task spec + tools
-        ↓
-[eval harness] starts clean env, k trials
-        ↓
-[agent harness] model ↔ tools ↔ env
-        ↓
-transcript + outcome → graders → suite score
-```
-
 ## Cross-links
 
-- [How to run proper evals](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
-- [Graders: code, model, human](./graders.md) (id: graders)
-- [Outcome versus transcript](./outcome-vs-transcript.md) (id: outcome-vs-transcript)
-- [Vendor harness versus user harness](./vendor-vs-user-harness.md) (id: vendor-vs-user-harness)
-- [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)
-- [Pass@k versus pass^k](./pass-at-k.md) (id: pass-at-k)
+- [How to run proper evals](../how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
+- [Graders: code, model, human](../graders.md) (id: graders)
+- [Outcome versus transcript](../outcome-vs-transcript.md) (id: outcome-vs-transcript)
+- [Vendor harness versus user harness](../vendor-vs-user-harness.md) (id: vendor-vs-user-harness)
+- [Coding-agent evals](../coding-agent-evals.md) (id: coding-agent-evals)
+- [Pass@k versus pass^k](../pass-at-k.md) (id: pass-at-k)

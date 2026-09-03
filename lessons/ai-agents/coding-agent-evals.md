@@ -98,4 +98,4 @@ If they ask about languages: the idea is repo-shaped, not Python-shaped. The gra
 - [Capability versus regression](./capability-vs-regression.md) (id: capability-vs-regression)
 - [Vendor harness versus user harness](./vendor-vs-user-harness.md) (id: vendor-vs-user-harness)
 - [Mistakes coding agents keep making](./agent-mistakes.md) (id: agent-mistakes)
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness)
+- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)

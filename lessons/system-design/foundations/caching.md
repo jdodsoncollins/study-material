@@ -96,6 +96,6 @@ If they ask "what is the consistency," answer with the lie budget, not with CAP 
 - [Spreading work without creating a new bottleneck](./load-balancing.md) (id: load-balancing)
 - [Splitting a keyspace so one box is not the product](./sharding.md) (id: sharding)
 - [Minting short keys for a read-heavy lookup](../cases/url-shortener.md) (id: url-shortener)
-- [Hybrid fanout when some authors are stadiums](../cases/news-feed.md) (id: news-feed)
+- [Hybrid fanout when some authors are stadiums](../cases/news-feed/lesson.md) (id: news-feed)
 - [Prefix ranking under a tight latency budget](../cases/search-autocomplete.md) (id: search-autocomplete)
 - [Indexes as the real storage API](../../cs/indexes.md) (id: indexes)

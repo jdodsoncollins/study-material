@@ -125,7 +125,7 @@ Triples: `[-7, 0, 7]`, `[-7, 2, 5]`, `[-5, -4, 9]`.
 
 ## Cross-links
 
-- [Pair lookup instead of nested scanning](./two-sum.md) (id: two-sum)
+- [Pair lookup instead of nested scanning](./two-sum/lesson.md) (id: two-sum)
 - [Squeeze from both ends](../patterns/two-pointers.md) (id: two-pointers)
 - [Hash maps as an index](../patterns/hash-maps.md) (id: hash-maps)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)

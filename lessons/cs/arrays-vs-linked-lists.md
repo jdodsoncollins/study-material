@@ -105,4 +105,4 @@ If they follow with "what about a deque?": "A ring buffer / circular array still
 - [Virtual memory is a lie the CPU believes](./os-memory.md) (id: os-memory)
 - [Why a map is "O(1)" until it isn't](./hashing-internals.md) (id: hashing-internals)
 - [Two pointers](../algorithms/patterns/two-pointers.md) (id: two-pointers)
-- [Pair lookup instead of nested scanning](../algorithms/problems/two-sum.md) (id: two-sum)
+- [Pair lookup instead of nested scanning](../algorithms/problems/two-sum/lesson.md) (id: two-sum)

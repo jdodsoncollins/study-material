@@ -1,0 +1,8 @@
+title: What you are actually scoring
+steps:
+  - caption: "The eval harness owns the lab: task, isolation, k trials."
+    nodes: [task, evalh, env]
+  - caption: "The agent harness is the loop: model plus tools against that env."
+    nodes: [agent, model, tools]
+  - caption: "Grade outcome + transcript. Suite score is model × agent harness × eval harness."
+    nodes: [out, grade, score]

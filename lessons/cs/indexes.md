@@ -47,7 +47,7 @@ status: canonical
 
 "The listings page is slow" is a database round in disguise. They want you to ask which columns appear in `WHERE`, `JOIN`, and `ORDER BY`, then name an index, then name the write cost. "Just add an index" without a workload is the junior move.
 
-This is the same idea as a hash map in [two-sum](../algorithms/problems/two-sum.md) (id: two-sum): precompute a lookup so you do not nest-scan.
+This is the same idea as a hash map in [two-sum](../algorithms/problems/two-sum/lesson.md) (id: two-sum): precompute a lookup so you do not nest-scan.
 
 ## Core idea
 
@@ -104,4 +104,4 @@ If they ask hash vs B-tree: "Hash is equality and RAM-friendly, like a map. B-tr
 - [Isolation is which lie you agreed to](./transactions-isolation.md) (id: transactions-isolation)
 - [Split the keyspace on purpose](../system-design/foundations/sharding.md) (id: sharding)
 - [Hash maps as an index](../algorithms/patterns/hash-maps.md) (id: hash-maps)
-- [Pair lookup instead of nested scanning](../algorithms/problems/two-sum.md) (id: two-sum)
+- [Pair lookup instead of nested scanning](../algorithms/problems/two-sum/lesson.md) (id: two-sum)

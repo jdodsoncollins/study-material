@@ -1,0 +1,10 @@
+title: Publish then read
+steps:
+  - caption: "Accept the post in PostStore. Fanout can be async."
+    nodes: [api, post]
+  - caption: "Ordinary author: WaveFan appends post_id onto each follower inbox."
+    nodes: [wave, fan]
+  - caption: "Stadium author: skip WaveFan, mark LoudSet. Inbox writes do not explode."
+    nodes: [wave, loud]
+  - caption: "Home read: inbox ids ∪ pull LoudSet, RankLite, hydrate bodies."
+    nodes: [home, inbox, pull, merge, body]

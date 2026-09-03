@@ -4,11 +4,29 @@ Every lesson is one Markdown file. The Codeatrophy app parses this schema. Do no
 
 ## File location
 
+Either a flat file or a lesson directory (use a directory when the lesson has visuals):
+
 ```
 lessons/<track>/<optional-group>/<id>.md
+lessons/<track>/<optional-group>/<id>/lesson.md
+lessons/<track>/<optional-group>/<id>/viz/<stem>.md
+lessons/<track>/<optional-group>/<id>/viz/<stem>.steps.yaml
 ```
 
-`id` matches the filename without `.md`. IDs are unique across the whole repo.
+- Flat: `id` matches the filename without `.md`.
+- Directory: directory name **is** `id`; `lesson.md` is the document.
+- IDs are unique across the whole repo.
+- `viz/` is optional, one-to-many. Each stem is a mermaid companion (GitHub-rendered `.md` fence) plus an optional `.steps.yaml` that highlights nodes on that diagram.
+- Do not put XML in lessons. Do not treat files under `viz/` as lessons.
+- Convert a lesson to a directory only when it gets a viz. Leave the rest flat.
+
+Embed a viz from `lesson.md` with a GitHub-native link, alone on a line:
+
+```md
+[Walk the bins](viz/walk.md)
+```
+
+Mustache alias `{{viz: walk}}` is also allowed. The app inlines the mermaid (and stepper if `walk.steps.yaml` exists). GitHub shows a link to the companion, which GitHub renders as mermaid.
 
 ## Frontmatter (YAML, required)
 

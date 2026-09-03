@@ -114,7 +114,7 @@ A miss walk: limit `22`. `3+21=24` shrink right → `3+14=17` grow left → `5+1
 
 ## Cross-links
 
-- [Pair lookup instead of nested scanning](../problems/two-sum.md) (id: two-sum)
+- [Pair lookup instead of nested scanning](../problems/two-sum/lesson.md) (id: two-sum)
 - [Three-value search](../problems/three-sum.md) (id: three-sum)
 - [Grow and shrink a live range](./sliding-window.md) (id: sliding-window)
 - [Two speeds, one list](./fast-slow-pointers.md) (id: fast-slow-pointers)

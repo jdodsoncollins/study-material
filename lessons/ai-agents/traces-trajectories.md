@@ -88,7 +88,7 @@ If they ask what to index: `trace_id`, `task_id`, `harness_sha`, `model`, `outco
 
 - [Outcome versus transcript](./outcome-vs-transcript.md) (id: outcome-vs-transcript)
 - [Offline gates and online drift](./online-offline-evals.md) (id: online-offline-evals)
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness)
+- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
 - [LLM serving](../system-design/foundations/llm-serving.md) (id: llm-serving)
 - [Job scheduler](../system-design/cases/job-scheduler.md) (id: job-scheduler)
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)

@@ -89,7 +89,7 @@ Tie it to serving limits if they ask about load: tool fan-out is a [serving](../
 ## Cross-links
 
 - [Mistakes coding agents keep making](./agent-mistakes.md) (id: agent-mistakes)
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness)
+- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
 - [Vendor harness versus user harness](./vendor-vs-user-harness.md) (id: vendor-vs-user-harness)
 - [Outcome versus transcript](./outcome-vs-transcript.md) (id: outcome-vs-transcript)
 - [Queues and delivery](../system-design/foundations/queues-delivery.md) (id: queues-delivery)

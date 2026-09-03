@@ -102,5 +102,5 @@ env₀ → agent harness (transcript grows) → env₁
 - [Graders: code, model, human](./graders.md) (id: graders)
 - [Spans, traces, trajectories, sessions](./traces-trajectories.md) (id: traces-trajectories)
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness)
+- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
 - [Tools that are safe to call twice](./tool-calling.md) (id: tool-calling)

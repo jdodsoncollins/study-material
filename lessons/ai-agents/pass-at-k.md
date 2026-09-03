@@ -94,5 +94,5 @@ If they ask for a sketch, write *p*, *k*, and "retryable?" on the board before a
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
 - [Capability versus regression](./capability-vs-regression.md) (id: capability-vs-regression)
 - [Offline gates and online drift](./online-offline-evals.md) (id: online-offline-evals)
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness)
+- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
 - [Tools that are safe to call twice](./tool-calling.md) (id: tool-calling)

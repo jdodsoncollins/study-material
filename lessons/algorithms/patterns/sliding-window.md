@@ -124,6 +124,6 @@ Best is 6. The repeat of `b` never forces you to restart from scratch; you only 
 - [Squeeze from both ends](./two-pointers.md) (id: two-pointers)
 - [Hash maps as an index](./hash-maps.md) (id: hash-maps)
 - [Reuse the last few answers](./dp-1d.md) (id: dp-1d)
-- [Pair lookup instead of nested scanning](../problems/two-sum.md) (id: two-sum)
+- [Pair lookup instead of nested scanning](../problems/two-sum/lesson.md) (id: two-sum)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
 - [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)

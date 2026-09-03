@@ -48,7 +48,7 @@ status: canonical
 
 ## Why it shows up in interviews
 
-Teams argue about models while the repo has no `AGENTS.md` and CI is optional. Interviewers want you to split **rented intelligence** from **owned constraints**, the same way you would split a managed queue from your consumer logic. See [eval harness versus agent harness](./eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness).
+Teams argue about models while the repo has no `AGENTS.md` and CI is optional. Interviewers want you to split **rented intelligence** from **owned constraints**, the same way you would split a managed queue from your consumer logic. See [eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness).
 
 ## Core idea
 
@@ -90,7 +90,7 @@ If they ask what you would do week one on a greenfield coding agent: write the u
 
 ## Cross-links
 
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness)
+- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
 - [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)
 - [Tools that are safe to call twice](./tool-calling.md) (id: tool-calling)
 - [Mistakes coding agents keep making](./agent-mistakes.md) (id: agent-mistakes)

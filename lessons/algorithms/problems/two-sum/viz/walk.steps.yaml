@@ -1,0 +1,8 @@
+title: One pass on the bins
+steps:
+  - caption: "4 → need 15. Map empty. Store 4 → 0."
+    nodes: [scan, need, miss]
+  - caption: "11 → need 8. Miss. Store 11 → 1."
+    nodes: [scan, need, miss]
+  - caption: "8 → need 11. Hit at index 1. Return [1, 2]."
+    nodes: [scan, need, hit, done]

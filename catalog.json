@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "generated": "2026-09-03",
   "lesson_count": 71,
   "tags": [
@@ -219,18 +219,14 @@
         "interview-ai-round"
       ],
       "path": "lessons/ai-agents/agent-mistakes.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Meta",
           "evidence": "Candidate reports of 2026 AI-assisted coding rounds score whether you verify the model's patch instead of pasting it.",
           "year": 2026,
           "confidence": "medium"
-        },
-        {
-          "name": "Anthropic",
-          "evidence": "Public coding-agent and eval writeups catalog tool loops, skipped repro, and prompt-only \"fixes\" as first-class failure modes.",
-          "year": 2026,
-          "confidence": "high"
         },
         {
           "name": "Anthropic",
@@ -266,13 +262,9 @@
         "two-pointers"
       ],
       "path": "lessons/cs/arrays-vs-linked-lists.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Amazon",
-          "evidence": "OA and phone-screen writeups still mix array two-pointer prompts with \"reverse a linked list\" / cycle detection as default list warmups.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Amazon",
           "evidence": "OA and phone-screen writeups still mix array two-pointer prompts with \"reverse a linked list\" / cycle detection as default list warmups.",
@@ -307,16 +299,12 @@
         "trees-graphs"
       ],
       "path": "lessons/algorithms/patterns/bfs.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Meta",
           "evidence": "Candidate reports list grid BFS (islands, nearest gate, word ladder) as a common onsite coding prompt.",
-          "year": 2026,
-          "confidence": "high"
-        },
-        {
-          "name": "Amazon",
-          "evidence": "OA and phone-screen writeups keep using shortest-path-in-a-warehouse-grid as a graph warmup.",
           "year": 2026,
           "confidence": "high"
         },
@@ -352,13 +340,9 @@
         "hash-maps"
       ],
       "path": "lessons/cs/big-o.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Google",
-          "evidence": "Phone-screen writeups still open with \"what's the complexity\" before a line of code lands; candidates report justifying O(n) vs O(n log n) out loud.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Google",
           "evidence": "Phone-screen writeups still open with \"what's the complexity\" before a line of code lands; candidates report justifying O(n) vs O(n log n) out loud.",
@@ -392,18 +376,14 @@
         "dp-1d"
       ],
       "path": "lessons/algorithms/patterns/binary-search-on-answer.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Google",
           "evidence": "Candidate onsite reports keep describing \"minimum speed / capacity to finish by deadline\" prompts as binary-search-on-answer.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Tagged-list threads list koko-style eating / split-array variants as medium follow-ups after vanilla binary search.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Meta",
@@ -441,16 +421,12 @@
         "search-autocomplete"
       ],
       "path": "lessons/system-design/foundations/caching.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Meta",
           "evidence": "Candidate-reported feed and messenger loops and prep-site frequency lists treat cache placement (timeline, session, presence) as a default mid-round probe.",
-          "year": 2026,
-          "confidence": "high"
-        },
-        {
-          "name": "Amazon",
-          "evidence": "Candidate-reported L5 URL-shortener and rate-limiter prompts almost always ask what is cached, the TTL, and what happens on a miss storm.",
           "year": 2026,
           "confidence": "high"
         },
@@ -490,18 +466,14 @@
         "chat-system"
       ],
       "path": "lessons/system-design/foundations/cap-and-consistency.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Google",
           "evidence": "Candidate-reported loops and prep-site frequency writeups punish CAP slogans and reward saying which read is stale, for how long, and under which failure.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Amazon",
-          "evidence": "Candidate-reported L5/L6 designs (payments-adjacent, stores) probe whether you would reject a write rather than double-charge or lose an order during a replica blip.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Amazon",
@@ -538,13 +510,9 @@
         "eval-harness-vs-agent-harness"
       ],
       "path": "lessons/ai-agents/capability-vs-regression.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Anthropic",
-          "evidence": "The 2026 agent-eval essay separates capability measurement from regression gates as different products of the same harness.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Anthropic",
           "evidence": "The 2026 agent-eval essay separates capability measurement from regression gates as different products of the same harness.",
@@ -585,13 +553,9 @@
         "http-and-tcp"
       ],
       "path": "lessons/system-design/cases/chat-system.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Meta",
-          "evidence": "Candidate-reported product loops and prep-site frequency lists treat messenger-style chat as a high-frequency Meta prompt, with ordering and presence as the usual deep dives.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Meta",
           "evidence": "Candidate-reported product loops and prep-site frequency lists treat messenger-style chat as a high-frequency Meta prompt, with ordering and presence as the usual deep dives.",
@@ -629,13 +593,9 @@
         "eval-harness-vs-agent-harness"
       ],
       "path": "lessons/ai-agents/coding-agent-evals.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "OpenAI / Anthropic",
-          "evidence": "SWE-bench Verified and Terminal-Bench are the cited coding-agent outcome graders in 2026 platform interviews and vendor blogs.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "OpenAI / Anthropic",
           "evidence": "SWE-bench Verified and Terminal-Bench are the cited coding-agent outcome graders in 2026 platform interviews and vendor blogs.",
@@ -669,18 +629,14 @@
         "dfs-backtracking"
       ],
       "path": "lessons/algorithms/problems/coin-change.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate OA reports list coin-change / fewest-denominations as the standard 1D DP medium.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Google",
-          "evidence": "Phone-screen writeups describe unbounded-knapsack fare/coin variants as a common DP ask.",
-          "year": 2025,
-          "confidence": "medium"
         },
         {
           "name": "Google",
@@ -716,18 +672,14 @@
         "union-find"
       ],
       "path": "lessons/algorithms/problems/course-order.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate reports list course-schedule / return-the-order as the standard topo-sort coding prompt.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Google",
-          "evidence": "Onsite writeups describe build-order and task-prereq graphs in the same family.",
-          "year": 2025,
-          "confidence": "medium"
         },
         {
           "name": "Google",
@@ -763,18 +715,14 @@
         "valid-brackets"
       ],
       "path": "lessons/algorithms/patterns/dfs-backtracking.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Meta",
           "evidence": "Candidate onsite reports frequently mention permutations, subsets, and board-search prompts as backtracking.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Google",
-          "evidence": "Phone-screen writeups describe word-search / combination-sum style DFS as a recurring medium.",
-          "year": 2025,
-          "confidence": "medium"
         },
         {
           "name": "Google",
@@ -809,18 +757,14 @@
         "dfs-backtracking"
       ],
       "path": "lessons/algorithms/patterns/dp-1d.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate OA reports keep listing house-robber / climb-stairs / coin-change as the 1D DP cluster.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Google",
-          "evidence": "Phone-screen writeups describe \"min cost to reach n\" style recurrences as a common medium.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Google",
@@ -855,18 +799,14 @@
         "longest-unique-window"
       ],
       "path": "lessons/algorithms/patterns/dp-2d.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Google",
           "evidence": "Candidate reports list unique-paths / edit-distance / LCS-style tables as a common onsite DP.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Tagged-list threads keep grid-path and string-alignment DPs in the medium/hard band.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Meta",
@@ -900,13 +840,9 @@
         "two-pointers"
       ],
       "path": "lessons/cs/encoding-unicode.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Google",
-          "evidence": "Frontend and API screens still catch candidates on string length, emoji, and \"why did this JSON filename break in transit.\"",
-          "year": 2026,
-          "confidence": "medium"
-        },
         {
           "name": "Google",
           "evidence": "Frontend and API screens still catch candidates on string length, emoji, and \"why did this JSON filename break in transit.\"",
@@ -939,7 +875,16 @@
         "coding-agent-evals",
         "outcome-vs-transcript"
       ],
-      "path": "lessons/ai-agents/eval-harness-vs-agent-harness.md",
+      "path": "lessons/ai-agents/eval-harness-vs-agent-harness/lesson.md",
+      "dir": "lessons/ai-agents/eval-harness-vs-agent-harness",
+      "widgets": [
+        {
+          "id": "loop",
+          "kind": "mermaid",
+          "file": "lessons/ai-agents/eval-harness-vs-agent-harness/viz/loop.md",
+          "steps": "lessons/ai-agents/eval-harness-vs-agent-harness/viz/loop.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Anthropic",
@@ -952,15 +897,9 @@
           "evidence": "Candidate reports and harness-benchmark writeups treat Claude Code, Codex, etc. as agent harnesses wrapping a model.",
           "year": 2026,
           "confidence": "medium"
-        },
-        {
-          "name": "OpenAI / coding-agent vendors",
-          "evidence": "Candidate reports and harness-benchmark writeups treat Claude Code, Codex, etc. as agent harnesses wrapping a model.",
-          "year": 2026,
-          "confidence": "medium"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-03"
     },
     {
       "id": "fast-slow-pointers",
@@ -988,18 +927,14 @@
         "valid-brackets"
       ],
       "path": "lessons/algorithms/patterns/fast-slow-pointers.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Linked-list cycle and \"middle of the list\" variants show up constantly in candidate OA reports.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Microsoft",
-          "evidence": "Tagged-list threads still treat tortoise-and-hare list questions as a phone-screen staple.",
-          "year": 2025,
-          "confidence": "medium"
         },
         {
           "name": "Microsoft",
@@ -1038,16 +973,12 @@
         "news-feed"
       ],
       "path": "lessons/system-design/cases/feature-flags.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Stripe",
           "evidence": "Candidate-reported loops treat feature-flag / config-evaluation systems as a recurring mid-level prompt.",
-          "year": 2026,
-          "confidence": "medium"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Prep-site frequency and candidate reports on feed/product ramps mention percentage rollouts and kill switches as follow-ups.",
           "year": 2026,
           "confidence": "medium"
         },
@@ -1081,13 +1012,9 @@
         "hashing-internals"
       ],
       "path": "lessons/cs/floating-point.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Stripe",
-          "evidence": "Payments screens and take-homes still ding candidates who store currency in float or compare totals with `===`.",
-          "year": 2026,
-          "confidence": "medium"
-        },
         {
           "name": "Stripe",
           "evidence": "Payments screens and take-homes still ding candidates who store currency in float or compare totals with `===`.",
@@ -1123,13 +1050,9 @@
         "pass-at-k"
       ],
       "path": "lessons/ai-agents/graders.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Anthropic",
-          "evidence": "The 2026 agent-eval essay treats code, model, and human graders as the three workable scoring methods and ranks them by objectivity.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Anthropic",
           "evidence": "The 2026 agent-eval essay treats code, model, and human graders as the three workable scoring methods and ranks them by objectivity.",
@@ -1163,17 +1086,13 @@
         "three-sum"
       ],
       "path": "lessons/algorithms/patterns/hash-maps.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Meta",
           "evidence": "Candidate reports treat complement-index and frequency-map problems as the default first phone-screen question.",
           "year": 2026,
-          "confidence": "high"
-        },
-        {
-          "name": "Amazon",
-          "evidence": "OA writeups repeatedly mention counting / grouping with maps before any graph question.",
-          "year": 2025,
           "confidence": "high"
         },
         {
@@ -1212,13 +1131,9 @@
         "two-sum"
       ],
       "path": "lessons/cs/hashing-internals.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Meta",
-          "evidence": "Pair-sum / frequency-map phone screens routinely follow up with \"why is this O(n)?\" and \"what if every key collides?\"",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Meta",
           "evidence": "Pair-sum / frequency-map phone screens routinely follow up with \"why is this O(n)?\" and \"what if every key collides?\"",
@@ -1252,16 +1167,12 @@
         "merge-intervals"
       ],
       "path": "lessons/algorithms/patterns/heaps-top-k.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate OA reports list top-k frequent / k-th largest as a default heap question.",
-          "year": 2026,
-          "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Phone-screen writeups describe \"k closest\" and \"k frequent\" as common twenty-minute prompts.",
           "year": 2026,
           "confidence": "high"
         },
@@ -1301,18 +1212,14 @@
         "interview-ai-round"
       ],
       "path": "lessons/ai-agents/how-to-run-proper-evals.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Anthropic",
           "evidence": "Public 2026 eval essay argues for starting with a few dozen real tasks, isolated trials, and outcome graders rather than huge synthetic banks.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "OpenAI",
-          "evidence": "Candidate reports of \"design an eval\" follow-ups in AI-platform loops track this same recipe.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "OpenAI",
@@ -1345,13 +1252,9 @@
         "cap-and-consistency"
       ],
       "path": "lessons/cs/http-and-tcp.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Amazon",
-          "evidence": "API-design and service-design screens still ask what lives on TCP vs HTTP, idempotency of methods, and why a retry doubled a charge.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Amazon",
           "evidence": "API-design and service-design screens still ask what lives on TCP vs HTTP, idempotency of methods, and why a retry doubled a charge.",
@@ -1388,13 +1291,9 @@
         "two-sum"
       ],
       "path": "lessons/cs/indexes.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Amazon",
-          "evidence": "Service-design and backend screens still ask \"what index would you add\" and \"why did this write get slower after the index.\"",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Amazon",
           "evidence": "Service-design and backend screens still ask \"what index would you add\" and \"why did this write get slower after the index.\"",
@@ -1430,16 +1329,12 @@
         "coding-agent-evals"
       ],
       "path": "lessons/ai-agents/interview-ai-round.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Meta",
           "evidence": "Candidate reports (2025–2026) describe an AI-assisted coding round where a model is available in the editor and the grader is still your tests and explanation.",
-          "year": 2026,
-          "confidence": "medium"
-        },
-        {
-          "name": "OpenAI / Anthropic / AI-platform teams",
-          "evidence": "Repeated prep-site and Blind-style reports of \"design an eval for this agent\" and \"debug this regression from a trace,\" not trivia about a vendor API.",
           "year": 2026,
           "confidence": "medium"
         },
@@ -1476,6 +1371,8 @@
         "sharding"
       ],
       "path": "lessons/system-design/foundations/interview-framework.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Google",
@@ -1486,12 +1383,6 @@
         {
           "name": "Amazon",
           "evidence": "Candidate-reported L5 loops treat operational ownership, box-death, and customer-visible failure as the real score, often on a staple like a URL shortener.",
-          "year": 2026,
-          "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Candidate-reported product-architecture prompts (news feed, messenger) and prep-site frequency lists reward fanout and product tradeoffs over generic cloud diagrams.",
           "year": 2026,
           "confidence": "high"
         },
@@ -1532,13 +1423,9 @@
         "video-streaming"
       ],
       "path": "lessons/system-design/cases/job-scheduler.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Meta",
-          "evidence": "Candidate-reported Hello Interview Meta loops describe a job scheduler (about 10k jobs/s, cron plus ad-hoc, retries, leases) as a recurring prompt.",
-          "year": 2026,
-          "confidence": "medium"
-        },
         {
           "name": "Meta",
           "evidence": "Candidate-reported Hello Interview Meta loops describe a job scheduler (about 10k jobs/s, cron plus ad-hoc, retries, leases) as a recurring prompt.",
@@ -1572,18 +1459,14 @@
         "hash-maps"
       ],
       "path": "lessons/algorithms/problems/kth-largest.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate OA reports list k-th largest / top-k as a default heap question.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Phone-screen writeups describe k-th largest in a stream as a common follow-up after a static sort.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Meta",
@@ -1620,13 +1503,9 @@
         "pass-at-k"
       ],
       "path": "lessons/ai-agents/llm-as-judge-calibration.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Anthropic",
-          "evidence": "The 2026 agent-eval essay treats model graders as useful only when the quality is fuzzy and the judge is validated.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Anthropic",
           "evidence": "The 2026 agent-eval essay treats model graders as useful only when the quality is fuzzy and the judge is validated.",
@@ -1667,18 +1546,14 @@
         "interview-framework"
       ],
       "path": "lessons/system-design/cases/llm-serving.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "OpenAI",
           "evidence": "Candidate-reported 2025–26 roundups describe GPU job scheduling (Sora-style long generations) as a cousin of token serving; confidence is low-medium.",
           "year": 2026,
           "confidence": "low"
-        },
-        {
-          "name": "Anthropic",
-          "evidence": "Prep-site frequency and public harness essays make \"how the serving loop batches and tools\" a 2025–26 interview category, distinct from classic CRUD design.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Anthropic",
@@ -1715,18 +1590,14 @@
         "rate-limiter"
       ],
       "path": "lessons/system-design/foundations/load-balancing.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate-reported L4/L5 designs and prep-site frequency notes almost always expect a balancer plus a health-check story, even on junior prompts.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Google",
-          "evidence": "Candidate-reported loops push past \"add a load balancer\" into connection draining, shard-aware routing, and whether L4 or L7 is the right layer.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Google",
@@ -1762,13 +1633,9 @@
         "cap-and-consistency"
       ],
       "path": "lessons/cs/locks-and-concurrency.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Meta",
-          "evidence": "Backend and infra screens still use \"this counter is wrong under load\" as a concurrency warmup, then follow into deadlock and lock granularity.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Meta",
           "evidence": "Backend and infra screens still use \"this counter is wrong under load\" as a concurrency warmup, then follow into deadlock and lock granularity.",
@@ -1805,17 +1672,13 @@
         "dp-1d"
       ],
       "path": "lessons/algorithms/problems/longest-unique-window.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Meta",
           "evidence": "Candidate phone-screen reports keep listing longest unique substring as the sliding-window warmup.",
           "year": 2026,
-          "confidence": "high"
-        },
-        {
-          "name": "Amazon",
-          "evidence": "Tagged-list threads treat unique-window string problems as a default OA easy/medium.",
-          "year": 2025,
           "confidence": "high"
         },
         {
@@ -1853,16 +1716,12 @@
         "hashing-internals"
       ],
       "path": "lessons/algorithms/problems/lru-cache.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate reports list LRU implementation as a recurring OA/phone-screen systems-flavored coding question.",
-          "year": 2026,
-          "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Onsite writeups describe \"implement a cache with eviction\" as a common design-in-code prompt.",
           "year": 2026,
           "confidence": "high"
         },
@@ -1900,17 +1759,13 @@
         "topological-sort"
       ],
       "path": "lessons/algorithms/patterns/merge-intervals.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Meta",
           "evidence": "Candidate reports list meeting-merge and calendar-conflict prompts as a recurring medium.",
           "year": 2026,
-          "confidence": "high"
-        },
-        {
-          "name": "Amazon",
-          "evidence": "OA writeups describe \"merge busy windows / insert an interval\" as a tagged favorite.",
-          "year": 2025,
           "confidence": "high"
         },
         {
@@ -1947,18 +1802,14 @@
         "heaps-top-k"
       ],
       "path": "lessons/algorithms/patterns/monotonic-stack.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Google",
           "evidence": "Candidate reports list next-greater / daily-temperature style stack prompts as a common medium.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Amazon",
-          "evidence": "Tagged-list threads keep histogram-rectangle and next-greater-element in OA circulation.",
-          "year": 2025,
-          "confidence": "medium"
         },
         {
           "name": "Amazon",
@@ -1998,14 +1849,17 @@
         "chat-system",
         "notification-system"
       ],
-      "path": "lessons/system-design/cases/news-feed.md",
-      "company_signal": [
+      "path": "lessons/system-design/cases/news-feed/lesson.md",
+      "dir": "lessons/system-design/cases/news-feed",
+      "widgets": [
         {
-          "name": "Meta",
-          "evidence": "Candidate-reported product-architecture loops and prep-site frequency (Exponent / Hello Interview) treat news feed as the most reported Meta prompt.",
-          "year": 2026,
-          "confidence": "high"
-        },
+          "id": "hybrid",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/news-feed/viz/hybrid.md",
+          "steps": "lessons/system-design/cases/news-feed/viz/hybrid.steps.yaml"
+        }
+      ],
+      "company_signal": [
         {
           "name": "Meta",
           "evidence": "Candidate-reported product-architecture loops and prep-site frequency (Exponent / Hello Interview) treat news feed as the most reported Meta prompt.",
@@ -2013,7 +1867,7 @@
           "confidence": "high"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-03"
     },
     {
       "id": "notification-system",
@@ -2043,18 +1897,14 @@
         "news-feed"
       ],
       "path": "lessons/system-design/cases/notification-system.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate-reported L5 loops and prep-site frequency lists treat notification/fan-out systems as a standard operations-heavy prompt (retries, channels, DLQ).",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Candidate-reported messenger and feed follow-ups often pivot into \"how does the push get to the phone.\"",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Meta",
@@ -2090,16 +1940,12 @@
         "trees-graphs"
       ],
       "path": "lessons/algorithms/problems/number-of-islands.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate OA and phone-screen reports list grid island-count as a default graph easy/medium.",
-          "year": 2026,
-          "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Onsite writeups describe island / flood-fill grids as a common first graph question.",
           "year": 2026,
           "confidence": "high"
         },
@@ -2139,13 +1985,9 @@
         "llm-as-judge-calibration"
       ],
       "path": "lessons/ai-agents/online-offline-evals.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Anthropic",
-          "evidence": "Public eval writing treats isolated offline suites as the scientific unit; production monitoring is a separate loop.",
-          "year": 2026,
-          "confidence": "medium"
-        },
         {
           "name": "Anthropic",
           "evidence": "Public eval writing treats isolated offline suites as the scientific unit; production monitoring is a separate loop.",
@@ -2180,13 +2022,9 @@
         "caching"
       ],
       "path": "lessons/cs/os-memory.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Google",
-          "evidence": "Systems-flavored screens still ask virtual vs physical, page faults, and why a linked-list scan thrashes cache compared to an array.",
-          "year": 2026,
-          "confidence": "medium"
-        },
         {
           "name": "Google",
           "evidence": "Systems-flavored screens still ask virtual vs physical, page faults, and why a linked-list scan thrashes cache compared to an array.",
@@ -2222,13 +2060,9 @@
         "tool-calling"
       ],
       "path": "lessons/ai-agents/outcome-vs-transcript.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Anthropic",
-          "evidence": "The 2026 agent-eval essay uses outcome versus transcript as the core scoring distinction, including the refund-utterance failure mode.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Anthropic",
           "evidence": "The 2026 agent-eval essay uses outcome versus transcript as the core scoring distinction, including the refund-utterance failure mode.",
@@ -2264,13 +2098,9 @@
         "coding-agent-evals"
       ],
       "path": "lessons/ai-agents/pass-at-k.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Anthropic",
-          "evidence": "The 2026 agent-eval essay popularized pass@k versus pass^k as the reliability language for agent suites.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Anthropic",
           "evidence": "The 2026 agent-eval essay popularized pass@k versus pass^k as the reliability language for agent suites.",
@@ -2301,16 +2131,12 @@
         "two-sum"
       ],
       "path": "lessons/algorithms/strategy/pattern-first-prep.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Meta",
           "evidence": "Candidate prep threads repeatedly say phone screens recycle the same pattern families more than they recycle exact prompts.",
-          "year": 2026,
-          "confidence": "medium"
-        },
-        {
-          "name": "Amazon",
-          "evidence": "OA writeups and tagged-list discussions treat a short pattern catalog as more predictive than a 500-problem streak.",
           "year": 2026,
           "confidence": "medium"
         },
@@ -2353,16 +2179,12 @@
         "job-scheduler"
       ],
       "path": "lessons/system-design/cases/payment-idempotency.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Stripe",
           "evidence": "Candidate-reported loops and public X threads on idempotency keys treat double-charge / ledger design as a recurring payments prompt.",
-          "year": 2026,
-          "confidence": "medium"
-        },
-        {
-          "name": "Amazon",
-          "evidence": "Prep-site frequency and candidate reports on order/payment adjacent L5 designs probe \"what if the client retries.\"",
           "year": 2026,
           "confidence": "medium"
         },
@@ -2400,13 +2222,9 @@
         "recursion-call-stack"
       ],
       "path": "lessons/cs/processes-threads.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Amazon",
-          "evidence": "Backend screens still ask process vs thread, when to isolate a crash, and why a thread pool is not \"free parallelism.\"",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Amazon",
           "evidence": "Backend screens still ask process vs thread, when to isolate a crash, and why a thread pool is not \"free parallelism.\"",
@@ -2443,18 +2261,14 @@
         "cap-and-consistency"
       ],
       "path": "lessons/system-design/foundations/queues-delivery.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate-reported L5 loops and prep-site frequency lists treat queues, retries, and poison messages as the operational heart of notification and job designs.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Candidate-reported messenger and feed fanout probes ask what happens when a consumer crashes after sending but before ack.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Meta",
@@ -2489,13 +2303,9 @@
         "outcome-vs-transcript"
       ],
       "path": "lessons/ai-agents/rag-vs-agents.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Anthropic",
-          "evidence": "Anthropic's public essay on building effective agents popularized workflows versus agents and is a common 2026 citation when interviewers ask RAG versus agent.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Anthropic",
           "evidence": "Anthropic's public essay on building effective agents popularized workflows versus agents and is a common 2026 citation when interviewers ask RAG versus agent.",
@@ -2534,18 +2344,14 @@
         "payment-idempotency"
       ],
       "path": "lessons/system-design/cases/rate-limiter.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate-reported mid-level loops and prep-site frequency (Hello Interview community reports) treat rate limiting as a high-frequency prompt at Amazon, Meta, and Google.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Prep-site frequency and candidate reports pair rate limiting with feed/chat abuse and API gateway talks.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Meta",
@@ -2581,13 +2387,9 @@
         "big-o"
       ],
       "path": "lessons/cs/recursion-call-stack.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Google",
-          "evidence": "Tree/backtracking phone screens still ask candidates to name stack depth and to rewrite a recursive walk as an explicit stack when n is large.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Google",
           "evidence": "Tree/backtracking phone screens still ask candidates to name stack depth and to rewrite a recursive walk as an explicit stack when n is large.",
@@ -2627,13 +2429,9 @@
         "payment-idempotency"
       ],
       "path": "lessons/system-design/cases/ride-hailing.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Uber",
-          "evidence": "Candidate-reported senior loops (prep-site frequency plus loop writeups) say \"design Uber\" is too shallow; the real ask is the surge-pricing / matching engine.",
-          "year": 2026,
-          "confidence": "medium"
-        },
         {
           "name": "Uber",
           "evidence": "Candidate-reported senior loops (prep-site frequency plus loop writeups) say \"design Uber\" is too shallow; the real ask is the surge-pricing / matching engine.",
@@ -2671,13 +2469,9 @@
         "interview-framework"
       ],
       "path": "lessons/system-design/cases/search-autocomplete.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Google",
-          "evidence": "Candidate-reported loops and prep-site frequency lists treat typeahead / autocomplete as a Google search-product analog with a hard latency budget.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Google",
           "evidence": "Candidate-reported loops and prep-site frequency lists treat typeahead / autocomplete as a Google search-product analog with a hard latency budget.",
@@ -2714,16 +2508,12 @@
         "indexes"
       ],
       "path": "lessons/system-design/foundations/sharding.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Google",
           "evidence": "Candidate-reported loops and prep-site frequency notes treat shard maps, rebalancing, and hot-key handling as the depth probe after a candidate draws \"sharded DB.\"",
-          "year": 2026,
-          "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Candidate-reported feed and messenger designs get pushed on user-sharded inboxes versus global stores, and on celebrity keys that pin a shard.",
           "year": 2026,
           "confidence": "high"
         },
@@ -2763,18 +2553,14 @@
         "dp-1d"
       ],
       "path": "lessons/algorithms/patterns/sliding-window.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Meta",
           "evidence": "Candidate phone-screen reports and tagged lists keep putting unique-substring / at-most-k-distinct windows in the first thirty minutes.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Google",
-          "evidence": "Prep threads treat variable windows over strings as a default onsite warmup.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Google",
@@ -2811,17 +2597,13 @@
         "big-o"
       ],
       "path": "lessons/algorithms/problems/three-sum.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Meta",
           "evidence": "Candidate phone-screen reports and tagged lists keep listing three-value zero-sum as the follow-up to pair-sum.",
           "year": 2026,
-          "confidence": "high"
-        },
-        {
-          "name": "Amazon",
-          "evidence": "OA writeups treat unique triplets summing to a target as a default medium.",
-          "year": 2025,
           "confidence": "high"
         },
         {
@@ -2860,13 +2642,9 @@
         "rag-vs-agents"
       ],
       "path": "lessons/ai-agents/tool-calling.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Anthropic",
-          "evidence": "Public agent-harness writing treats tool design (schemas, stop conditions, permissions) as the harness, not the model.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Anthropic",
           "evidence": "Public agent-harness writing treats tool design (schemas, stop conditions, permissions) as the harness, not the model.",
@@ -2901,18 +2679,14 @@
         "union-find"
       ],
       "path": "lessons/algorithms/patterns/topological-sort.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate reports list course-schedule / build-order prompts as the usual topo-sort tell.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Google",
-          "evidence": "Onsite writeups describe compilation-order and task-graph questions in the same family.",
-          "year": 2025,
-          "confidence": "medium"
         },
         {
           "name": "Google",
@@ -2950,13 +2724,9 @@
         "llm-as-judge-calibration"
       ],
       "path": "lessons/ai-agents/traces-trajectories.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Arize",
-          "evidence": "Observability writeups in 2026 standardized span/trace language for LLM apps; interviews expect you to add trajectory/session on top.",
-          "year": 2026,
-          "confidence": "medium"
-        },
         {
           "name": "Arize",
           "evidence": "Observability writeups in 2026 standardized span/trace language for LLM apps; interviews expect you to add trajectory/session on top.",
@@ -2992,13 +2762,9 @@
         "sharding"
       ],
       "path": "lessons/cs/transactions-isolation.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Stripe",
-          "evidence": "Payments and ledger interviews repeatedly probe double-charge, lost updates, and \"what isolation would you pick for this row.\"",
-          "year": 2026,
-          "confidence": "medium"
-        },
         {
           "name": "Stripe",
           "evidence": "Payments and ledger interviews repeatedly probe double-charge, lost updates, and \"what isolation would you pick for this row.\"",
@@ -3032,13 +2798,9 @@
         "indexes"
       ],
       "path": "lessons/cs/trees-graphs.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Meta",
-          "evidence": "Tagged-list prep threads keep BFS/DFS tree and graph prompts (level order, clone graph, course schedule) in the phone-screen rotation.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Meta",
           "evidence": "Tagged-list prep threads keep BFS/DFS tree and graph prompts (level order, clone graph, course schedule) in the phone-screen rotation.",
@@ -3073,18 +2835,14 @@
         "hashing-internals"
       ],
       "path": "lessons/algorithms/patterns/trie.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Google",
           "evidence": "Candidate reports treat autocomplete / add-and-search-word as the usual trie prompt.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Amazon",
-          "evidence": "Tagged-list threads keep prefix-tree implementation questions in OA and phone screens.",
-          "year": 2025,
-          "confidence": "medium"
         },
         {
           "name": "Amazon",
@@ -3120,18 +2878,14 @@
         "fast-slow-pointers"
       ],
       "path": "lessons/algorithms/patterns/two-pointers.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate OA writeups and tagged-list threads keep listing sorted pair / container problems as two-pointer drills.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Phone-screen reports often follow a hash-map pair-sum with a \"now the array is sorted\" follow-up.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Meta",
@@ -3166,7 +2920,16 @@
         "hash-maps",
         "big-o"
       ],
-      "path": "lessons/algorithms/problems/two-sum.md",
+      "path": "lessons/algorithms/problems/two-sum/lesson.md",
+      "dir": "lessons/algorithms/problems/two-sum",
+      "widgets": [
+        {
+          "id": "walk",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/two-sum/viz/walk.md",
+          "steps": "lessons/algorithms/problems/two-sum/viz/walk.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Meta",
@@ -3179,15 +2942,9 @@
           "evidence": "Tagged-list prep threads treat this family as a default OA/phone screen.",
           "year": 2025,
           "confidence": "high"
-        },
-        {
-          "name": "Amazon",
-          "evidence": "Tagged-list prep threads treat this family as a default OA/phone screen.",
-          "year": 2025,
-          "confidence": "high"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-03"
     },
     {
       "id": "union-find",
@@ -3214,16 +2971,12 @@
         "trees-graphs"
       ],
       "path": "lessons/algorithms/patterns/union-find.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Google",
           "evidence": "Candidate onsite reports mention connected-components / redundant-connection prompts as union-find tells.",
-          "year": 2026,
-          "confidence": "medium"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Tagged-list threads list number-of-provinces and similar \"are these accounts the same person\" merges.",
           "year": 2026,
           "confidence": "medium"
         },
@@ -3265,18 +3018,14 @@
         "rate-limiter"
       ],
       "path": "lessons/system-design/cases/url-shortener.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate-reported L5 staple; prep-site frequency lists treat URL shorteners as the default junior/mid prompt across Amazon, Google, and Meta.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Google",
-          "evidence": "Candidate-reported loops use the same prompt as a scale/depth probe (key space, cache hit math, uniqueness under retry).",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Google",
@@ -3312,18 +3061,14 @@
         "lru-cache"
       ],
       "path": "lessons/algorithms/problems/valid-brackets.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Amazon",
           "evidence": "Candidate OA reports list parentheses-validation as a near-universal easy.",
           "year": 2026,
           "confidence": "high"
-        },
-        {
-          "name": "Meta",
-          "evidence": "Phone-screen writeups still use nested-tag validation as a five-minute warmup before a harder stack problem.",
-          "year": 2026,
-          "confidence": "medium"
         },
         {
           "name": "Meta",
@@ -3360,16 +3105,12 @@
         "how-to-run-proper-evals"
       ],
       "path": "lessons/ai-agents/vendor-vs-user-harness.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
         {
           "name": "Thoughtworks / Fowler",
           "evidence": "Boeckeler's 2026 \"Agent = Model + Harness\" framing, including vendor versus user harness, is widely cited in platform interviews.",
-          "year": 2026,
-          "confidence": "high"
-        },
-        {
-          "name": "Anthropic",
-          "evidence": "Claude Code is discussed in candidate reports and public posts as a vendor agent harness wrapping a model.",
           "year": 2026,
           "confidence": "high"
         },
@@ -3411,13 +3152,9 @@
         "job-scheduler"
       ],
       "path": "lessons/system-design/cases/video-streaming.md",
+      "dir": null,
+      "widgets": [],
       "company_signal": [
-        {
-          "name": "Google",
-          "evidence": "Candidate-reported loops and prep-site frequency lists treat video streaming as a Google-flavored (YouTube-shaped) prompt with encoding and CDN depth.",
-          "year": 2026,
-          "confidence": "high"
-        },
         {
           "name": "Google",
           "evidence": "Candidate-reported loops and prep-site frequency lists treat video streaming as a Google-flavored (YouTube-shaped) prompt with encoding and CDN depth.",

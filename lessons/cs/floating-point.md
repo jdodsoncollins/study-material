@@ -102,5 +102,5 @@ If they ask why `Math.round(1.005 * 100)` is ugly: "1.005 is not exact in binary
 - [Bytes are not characters](./encoding-unicode.md) (id: encoding-unicode)
 - [Big-O as a conversation](./big-o.md) (id: big-o)
 - [Why a map is "O(1)" until it isn't](./hashing-internals.md) (id: hashing-internals)
-- [Pair lookup instead of nested scanning](../algorithms/problems/two-sum.md) (id: two-sum)
+- [Pair lookup instead of nested scanning](../algorithms/problems/two-sum/lesson.md) (id: two-sum)
 - [Indexes are precomputed answers](./indexes.md) (id: indexes)

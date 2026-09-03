@@ -47,7 +47,7 @@ status: canonical
 
 Almost every "make it faster than nested loops" answer is a hash map. Interviewers then check whether you treat O(1) as a law of physics. The adult sentence is: **expected O(1) per op, O(n) space, amortized across resizes, assuming a decent hash.**
 
-This is the same machine as [two-sum](../algorithms/problems/two-sum.md) (id: two-sum) and as a DB hash index.
+This is the same machine as [two-sum](../algorithms/problems/two-sum/lesson.md) (id: two-sum) and as a DB hash index.
 
 ## Core idea
 
@@ -102,7 +102,7 @@ If they ask hash vs tree map: "Tree map is O(log n) always and keeps order. Hash
 
 - [Big-O as a conversation](./big-o.md) (id: big-o)
 - [Hash maps as an index](../algorithms/patterns/hash-maps.md) (id: hash-maps)
-- [Pair lookup instead of nested scanning](../algorithms/problems/two-sum.md) (id: two-sum)
+- [Pair lookup instead of nested scanning](../algorithms/problems/two-sum/lesson.md) (id: two-sum)
 - [Indexes are precomputed answers](./indexes.md) (id: indexes)
 - [Cache as a second store](../system-design/foundations/caching.md) (id: caching)
 - [Contiguous slots versus pointer chasing](./arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)

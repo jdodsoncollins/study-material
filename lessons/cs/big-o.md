@@ -100,6 +100,6 @@ If they ask about the constant: "I would not claim this beats a tight O(n log n)
 
 - [Why a map is "O(1)" until it isn't](./hashing-internals.md) (id: hashing-internals)
 - [Contiguous slots versus pointer chasing](./arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
-- [Pair lookup instead of nested scanning](../algorithms/problems/two-sum.md) (id: two-sum)
+- [Pair lookup instead of nested scanning](../algorithms/problems/two-sum/lesson.md) (id: two-sum)
 - [Hash maps as an index](../algorithms/patterns/hash-maps.md) (id: hash-maps)
 - [Indexes are precomputed answers](./indexes.md) (id: indexes)

@@ -93,7 +93,7 @@ Close with a ship rule: regression fence in CI, capability hill on a dashboard, 
 ## Cross-links
 
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness)
+- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
 - [Mistakes coding agents keep making](./agent-mistakes.md) (id: agent-mistakes)
 - [Capability versus regression](./capability-vs-regression.md) (id: capability-vs-regression)
 - [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)

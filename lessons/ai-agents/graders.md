@@ -88,4 +88,4 @@ If they ask about partial credit: split the job into independent binary graders 
 - [Calibrate the judge before you trust the score](./llm-as-judge-calibration.md) (id: llm-as-judge-calibration)
 - [Outcome versus transcript](./outcome-vs-transcript.md) (id: outcome-vs-transcript)
 - [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness.md) (id: eval-harness-vs-agent-harness)
+- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)

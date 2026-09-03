@@ -33,7 +33,7 @@ sources_consulted:
   - Hello Interview News Feed breakdowns (consulted, not copied)
   - Design Gurus 2026 FAANG guides
   - r/cscareerquestions Meta loop writeups
-updated: 2026-09-02
+updated: 2026-09-03
 status: canonical
 ---
 
@@ -89,9 +89,11 @@ Read: 200M × 8 home opens/day ≈ 18.5k/s average, ~185k/s peak. This is why in
 
 ## Design
 
+[Hybrid fanout](viz/hybrid.md)
+
 Publish path: API writes the post body to **PostStore** (sharded by `post_id`), then enqueues a fanout job on **WaveFan**.
 
-- WaveFan consumers load the follower list in pages. For each ordinary follower, they *append* `post_id` to `inbox:{user}`. At-least-once, so appends are idempotent on `(user, post_id)`. See [queues-delivery](../foundations/queues-delivery.md) (id: queues-delivery).
+- WaveFan consumers load the follower list in pages. For each ordinary follower, they *append* `post_id` to `inbox:{user}`. At-least-once, so appends are idempotent on `(user, post_id)`. See [queues-delivery](../../foundations/queues-delivery.md) (id: queues-delivery).
 - If `follower_count ≥ 10k`, skip WaveFan. Mark the author on a **LoudSet**.
 
 Read path: load the user's inbox (cache-aside). Pull the latest K posts from each followed LoudSet author (small list, cached). Union, take a window, send to **RankLite** (heuristic: recency, author affinity, already-seen). Hydrate bodies from PostStore / StoryCache.
@@ -117,14 +119,14 @@ Do not pre-render HTML. Cache post bodies and inboxes, not personalized pages.
 ## Follow-ups an interviewer may ask
 
 - Stories / ephemeral: a second inbox with a 24h TTL, same hybrid rule.
-- Notifications for "X posted": that is [Herald](./notification-system.md) (id: notification-system), not WaveFan.
+- Notifications for "X posted": that is [Herald](../notification-system.md) (id: notification-system), not WaveFan.
 - Multi-hop ranking features: offline, not in the 200 ms path.
 
 ## Cross-links
 
-- [Forty-five minutes is a navigation problem](../foundations/interview-framework.md) (id: interview-framework)
-- [Remembering the expensive answer nearby](../foundations/caching.md) (id: caching)
-- [At-least-once, idempotency, and the dead-letter lane](../foundations/queues-delivery.md) (id: queues-delivery)
-- [Ordered delivery for a 1:1 and small-group messenger](./chat-system.md) (id: chat-system)
-- [Fan-out that survives flaky devices](./notification-system.md) (id: notification-system)
-- [Splitting a keyspace so one box is not the product](../foundations/sharding.md) (id: sharding)
+- [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)
+- [Remembering the expensive answer nearby](../../foundations/caching.md) (id: caching)
+- [At-least-once, idempotency, and the dead-letter lane](../../foundations/queues-delivery.md) (id: queues-delivery)
+- [Ordered delivery for a 1:1 and small-group messenger](../chat-system.md) (id: chat-system)
+- [Fan-out that survives flaky devices](../notification-system.md) (id: notification-system)
+- [Splitting a keyspace so one box is not the product](../../foundations/sharding.md) (id: sharding)

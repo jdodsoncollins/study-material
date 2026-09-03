@@ -31,7 +31,7 @@ company_signal:
 sources_consulted:
   - Blind 75 / NeetCode pattern lists (2026)
   - r/leetcode Meta and Amazon tagged-list threads
-updated: 2026-09-02
+updated: 2026-09-03
 status: canonical
 ---
 
@@ -90,6 +90,8 @@ If the interviewer then says "the list is already sorted, just return the values
 
 `weights = [4, 11, 8, 3, 15]`, `target = 19`
 
+[Walk the bins](viz/walk.md)
+
 1. `4` → need `15`. Map empty. Store `4 → 0`.
 2. `11` → need `8`. Miss. Store `11 → 1`.
 3. `8` → need `11`. Hit at index 1. Return `[1, 2]`.
@@ -116,7 +118,7 @@ A duplicate-value trap: `[6, 6]`, target `12` must return both indices. The map 
 
 ## Cross-links
 
-- [Hash maps as an index](../patterns/hash-maps.md) (id: hash-maps)
-- [Three-value search](./three-sum.md) (id: three-sum)
-- [Two pointers](../patterns/two-pointers.md) (id: two-pointers)
-- [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
+- [Hash maps as an index](../../patterns/hash-maps.md) (id: hash-maps)
+- [Three-value search](../three-sum.md) (id: three-sum)
+- [Two pointers](../../patterns/two-pointers.md) (id: two-pointers)
+- [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)
