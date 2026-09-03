@@ -95,6 +95,8 @@ Pop on an empty stack is a mismatch. End of tape with leftovers is a mismatch. D
 
 `tape = "[{()}]()"`
 
+[Push and pop straps](viz/stack.md)
+
 1. Push `[`, `{`, `(`.
 2. `)` matches `(`. Pop. `{` still on top.
 3. `}` matches `{`. Pop. `[` still on top.
@@ -121,9 +123,9 @@ Illegal cousin `"[({)]"`: after `[ { (` the first closer `)` matches, then `]` s
 
 ## Cross-links
 
-- [The next greater is waiting on a stack](../patterns/monotonic-stack.md) (id: monotonic-stack)
-- [Explore, undo, try the next branch](../patterns/dfs-backtracking.md) (id: dfs-backtracking)
-- [Squeeze from both ends](../patterns/two-pointers/lesson.md) (id: two-pointers)
-- [Scanner memory with eviction](./lru-cache/lesson.md) (id: lru-cache)
-- [Arrays versus linked lists](../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
-- [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
+- [The next greater is waiting on a stack](../../patterns/monotonic-stack.md) (id: monotonic-stack)
+- [Explore, undo, try the next branch](../../patterns/dfs-backtracking.md) (id: dfs-backtracking)
+- [Squeeze from both ends](../../patterns/two-pointers/lesson.md) (id: two-pointers)
+- [Scanner memory with eviction](../lru-cache/lesson.md) (id: lru-cache)
+- [Arrays versus linked lists](../../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
+- [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)

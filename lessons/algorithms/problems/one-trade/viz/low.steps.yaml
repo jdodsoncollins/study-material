@@ -1,0 +1,8 @@
+title: Track the cheapest buy
+steps:
+  - caption: "9 then 3. low drops to 3. No sell yet."
+    nodes: [p, cheap, low]
+  - caption: "8 - 3 = 5. That is the first real profit."
+    nodes: [p, profit, keep, best]
+  - caption: "1 is a cheaper buy. 6 - 1 ties 5. Falling tape after that does not go negative."
+    nodes: [cheap, low, best]

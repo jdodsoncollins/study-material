@@ -132,7 +132,7 @@ Add `2 → 0` and the peel stops with `{0,1,2}` still holding indegree. Return n
 
 ## Cross-links
 
-- [Training modules with prereqs](../../problems/course-order.md) (id: course-order)
+- [Training modules with prereqs](../../problems/course-order/lesson.md) (id: course-order)
 - [Expand level by level](../bfs/lesson.md) (id: bfs)
 - [Explore, undo, try the next branch](../dfs-backtracking.md) (id: dfs-backtracking)
 - [Cluster membership in nearly constant time](../union-find/lesson.md) (id: union-find)

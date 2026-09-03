@@ -126,7 +126,7 @@ Best is 6. The repeat of `b` never forces you to restart from scratch; you only 
 
 ## Cross-links
 
-- [Longest unique radio run](../../problems/longest-unique-window.md) (id: longest-unique-window)
+- [Longest unique radio run](../../problems/longest-unique-window/lesson.md) (id: longest-unique-window)
 - [Squeeze from both ends](../two-pointers/lesson.md) (id: two-pointers)
 - [Hash maps as an index](../hash-maps.md) (id: hash-maps)
 - [Reuse the last few answers](../dp-1d.md) (id: dp-1d)

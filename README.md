@@ -6,7 +6,7 @@ Corpus: original lessons with nested tags, cross-links, and mermaid companions.
 
 | Track | What is in it |
 | --- | --- |
-| `lessons/algorithms` | 15 patterns, 9 problems, 1 prep strategy |
+| `lessons/algorithms` | 15 patterns, 20 problems (Top 100 Liked drills on the path), 1 prep strategy |
 | `lessons/system-design` | Foundations (including unique IDs), product cases (shortener, feed, blobs, crawler, …) |
 | `lessons/ai-agents` | Harnesses, evals, tools, and a chat-clerk case |
 | `lessons/cs` | Complexity, data structures, OS, HTTP/TCP, DNS, databases, concurrency |

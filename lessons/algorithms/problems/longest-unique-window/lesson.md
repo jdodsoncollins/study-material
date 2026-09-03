@@ -97,6 +97,8 @@ The `prev >= left` guard is the whole correctness story. A letter seen *before* 
 
 `log = "mparkpklane"`
 
+[Slide past the repeat](viz/slide.md)
+
 1. `m p a r k` all new. Width 5. Map ends at `k → 4`.
 2. Next `p` last seen at 1, still inside. Jump left to 2. Window `arkp`. Width 4.
 3. Next `k` last seen at 4, inside. Jump left to 5. Window `pk`. Width 2.
@@ -122,9 +124,9 @@ Best is 6 (`pklane`). Check: p,k,l,a,n,e are unique.
 
 ## Cross-links
 
-- [Grow and shrink a live range](../patterns/sliding-window/lesson.md) (id: sliding-window)
-- [Hash maps as an index](../patterns/hash-maps.md) (id: hash-maps)
-- [Squeeze from both ends](../patterns/two-pointers/lesson.md) (id: two-pointers)
-- [Reuse the last few answers](../patterns/dp-1d.md) (id: dp-1d)
-- [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
-- [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)
+- [Grow and shrink a live range](../../patterns/sliding-window/lesson.md) (id: sliding-window)
+- [Hash maps as an index](../../patterns/hash-maps.md) (id: hash-maps)
+- [Squeeze from both ends](../../patterns/two-pointers/lesson.md) (id: two-pointers)
+- [Reuse the last few answers](../../patterns/dp-1d.md) (id: dp-1d)
+- [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)
+- [How to run a pattern-first loop](../../strategy/pattern-first-prep.md) (id: pattern-first-prep)

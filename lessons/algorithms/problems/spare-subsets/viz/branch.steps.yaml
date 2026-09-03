@@ -1,0 +1,8 @@
+title: Include or skip
+steps:
+  - caption: "At each part, two calls: leave it, or push it and pop on the way back."
+    nodes: [i, skip, take]
+  - caption: "When i hits n, copy the path. Empty path is a legal subset."
+    nodes: [leaf, copy]
+  - caption: "Three parts, eight leaves. 2^n. Forgetting the copy means every row shares one array."
+    nodes: [copy, next]

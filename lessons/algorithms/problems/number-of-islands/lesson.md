@@ -119,6 +119,8 @@ If they forbid mutating the grid, keep a `seen` matrix. If the grid is huge and 
 
 Grid in the prompt.
 
+[Sink a cluster](viz/sink.md)
+
 1. (0,0) is land. Cluster 1. Sink (0,0), (0,1), (1,0).
 2. (0,4) is land. Cluster 2. Sink (0,4), (1,4), (1,3).
 3. Row 2 is all water.
@@ -145,9 +147,9 @@ Answer 4. Diagonal pallets do not touch; (1,3) never ate (3,2).
 
 ## Cross-links
 
-- [Expand level by level](../patterns/bfs/lesson.md) (id: bfs)
-- [Explore, undo, try the next branch](../patterns/dfs-backtracking.md) (id: dfs-backtracking)
-- [Cluster membership in nearly constant time](../patterns/union-find/lesson.md) (id: union-find)
-- [Trees and graphs](../../cs/trees-graphs.md) (id: trees-graphs)
-- [Fill a grid of overlapping subproblems](../patterns/dp-2d.md) (id: dp-2d)
-- [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
+- [Expand level by level](../../patterns/bfs/lesson.md) (id: bfs)
+- [Explore, undo, try the next branch](../../patterns/dfs-backtracking.md) (id: dfs-backtracking)
+- [Cluster membership in nearly constant time](../../patterns/union-find/lesson.md) (id: union-find)
+- [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)
+- [Fill a grid of overlapping subproblems](../../patterns/dp-2d.md) (id: dp-2d)
+- [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)

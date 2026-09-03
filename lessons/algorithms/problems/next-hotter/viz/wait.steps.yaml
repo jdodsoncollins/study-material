@@ -1,0 +1,8 @@
+title: Pop when a hotter day arrives
+steps:
+  - caption: "62 waits. 64 is hotter, so 62 gets wait=1. Stack holds 64."
+    nodes: [day, hotter, pop]
+  - caption: "61 is cooler than 64. It waits too. Stack is decreasing."
+    nodes: [hotter, push]
+  - caption: "70 pops 61 then 64. One hot day can free several waiters."
+    nodes: [pop, hotter]

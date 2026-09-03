@@ -1,0 +1,8 @@
+title: Slide past the repeat
+steps:
+  - caption: "mpark is unique. Width 5. Store last index of each letter."
+    nodes: [right, seen, grow]
+  - caption: "Next p is still inside the window. Jump left to one past that p."
+    nodes: [seen, jump]
+  - caption: "pklane is unique. Width 6. Best so far."
+    nodes: [jump, grow]

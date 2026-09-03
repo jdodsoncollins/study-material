@@ -17,6 +17,7 @@ prerequisites:
 related:
   - two-sum
   - three-sum
+  - tarp-span
   - sliding-window
   - fast-slow-pointers
 company_signal:
@@ -122,6 +123,7 @@ A miss walk: limit `22`. `3+21=24` shrink right → `3+14=17` grow left → `5+1
 
 - [Pair lookup instead of nested scanning](../../problems/two-sum/lesson.md) (id: two-sum)
 - [Three-value search](../../problems/three-sum/lesson.md) (id: three-sum)
+- [Two posts and a tarp](../../problems/tarp-span/lesson.md) (id: tarp-span)
 - [Grow and shrink a live range](../sliding-window/lesson.md) (id: sliding-window)
 - [Two speeds, one list](../fast-slow-pointers.md) (id: fast-slow-pointers)
 - [Hash maps as an index](../hash-maps.md) (id: hash-maps)

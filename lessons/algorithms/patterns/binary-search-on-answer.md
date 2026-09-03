@@ -15,6 +15,7 @@ prerequisites:
   - big-o
 related:
   - coin-change
+  - rotated-index
   - heaps-top-k
   - kth-largest
   - dp-1d
@@ -123,9 +124,9 @@ Check: 4 units/hour clears 7 in two hours, 3 in one, 11 in three, 5 in two. Tota
 
 ## Cross-links
 
-- [Fewest tokens for a fare](../problems/coin-change.md) (id: coin-change)
+- [Fewest tokens for a fare](../problems/coin-change/lesson.md) (id: coin-change)
 - [Keep only the interesting k](./heaps-top-k.md) (id: heaps-top-k)
-- [k-th busiest dock](../problems/kth-largest.md) (id: kth-largest)
+- [k-th busiest dock](../problems/kth-largest/lesson.md) (id: kth-largest)
 - [Reuse the last few answers](./dp-1d.md) (id: dp-1d)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
 - [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)

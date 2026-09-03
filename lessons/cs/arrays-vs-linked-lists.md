@@ -18,7 +18,8 @@ related:
   - big-o
   - hashing-internals
   - os-memory
-  - two-pointers
+  - reverse-chain
+  - aisle-loop
 company_signal:
   - name: Amazon
     evidence: OA and phone-screen writeups still mix array two-pointer prompts with "reverse a linked list" / cycle detection as default list warmups.

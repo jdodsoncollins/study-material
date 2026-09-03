@@ -1,0 +1,8 @@
+title: Sink a cluster
+steps:
+  - caption: "Scan. Water is ignored. A dry pallet starts a cluster."
+    nodes: [scan, land, start]
+  - caption: "DFS zeros this cell and its 4-neighbors before they can be counted again."
+    nodes: [start, dfs]
+  - caption: "The answer is how many times you started a fill, not how many pallets you touched."
+    nodes: [dfs, scan]

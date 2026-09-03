@@ -17,9 +17,10 @@ prerequisites:
   - two-pointers
 related:
   - two-pointers
+  - aisle-loop
+  - reverse-chain
   - arrays-vs-linked-lists
   - lru-cache
-  - valid-brackets
 company_signal:
   - name: Amazon
     evidence: Linked-list cycle and "middle of the list" variants show up constantly in candidate OA reports.
@@ -137,6 +138,6 @@ C is the loop start. Distance from head to entrance equals distance from meeting
 - [Squeeze from both ends](./two-pointers/lesson.md) (id: two-pointers)
 - [Arrays versus linked lists](../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
 - [Scanner memory with eviction](../problems/lru-cache/lesson.md) (id: lru-cache)
-- [Matched crate tags](../problems/valid-brackets.md) (id: valid-brackets)
+- [Matched crate tags](../problems/valid-brackets/lesson.md) (id: valid-brackets)
 - [Hash maps as an index](./hash-maps.md) (id: hash-maps)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)

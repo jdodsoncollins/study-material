@@ -37,13 +37,13 @@
           "id": "hash",
           "title": "Hash",
           "track": "algorithms",
-          "lessons": ["hashing-internals", "hash-maps", "two-sum"]
+          "lessons": ["hashing-internals", "hash-maps", "two-sum", "group-anagrams"]
         },
         {
           "id": "squeeze",
           "title": "Squeeze",
           "track": "algorithms",
-          "lessons": ["two-pointers", "three-sum", "valid-brackets"]
+          "lessons": ["two-pointers", "three-sum", "tarp-span", "valid-brackets"]
         }
       ]
     },
@@ -62,7 +62,7 @@
           "id": "next",
           "title": "Next",
           "track": "algorithms",
-          "lessons": ["monotonic-stack", "merge-intervals", "fast-slow-pointers"]
+          "lessons": ["monotonic-stack", "next-hotter", "merge-intervals", "fast-slow-pointers", "aisle-loop"]
         }
       ]
     },
@@ -81,7 +81,7 @@
           "id": "keep",
           "title": "Keep k",
           "track": "algorithms",
-          "lessons": ["heaps-top-k", "kth-largest", "lru-cache"]
+          "lessons": ["heaps-top-k", "kth-largest", "lru-cache", "reverse-chain"]
         }
       ]
     },
@@ -100,7 +100,7 @@
           "id": "walk",
           "title": "Walk",
           "track": "algorithms",
-          "lessons": ["bfs", "dfs-backtracking", "number-of-islands"]
+          "lessons": ["bfs", "briefing-layers", "dfs-backtracking", "spare-subsets", "number-of-islands"]
         },
         {
           "id": "order",
@@ -112,7 +112,7 @@
           "id": "prefix",
           "title": "Prefix",
           "track": "algorithms",
-          "lessons": ["trie", "binary-search-on-answer"]
+          "lessons": ["trie", "binary-search-on-answer", "rotated-index"]
         }
       ]
     },
@@ -125,13 +125,13 @@
           "id": "one-dim",
           "title": "1-D",
           "track": "algorithms",
-          "lessons": ["dp-1d", "coin-change"]
+          "lessons": ["dp-1d", "one-trade", "coin-change", "skip-bay"]
         },
         {
           "id": "two-dim",
           "title": "2-D",
           "track": "algorithms",
-          "lessons": ["dp-2d"]
+          "lessons": ["dp-2d", "desk-paths"]
         }
       ]
     },

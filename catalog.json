@@ -1,7 +1,7 @@
 {
   "version": 3,
   "generated": "2026-09-03",
-  "lesson_count": 76,
+  "lesson_count": 87,
   "tags": [
     "ai-agents",
     "ai-agents/evals",
@@ -245,7 +245,8 @@
             "lessons": [
               "hashing-internals",
               "hash-maps",
-              "two-sum"
+              "two-sum",
+              "group-anagrams"
             ]
           },
           {
@@ -255,6 +256,7 @@
             "lessons": [
               "two-pointers",
               "three-sum",
+              "tarp-span",
               "valid-brackets"
             ]
           }
@@ -280,8 +282,10 @@
             "track": "algorithms",
             "lessons": [
               "monotonic-stack",
+              "next-hotter",
               "merge-intervals",
-              "fast-slow-pointers"
+              "fast-slow-pointers",
+              "aisle-loop"
             ]
           }
         ]
@@ -308,7 +312,8 @@
             "lessons": [
               "heaps-top-k",
               "kth-largest",
-              "lru-cache"
+              "lru-cache",
+              "reverse-chain"
             ]
           }
         ]
@@ -333,7 +338,9 @@
             "track": "algorithms",
             "lessons": [
               "bfs",
+              "briefing-layers",
               "dfs-backtracking",
+              "spare-subsets",
               "number-of-islands"
             ]
           },
@@ -353,7 +360,8 @@
             "track": "algorithms",
             "lessons": [
               "trie",
-              "binary-search-on-answer"
+              "binary-search-on-answer",
+              "rotated-index"
             ]
           }
         ]
@@ -369,7 +377,9 @@
             "track": "algorithms",
             "lessons": [
               "dp-1d",
-              "coin-change"
+              "one-trade",
+              "coin-change",
+              "skip-bay"
             ]
           },
           {
@@ -377,7 +387,8 @@
             "title": "2-D",
             "track": "algorithms",
             "lessons": [
-              "dp-2d"
+              "dp-2d",
+              "desk-paths"
             ]
           }
         ]
@@ -619,6 +630,57 @@
       "updated": "2026-09-02"
     },
     {
+      "id": "aisle-loop",
+      "title": "A forklift looping the same aisle",
+      "slug": "aisle-loop",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "intro",
+      "estimated_minutes": 10,
+      "summary": "Walk a linked chain with a slow pointer and a fast pointer; if they meet, the chain loops.",
+      "tags": [
+        "algorithms",
+        "algorithms/linked-lists",
+        "algorithms/two-pointers",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "fast-slow-pointers"
+      ],
+      "related": [
+        "fast-slow-pointers",
+        "reverse-chain",
+        "lru-cache",
+        "two-pointers"
+      ],
+      "path": "lessons/algorithms/problems/aisle-loop/lesson.md",
+      "dir": "lessons/algorithms/problems/aisle-loop",
+      "widgets": [
+        {
+          "id": "meet",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/aisle-loop/viz/meet.md",
+          "steps": "lessons/algorithms/problems/aisle-loop/viz/meet.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA reports list linked-list cycle detection as the standard fast-slow easy.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen writeups treat tortoise/hare as the follow-up after reverse-list.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-03"
+    },
+    {
       "id": "arrays-vs-linked-lists",
       "title": "Contiguous slots versus pointer chasing",
       "slug": "arrays-vs-linked-lists",
@@ -640,7 +702,8 @@
         "big-o",
         "hashing-internals",
         "os-memory",
-        "two-pointers"
+        "reverse-chain",
+        "aisle-loop"
       ],
       "path": "lessons/cs/arrays-vs-linked-lists.md",
       "dir": null,
@@ -675,6 +738,7 @@
       ],
       "related": [
         "dfs-backtracking",
+        "briefing-layers",
         "number-of-islands",
         "topological-sort",
         "trees-graphs"
@@ -759,6 +823,7 @@
       ],
       "related": [
         "coin-change",
+        "rotated-index",
         "heaps-top-k",
         "kth-largest",
         "dp-1d"
@@ -834,6 +899,58 @@
         }
       ],
       "updated": "2026-09-02"
+    },
+    {
+      "id": "briefing-layers",
+      "title": "Shift briefings by depth",
+      "slug": "briefing-layers",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "Queue the nodes of one depth, drain that whole depth, then the children you enqueued are the next briefing.",
+      "tags": [
+        "algorithms",
+        "algorithms/trees",
+        "algorithms/graphs",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "bfs",
+        "trees-graphs"
+      ],
+      "related": [
+        "bfs",
+        "trees-graphs",
+        "dfs-backtracking",
+        "number-of-islands"
+      ],
+      "path": "lessons/algorithms/problems/briefing-layers/lesson.md",
+      "dir": "lessons/algorithms/problems/briefing-layers",
+      "widgets": [
+        {
+          "id": "layers",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/briefing-layers/viz/layers.md",
+          "steps": "lessons/algorithms/problems/briefing-layers/viz/layers.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA reports list binary-tree level-order as the default BFS-on-a-tree easy.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen writeups treat layer-by-layer tree print as the BFS warmup before zigzag / right-side view.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-03"
     },
     {
       "id": "caching",
@@ -1136,9 +1253,16 @@
         "heaps-top-k",
         "dfs-backtracking"
       ],
-      "path": "lessons/algorithms/problems/coin-change.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/problems/coin-change/lesson.md",
+      "dir": "lessons/algorithms/problems/coin-change",
+      "widgets": [
+        {
+          "id": "table",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/coin-change/viz/table.md",
+          "steps": "lessons/algorithms/problems/coin-change/viz/table.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Amazon",
@@ -1179,9 +1303,16 @@
         "dfs-backtracking",
         "union-find"
       ],
-      "path": "lessons/algorithms/problems/course-order.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/problems/course-order/lesson.md",
+      "dir": "lessons/algorithms/problems/course-order",
+      "widgets": [
+        {
+          "id": "peel",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/course-order/viz/peel.md",
+          "steps": "lessons/algorithms/problems/course-order/viz/peel.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Amazon",
@@ -1261,6 +1392,56 @@
       "updated": "2026-09-02"
     },
     {
+      "id": "desk-paths",
+      "title": "Only right and down to the desk",
+      "slug": "desk-paths",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Fill a grid where each cell is paths-from-above plus paths-from-the-left, so you count routes without walking them.",
+      "tags": [
+        "algorithms",
+        "algorithms/dynamic-programming",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "dp-2d"
+      ],
+      "related": [
+        "dp-2d",
+        "dp-1d",
+        "number-of-islands",
+        "bfs"
+      ],
+      "path": "lessons/algorithms/problems/desk-paths/lesson.md",
+      "dir": "lessons/algorithms/problems/desk-paths",
+      "widgets": [
+        {
+          "id": "grid",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/desk-paths/viz/grid.md",
+          "steps": "lessons/algorithms/problems/desk-paths/viz/grid.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Candidate reports list unique-paths / grid-route counts as a common first 2D DP.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA writeups treat robot-on-grid path counts as the default DP-on-a-grid easy/medium.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-03"
+    },
+    {
       "id": "dfs-backtracking",
       "title": "Explore, undo, try the next branch",
       "slug": "dfs-backtracking",
@@ -1280,6 +1461,7 @@
       ],
       "related": [
         "bfs",
+        "spare-subsets",
         "number-of-islands",
         "trie",
         "valid-brackets"
@@ -1366,9 +1548,10 @@
       ],
       "related": [
         "coin-change",
+        "skip-bay",
+        "one-trade",
         "dp-2d",
-        "binary-search-on-answer",
-        "dfs-backtracking"
+        "binary-search-on-answer"
       ],
       "path": "lessons/algorithms/patterns/dp-1d.md",
       "dir": null,
@@ -1408,6 +1591,7 @@
       ],
       "related": [
         "dp-1d",
+        "desk-paths",
         "dfs-backtracking",
         "bfs",
         "longest-unique-window"
@@ -1536,9 +1720,10 @@
       ],
       "related": [
         "two-pointers",
+        "aisle-loop",
+        "reverse-chain",
         "arrays-vs-linked-lists",
-        "lru-cache",
-        "valid-brackets"
+        "lru-cache"
       ],
       "path": "lessons/algorithms/patterns/fast-slow-pointers.md",
       "dir": null,
@@ -1684,6 +1869,57 @@
       "updated": "2026-09-02"
     },
     {
+      "id": "group-anagrams",
+      "title": "SKUs that share a packing cipher",
+      "slug": "group-anagrams",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "Group tags that are the same letters in a different order by using the sorted letters as the map key.",
+      "tags": [
+        "algorithms",
+        "algorithms/hash-maps",
+        "algorithms/strings",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "hash-maps"
+      ],
+      "related": [
+        "hash-maps",
+        "two-sum",
+        "hashing-internals",
+        "longest-unique-window"
+      ],
+      "path": "lessons/algorithms/problems/group-anagrams/lesson.md",
+      "dir": "lessons/algorithms/problems/group-anagrams",
+      "widgets": [
+        {
+          "id": "bucket",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/group-anagrams/viz/bucket.md",
+          "steps": "lessons/algorithms/problems/group-anagrams/viz/bucket.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA reports list anagram-grouping as a default hash-map medium after two-sum.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen writeups treat sorted-key grouping as the follow-up once complement lookup is done.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-03"
+    },
+    {
       "id": "hash-maps",
       "title": "Hash maps as an index",
       "slug": "hash-maps",
@@ -1702,6 +1938,7 @@
       ],
       "related": [
         "two-sum",
+        "group-anagrams",
         "lru-cache",
         "hashing-internals",
         "three-sum"
@@ -2087,9 +2324,16 @@
         "two-pointers",
         "hash-maps"
       ],
-      "path": "lessons/algorithms/problems/kth-largest.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/problems/kth-largest/lesson.md",
+      "dir": "lessons/algorithms/problems/kth-largest",
+      "widgets": [
+        {
+          "id": "buf",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/kth-largest/viz/buf.md",
+          "steps": "lessons/algorithms/problems/kth-largest/viz/buf.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Amazon",
@@ -2307,9 +2551,16 @@
         "two-pointers",
         "dp-1d"
       ],
-      "path": "lessons/algorithms/problems/longest-unique-window.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/problems/longest-unique-window/lesson.md",
+      "dir": "lessons/algorithms/problems/longest-unique-window",
+      "widgets": [
+        {
+          "id": "slide",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/longest-unique-window/viz/slide.md",
+          "steps": "lessons/algorithms/problems/longest-unique-window/viz/slide.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Meta",
@@ -2440,6 +2691,7 @@
       ],
       "related": [
         "valid-brackets",
+        "next-hotter",
         "merge-intervals",
         "two-pointers",
         "heaps-top-k"
@@ -2508,6 +2760,57 @@
           "evidence": "Candidate-reported product-architecture loops and prep-site frequency (Exponent / Hello Interview) treat news feed as the most reported Meta prompt.",
           "year": 2026,
           "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-03"
+    },
+    {
+      "id": "next-hotter",
+      "title": "Days until a hotter shift",
+      "slug": "next-hotter",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Scan left to right and keep a decreasing stack of waiting days so each new high resolves every cooler day still on the stack.",
+      "tags": [
+        "algorithms",
+        "algorithms/stacks",
+        "algorithms/arrays",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "monotonic-stack"
+      ],
+      "related": [
+        "monotonic-stack",
+        "valid-brackets",
+        "merge-intervals",
+        "two-pointers"
+      ],
+      "path": "lessons/algorithms/problems/next-hotter/lesson.md",
+      "dir": "lessons/algorithms/problems/next-hotter",
+      "widgets": [
+        {
+          "id": "wait",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/next-hotter/viz/wait.md",
+          "steps": "lessons/algorithms/problems/next-hotter/viz/wait.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA reports list next-warmer-day / next-greater as the standard monotonic-stack medium.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Phone-screen writeups describe daily-temperatures style next-greater as a common stack follow-up.",
+          "year": 2026,
+          "confidence": "medium"
         }
       ],
       "updated": "2026-09-03"
@@ -2589,9 +2892,16 @@
         "union-find",
         "trees-graphs"
       ],
-      "path": "lessons/algorithms/problems/number-of-islands.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/problems/number-of-islands/lesson.md",
+      "dir": "lessons/algorithms/problems/number-of-islands",
+      "widgets": [
+        {
+          "id": "sink",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/number-of-islands/viz/sink.md",
+          "steps": "lessons/algorithms/problems/number-of-islands/viz/sink.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Amazon",
@@ -2607,6 +2917,58 @@
         }
       ],
       "updated": "2026-09-02"
+    },
+    {
+      "id": "one-trade",
+      "title": "One buy, one sell on the tape",
+      "slug": "one-trade",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "intro",
+      "estimated_minutes": 10,
+      "summary": "Walk the price tape once, keep the cheapest buy so far, and record the best sell minus that buy.",
+      "tags": [
+        "algorithms",
+        "algorithms/arrays",
+        "algorithms/greedy",
+        "algorithms/dynamic-programming",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "dp-1d"
+      ],
+      "related": [
+        "dp-1d",
+        "two-pointers",
+        "skip-bay",
+        "hash-maps"
+      ],
+      "path": "lessons/algorithms/problems/one-trade/lesson.md",
+      "dir": "lessons/algorithms/problems/one-trade",
+      "widgets": [
+        {
+          "id": "low",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/one-trade/viz/low.md",
+          "steps": "lessons/algorithms/problems/one-trade/viz/low.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA reports list single-buy single-sell profit as a default easy after two-sum.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone-screen writeups use one-trade profit as the warmup before cooldown / two-trade variants.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-03"
     },
     {
       "id": "online-offline-evals",
@@ -3092,6 +3454,56 @@
       "updated": "2026-09-02"
     },
     {
+      "id": "reverse-chain",
+      "title": "Flip the pallet chain",
+      "slug": "reverse-chain",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "intro",
+      "estimated_minutes": 10,
+      "summary": "Reverse a singly linked chain in place by swinging each next pointer to the previous node as you walk.",
+      "tags": [
+        "algorithms",
+        "algorithms/linked-lists",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "arrays-vs-linked-lists"
+      ],
+      "related": [
+        "arrays-vs-linked-lists",
+        "aisle-loop",
+        "lru-cache",
+        "fast-slow-pointers"
+      ],
+      "path": "lessons/algorithms/problems/reverse-chain/lesson.md",
+      "dir": "lessons/algorithms/problems/reverse-chain",
+      "widgets": [
+        {
+          "id": "swing",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/reverse-chain/viz/swing.md",
+          "steps": "lessons/algorithms/problems/reverse-chain/viz/swing.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA reports list reverse-linked-list as a near-universal linked-list easy.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "Phone screens still use in-place reversal as the warmup before k-group reverse.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-03"
+    },
+    {
       "id": "ride-hailing",
       "title": "Matching and surge, not a map with cars on it",
       "slug": "ride-hailing",
@@ -3139,6 +3551,57 @@
         }
       ],
       "updated": "2026-09-02"
+    },
+    {
+      "id": "rotated-index",
+      "title": "Lookup in a rotated pallet index",
+      "slug": "rotated-index",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "A rotated sorted ring still has one sorted half; binary search the half that is sorted and that can contain the target.",
+      "tags": [
+        "algorithms",
+        "algorithms/binary-search",
+        "algorithms/arrays",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "binary-search-on-answer"
+      ],
+      "related": [
+        "binary-search-on-answer",
+        "two-pointers",
+        "indexes",
+        "hashing-internals"
+      ],
+      "path": "lessons/algorithms/problems/rotated-index/lesson.md",
+      "dir": "lessons/algorithms/problems/rotated-index",
+      "widgets": [
+        {
+          "id": "half",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/rotated-index/viz/half.md",
+          "steps": "lessons/algorithms/problems/rotated-index/viz/half.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate phone-screen reports list rotated-array search as the standard binary-search medium.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA writeups keep rotated-search next to plain binary search.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-03"
     },
     {
       "id": "search-autocomplete",
@@ -3241,6 +3704,57 @@
       "updated": "2026-09-02"
     },
     {
+      "id": "skip-bay",
+      "title": "Skip a neighboring bay",
+      "slug": "skip-bay",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "For each bay, the best take is that bay plus the best two-back, or skip it and keep the best so far.",
+      "tags": [
+        "algorithms",
+        "algorithms/dynamic-programming",
+        "algorithms/arrays",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "dp-1d"
+      ],
+      "related": [
+        "dp-1d",
+        "coin-change",
+        "one-trade",
+        "dfs-backtracking"
+      ],
+      "path": "lessons/algorithms/problems/skip-bay/lesson.md",
+      "dir": "lessons/algorithms/problems/skip-bay",
+      "widgets": [
+        {
+          "id": "take",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/skip-bay/viz/take.md",
+          "steps": "lessons/algorithms/problems/skip-bay/viz/take.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate OA reports list house-robber / skip-adjacent as the standard 1D DP easy/medium after climb-stairs.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "Phone-screen writeups describe adjacent-skip loot as a common linear DP.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-03"
+    },
+    {
       "id": "sliding-window",
       "title": "Grow and shrink a live range",
       "slug": "sliding-window",
@@ -3291,6 +3805,109 @@
         }
       ],
       "updated": "2026-09-02"
+    },
+    {
+      "id": "spare-subsets",
+      "title": "Every subset of spare parts",
+      "slug": "spare-subsets",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Walk the parts left to right, branching on include-or-skip, and push a copy of the path when the decision string ends.",
+      "tags": [
+        "algorithms",
+        "algorithms/backtracking",
+        "algorithms/arrays",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "dfs-backtracking"
+      ],
+      "related": [
+        "dfs-backtracking",
+        "valid-brackets",
+        "hash-maps",
+        "number-of-islands"
+      ],
+      "path": "lessons/algorithms/problems/spare-subsets/lesson.md",
+      "dir": "lessons/algorithms/problems/spare-subsets",
+      "widgets": [
+        {
+          "id": "branch",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/spare-subsets/viz/branch.md",
+          "steps": "lessons/algorithms/problems/spare-subsets/viz/branch.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate onsite reports list subsets / permutations as the default backtracking warmup.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "OA writeups treat power-set generation as the first include-or-skip DFS.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-03"
+    },
+    {
+      "id": "tarp-span",
+      "title": "Two posts and a tarp",
+      "slug": "tarp-span",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 12,
+      "summary": "Start at both ends of a post row and always walk the shorter post inward so each move can only raise the limiting height.",
+      "tags": [
+        "algorithms",
+        "algorithms/two-pointers",
+        "algorithms/arrays",
+        "algorithms/greedy",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "two-pointers"
+      ],
+      "related": [
+        "two-pointers",
+        "three-sum",
+        "sliding-window",
+        "two-sum"
+      ],
+      "path": "lessons/algorithms/problems/tarp-span/lesson.md",
+      "dir": "lessons/algorithms/problems/tarp-span",
+      "widgets": [
+        {
+          "id": "span",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/tarp-span/viz/span.md",
+          "steps": "lessons/algorithms/problems/tarp-span/viz/span.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "Candidate phone-screen reports list max-area-between-two-lines as the usual two-pointer medium after pair-sum.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Tagged OA lists keep the two-wall water-area prompt next to 3-sum.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-03"
     },
     {
       "id": "three-sum",
@@ -3617,6 +4234,7 @@
       "related": [
         "two-sum",
         "three-sum",
+        "tarp-span",
         "sliding-window",
         "fast-slow-pointers"
       ],
@@ -3877,9 +4495,16 @@
         "two-pointers",
         "lru-cache"
       ],
-      "path": "lessons/algorithms/problems/valid-brackets.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/problems/valid-brackets/lesson.md",
+      "dir": "lessons/algorithms/problems/valid-brackets",
+      "widgets": [
+        {
+          "id": "stack",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/valid-brackets/viz/stack.md",
+          "steps": "lessons/algorithms/problems/valid-brackets/viz/stack.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Amazon",

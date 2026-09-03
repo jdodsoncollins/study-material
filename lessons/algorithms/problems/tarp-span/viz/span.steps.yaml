@@ -1,0 +1,8 @@
+title: Move the short post
+steps:
+  - caption: "Start at the ends. Width is max. Area is min(3,5)*6 = 18."
+    nodes: [ends, area]
+  - caption: "3 is the limit. Walk i inward. A taller left post is the only way the min can rise."
+    nodes: [short, iIn]
+  - caption: "i at 7, j at 5. Area 20. 5 is shorter, so j walks in. Best stays 20."
+    nodes: [area, short, jIn]

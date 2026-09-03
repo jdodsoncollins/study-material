@@ -1,0 +1,8 @@
+title: Add above and left
+steps:
+  - caption: "Top row is all 1s. Only way there is a string of rights."
+    nodes: [seed]
+  - caption: "A middle cell is paths-from-above plus paths-from-the-left."
+    nodes: [cell]
+  - caption: "Bottom-right of 3×4 is 10. Same as C(5,2)."
+    nodes: [cell, next]

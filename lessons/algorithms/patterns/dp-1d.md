@@ -15,9 +15,10 @@ prerequisites:
   - big-o
 related:
   - coin-change
+  - skip-bay
+  - one-trade
   - dp-2d
   - binary-search-on-answer
-  - dfs-backtracking
 company_signal:
   - name: Amazon
     evidence: Candidate OA reports keep listing house-robber / climb-stairs / coin-change as the 1D DP cluster.
@@ -118,7 +119,7 @@ Greedy would take 10 + 1 + 1 and answer 3. The table beats it.
 
 ## Cross-links
 
-- [Fewest tokens for a fare](../problems/coin-change.md) (id: coin-change)
+- [Fewest tokens for a fare](../problems/coin-change/lesson.md) (id: coin-change)
 - [Fill a grid of overlapping subproblems](./dp-2d.md) (id: dp-2d)
 - [Binary search the feasible number](./binary-search-on-answer.md) (id: binary-search-on-answer)
 - [Explore, undo, try the next branch](./dfs-backtracking.md) (id: dfs-backtracking)

@@ -1,0 +1,8 @@
+title: Fill the fare table
+steps:
+  - caption: "dp[0] = 0. Every other cell starts impossible."
+    nodes: [x]
+  - caption: "For fare 13, try 2, 5, and 9. Keep the fewest tokens among those that fit."
+    nodes: [tok, fit, take]
+  - caption: "9+2+2 wins. Greedy biggest-first is not a proof."
+    nodes: [take]

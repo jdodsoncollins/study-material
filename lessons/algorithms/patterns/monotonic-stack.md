@@ -16,6 +16,7 @@ prerequisites:
   - arrays-vs-linked-lists
 related:
   - valid-brackets
+  - next-hotter
   - merge-intervals
   - two-pointers
   - heaps-top-k
@@ -121,7 +122,7 @@ Answer `[2, 1, 2, 1, 0, 0]`.
 
 ## Cross-links
 
-- [Matched crate tags](../problems/valid-brackets.md) (id: valid-brackets)
+- [Matched crate tags](../problems/valid-brackets/lesson.md) (id: valid-brackets)
 - [Collapse overlapping ranges](./merge-intervals.md) (id: merge-intervals)
 - [Squeeze from both ends](./two-pointers/lesson.md) (id: two-pointers)
 - [Keep only the interesting k](./heaps-top-k.md) (id: heaps-top-k)

@@ -1,0 +1,8 @@
+title: Keep a size-k floor
+steps:
+  - caption: "First k scores fill the buffer. The smallest of them is the current k-th."
+    nodes: [score]
+  - caption: "44 beats 6. Evict 6. Winners are 18, 31, 44."
+    nodes: [beat, evict]
+  - caption: "25 later beats 18. The floor of the winners is 25, the 3rd busiest."
+    nodes: [evict, score]

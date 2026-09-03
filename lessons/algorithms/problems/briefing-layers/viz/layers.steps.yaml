@@ -1,0 +1,8 @@
+title: Drain one depth
+steps:
+  - caption: "Snapshot queue length. That many nodes are today's briefing."
+    nodes: [q, drain]
+  - caption: "While you drain, enqueue children for tomorrow. Do not mix the two depths."
+    nodes: [drain, kids]
+  - caption: "Leaves enqueue nothing. The queue goes empty after [1, 6, 10, 14]."
+    nodes: [more, done]

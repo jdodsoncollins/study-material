@@ -1,0 +1,8 @@
+title: Take or skip this bay
+steps:
+  - caption: "Bay 0 is 6. Nothing to skip yet."
+    nodes: [bay, take, best]
+  - caption: "Bay 2 is 9. Take 6+9=15, or skip and keep 6. 15 wins."
+    nodes: [take, skip, best]
+  - caption: "Last bay 1 on top of 15 is 16. Adjacent 8 was the skip that made that legal."
+    nodes: [best, next]

@@ -1,0 +1,8 @@
+title: Meet inside the loop
+steps:
+  - caption: "Both start on 3. Fast is allowed to be null; slow is not the one that falls off."
+    nodes: [start, step]
+  - caption: "After a few jumps they sit on 4 together. That only happens if a back edge exists."
+    nodes: [same, yes]
+  - caption: "A chain that ends at null: fast hits the end. Return false."
+    nodes: [end, no]

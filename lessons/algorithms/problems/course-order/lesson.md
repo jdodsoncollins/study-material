@@ -102,6 +102,8 @@ Confirm arrow meaning. Some prompts store `[course, prereq]` and the edge goes t
 
 n = 5, `need = [[0,1], [1,3], [2,3], [0,2]]`. Module 4 is a loner.
 
+[Peel indegree zero](viz/peel.md)
+
 1. Indegree: 0:0, 1:1, 2:1, 3:2, 4:0. Queue `[0, 4]`.
 2. Peel 0. 1 and 2 drop to 0. Queue `[4, 1, 2]`.
 3. Peel 4, 1, 2. After 1 and 2, node 3 drops to 0.
@@ -127,10 +129,10 @@ Add `[3, 0]` and 0 never reaches indegree 0 after the first pass. Peel length < 
 
 ## Cross-links
 
-- [Order by prerequisites](../patterns/topological-sort/lesson.md) (id: topological-sort)
-- [Expand level by level](../patterns/bfs/lesson.md) (id: bfs)
-- [Explore, undo, try the next branch](../patterns/dfs-backtracking.md) (id: dfs-backtracking)
-- [Cluster membership in nearly constant time](../patterns/union-find/lesson.md) (id: union-find)
-- [Trees and graphs](../../cs/trees-graphs.md) (id: trees-graphs)
-- [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
-- [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)
+- [Order by prerequisites](../../patterns/topological-sort/lesson.md) (id: topological-sort)
+- [Expand level by level](../../patterns/bfs/lesson.md) (id: bfs)
+- [Explore, undo, try the next branch](../../patterns/dfs-backtracking.md) (id: dfs-backtracking)
+- [Cluster membership in nearly constant time](../../patterns/union-find/lesson.md) (id: union-find)
+- [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)
+- [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)
+- [How to run a pattern-first loop](../../strategy/pattern-first-prep.md) (id: pattern-first-prep)

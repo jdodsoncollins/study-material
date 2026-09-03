@@ -16,6 +16,7 @@ prerequisites:
   - trees-graphs
 related:
   - dfs-backtracking
+  - briefing-layers
   - number-of-islands
   - topological-sort
   - trees-graphs
@@ -146,9 +147,9 @@ Grid as in the prompt. S is (1,0), D is (0,2).
 ## Cross-links
 
 - [Explore, undo, try the next branch](../dfs-backtracking.md) (id: dfs-backtracking)
-- [Pallet clusters on a flooded floor](../../problems/number-of-islands.md) (id: number-of-islands)
+- [Pallet clusters on a flooded floor](../../problems/number-of-islands/lesson.md) (id: number-of-islands)
 - [Order by prerequisites](../topological-sort/lesson.md) (id: topological-sort)
-- [Training modules with prereqs](../../problems/course-order.md) (id: course-order)
+- [Training modules with prereqs](../../problems/course-order/lesson.md) (id: course-order)
 - [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)
 - [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)
 - [Cluster membership in nearly constant time](../union-find/lesson.md) (id: union-find)

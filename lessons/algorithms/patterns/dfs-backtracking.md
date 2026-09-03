@@ -16,6 +16,7 @@ prerequisites:
   - trees-graphs
 related:
   - bfs
+  - spare-subsets
   - number-of-islands
   - trie
   - valid-brackets
@@ -133,9 +134,9 @@ Board search adds a cell mark: set `floor[r][c] = '#'`, recurse four ways, resto
 ## Cross-links
 
 - [Expand level by level](./bfs/lesson.md) (id: bfs)
-- [Pallet clusters on a flooded floor](../problems/number-of-islands.md) (id: number-of-islands)
+- [Pallet clusters on a flooded floor](../problems/number-of-islands/lesson.md) (id: number-of-islands)
 - [Prefix trees as a walking index](./trie.md) (id: trie)
-- [Matched crate tags](../problems/valid-brackets.md) (id: valid-brackets)
+- [Matched crate tags](../problems/valid-brackets/lesson.md) (id: valid-brackets)
 - [Trees and graphs](../../cs/trees-graphs.md) (id: trees-graphs)
 - [Fill a grid of overlapping subproblems](./dp-2d.md) (id: dp-2d)
 - [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)

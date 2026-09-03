@@ -132,7 +132,7 @@ Towers 0..5, cables `[0-1], [1-2], [3-4], [2-0]`.
 
 ## Cross-links
 
-- [Pallet clusters on a flooded floor](../../problems/number-of-islands.md) (id: number-of-islands)
+- [Pallet clusters on a flooded floor](../../problems/number-of-islands/lesson.md) (id: number-of-islands)
 - [Expand level by level](../bfs/lesson.md) (id: bfs)
 - [Order by prerequisites](../topological-sort/lesson.md) (id: topological-sort)
 - [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)

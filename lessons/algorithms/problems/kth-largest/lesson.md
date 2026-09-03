@@ -92,6 +92,8 @@ The sort-per-insert is O(n k log k). Swap in a real min-heap for O(n log k). The
 
 `scores = [31, 6, 18, 44, 18, 9, 25]`, `k = 3`
 
+[Keep a size-k floor](viz/buf.md)
+
 1. First three: `[31, 6, 18]`. Sorted buffer `[6, 18, 31]`. Root/smallest of winners = 6.
 2. 44 beats 6. Buffer `[18, 31, 44]`.
 3. 18 ties 18. Does not beat 18. Stay.
@@ -117,9 +119,9 @@ k-th largest is 25. Check: sorted descending `44, 31, 25, 18, 18, 9, 6`. Yes.
 
 ## Cross-links
 
-- [Keep only the interesting k](../patterns/heaps-top-k.md) (id: heaps-top-k)
-- [Binary search the feasible number](../patterns/binary-search-on-answer.md) (id: binary-search-on-answer)
-- [Squeeze from both ends](../patterns/two-pointers/lesson.md) (id: two-pointers)
-- [Hash maps as an index](../patterns/hash-maps.md) (id: hash-maps)
-- [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
-- [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)
+- [Keep only the interesting k](../../patterns/heaps-top-k.md) (id: heaps-top-k)
+- [Binary search the feasible number](../../patterns/binary-search-on-answer.md) (id: binary-search-on-answer)
+- [Squeeze from both ends](../../patterns/two-pointers/lesson.md) (id: two-pointers)
+- [Hash maps as an index](../../patterns/hash-maps.md) (id: hash-maps)
+- [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)
+- [How to run a pattern-first loop](../../strategy/pattern-first-prep.md) (id: pattern-first-prep)

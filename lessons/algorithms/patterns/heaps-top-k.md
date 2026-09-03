@@ -137,7 +137,7 @@ Min-heap of size k → k largest. Max-heap of size k → k smallest. Do not mix 
 
 ## Cross-links
 
-- [k-th busiest dock](../problems/kth-largest.md) (id: kth-largest)
+- [k-th busiest dock](../problems/kth-largest/lesson.md) (id: kth-largest)
 - [Binary search the feasible number](./binary-search-on-answer.md) (id: binary-search-on-answer)
 - [Hash maps as an index](./hash-maps.md) (id: hash-maps)
 - [Collapse overlapping ranges](./merge-intervals.md) (id: merge-intervals)

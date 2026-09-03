@@ -15,6 +15,7 @@ prerequisites:
   - hashing-internals
 related:
   - two-sum
+  - group-anagrams
   - lru-cache
   - hashing-internals
   - three-sum
@@ -123,6 +124,7 @@ Duplicates: two copies of `6` and target `12` work only if the first `6` is alre
 ## Cross-links
 
 - [Pair lookup instead of nested scanning](../problems/two-sum/lesson.md) (id: two-sum)
+- [SKUs that share a packing cipher](../problems/group-anagrams/lesson.md) (id: group-anagrams)
 - [Three-value search](../problems/three-sum/lesson.md) (id: three-sum)
 - [Scanner memory with eviction](../problems/lru-cache/lesson.md) (id: lru-cache)
 - [Hashing internals](../../cs/hashing-internals.md) (id: hashing-internals)

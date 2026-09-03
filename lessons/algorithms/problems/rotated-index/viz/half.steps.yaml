@@ -1,0 +1,8 @@
+title: Drop the half that cannot hold it
+steps:
+  - caption: "mid lands on 4. Left [18,21,4] is not sorted. Right is."
+    nodes: [mid, left]
+  - caption: "11 sits in the sorted right half. Drop the left."
+    nodes: [inR, dropL]
+  - caption: "Next mid is 11. Return the index. A missing 5 falls out of both ranges and returns -1."
+    nodes: [mid]

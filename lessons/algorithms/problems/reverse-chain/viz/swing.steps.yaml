@@ -1,0 +1,8 @@
+title: Swing next to prev
+steps:
+  - caption: "Hold nxt. If you overwrite cur.next first, the rest of the chain is gone."
+    nodes: [save, flip]
+  - caption: "4.next becomes null. prev slides to 4. cur slides to 9."
+    nodes: [flip, slide]
+  - caption: "When cur is null, prev is the new head: 7 → 1 → 9 → 4."
+    nodes: [more, head]

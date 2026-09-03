@@ -91,6 +91,8 @@ If they also want one actual combination, keep `pick[x] = t` whenever you improv
 
 `tokens = [2, 5, 9]`, `amount = 13`
 
+[Fill the fare table](viz/table.md)
+
 1. Even amounts 2,4,6,8,10,12 can be all twos. `dp[2] = 1`, `dp[4] = 2`, …
 2. `dp[5] = 1`. `dp[7] = dp[5]+1 = 2` (5+2), better than three 2s plus leftover.
 3. `dp[9] = 1`. `dp[11] = 2` (9+2). `dp[13] = min(dp[11]+1, dp[8]+1, dp[4]+1) = 3`.
@@ -115,10 +117,10 @@ One optimal: 9 + 2 + 2. Greedy 9 + 5 leftover 0? 9+5=14, overshoot. Greedy 9 the
 
 ## Cross-links
 
-- [Reuse the last few answers](../patterns/dp-1d.md) (id: dp-1d)
-- [Binary search the feasible number](../patterns/binary-search-on-answer.md) (id: binary-search-on-answer)
-- [Keep only the interesting k](../patterns/heaps-top-k.md) (id: heaps-top-k)
-- [Explore, undo, try the next branch](../patterns/dfs-backtracking.md) (id: dfs-backtracking)
-- [Fill a grid of overlapping subproblems](../patterns/dp-2d.md) (id: dp-2d)
-- [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
-- [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)
+- [Reuse the last few answers](../../patterns/dp-1d.md) (id: dp-1d)
+- [Binary search the feasible number](../../patterns/binary-search-on-answer.md) (id: binary-search-on-answer)
+- [Keep only the interesting k](../../patterns/heaps-top-k.md) (id: heaps-top-k)
+- [Explore, undo, try the next branch](../../patterns/dfs-backtracking.md) (id: dfs-backtracking)
+- [Fill a grid of overlapping subproblems](../../patterns/dp-2d.md) (id: dp-2d)
+- [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)
+- [How to run a pattern-first loop](../../strategy/pattern-first-prep.md) (id: pattern-first-prep)
