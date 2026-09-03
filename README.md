@@ -11,7 +11,7 @@ First corpus: **71 original lessons** with nested tags and cross-links.
 | `lessons/ai-agents` | Harnesses, evals, graders, agent failure modes |
 | `lessons/cs` | Complexity, data structures, OS, networking, databases, concurrency |
 
-Lessons are original writeups, not scraped editorials. Schema: [SCHEMA.md](./SCHEMA.md). Tags: [TAGS.md](./TAGS.md). Research log: [meta/RESEARCH.md](./meta/RESEARCH.md). Machine index: [catalog.json](./catalog.json) (regenerate with `node scripts/build-catalog.mjs`).
+Lessons are original writeups, not scraped editorials. Schema: [SCHEMA.md](./SCHEMA.md). Tags: [TAGS.md](./TAGS.md). Ordered path: [curriculum.json](./curriculum.json) (start left, interview on the right — not a public leetcode ladder). Research log: [meta/RESEARCH.md](./meta/RESEARCH.md). Machine index: [catalog.json](./catalog.json) (regenerate with `node scripts/build-catalog.mjs`).
 
 A lesson that needs a figure lives in a directory (`<id>/lesson.md` plus `viz/<stem>.md` mermaid companions and optional `viz/<stem>.steps.yaml` highlight steps). Convert on demand; the rest stay single files. GitHub renders the mermaid files. The Codeatrophy app inlines them and steps highlights.
 

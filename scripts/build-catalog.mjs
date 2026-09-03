@@ -192,6 +192,44 @@ for (const file of files) {
 lessons.sort((a, b) => a.id.localeCompare(b.id));
 const allTags = [...new Set(lessons.flatMap((l) => l.tags))].sort();
 
+const curriculumPath = path.join(ROOT, "curriculum.json");
+let curriculum = null;
+try {
+  curriculum = JSON.parse(fs.readFileSync(curriculumPath, "utf8"));
+} catch (err) {
+  errors.push(`curriculum.json: ${err.message}`);
+}
+
+if (curriculum) {
+  const seen = new Set();
+  const stages = curriculum.stages;
+  if (!Array.isArray(stages) || stages.length === 0) {
+    errors.push("curriculum.json: stages must be a non-empty array");
+  } else {
+    for (const stage of stages) {
+      if (!stage?.id || !stage.label || !Array.isArray(stage.units)) {
+        errors.push(`curriculum stage ${stage?.id ?? "?"}: missing id, label, or units`);
+        continue;
+      }
+      for (const unit of stage.units) {
+        if (!unit?.id || !unit.title || !unit.track || !Array.isArray(unit.lessons)) {
+          errors.push(`curriculum unit ${unit?.id ?? "?"}: missing id, title, track, or lessons`);
+          continue;
+        }
+        if (unit.lessons.length === 0) errors.push(`curriculum unit ${unit.id}: empty lessons`);
+        for (const id of unit.lessons) {
+          if (!ids.has(id)) errors.push(`curriculum.json: unknown lesson ${id} in ${unit.id}`);
+          if (seen.has(id)) errors.push(`curriculum.json: lesson ${id} listed twice`);
+          seen.add(id);
+        }
+      }
+    }
+    for (const id of ids) {
+      if (!seen.has(id)) errors.push(`curriculum.json: lesson ${id} is not on the path`);
+    }
+  }
+}
+
 for (const lesson of lessons) {
   for (const id of [...lesson.related, ...lesson.prerequisites]) {
     if (!ids.has(id)) errors.push(`${lesson.path}: dangling ref ${id}`);
@@ -205,11 +243,12 @@ for (const f of allWidgetFiles) {
 }
 
 const catalog = {
-  version: 2,
+  version: 3,
   generated: new Date().toISOString().slice(0, 10),
   lesson_count: lessons.length,
   tags: allTags,
   tag_tree: nestTags(allTags),
+  curriculum,
   lessons,
 };
 

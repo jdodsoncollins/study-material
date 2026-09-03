@@ -2,6 +2,42 @@
 
 Every lesson is one Markdown file. The Codeatrophy app parses this schema. Do not invent extra top-level keys. Do not omit required keys.
 
+## Curriculum path
+
+`curriculum.json` is the ordered interview path the app draws on the library screen. It is **not** a copy of any public leetcode ladder. Reorder units here; do not invent lessons that are not in `lessons/`.
+
+```json
+{
+  "version": 1,
+  "title": "Path",
+  "blurb": "Left is start. Right is the interview.",
+  "stages": [
+    {
+      "id": "kernel",
+      "label": "Kernel",
+      "blurb": "Cost and layout before any pattern.",
+      "units": [
+        {
+          "id": "cost",
+          "title": "Cost",
+          "track": "cs",
+          "lessons": ["big-o", "arrays-vs-linked-lists", "floating-point"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+| Field | Rules |
+| --- | --- |
+| `stages` | Left → right. First stage is start; last is the interview. |
+| `units` | Same-column units are parallel (any order). |
+| `lessons` | Lesson `id`s, in recommended order inside the unit. |
+| coverage | Every lesson `id` appears **exactly once**. `build-catalog.mjs` fails otherwise. |
+
+`catalog.json` embeds this object as `curriculum` (catalog `version` 3).
+
 ## File location
 
 Either a flat file or a lesson directory (use a directory when the lesson has visuals):

@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "generated": "2026-09-03",
   "lesson_count": 71,
   "tags": [
@@ -190,6 +190,378 @@
         }
       }
     }
+  },
+  "curriculum": {
+    "version": 1,
+    "title": "Path",
+    "blurb": "Left is start. Right is the interview. Same-column units can be done in any order.",
+    "stages": [
+      {
+        "id": "kernel",
+        "label": "Kernel",
+        "blurb": "Cost and layout before any pattern.",
+        "units": [
+          {
+            "id": "cost",
+            "title": "Cost",
+            "track": "cs",
+            "lessons": [
+              "big-o",
+              "arrays-vs-linked-lists",
+              "floating-point"
+            ]
+          },
+          {
+            "id": "glyphs",
+            "title": "Glyphs",
+            "track": "cs",
+            "lessons": [
+              "encoding-unicode"
+            ]
+          },
+          {
+            "id": "drill",
+            "title": "Drill",
+            "track": "algorithms",
+            "lessons": [
+              "pattern-first-prep"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "index",
+        "label": "Index",
+        "blurb": "Remember what you have seen. Scan from both ends.",
+        "units": [
+          {
+            "id": "hash",
+            "title": "Hash",
+            "track": "algorithms",
+            "lessons": [
+              "hashing-internals",
+              "hash-maps",
+              "two-sum"
+            ]
+          },
+          {
+            "id": "squeeze",
+            "title": "Squeeze",
+            "track": "algorithms",
+            "lessons": [
+              "two-pointers",
+              "three-sum",
+              "valid-brackets"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "window",
+        "label": "Window",
+        "blurb": "A live range, a waiting stack, two speeds.",
+        "units": [
+          {
+            "id": "range",
+            "title": "Range",
+            "track": "algorithms",
+            "lessons": [
+              "sliding-window",
+              "longest-unique-window"
+            ]
+          },
+          {
+            "id": "next",
+            "title": "Next",
+            "track": "algorithms",
+            "lessons": [
+              "monotonic-stack",
+              "merge-intervals",
+              "fast-slow-pointers"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "runtime",
+        "label": "Runtime",
+        "blurb": "What the machine is doing while your loop runs.",
+        "units": [
+          {
+            "id": "machine",
+            "title": "Machine",
+            "track": "cs",
+            "lessons": [
+              "os-memory",
+              "processes-threads",
+              "recursion-call-stack"
+            ]
+          },
+          {
+            "id": "keep",
+            "title": "Keep k",
+            "track": "algorithms",
+            "lessons": [
+              "heaps-top-k",
+              "kth-largest",
+              "lru-cache"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "graph",
+        "label": "Graph",
+        "blurb": "Shape first, then walk, then order.",
+        "units": [
+          {
+            "id": "shape",
+            "title": "Shape",
+            "track": "cs",
+            "lessons": [
+              "trees-graphs",
+              "indexes"
+            ]
+          },
+          {
+            "id": "walk",
+            "title": "Walk",
+            "track": "algorithms",
+            "lessons": [
+              "bfs",
+              "dfs-backtracking",
+              "number-of-islands"
+            ]
+          },
+          {
+            "id": "order",
+            "title": "Order",
+            "track": "algorithms",
+            "lessons": [
+              "topological-sort",
+              "course-order",
+              "union-find"
+            ]
+          },
+          {
+            "id": "prefix",
+            "title": "Prefix",
+            "track": "algorithms",
+            "lessons": [
+              "trie",
+              "binary-search-on-answer"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "reuse",
+        "label": "Reuse",
+        "blurb": "Yesterday's answer is today's input.",
+        "units": [
+          {
+            "id": "one-dim",
+            "title": "1-D",
+            "track": "algorithms",
+            "lessons": [
+              "dp-1d",
+              "coin-change"
+            ]
+          },
+          {
+            "id": "two-dim",
+            "title": "2-D",
+            "track": "algorithms",
+            "lessons": [
+              "dp-2d"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "wire",
+        "label": "Wire",
+        "blurb": "Packets, locks, and the lie isolation sells.",
+        "units": [
+          {
+            "id": "pipe",
+            "title": "Pipe",
+            "track": "cs",
+            "lessons": [
+              "http-and-tcp"
+            ]
+          },
+          {
+            "id": "lock",
+            "title": "Lock",
+            "track": "cs",
+            "lessons": [
+              "locks-and-concurrency",
+              "transactions-isolation"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "frame",
+        "label": "Frame",
+        "blurb": "How to spend forty-five minutes, then the cheap building blocks.",
+        "units": [
+          {
+            "id": "round",
+            "title": "Round",
+            "track": "system-design",
+            "lessons": [
+              "interview-framework"
+            ]
+          },
+          {
+            "id": "nearby",
+            "title": "Nearby",
+            "track": "system-design",
+            "lessons": [
+              "caching",
+              "load-balancing"
+            ]
+          },
+          {
+            "id": "split",
+            "title": "Split",
+            "track": "system-design",
+            "lessons": [
+              "queues-delivery",
+              "cap-and-consistency",
+              "sharding"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "box",
+        "label": "Box",
+        "blurb": "One job, one box. Lookup, flags, edge, money.",
+        "units": [
+          {
+            "id": "lookup",
+            "title": "Lookup",
+            "track": "system-design",
+            "lessons": [
+              "url-shortener",
+              "search-autocomplete",
+              "feature-flags"
+            ]
+          },
+          {
+            "id": "edge",
+            "title": "Edge",
+            "track": "system-design",
+            "lessons": [
+              "rate-limiter",
+              "notification-system",
+              "job-scheduler",
+              "payment-idempotency"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "load",
+        "label": "Load",
+        "blurb": "Fan-out, matching, scarce GPUs.",
+        "units": [
+          {
+            "id": "fanout",
+            "title": "Fan-out",
+            "track": "system-design",
+            "lessons": [
+              "news-feed",
+              "chat-system",
+              "video-streaming"
+            ]
+          },
+          {
+            "id": "match",
+            "title": "Match",
+            "track": "system-design",
+            "lessons": [
+              "ride-hailing",
+              "llm-serving"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "harness",
+        "label": "Harness",
+        "blurb": "The loop you rent versus the loop you write.",
+        "units": [
+          {
+            "id": "not-rag",
+            "title": "Not RAG",
+            "track": "ai-agents",
+            "lessons": [
+              "rag-vs-agents"
+            ]
+          },
+          {
+            "id": "split-loop",
+            "title": "Split",
+            "track": "ai-agents",
+            "lessons": [
+              "eval-harness-vs-agent-harness",
+              "vendor-vs-user-harness"
+            ]
+          },
+          {
+            "id": "call",
+            "title": "Call",
+            "track": "ai-agents",
+            "lessons": [
+              "tool-calling",
+              "traces-trajectories",
+              "outcome-vs-transcript",
+              "graders"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "judge",
+        "label": "Judge",
+        "blurb": "Measure the agent, then sit the round.",
+        "units": [
+          {
+            "id": "run",
+            "title": "Run",
+            "track": "ai-agents",
+            "lessons": [
+              "how-to-run-proper-evals",
+              "pass-at-k",
+              "capability-vs-regression",
+              "coding-agent-evals"
+            ]
+          },
+          {
+            "id": "drift",
+            "title": "Drift",
+            "track": "ai-agents",
+            "lessons": [
+              "online-offline-evals",
+              "llm-as-judge-calibration"
+            ]
+          },
+          {
+            "id": "room",
+            "title": "Room",
+            "track": "ai-agents",
+            "lessons": [
+              "agent-mistakes",
+              "interview-ai-round"
+            ]
+          }
+        ]
+      }
+    ]
   },
   "lessons": [
     {
