@@ -1,0 +1,10 @@
+title: Tools are the product
+steps:
+  - caption: "The worker loads the thread tail and asks the model. This is the agent harness, not YardWire."
+    nodes: [job, model, tool]
+  - caption: "Reads and chat posts are retry-safe. post_thread edits the placeholder when it can."
+    nodes: [inv, post, model]
+  - caption: "page_oncall is refused unless this job already confirmed. Retries use event_id as the key."
+    nodes: [gate, refuse, page]
+  - caption: "Stop on final answer, round cap, or timer. Always write a trace."
+    nodes: [stop]

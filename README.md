@@ -2,14 +2,14 @@
 
 Public interview study notes for [Codeatrophy](https://github.com/jdodsoncollins/Codeatrophy).
 
-First corpus: **71 original lessons** with nested tags and cross-links.
+Corpus: original lessons with nested tags, cross-links, and mermaid companions.
 
 | Track | What is in it |
 | --- | --- |
 | `lessons/algorithms` | 15 patterns, 9 problems, 1 prep strategy |
-| `lessons/system-design` | 6 foundations, 12 company-shaped cases |
-| `lessons/ai-agents` | Harnesses, evals, graders, agent failure modes |
-| `lessons/cs` | Complexity, data structures, OS, networking, databases, concurrency |
+| `lessons/system-design` | Foundations (including unique IDs), product cases (shortener, feed, blobs, crawler, …) |
+| `lessons/ai-agents` | Harnesses, evals, tools, and a chat-clerk case |
+| `lessons/cs` | Complexity, data structures, OS, HTTP/TCP, DNS, databases, concurrency |
 
 Lessons are original writeups, not scraped editorials. Schema: [SCHEMA.md](./SCHEMA.md). Tags: [TAGS.md](./TAGS.md). Ordered path: [curriculum.json](./curriculum.json) (start left, interview on the right — not a public leetcode ladder). Research log: [meta/RESEARCH.md](./meta/RESEARCH.md). Machine index: [catalog.json](./catalog.json) (regenerate with `node scripts/build-catalog.mjs`).
 

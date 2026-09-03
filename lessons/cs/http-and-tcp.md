@@ -17,6 +17,7 @@ related:
   - encoding-unicode
   - caching
   - cap-and-consistency
+  - dns-resolution
 company_signal:
   - name: Amazon
     evidence: API-design and service-design screens still ask what lives on TCP vs HTTP, idempotency of methods, and why a retry doubled a charge.
@@ -38,6 +39,7 @@ status: canonical
 - **HTTP** is the application language: method, path, headers, body, status. It needs a transport.
 - HTTP/1.1 usually rides TCP with optional keepalive. HTTP/2 multiplexes many streams on one TCP connection. HTTP/3 rides **QUIC** (UDP) instead.
 - TLS encrypts the pipe. It is not HTTP, and it is not optional on the public web.
+- Before the handshake, the client needs an IP. That is [DNS](./dns-resolution/lesson.md) (id: dns-resolution): a cached tree walk, not a magic box.
 
 ## Why it shows up in interviews
 
@@ -107,3 +109,4 @@ If they ask WebSockets: "That's an HTTP upgrade, then a long-lived bidirectional
 - [Cache as a second store](../system-design/foundations/caching/lesson.md) (id: caching)
 - [CAP as a conversation tool](../system-design/foundations/cap-and-consistency.md) (id: cap-and-consistency)
 - [Locks buy correctness, not speed](./locks-and-concurrency.md) (id: locks-and-concurrency)
+- [A name is not an address](./dns-resolution/lesson.md) (id: dns-resolution)

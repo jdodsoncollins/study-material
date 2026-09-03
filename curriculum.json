@@ -144,7 +144,7 @@
           "id": "pipe",
           "title": "Pipe",
           "track": "cs",
-          "lessons": ["http-and-tcp"]
+          "lessons": ["http-and-tcp", "dns-resolution"]
         },
         {
           "id": "lock",
@@ -175,7 +175,7 @@
           "id": "split",
           "title": "Split",
           "track": "system-design",
-          "lessons": ["queues-delivery", "cap-and-consistency", "sharding"]
+          "lessons": ["queues-delivery", "cap-and-consistency", "sharding", "unique-ids"]
         }
       ]
     },
@@ -207,7 +207,7 @@
           "id": "fanout",
           "title": "Fan-out",
           "track": "system-design",
-          "lessons": ["news-feed", "chat-system", "video-streaming"]
+          "lessons": ["news-feed", "chat-system", "video-streaming", "blob-store", "catalog-crawler"]
         },
         {
           "id": "match",
@@ -238,7 +238,7 @@
           "id": "call",
           "title": "Call",
           "track": "ai-agents",
-          "lessons": ["tool-calling", "traces-trajectories", "outcome-vs-transcript", "graders"]
+          "lessons": ["tool-calling", "traces-trajectories", "outcome-vs-transcript", "graders", "desk-bot"]
         }
       ]
     },

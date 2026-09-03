@@ -23,6 +23,7 @@ related:
   - sharding
   - interview-framework
   - job-scheduler
+  - blob-store
 company_signal:
   - name: Google
     evidence: Candidate-reported loops and prep-site frequency lists treat video streaming as a Google-flavored (YouTube-shaped) prompt with encoding and CDN depth.
@@ -127,3 +128,4 @@ Origin shield: regional mid-tier caches in front of object storage so a global m
 - [Splitting a keyspace so one box is not the product](../../foundations/sharding/lesson.md) (id: sharding)
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)
 - [HTTP and TCP as interview tools](../../../cs/http-and-tcp.md) (id: http-and-tcp)
+- [Camera rolls that never fit on one disk](../blob-store/lesson.md) (id: blob-store)

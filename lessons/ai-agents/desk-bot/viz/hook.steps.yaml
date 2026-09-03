@@ -1,0 +1,8 @@
+title: Ack before the model
+steps:
+  - caption: "YardWire will POST the same event_id more than once. WireHook is the only thing on that path."
+    nodes: [wire, hook]
+  - caption: "Verify the signing secret. Fail closed. Then collapse retries on event_id."
+    nodes: [ver, dedup, ack]
+  - caption: "Enqueue the job and post one placeholder. The model is not invited to the webhook."
+    nodes: [q, hold, ack]

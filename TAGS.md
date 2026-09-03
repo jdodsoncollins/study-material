@@ -25,6 +25,7 @@ algorithms
   algorithms/union-find
 system-design
   system-design/foundations
+  system-design/ids
   system-design/caching
   system-design/storage
   system-design/messaging

@@ -1,0 +1,10 @@
+title: Bytes then the card
+steps:
+  - caption: "Camera asks CardAPI for a session and a clip_id. No bytes yet."
+    nodes: [cam, card, sess]
+  - caption: "Chunks PUT to ClipBytes. Each (clip_id, n, checksum) is idempotent."
+    nodes: [sess, bytes]
+  - caption: "Finalize checks the whole SHA and only then writes ClipCard. Readers cannot see it earlier."
+    nodes: [sha, meta]
+  - caption: "Download is authz on the card, then a signed GET. Bytes skip CardAPI."
+    nodes: [get, meta, sign, bytes]

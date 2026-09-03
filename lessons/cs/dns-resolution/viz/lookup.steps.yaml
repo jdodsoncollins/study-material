@@ -1,0 +1,10 @@
+title: Walk the labels
+steps:
+  - caption: "Stub asks YardDNS. The laptop does not walk the tree itself."
+    nodes: [stub, rec]
+  - caption: "Cache miss. Recursor asks root who owns .dock."
+    nodes: [rec, cache, root]
+  - caption: "TLD points at the yard.dock nameservers. Glue avoids a loop."
+    nodes: [tld, auth]
+  - caption: "Auth returns the A and a TTL. Next stub in that TTL is a hit."
+    nodes: [auth, rec, ans]

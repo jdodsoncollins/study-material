@@ -1,0 +1,10 @@
+title: Pack a ticket
+steps:
+  - caption: "Each worker mints locally. No global nextval."
+    nodes: [mint]
+  - caption: "Milliseconds since a custom epoch. This is what makes ids roughly sortable."
+    nodes: [pack]
+  - caption: "Worker id is allocated at boot. Hashing the hostname is how you collide."
+    nodes: [worker]
+  - caption: "Sequence resets every millisecond. Overflow waits, it does not wrap."
+    nodes: [seq, id, log]

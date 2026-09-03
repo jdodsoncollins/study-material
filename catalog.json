@@ -1,7 +1,7 @@
 {
   "version": 3,
   "generated": "2026-09-03",
-  "lesson_count": 71,
+  "lesson_count": 76,
   "tags": [
     "ai-agents",
     "ai-agents/evals",
@@ -44,6 +44,7 @@
     "system-design/consistency",
     "system-design/foundations",
     "system-design/genai",
+    "system-design/ids",
     "system-design/messaging",
     "system-design/product-cases",
     "system-design/realtime",
@@ -174,6 +175,9 @@
           "children": {}
         },
         "genai": {
+          "children": {}
+        },
+        "ids": {
           "children": {}
         },
         "messaging": {
@@ -388,7 +392,8 @@
             "title": "Pipe",
             "track": "cs",
             "lessons": [
-              "http-and-tcp"
+              "http-and-tcp",
+              "dns-resolution"
             ]
           },
           {
@@ -431,7 +436,8 @@
             "lessons": [
               "queues-delivery",
               "cap-and-consistency",
-              "sharding"
+              "sharding",
+              "unique-ids"
             ]
           }
         ]
@@ -476,7 +482,9 @@
             "lessons": [
               "news-feed",
               "chat-system",
-              "video-streaming"
+              "video-streaming",
+              "blob-store",
+              "catalog-crawler"
             ]
           },
           {
@@ -520,7 +528,8 @@
               "tool-calling",
               "traces-trajectories",
               "outcome-vs-transcript",
-              "graders"
+              "graders",
+              "desk-bot"
             ]
           }
         ]
@@ -774,6 +783,59 @@
       "updated": "2026-09-02"
     },
     {
+      "id": "blob-store",
+      "title": "Camera rolls that never fit on one disk",
+      "slug": "blob-store",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 20,
+      "summary": "RollKeep stores dock camera clips as immutable blobs; the fight is resumable upload, a tiny metadata index, and a cold path that is allowed to be slow.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/storage",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "unique-ids"
+      ],
+      "related": [
+        "unique-ids",
+        "caching",
+        "video-streaming",
+        "sharding",
+        "dns-resolution"
+      ],
+      "path": "lessons/system-design/cases/blob-store/lesson.md",
+      "dir": "lessons/system-design/cases/blob-store",
+      "widgets": [
+        {
+          "id": "put",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/blob-store/viz/put.md",
+          "steps": "lessons/system-design/cases/blob-store/viz/put.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Dropbox",
+          "evidence": "Candidate-reported loops and prep-site lists keep \"design Dropbox / Google Drive\" as a mid/senior storage prompt; the real score is chunking, metadata, and sync, not a filesystem drawing.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "S3-shaped object-store prompts show up in L5/L6 backend loops as durability and multipart-upload probes.",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
       "id": "caching",
       "title": "Remembering the expensive answer nearby",
       "slug": "caching",
@@ -904,6 +966,59 @@
           "evidence": "The 2026 agent-eval essay separates capability measurement from regression gates as different products of the same harness.",
           "year": 2026,
           "confidence": "high"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "catalog-crawler",
+      "title": "A polite harvest of other people's HTML",
+      "slug": "catalog-crawler",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 18,
+      "summary": "CatalogMoth crawls vendor part pages with a per-host politeness clock, a frontier queue, and a seen-filter that is allowed to lie one way.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/messaging",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "queues-delivery"
+      ],
+      "related": [
+        "queues-delivery",
+        "dns-resolution",
+        "job-scheduler",
+        "rate-limiter",
+        "unique-ids"
+      ],
+      "path": "lessons/system-design/cases/catalog-crawler/lesson.md",
+      "dir": "lessons/system-design/cases/catalog-crawler",
+      "widgets": [
+        {
+          "id": "crawl",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/catalog-crawler/viz/crawl.md",
+          "steps": "lessons/system-design/cases/catalog-crawler/viz/crawl.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Google",
+          "evidence": "Candidate-reported search-infra loops and prep-site lists still treat web crawler as a classic \"queues plus politeness plus seen-set\" prompt.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "Candidate-reported L5s use crawler/scraper variants when the team is discovery, ads, or marketplace catalog.",
+          "year": 2026,
+          "confidence": "medium"
         }
       ],
       "updated": "2026-09-02"
@@ -1084,6 +1199,68 @@
       "updated": "2026-09-02"
     },
     {
+      "id": "desk-bot",
+      "title": "A clerk in the chat that is allowed to wait",
+      "slug": "desk-bot",
+      "kind": "case-study",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 22,
+      "summary": "DockDesk is an agent behind a chat slash command; the design is verify-then-queue, an idempotent tool loop, and a reply that Slack retries cannot double-post.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/product",
+        "ai-agents/harnesses",
+        "ai-agents/tools",
+        "interviews",
+        "interviews/ai",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "eval-harness-vs-agent-harness",
+        "tool-calling"
+      ],
+      "related": [
+        "tool-calling",
+        "traces-trajectories",
+        "queues-delivery",
+        "payment-idempotency",
+        "vendor-vs-user-harness",
+        "agent-mistakes"
+      ],
+      "path": "lessons/ai-agents/desk-bot/lesson.md",
+      "dir": "lessons/ai-agents/desk-bot",
+      "widgets": [
+        {
+          "id": "hook",
+          "kind": "mermaid",
+          "file": "lessons/ai-agents/desk-bot/viz/hook.md",
+          "steps": "lessons/ai-agents/desk-bot/viz/hook.steps.yaml"
+        },
+        {
+          "id": "loop",
+          "kind": "mermaid",
+          "file": "lessons/ai-agents/desk-bot/viz/loop.md",
+          "steps": "lessons/ai-agents/desk-bot/viz/loop.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Slack",
+          "evidence": "Candidate-reported \"build a Slack bot / assistant\" prompts at product and infra companies now assume an LLM loop, not a regex, and score retries, permissions, and thread replies.",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "OpenAI",
+          "evidence": "Public assistant-in-chat product talks and candidate-reported AI-round design questions use a messaging surface as the harness boundary.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
       "id": "dfs-backtracking",
       "title": "Explore, undo, try the next branch",
       "slug": "dfs-backtracking",
@@ -1122,6 +1299,50 @@
           "evidence": "Phone-screen writeups describe word-search / combination-sum style DFS as a recurring medium.",
           "year": 2025,
           "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
+      "id": "dns-resolution",
+      "title": "A name is not an address",
+      "slug": "dns-resolution",
+      "kind": "concept",
+      "track": "cs",
+      "difficulty": "intro",
+      "estimated_minutes": 14,
+      "summary": "DNS is a cached tree walk from a stub to an authoritative name, not a magic lookup of a hostname.",
+      "tags": [
+        "cs",
+        "cs/networking",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "http-and-tcp"
+      ],
+      "related": [
+        "http-and-tcp",
+        "caching",
+        "load-balancing",
+        "unique-ids"
+      ],
+      "path": "lessons/cs/dns-resolution/lesson.md",
+      "dir": "lessons/cs/dns-resolution",
+      "widgets": [
+        {
+          "id": "lookup",
+          "kind": "mermaid",
+          "file": "lessons/cs/dns-resolution/viz/lookup.md",
+          "steps": "lessons/cs/dns-resolution/viz/lookup.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "Candidate-reported backend screens still open with \"what happens after you type a hostname\" and expect cache, TTL, and who is authoritative, not a cloud logo.",
+          "year": 2026,
+          "confidence": "high"
         }
       ],
       "updated": "2026-09-02"
@@ -1649,7 +1870,8 @@
         "processes-threads",
         "encoding-unicode",
         "caching",
-        "cap-and-consistency"
+        "cap-and-consistency",
+        "dns-resolution"
       ],
       "path": "lessons/cs/http-and-tcp.md",
       "dir": null,
@@ -2989,7 +3211,8 @@
         "cap-and-consistency",
         "url-shortener",
         "ride-hailing",
-        "indexes"
+        "indexes",
+        "unique-ids"
       ],
       "path": "lessons/system-design/foundations/sharding/lesson.md",
       "dir": "lessons/system-design/foundations/sharding",
@@ -3144,7 +3367,8 @@
         "vendor-vs-user-harness",
         "eval-harness-vs-agent-harness",
         "outcome-vs-transcript",
-        "rag-vs-agents"
+        "rag-vs-agents",
+        "desk-bot"
       ],
       "path": "lessons/ai-agents/tool-calling/lesson.md",
       "dir": "lessons/ai-agents/tool-calling",
@@ -3523,6 +3747,58 @@
       "updated": "2026-09-02"
     },
     {
+      "id": "unique-ids",
+      "title": "IDs that sort without a coordinator",
+      "slug": "unique-ids",
+      "kind": "concept",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "A 64-bit ticket can be unique, roughly time-ordered, and minted on many boxes if you partition time, worker, and sequence.",
+      "tags": [
+        "system-design",
+        "system-design/foundations",
+        "system-design/ids",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework"
+      ],
+      "related": [
+        "sharding",
+        "http-and-tcp",
+        "indexes",
+        "blob-store",
+        "job-scheduler"
+      ],
+      "path": "lessons/system-design/foundations/unique-ids/lesson.md",
+      "dir": "lessons/system-design/foundations/unique-ids",
+      "widgets": [
+        {
+          "id": "bits",
+          "kind": "mermaid",
+          "file": "lessons/system-design/foundations/unique-ids/viz/bits.md",
+          "steps": "lessons/system-design/foundations/unique-ids/viz/bits.steps.yaml"
+        }
+      ],
+      "company_signal": [
+        {
+          "name": "Twitter",
+          "evidence": "Public Snowflake writeup plus candidate-reported ID-generation prompts at Meta/Amazon still treat time-sortable 64-bit IDs as a staple follow-up.",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Uber",
+          "evidence": "Candidate-reported geo/dispatch loops ask how event IDs stay unique across regions without a global sequence.",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-09-02"
+    },
+    {
       "id": "url-shortener",
       "title": "Minting short keys for a read-heavy lookup",
       "slug": "url-shortener",
@@ -3548,7 +3824,8 @@
         "caching",
         "sharding",
         "load-balancing",
-        "rate-limiter"
+        "rate-limiter",
+        "unique-ids"
       ],
       "path": "lessons/system-design/cases/url-shortener/lesson.md",
       "dir": "lessons/system-design/cases/url-shortener",
@@ -3689,7 +3966,8 @@
         "load-balancing",
         "sharding",
         "interview-framework",
-        "job-scheduler"
+        "job-scheduler",
+        "blob-store"
       ],
       "path": "lessons/system-design/cases/video-streaming/lesson.md",
       "dir": "lessons/system-design/cases/video-streaming",

@@ -21,6 +21,7 @@ related:
   - eval-harness-vs-agent-harness
   - outcome-vs-transcript
   - rag-vs-agents
+  - desk-bot
 company_signal:
   - name: Anthropic
     evidence: Public agent-harness writing treats tool design (schemas, stop conditions, permissions) as the harness, not the model.
@@ -96,3 +97,4 @@ Tie it to serving limits if they ask about load: tool fan-out is a [serving](../
 - [Outcome versus transcript](../outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
 - [Queues and delivery](../../system-design/foundations/queues-delivery/lesson.md) (id: queues-delivery)
 - [Job scheduler](../../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler)
+- [A clerk in the chat that is allowed to wait](../desk-bot/lesson.md) (id: desk-bot)

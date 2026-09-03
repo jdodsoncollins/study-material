@@ -23,6 +23,7 @@ related:
   - sharding
   - load-balancing
   - rate-limiter
+  - unique-ids
 company_signal:
   - name: Amazon
     evidence: Candidate-reported L5 staple; prep-site frequency lists treat URL shorteners as the default junior/mid prompt across Amazon, Google, and Meta.
@@ -130,3 +131,4 @@ Redirect stays a 302, not a 301, so revoke can actually stop traffic.
 - [Spreading work without creating a new bottleneck](../../foundations/load-balancing.md) (id: load-balancing)
 - [Token buckets and sliding windows at the edge](../rate-limiter/lesson.md) (id: rate-limiter)
 - [HTTP and TCP as interview tools](../../../cs/http-and-tcp.md) (id: http-and-tcp)
+- [IDs that sort without a coordinator](../../foundations/unique-ids/lesson.md) (id: unique-ids)

@@ -21,6 +21,7 @@ related:
   - url-shortener
   - ride-hailing
   - indexes
+  - unique-ids
 company_signal:
   - name: Google
     evidence: Candidate-reported loops and prep-site frequency notes treat shard maps, rebalancing, and hot-key handling as the depth probe after a candidate draws "sharded DB."
@@ -107,3 +108,4 @@ The celebrity clip that gets 40% of all resolves still hashes to one shard. Cach
 - [Ordered delivery for a 1:1 and small-group messenger](../../cases/chat-system/lesson.md) (id: chat-system)
 - [Indexes as the real storage API](../../../cs/indexes.md) (id: indexes)
 - [Forty-five minutes is a navigation problem](../interview-framework.md) (id: interview-framework)
+- [IDs that sort without a coordinator](../unique-ids/lesson.md) (id: unique-ids)

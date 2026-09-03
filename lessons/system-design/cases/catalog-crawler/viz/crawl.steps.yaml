@@ -1,0 +1,10 @@
+title: Polite then seen
+steps:
+  - caption: "Seeds land in a frontier sharded by host, not by URL hash."
+    nodes: [seed, front]
+  - caption: "Dispatcher pops a host whose politeness clock is due and hands one URL to a Fetcher."
+    nodes: [disp, fetch, robots]
+  - caption: "New links go back on that host's queue. Bloom says probably-seen → drop (safe skip)."
+    nodes: [seen, front, drop]
+  - caption: "HTML parse is off the fetch path. A job writes the index."
+    nodes: [fetch, idx]
