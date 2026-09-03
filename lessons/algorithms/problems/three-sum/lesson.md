@@ -87,6 +87,9 @@ function balanceTriples(stubs: number[]): number[][] {
   }
   return out;
 }
+
+console.log(balanceTriples([9, -4, 5, -5, 2, 7, -7, 0]));
+
 ```
 
 If the pinned value is already positive and the array is sorted, later pins cannot sum to 0. You can break early.

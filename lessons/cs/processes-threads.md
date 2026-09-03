@@ -77,6 +77,9 @@ function pickWorker(crateId: string, n: number): number {
   for (let i = 0; i < crateId.length; i++) h = (h * 31 + crateId.charCodeAt(i)) | 0;
   return Math.abs(h) % n;
 }
+
+console.log(pickWorker("N-4", 4), pickWorker("N-4", 4), pickWorker("CRANE", 4));
+
 ```
 
 Sticky assignment keeps a crate's in-memory state on one worker so you do not lock across threads. That is the same instinct as sharding.

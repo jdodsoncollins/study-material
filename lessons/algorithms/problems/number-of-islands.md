@@ -94,6 +94,15 @@ function palletClusters(floor: number[][]): number {
   }
   return clusters;
 }
+
+const floor = [
+  [1, 1, 0, 0, 1],
+  [1, 0, 0, 1, 1],
+  [0, 0, 0, 0, 0],
+  [1, 0, 1, 1, 0],
+];
+console.log(palletClusters(floor.map((row) => row.slice()))); // 4
+
 ```
 
 If they forbid mutating the grid, keep a `seen` matrix. If the grid is huge and skinny, BFS avoids stack depth.

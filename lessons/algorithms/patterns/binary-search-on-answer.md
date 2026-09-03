@@ -78,6 +78,10 @@ function minSpeed(crates: number[], hours: number): number {
   }
   return lo;
 }
+
+console.log(minSpeed([7, 3, 11, 5], 8)); // 4
+console.log(minSpeed([7, 3, 11, 5], 4)); // 11
+
 ```
 
 When `can(mid)` is true you still try smaller, so `hi = mid`, not `mid - 1`, if you want the *minimum* that works.

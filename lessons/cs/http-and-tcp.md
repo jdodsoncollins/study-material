@@ -80,6 +80,9 @@ function methodRetryable(method: string, status: number): boolean {
   // 409/200 on a replayed POST should be treated as success by key, not retried blindly
   return status >= 500 && method !== "POST";
 }
+
+console.log(methodRetryable("GET", 500), methodRetryable("POST", 500), methodRetryable("POST", 409));
+
 ```
 
 GET is expected idempotent and cacheable. POST is neither unless you *make* it so with a key.

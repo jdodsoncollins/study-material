@@ -77,6 +77,11 @@ function debit(row: { ml: number; version: number }, take: number): boolean {
   row.version += 1;
   return true;
 }
+
+const tank = { ml: 40, version: 3 };
+console.log(debit(tank, 15), tank); // true { ml: 25, version: 4 }
+console.log(debit(tank, 40), tank); // false, unchanged ml
+
 ```
 
 If the `UPDATE ... WHERE version = :old` hits 0 rows, retry the transaction. That is an isolation strategy you can explain without naming an engine.

@@ -75,6 +75,10 @@ function strapsOk(tape: string): boolean {
   }
   return stack.length === 0;
 }
+
+console.log(strapsOk("[{()}]()")); // true
+console.log(strapsOk("[({)]"));    // false
+
 ```
 
 Pop on an empty stack is a mismatch. End of tape with leftovers is a mismatch. Do not special-case even length; `"([)]"` is even and wrong.

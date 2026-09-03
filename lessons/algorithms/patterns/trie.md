@@ -93,6 +93,12 @@ class SkuTrie {
     return this.walk(p) !== null;
   }
 }
+
+const t = new SkuTrie();
+for (const sku of ["BOLT", "BOLT-M8", "BIN", "CRANE"]) t.insert(sku);
+console.log(t.has("BOLT"), t.has("BOL"));       // true false
+console.log(t.hasPrefix("BOL"), t.hasPrefix("ZZ")); // true false
+
 ```
 
 `hasPrefix("BOL")` is true because the walk survives. `has("BOL")` is false unless someone inserted that exact SKU.

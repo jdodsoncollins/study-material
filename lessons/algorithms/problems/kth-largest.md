@@ -72,6 +72,10 @@ function kthBusiest(scores: number[], k: number): number {
   }
   return buf[0];
 }
+
+console.log(kthBusiest([31, 6, 18, 44, 18, 9, 25], 3)); // 25
+console.log(kthBusiest([31, 6, 18], 1));                 // 31
+
 ```
 
 The sort-per-insert is O(n k log k). Swap in a real min-heap for O(n log k). The *logic* is identical: drop the smallest of the k winners.

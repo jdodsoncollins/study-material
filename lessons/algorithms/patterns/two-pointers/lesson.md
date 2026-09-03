@@ -77,6 +77,10 @@ function ferryPair(masses: number[], limit: number): [number, number] | null {
   }
   return null;
 }
+
+console.log(ferryPair([3, 5, 8, 12, 14, 21], 26)); // [5, 21]
+console.log(ferryPair([3, 5, 8, 12, 14, 21], 22)); // [8, 14]
+
 ```
 
 The move is legal only because the array is sorted. If a sum is short, every partner of the current left is even smaller, so the left crate is useless.

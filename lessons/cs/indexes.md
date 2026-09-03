@@ -80,6 +80,14 @@ type Idx = { yard: string; arrivedAt: number; row: number };
 function lookupYard(idx: Idx[], yard: string): Idx[] {
   return idx.filter((e) => e.yard === yard); // real engine: B-tree seek + scan
 }
+
+const idx: Idx[] = [
+  { yard: "east", arrivedAt: 8, row: 0 },
+  { yard: "west", arrivedAt: 9, row: 1 },
+  { yard: "east", arrivedAt: 11, row: 2 },
+];
+console.log(lookupYard(idx, "east"));
+
 ```
 
 At n = 10^7 rows, a seek is tens of page reads. A scan is millions. That is the whole product pitch.

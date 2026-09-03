@@ -94,6 +94,9 @@ function topK(cleared: number[], k: number): number[] {
   }
   return heap;
 }
+
+console.log(topK([19, 4, 27, 12, 27, 8], 2).sort((a, b) => a - b)); // [27, 27]
+
 ```
 
 Min-heap of size k → k largest. Max-heap of size k → k smallest. Do not mix that up on the board.

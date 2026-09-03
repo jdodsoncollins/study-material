@@ -81,6 +81,10 @@ class SeatLock {
     return true;
   }
 }
+
+const lock = new SeatLock();
+console.log(lock.tryAcquire(), lock.tryAcquire()); // true false
+
 ```
 
 That snippet is a *teaching* bug: check-then-set is the race. The fix is an atomic CAS or a real mutex. Saying that out loud scores points.

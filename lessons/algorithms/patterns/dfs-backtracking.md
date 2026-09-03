@@ -87,6 +87,9 @@ function lockerPairs(digits: number[]): number[][] {
   dfs();
   return out;
 }
+
+console.log(lockerPairs([1, 2, 4]));
+
 ```
 
 Copy with `[...path]`. Pushing `path` itself stores the same array over and over.

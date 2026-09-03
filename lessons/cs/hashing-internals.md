@@ -74,6 +74,9 @@ function bucketOf(key: string, bucketCount: number): number {
   for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) | 0;
   return Math.abs(h) % bucketCount;
 }
+
+console.log(bucketOf("N-4", 8), bucketOf("K-11", 8));
+
 ```
 
 | Event | Cost | What you say |

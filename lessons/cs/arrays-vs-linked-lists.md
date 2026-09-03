@@ -82,6 +82,10 @@ function seatAt(head: Node | null, index: number): number | null {
   }
   return cur ? cur.seat : null;
 }
+
+const head: Node = { seat: 10, next: { seat: 20, next: { seat: 30, next: null } } };
+console.log(seatAt(head, 0), seatAt(head, 2), seatAt(head, 9)); // 10 30 null
+
 ```
 
 That loop is the tax you pay for "flexible inserts." An array would have been `seats[index]`.

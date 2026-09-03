@@ -99,6 +99,13 @@ function stepsToDock(floor: string[][]): number {
   }
   return -1;
 }
+
+console.log(stepsToDock([
+  [".", "#", "D", "."],
+  ["S", ".", ".", "#"],
+  [".", "#", ".", "."],
+])); // 3
+
 ```
 
 `shift` is O(n) in JavaScript. In an interview, mention a real deque; they rarely care unless n is huge.

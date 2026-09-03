@@ -71,6 +71,10 @@ function fewestTokens(tokens: number[], amount: number): number {
   }
   return Number.isFinite(dp[amount]) ? dp[amount] : -1;
 }
+
+console.log(fewestTokens([2, 5, 9], 13)); // 3  (9+2+2)
+console.log(fewestTokens([2, 5, 9], 1));  // -1
+
 ```
 
 If they also want one actual combination, keep `pick[x] = t` whenever you improve `dp[x]`, then walk back from `amount`.

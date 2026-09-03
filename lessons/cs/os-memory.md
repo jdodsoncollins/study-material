@@ -78,6 +78,9 @@ function sumPacked(weights: number[]): number {
   for (let i = 0; i < weights.length; i++) s += weights[i];
   return s;
 }
+
+console.log(sumPacked([4, 11, 8, 3, 15])); // 41
+
 ```
 
 That loop is O(n) *and* friendly. The list version is O(n) *and* hostile. In a systems interview, say both.

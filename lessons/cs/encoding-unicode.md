@@ -82,6 +82,10 @@ function truncateUtf16(s: string, max: number): string {
   if (hi >= 0xd800 && hi <= 0xdbff) cut -= 1; // don't split a pair
   return s.slice(0, cut);
 }
+
+console.log(utf16Units("crane"), utf16Units("crane🚛"));
+console.log(JSON.stringify(truncateUtf16("crane🚛x", 7)));
+
 ```
 
 | API | Counts | Trap |

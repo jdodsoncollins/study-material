@@ -76,6 +76,9 @@ function hoursUntilWarmer(temps: number[]): number[] {
   }
   return wait;
 }
+
+console.log(hoursUntilWarmer([14, 13, 16, 15, 19, 12])); // [2, 1, 2, 1, 0, 0]
+
 ```
 
 The stack of temps is decreasing (strictly, if you require a strictly warmer hour). Equals stay on the stack.

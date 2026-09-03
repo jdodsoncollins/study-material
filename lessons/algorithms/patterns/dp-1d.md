@@ -73,6 +73,10 @@ function fewestTokens(tokens: number[], amount: number): number {
   }
   return Number.isFinite(dp[amount]) ? dp[amount] : -1;
 }
+
+console.log(fewestTokens([1, 6, 10], 12)); // 2  (6+6, not 10+1+1)
+console.log(fewestTokens([6, 10], 5));     // -1
+
 ```
 
 Loop amount in the outer position for "number of tokens." If you need *combinations not permutations*, loop tokens outside and amounts inside so each token is considered once per amount.

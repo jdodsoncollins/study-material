@@ -92,6 +92,15 @@ function bfs(start: string, adj: Map<string, string[]>): string[] {
   }
   return order;
 }
+
+const adj = new Map([
+  ["dock", ["aisle", "ramp"]],
+  ["aisle", ["bin"]],
+  ["ramp", ["bin"]],
+  ["bin", []],
+]);
+console.log(bfs("dock", adj)); // dock, aisle, ramp, bin
+
 ```
 
 BFS on unweighted edges is shortest *hop* path. It is not Dijkstra. Weighted edges need a heap.

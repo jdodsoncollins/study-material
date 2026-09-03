@@ -87,6 +87,12 @@ class Nets {
     return true;
   }
 }
+
+const nets = new Nets(6);
+for (const [a, b] of [[0, 1], [1, 2], [3, 4], [2, 0]]) {
+  console.log(a, b, "merged", nets.union(a, b), "parts", nets.parts);
+}
+
 ```
 
 `union` returning false is the "redundant cable" signal. `parts` is the live component count.

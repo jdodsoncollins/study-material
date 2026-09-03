@@ -86,6 +86,10 @@ function studyOrder(n: number, need: [number, number][]): number[] | null {
   }
   return order.length === n ? order : null;
 }
+
+console.log(studyOrder(6, [[0, 1], [1, 2], [3, 2], [4, 5]]));
+console.log(studyOrder(2, [[0, 1], [1, 0]])); // null
+
 ```
 
 Edge direction is a classic trap. Confirm: `a → b` means a first. If they store `[course, prereq]`, flip it.

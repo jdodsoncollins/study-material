@@ -70,6 +70,9 @@ function nearlyEqual(a: number, b: number, eps = 1e-9): boolean {
 function cents(dollars: number): number {
   return Math.round(dollars * 100); // still a trap if dollars was already dirty
 }
+
+console.log(share, back, nearlyEqual(back, 10), cents(share));
+
 ```
 
 | Job | Use | Avoid |

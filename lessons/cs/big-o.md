@@ -77,6 +77,10 @@ function anyPairSumsTo(ids: number[], limit: number): boolean {
   }
   return false;
 }
+
+console.log(anyPairSumsTo([4, 11, 8, 3, 15], 19)); // true
+console.log(anyPairSumsTo([4, 11, 8], 3));         // false
+
 ```
 
 The loop is O(n) iterations. Each `has` / `add` is expected O(1). Together: expected O(n) time, O(n) space. Worst-case hash collisions make it O(n²); say that only if they poke.

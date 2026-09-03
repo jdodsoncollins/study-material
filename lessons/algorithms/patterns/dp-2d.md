@@ -83,6 +83,13 @@ function aisleWays(floor: string[][]): number {
   }
   return dp[rows - 1][cols - 1];
 }
+
+console.log(aisleWays([
+  [".", ".", "#"],
+  [".", ".", "."],
+  ["#", ".", "."],
+])); // 4
+
 ```
 
 If they then forbid extra O(rows · cols) memory, keep one rolling row: `new[c] += new[c-1]`, after zeroing blocked cells.

@@ -78,6 +78,10 @@ function pairByWeight(weights: number[], target: number): [number, number] | nul
   }
   return null;
 }
+
+console.log(Object.fromEntries(lastBin(["N-4", "K-11", "N-8", "K-3"])));
+console.log(pairByWeight([4, 11, 8, 3, 15], 19)); // [1, 2]
+
 ```
 
 Look up *before* insert when a value must not pair with itself.

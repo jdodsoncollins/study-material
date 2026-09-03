@@ -121,6 +121,15 @@ class ScannerMem {
     }
   }
 }
+
+const mem = new ScannerMem(2);
+mem.put("N-4", 17);
+mem.put("K-11", 8);
+console.log(mem.get("N-4"));  // 17
+mem.put("CRANE", 3);
+console.log(mem.get("K-11")); // -1 evicted
+console.log(mem.get("N-4"));  // 17
+
 ```
 
 ## Complexity

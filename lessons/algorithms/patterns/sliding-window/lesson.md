@@ -81,6 +81,10 @@ function longestUniqueRun(zones: string): number {
   }
   return best;
 }
+
+console.log(longestUniqueRun("abcbadef")); // 6
+console.log(longestUniqueRun("bbbb"));     // 1
+
 ```
 
 Do not rebuild the map each shrink. Amortized O(n) only holds if both pointers travel one way.

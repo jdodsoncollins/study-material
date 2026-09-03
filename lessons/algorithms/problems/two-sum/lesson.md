@@ -74,6 +74,10 @@ function pairIndices(weights: number[], target: number): [number, number] | null
   }
   return null;
 }
+
+console.log(pairIndices([4, 11, 8, 3, 15], 19)); // [1, 2]
+console.log(pairIndices([6, 6], 12));            // [0, 1]
+
 ```
 
 If the interviewer then says "the list is already sorted, just return the values," switch to two pointers from both ends. That is a different lesson.

@@ -182,5 +182,6 @@ Relative path must resolve. `id:` must match the target file's frontmatter `id`.
 ## Code
 
 - TypeScript or Python. One language per file.
+- A `ts` fence that defines a function or class **must call it** and `console.log` the result, using the prompt's numbers (so Codeatrophy **run** has output). Include one happy path and one miss/edge when it fits.
 - No imports of interview-site helper types.
 - Keep samples under ~40 lines unless the topic is a full design sketch.

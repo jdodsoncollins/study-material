@@ -84,6 +84,16 @@ function loopStart(head: Ping | null): Ping | null {
   }
   return null;
 }
+
+const A: Ping = { id: 1, next: null };
+const B: Ping = { id: 2, next: null };
+const C: Ping = { id: 3, next: null };
+const D: Ping = { id: 4, next: null };
+const E: Ping = { id: 5, next: null };
+A.next = B; B.next = C; C.next = D; D.next = E; E.next = C;
+console.log(loopStart(A)?.id); // 3  (C)
+console.log(loopStart({ id: 9, next: null })); // undefined
+
 ```
 
 Null-check `fast` and `fast.next` before the double hop. Empty and single-node lists are not cycles unless they self-link.

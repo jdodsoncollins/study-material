@@ -82,6 +82,9 @@ function mergeSlots(slots: [number, number][]): [number, number][] {
   out.push([open, close]);
   return out;
 }
+
+console.log(mergeSlots([[1, 4], [8, 10], [3, 6], [9, 11]])); // [[1,6],[8,11]]
+
 ```
 
 `start <= close` treats touching ranges as one block. If the prompt uses half-open hours and they say 4pm-end then 4pm-start is free, switch to `start < close`.

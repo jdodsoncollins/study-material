@@ -78,6 +78,16 @@ function count(crate: Crate): number {
   for (const kid of crate.kids) n += count(kid);
   return n;
 }
+
+const yard: Crate = {
+  name: "yard",
+  kids: [
+    { name: "aisle-a", kids: [{ name: "bin", kids: [] }] },
+    { name: "aisle-b", kids: [] },
+  ],
+};
+console.log(count(yard)); // 4
+
 ```
 
 | Input shape | Time | Extra space (stack) | Risk |

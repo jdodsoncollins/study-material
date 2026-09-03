@@ -152,6 +152,11 @@ for (const file of files) {
     if (ids.has(data.id)) errors.push(`${rel}: duplicate id ${data.id}`);
     ids.add(data.id);
     if (!body.includes("## Cross-links")) errors.push(`${rel}: missing ## Cross-links`);
+    for (const block of body.match(/```ts\n[\s\S]*?```/g) ?? []) {
+      if (/\b(function|class)\b/.test(block) && !block.includes("console.log")) {
+        errors.push(`${rel}: ts sample defines a function/class but never console.log`);
+      }
+    }
 
     const dirAbs = lessonDir(file);
     const relDir = dirAbs ? path.relative(ROOT, dirAbs).split(path.sep).join("/") : null;

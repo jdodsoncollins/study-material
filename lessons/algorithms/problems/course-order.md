@@ -82,6 +82,10 @@ function moduleOrder(n: number, need: [number, number][]): number[] {
   }
   return order.length === n ? order : [];
 }
+
+console.log(moduleOrder(5, [[0, 1], [1, 3], [2, 3], [0, 2]])); // e.g. [0,4,1,2,3]
+console.log(moduleOrder(2, [[0, 1], [1, 0]]));                 // []
+
 ```
 
 Confirm arrow meaning. Some prompts store `[course, prereq]` and the edge goes the other way.

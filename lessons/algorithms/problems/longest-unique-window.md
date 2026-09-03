@@ -77,6 +77,10 @@ function longestUnique(log: string): number {
   }
   return best;
 }
+
+console.log(longestUnique("mparkpklane")); // 6
+console.log(longestUnique("aaaa"));        // 1
+
 ```
 
 The `prev >= left` guard is the whole correctness story. A letter seen *before* the current window is stale and must not move left.
