@@ -84,7 +84,7 @@ Holding the model fixed and swapping only the agent harness has moved Terminal-B
 - Sharing filesystem or git history across trials so later trials cheat.
 - Checking an exact tool-call sequence. Agents find other valid paths; you punish creativity and reward memorizing your sketch.
 - Running the eval agent with different tools than production. You are then measuring a cousin.
-- Quoting pass@1 from one trial as a product SLO. See [pass@k versus pass^k](../pass-at-k.md) (id: pass-at-k).
+- Quoting pass@1 from one trial as a product SLO. See [pass@k versus pass^k](../pass-at-k/lesson.md) (id: pass-at-k).
 
 ## How to talk about it
 
@@ -93,8 +93,8 @@ Holding the model fixed and swapping only the agent harness has moved Terminal-B
 ## Cross-links
 
 - [How to run proper evals](../how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
-- [Graders: code, model, human](../graders.md) (id: graders)
-- [Outcome versus transcript](../outcome-vs-transcript.md) (id: outcome-vs-transcript)
+- [Graders: code, model, human](../graders/lesson.md) (id: graders)
+- [Outcome versus transcript](../outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
 - [Vendor harness versus user harness](../vendor-vs-user-harness.md) (id: vendor-vs-user-harness)
 - [Coding-agent evals](../coding-agent-evals.md) (id: coding-agent-evals)
-- [Pass@k versus pass^k](../pass-at-k.md) (id: pass-at-k)
+- [Pass@k versus pass^k](../pass-at-k/lesson.md) (id: pass-at-k)

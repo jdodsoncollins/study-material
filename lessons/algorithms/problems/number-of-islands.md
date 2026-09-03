@@ -136,9 +136,9 @@ Answer 4. Diagonal pallets do not touch; (1,3) never ate (3,2).
 
 ## Cross-links
 
-- [Expand level by level](../patterns/bfs.md) (id: bfs)
+- [Expand level by level](../patterns/bfs/lesson.md) (id: bfs)
 - [Explore, undo, try the next branch](../patterns/dfs-backtracking.md) (id: dfs-backtracking)
-- [Cluster membership in nearly constant time](../patterns/union-find.md) (id: union-find)
+- [Cluster membership in nearly constant time](../patterns/union-find/lesson.md) (id: union-find)
 - [Trees and graphs](../../cs/trees-graphs.md) (id: trees-graphs)
 - [Fill a grid of overlapping subproblems](../patterns/dp-2d.md) (id: dp-2d)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)

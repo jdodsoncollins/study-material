@@ -1,0 +1,8 @@
+title: Fan-out with taste
+steps:
+  - caption: "Preferences gate the event before any vendor call."
+    nodes: [event, pref, q]
+  - caption: "Each channel is its own queue and retry story."
+    nodes: [q, push, sms, email]
+  - caption: "Poison goes to a DLQ, not an infinite retry."
+    nodes: [push, dlq]

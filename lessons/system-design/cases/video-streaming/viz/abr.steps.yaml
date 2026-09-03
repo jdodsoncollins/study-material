@@ -1,0 +1,8 @@
+title: Encode once, play many
+steps:
+  - caption: "Ingest becomes a bitrate ladder in object storage."
+    nodes: [upload, encode, obj]
+  - caption: "Player fetches a manifest, then segments from the edge."
+    nodes: [play, man, cdn]
+  - caption: "ABR picks a rung from buffer and bandwidth, not from hope."
+    nodes: [play, abr]

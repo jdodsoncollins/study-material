@@ -115,7 +115,7 @@ k-th largest is 25. Check: sorted descending `44, 31, 25, 18, 18, 9, 6`. Yes.
 
 - [Keep only the interesting k](../patterns/heaps-top-k.md) (id: heaps-top-k)
 - [Binary search the feasible number](../patterns/binary-search-on-answer.md) (id: binary-search-on-answer)
-- [Squeeze from both ends](../patterns/two-pointers.md) (id: two-pointers)
+- [Squeeze from both ends](../patterns/two-pointers/lesson.md) (id: two-pointers)
 - [Hash maps as an index](../patterns/hash-maps.md) (id: hash-maps)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
 - [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)

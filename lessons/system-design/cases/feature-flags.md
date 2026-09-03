@@ -78,7 +78,7 @@ Candidate-reported Stripe loops, plus prep-site frequency on ramps / kill switch
 
 2M evals/s. If each eval were a 1 ms RPC, you would need a heroic central cluster and you would still add a failure domain. In-process: 5 flags × a hash + a percent compare is nanoseconds. Snapshot size: 5k flags × 1 KB rules ≈ 5 MB. Trivial to mmap.
 
-Publish: 5k boxes pulling 5 MB every 30s ≈ 830 MB/s of origin if naive. Use a CDN or an internal object store plus **version gossip** ("latest is `v1842`") so boxes download only on change. Same origin-shield idea as [Stagecast](./video-streaming.md) (id: video-streaming).
+Publish: 5k boxes pulling 5 MB every 30s ≈ 830 MB/s of origin if naive. Use a CDN or an internal object store plus **version gossip** ("latest is `v1842`") so boxes download only on change. Same origin-shield idea as [Stagecast](./video-streaming/lesson.md) (id: video-streaming).
 
 ## Design
 
@@ -88,7 +88,7 @@ Publish: 5k boxes pulling 5 MB every 30s ≈ 830 MB/s of origin if naive. Use a 
 
 Kill switch: metadata watch (long-poll or websocket) so `vN+1` is applied in ~2s. Regular ramps ride the 30s poll.
 
-[Clockyard](./job-scheduler.md) (id: job-scheduler) can time a ramp (`10% at 16:00`) as a job that publishes a new snapshot — do not put a clock inside every SDK.
+[Clockyard](./job-scheduler/lesson.md) (id: job-scheduler) can time a ramp (`10% at 16:00`) as a job that publishes a new snapshot — do not put a clock inside every SDK.
 
 Consistency for users: a user may see old then new within the freshness window. For money or legal copy, the *product* should not hide behind a flag that is still ramping; use a server-authoritative check on that path.
 
@@ -104,7 +104,7 @@ Consistency for users: a user may see old then new within the freshness window. 
 ## Failure modes
 
 - Bad snapshot (rule that throws): SDK keeps `vN-1`, marks `vN` poison, alerts. Canary a slice of boxes first.
-- Stampede on publish: jitter the download 0–5s, or push the file through a CDN. See [caching](../foundations/caching.md) (id: caching).
+- Stampede on publish: jitter the download 0–5s, or push the file through a CDN. See [caching](../foundations/caching/lesson.md) (id: caching).
 - Hash salt change mid-experiment: everyone reshuffles; never do this silently.
 - Flag default `false` with fail-closed SDK: a missing snapshot turns the app off. Default is **fail-open to last-known**.
 
@@ -116,9 +116,9 @@ Consistency for users: a user may see old then new within the freshness window. 
 
 ## Cross-links
 
-- [Remembering the expensive answer nearby](../foundations/caching.md) (id: caching)
-- [Token buckets and sliding windows at the edge](./rate-limiter.md) (id: rate-limiter)
-- [Cron, ad-hoc, leases, and retries](./job-scheduler.md) (id: job-scheduler)
+- [Remembering the expensive answer nearby](../foundations/caching/lesson.md) (id: caching)
+- [Token buckets and sliding windows at the edge](./rate-limiter/lesson.md) (id: rate-limiter)
+- [Cron, ad-hoc, leases, and retries](./job-scheduler/lesson.md) (id: job-scheduler)
 - [Hybrid fanout when some authors are stadiums](./news-feed/lesson.md) (id: news-feed)
 - [Forty-five minutes is a navigation problem](../foundations/interview-framework.md) (id: interview-framework)
 - [CAP as a conversation, not a religion](../foundations/cap-and-consistency.md) (id: cap-and-consistency)

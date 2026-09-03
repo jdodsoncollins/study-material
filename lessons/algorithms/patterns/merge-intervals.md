@@ -122,9 +122,9 @@ function mergeSlots(slots: [number, number][]): [number, number][] {
 
 ## Cross-links
 
-- [Squeeze from both ends](./two-pointers.md) (id: two-pointers)
+- [Squeeze from both ends](./two-pointers/lesson.md) (id: two-pointers)
 - [Keep only the interesting k](./heaps-top-k.md) (id: heaps-top-k)
 - [The next greater is waiting on a stack](./monotonic-stack.md) (id: monotonic-stack)
-- [Order by prerequisites](./topological-sort.md) (id: topological-sort)
+- [Order by prerequisites](./topological-sort/lesson.md) (id: topological-sort)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
 - [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)

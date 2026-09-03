@@ -1,0 +1,8 @@
+title: Map + list
+steps:
+  - caption: "The map finds the node in O(1)."
+    nodes: [get, map, node]
+  - caption: "Use moves that node to the front."
+    nodes: [node, front]
+  - caption: "A full put evicts the tail and drops the map entry."
+    nodes: [put2, tail, map]

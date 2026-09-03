@@ -99,5 +99,5 @@ If they ask locking vs MVCC: "MVCC lets readers skip writer locks. Writers still
 - [Indexes are precomputed answers](./indexes.md) (id: indexes)
 - [Locks buy correctness, not speed](./locks-and-concurrency.md) (id: locks-and-concurrency)
 - [CAP as a conversation tool](../system-design/foundations/cap-and-consistency.md) (id: cap-and-consistency)
-- [Split the keyspace on purpose](../system-design/foundations/sharding.md) (id: sharding)
+- [Split the keyspace on purpose](../system-design/foundations/sharding/lesson.md) (id: sharding)
 - [HTTP is a conversation, TCP is the pipe](./http-and-tcp.md) (id: http-and-tcp)

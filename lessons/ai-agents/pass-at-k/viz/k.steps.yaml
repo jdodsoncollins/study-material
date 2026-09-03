@@ -1,0 +1,6 @@
+title: Hope vs SLO
+steps:
+  - caption: "pass@k: one success in k tries. Tools can live here."
+    nodes: [t1, t2, t3, any, hope]
+  - caption: "pass^k: every trial succeeds. That is a product SLO."
+    nodes: [all, slo]

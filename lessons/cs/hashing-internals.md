@@ -104,5 +104,5 @@ If they ask hash vs tree map: "Tree map is O(log n) always and keeps order. Hash
 - [Hash maps as an index](../algorithms/patterns/hash-maps.md) (id: hash-maps)
 - [Pair lookup instead of nested scanning](../algorithms/problems/two-sum/lesson.md) (id: two-sum)
 - [Indexes are precomputed answers](./indexes.md) (id: indexes)
-- [Cache as a second store](../system-design/foundations/caching.md) (id: caching)
+- [Cache as a second store](../system-design/foundations/caching/lesson.md) (id: caching)
 - [Contiguous slots versus pointer chasing](./arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)

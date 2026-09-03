@@ -44,7 +44,7 @@ status: canonical
 - A balancer answers: which healthy backend should take *this* request, and what happens when that backend starts dying.
 - Layer-4 (TCP) is cheap and blind to URLs. Layer-7 (HTTP) can route `/redirect` to a hot cache pool and `/mint` to a write pool.
 - The balancer is itself a bottleneck. You run two or more, with a virtual IP or DNS, and you drain connections before a deploy.
-- Sticky sessions are a smell. Prefer storing session in [a cache](./caching.md) (id: caching) so any box can serve the next hop.
+- Sticky sessions are a smell. Prefer storing session in [a cache](./caching/lesson.md) (id: caching) so any box can serve the next hop.
 
 ## Why it shows up in interviews
 
@@ -60,7 +60,7 @@ Name the unit of work, then pick a policy.
 
 Health is part of the policy. A box that fails `/healthz` twice leaves the pool. In-flight requests get a deadline, not a hang. New requests skip it. That is how you talk about deploys without inventing a platform team.
 
-L4 vs L7 is a cost conversation. L4 (TCP/UDP) copies bytes and can handle Kettle websockets without parsing frames. L7 parses HTTP, can attach [QuotaDesk](../cases/rate-limiter.md) (id: rate-limiter) keys, and can split `/resolve` from `/mint`. You pay CPU and you now have an app-shaped failure domain at the edge. See [HTTP and TCP](../../cs/http-and-tcp.md) (id: http-and-tcp).
+L4 vs L7 is a cost conversation. L4 (TCP/UDP) copies bytes and can handle Kettle websockets without parsing frames. L7 parses HTTP, can attach [QuotaDesk](../cases/rate-limiter/lesson.md) (id: rate-limiter) keys, and can split `/resolve` from `/mint`. You pay CPU and you now have an app-shaped failure domain at the edge. See [HTTP and TCP](../../cs/http-and-tcp.md) (id: http-and-tcp).
 
 ## Comparison
 
@@ -93,8 +93,8 @@ If they zoom into Google-style depth, pick *one*: connection draining, consisten
 ## Cross-links
 
 - [Forty-five minutes is a navigation problem](./interview-framework.md) (id: interview-framework)
-- [Remembering the expensive answer nearby](./caching.md) (id: caching)
-- [Splitting a keyspace so one box is not the product](./sharding.md) (id: sharding)
-- [Token buckets and sliding windows at the edge](../cases/rate-limiter.md) (id: rate-limiter)
-- [Minting short keys for a read-heavy lookup](../cases/url-shortener.md) (id: url-shortener)
+- [Remembering the expensive answer nearby](./caching/lesson.md) (id: caching)
+- [Splitting a keyspace so one box is not the product](./sharding/lesson.md) (id: sharding)
+- [Token buckets and sliding windows at the edge](../cases/rate-limiter/lesson.md) (id: rate-limiter)
+- [Minting short keys for a read-heavy lookup](../cases/url-shortener/lesson.md) (id: url-shortener)
 - [HTTP and TCP as interview tools](../../cs/http-and-tcp.md) (id: http-and-tcp)

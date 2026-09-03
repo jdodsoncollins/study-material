@@ -119,6 +119,6 @@ A duplicate-value trap: `[6, 6]`, target `12` must return both indices. The map 
 ## Cross-links
 
 - [Hash maps as an index](../../patterns/hash-maps.md) (id: hash-maps)
-- [Three-value search](../three-sum.md) (id: three-sum)
-- [Two pointers](../../patterns/two-pointers.md) (id: two-pointers)
+- [Three-value search](../three-sum/lesson.md) (id: three-sum)
+- [Two pointers](../../patterns/two-pointers/lesson.md) (id: two-pointers)
 - [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)

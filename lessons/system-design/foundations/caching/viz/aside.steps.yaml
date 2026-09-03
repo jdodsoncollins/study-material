@@ -1,0 +1,6 @@
+title: Cache-aside
+steps:
+  - caption: "Read the cache first."
+    nodes: [app, cache, ret]
+  - caption: "Miss: read the source of truth, then fill."
+    nodes: [cache, db, fill, ret]

@@ -119,7 +119,7 @@ Illegal cousin `"[({)]"`: after `[ { (` the first closer `)` matches, then `]` s
 
 - [The next greater is waiting on a stack](../patterns/monotonic-stack.md) (id: monotonic-stack)
 - [Explore, undo, try the next branch](../patterns/dfs-backtracking.md) (id: dfs-backtracking)
-- [Squeeze from both ends](../patterns/two-pointers.md) (id: two-pointers)
-- [Scanner memory with eviction](./lru-cache.md) (id: lru-cache)
+- [Squeeze from both ends](../patterns/two-pointers/lesson.md) (id: two-pointers)
+- [Scanner memory with eviction](./lru-cache/lesson.md) (id: lru-cache)
 - [Arrays versus linked lists](../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)

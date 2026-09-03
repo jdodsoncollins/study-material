@@ -1,0 +1,6 @@
+title: Believe the database
+steps:
+  - caption: "The transcript can lie with a confident sentence."
+    nodes: [agent, talk, maybe, wrong]
+  - caption: "The outcome is state in the world. Grade that."
+    nodes: [world, truth, real]

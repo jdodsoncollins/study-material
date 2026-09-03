@@ -63,7 +63,7 @@ Read-your-writes is the promise users actually notice. After Alice mints a ClipF
 
 Transactions are a *local* story. Isolation levels (see [transactions-isolation](../../cs/transactions-isolation.md) (id: transactions-isolation)) are about concurrent transactions on one database. Do not use "serializable" as a synonym for "cross-region consistent."
 
-Queues do not make you eventually consistent as a personality. They make the *consumer* at-least-once. Combine with idempotency. See [queues-delivery](./queues-delivery.md) (id: queues-delivery).
+Queues do not make you eventually consistent as a personality. They make the *consumer* at-least-once. Combine with idempotency. See [queues-delivery](./queues-delivery/lesson.md) (id: queues-delivery).
 
 ## Comparison
 
@@ -92,9 +92,9 @@ A one-line PACELC translation: "If we partition, this endpoint fails closed (mon
 
 ## Cross-links
 
-- [Splitting a keyspace so one box is not the product](./sharding.md) (id: sharding)
-- [At-least-once, idempotency, and the dead-letter lane](./queues-delivery.md) (id: queues-delivery)
-- [Making a double-click charge once](../cases/payment-idempotency.md) (id: payment-idempotency)
-- [Ordered delivery for a 1:1 and small-group messenger](../cases/chat-system.md) (id: chat-system)
+- [Splitting a keyspace so one box is not the product](./sharding/lesson.md) (id: sharding)
+- [At-least-once, idempotency, and the dead-letter lane](./queues-delivery/lesson.md) (id: queues-delivery)
+- [Making a double-click charge once](../cases/payment-idempotency/lesson.md) (id: payment-idempotency)
+- [Ordered delivery for a 1:1 and small-group messenger](../cases/chat-system/lesson.md) (id: chat-system)
 - [Isolation levels as a conversation](../../cs/transactions-isolation.md) (id: transactions-isolation)
 - [Forty-five minutes is a navigation problem](./interview-framework.md) (id: interview-framework)

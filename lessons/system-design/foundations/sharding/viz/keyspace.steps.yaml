@@ -1,0 +1,6 @@
+title: Split the keyspace
+steps:
+  - caption: "Pick a key that matches the hot query."
+    nodes: [key]
+  - caption: "Hash or range maps that key onto a box."
+    nodes: [hash, s0, s1, s2]

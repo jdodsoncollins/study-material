@@ -123,10 +123,10 @@ Add `[3, 0]` and 0 never reaches indegree 0 after the first pass. Peel length < 
 
 ## Cross-links
 
-- [Order by prerequisites](../patterns/topological-sort.md) (id: topological-sort)
-- [Expand level by level](../patterns/bfs.md) (id: bfs)
+- [Order by prerequisites](../patterns/topological-sort/lesson.md) (id: topological-sort)
+- [Expand level by level](../patterns/bfs/lesson.md) (id: bfs)
 - [Explore, undo, try the next branch](../patterns/dfs-backtracking.md) (id: dfs-backtracking)
-- [Cluster membership in nearly constant time](../patterns/union-find.md) (id: union-find)
+- [Cluster membership in nearly constant time](../patterns/union-find/lesson.md) (id: union-find)
 - [Trees and graphs](../../cs/trees-graphs.md) (id: trees-graphs)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
 - [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)

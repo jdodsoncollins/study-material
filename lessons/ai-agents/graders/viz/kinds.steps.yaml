@@ -1,0 +1,6 @@
+title: Three graders
+steps:
+  - caption: "Code graders are cheap and brittle. Use them as the gate."
+    nodes: [trial, code, score]
+  - caption: "LLM judges catch nuance. Calibrate them against humans."
+    nodes: [model, human, score]

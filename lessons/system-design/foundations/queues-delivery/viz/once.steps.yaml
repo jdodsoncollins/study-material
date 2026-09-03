@@ -1,0 +1,6 @@
+title: At-least-once
+steps:
+  - caption: "The queue keeps the message until ack."
+    nodes: [prod, q, work]
+  - caption: "Crash before ack: it comes back. Design for duplicates."
+    nodes: [work, q, idemp]

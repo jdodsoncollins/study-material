@@ -1,0 +1,8 @@
+title: Supply meets demand
+steps:
+  - caption: "Pings keep the geo index warm."
+    nodes: [ping, geo]
+  - caption: "A request hits a zone, then the matcher."
+    nodes: [ride, zone, match]
+  - caption: "Offer, accept, trip. Surge is a multiplier on this path."
+    nodes: [match, offer, trip]

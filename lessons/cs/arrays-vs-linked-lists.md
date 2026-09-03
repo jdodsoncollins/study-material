@@ -104,5 +104,5 @@ If they follow with "what about a deque?": "A ring buffer / circular array still
 - [Big-O as a conversation](./big-o.md) (id: big-o)
 - [Virtual memory is a lie the CPU believes](./os-memory.md) (id: os-memory)
 - [Why a map is "O(1)" until it isn't](./hashing-internals.md) (id: hashing-internals)
-- [Two pointers](../algorithms/patterns/two-pointers.md) (id: two-pointers)
+- [Two pointers](../algorithms/patterns/two-pointers/lesson.md) (id: two-pointers)
 - [Pair lookup instead of nested scanning](../algorithms/problems/two-sum/lesson.md) (id: two-sum)

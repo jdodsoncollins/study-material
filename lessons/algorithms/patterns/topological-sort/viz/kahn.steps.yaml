@@ -1,0 +1,8 @@
+title: Kahn's peel
+steps:
+  - caption: "Start with every node of indegree 0."
+    nodes: [zeros, node]
+  - caption: "Emit it, decrement neighbors, enqueue new zeros."
+    nodes: [out, dec, zeros]
+  - caption: "Anything left is a cycle. No legal order."
+    nodes: [leftover, cycle]

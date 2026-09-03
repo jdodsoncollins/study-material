@@ -55,7 +55,7 @@ AI-assisted coding rounds and "why did this agent regress" prompts are transcrip
 
 Treat the agent like a junior who types fast and does not like to read. The harness must force the scientific-method order: **reproduce → read the error → change the smallest true cause → re-run the same test.**
 
-Evals then score two things: the [outcome](./outcome-vs-transcript.md) (id: outcome-vs-transcript) (fail-to-pass plus pass-to-pass) and, when you debug, the trajectory for which rut it fell into. Do not grade "used my favorite files." Do grade "did not claim green while tests are red."
+Evals then score two things: the [outcome](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript) (fail-to-pass plus pass-to-pass) and, when you debug, the trajectory for which rut it fell into. Do not grade "used my favorite files." Do grade "did not claim green while tests are red."
 
 ## Worked example
 
@@ -78,7 +78,7 @@ The hidden-test row is the one that saves you in production: the agent must not 
 
 - Treating every failure as a model-quality problem. First ask which rut the trajectory is.
 - Letting the agent edit the tests that define the bug.
-- No stop condition on identical tool calls. See [tool calling](./tool-calling.md) (id: tool-calling).
+- No stop condition on identical tool calls. See [tool calling](./tool-calling/lesson.md) (id: tool-calling).
 - Measuring only fail-to-pass, so a 400-line rewrite that breaks neighbors still "wins."
 - Reading the last assistant message ("all tests pass") instead of the pytest span.
 - Humans "helping" by pasting a stack overflow snippet the agent already tried.
@@ -91,7 +91,7 @@ If they hand you a live AI coding round: run the failing test yourself, treat th
 
 ## Cross-links
 
-- [Tools that are safe to call twice](./tool-calling.md) (id: tool-calling)
+- [Tools that are safe to call twice](./tool-calling/lesson.md) (id: tool-calling)
 - [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)
 - [Spans, traces, trajectories, sessions](./traces-trajectories.md) (id: traces-trajectories)
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)

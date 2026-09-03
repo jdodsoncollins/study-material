@@ -100,4 +100,4 @@ If they ask fork vs thread: "Fork copy-on-write-clones the map. Great for read-m
 - [Locks buy correctness, not speed](./locks-and-concurrency.md) (id: locks-and-concurrency)
 - [HTTP is a conversation, TCP is the pipe](./http-and-tcp.md) (id: http-and-tcp)
 - [Recursion is a stack you didn't allocate](./recursion-call-stack.md) (id: recursion-call-stack)
-- [Split the keyspace on purpose](../system-design/foundations/sharding.md) (id: sharding)
+- [Split the keyspace on purpose](../system-design/foundations/sharding/lesson.md) (id: sharding)

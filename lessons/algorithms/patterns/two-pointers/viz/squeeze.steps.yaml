@@ -1,0 +1,8 @@
+title: Discard a side each step
+steps:
+  - caption: "Sorted input. Ends are the extreme pair."
+    nodes: [L, R, sum]
+  - caption: "Too small: throw away the left value."
+    nodes: [cmp, moveL]
+  - caption: "Too big: throw away the right value."
+    nodes: [cmp, moveR, done]

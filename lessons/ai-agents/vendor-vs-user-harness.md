@@ -92,7 +92,7 @@ If they ask what you would do week one on a greenfield coding agent: write the u
 
 - [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
 - [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)
-- [Tools that are safe to call twice](./tool-calling.md) (id: tool-calling)
+- [Tools that are safe to call twice](./tool-calling/lesson.md) (id: tool-calling)
 - [Mistakes coding agents keep making](./agent-mistakes.md) (id: agent-mistakes)
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
 - [Interview framework](../system-design/foundations/interview-framework.md) (id: interview-framework)

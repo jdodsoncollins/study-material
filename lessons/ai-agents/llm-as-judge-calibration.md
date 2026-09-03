@@ -40,7 +40,7 @@ status: canonical
 - A **judge** is an LLM that scores a transcript or artifact against a rubric. It is not "the eval."
 - **Calibration** means a human gold set, a frozen rubric, and a published agreement number — then you stop tinkering.
 - Judges pick the longer answer, the first answer, and answers that sound like themselves. Your rubric has to fight that.
-- If a check can be code, it should not be a judge. See [graders](./graders.md) (id: graders).
+- If a check can be code, it should not be a judge. See [graders](./graders/lesson.md) (id: graders).
 
 ## Why it shows up in interviews
 
@@ -80,7 +80,7 @@ A 0.88 agreement can still be usable if the 0.06 false-pass cluster is ones you 
 - One prompt: "Score 1–5, be harsh." No examples, no freeze, no gold.
 - Pairwise "which is better" as a regression metric. Position bias plus no absolute bar.
 - Updating the judge prompt in the same PR that "improves" the agent. Both numbers move.
-- Judging the whole trajectory for success. That is [speech replacing world state](./outcome-vs-transcript.md) (id: outcome-vs-transcript).
+- Judging the whole trajectory for success. That is [speech replacing world state](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript).
 - Gold set of 8 items and a claimed κ.
 - Using the judge online at 100% traffic with a floating model alias (`latest`).
 
@@ -92,9 +92,9 @@ If they ask for a number to quote: quote **false-pass versus gold** on the quali
 
 ## Cross-links
 
-- [Graders: code, model, human](./graders.md) (id: graders)
-- [Outcome versus transcript](./outcome-vs-transcript.md) (id: outcome-vs-transcript)
+- [Graders: code, model, human](./graders/lesson.md) (id: graders)
+- [Outcome versus transcript](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
 - [Offline gates and online drift](./online-offline-evals.md) (id: online-offline-evals)
 - [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
-- [Pass@k versus pass^k](./pass-at-k.md) (id: pass-at-k)
+- [Pass@k versus pass^k](./pass-at-k/lesson.md) (id: pass-at-k)

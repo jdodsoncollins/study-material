@@ -111,6 +111,6 @@ If they ask why UTF-8 won: "ASCII compatibility, no endianness, and streaming-fr
 - [HTTP is a conversation, TCP is the pipe](./http-and-tcp.md) (id: http-and-tcp)
 - [Why a map is "O(1)" until it isn't](./hashing-internals.md) (id: hashing-internals)
 - [Floats are scientific notation, not decimals](./floating-point.md) (id: floating-point)
-- [Two pointers](../algorithms/patterns/two-pointers.md) (id: two-pointers)
+- [Two pointers](../algorithms/patterns/two-pointers/lesson.md) (id: two-pointers)
 - [Hash maps as an index](../algorithms/patterns/hash-maps.md) (id: hash-maps)
-- [Cache as a second store](../system-design/foundations/caching.md) (id: caching)
+- [Cache as a second store](../system-design/foundations/caching/lesson.md) (id: caching)

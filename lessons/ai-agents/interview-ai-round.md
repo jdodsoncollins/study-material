@@ -61,7 +61,7 @@ You are being scored on **control**, not on prompt cleverness.
 
 **Why did the agent regress.** They hand you a score drop and a few traces. Walk the layers: did the eval harness change, did the vendor or user harness change, did the tool schema change, did the task mix change, or did the model get worse. Look at outcomes first, then cluster ruts in the trajectory.
 
-Speak in systems: the same brain that designs a [job scheduler](../system-design/cases/job-scheduler.md) (id: job-scheduler) can design retries and isolation for trials.
+Speak in systems: the same brain that designs a [job scheduler](../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler) can design retries and isolation for trials.
 
 ## Worked example
 
@@ -98,5 +98,5 @@ Close with a ship rule: regression fence in CI, capability hill on a dashboard, 
 - [Capability versus regression](./capability-vs-regression.md) (id: capability-vs-regression)
 - [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)
 - [Interview framework](../system-design/foundations/interview-framework.md) (id: interview-framework)
-- [Job scheduler](../system-design/cases/job-scheduler.md) (id: job-scheduler)
-- [Pass@k versus pass^k](./pass-at-k.md) (id: pass-at-k)
+- [Job scheduler](../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler)
+- [Pass@k versus pass^k](./pass-at-k/lesson.md) (id: pass-at-k)

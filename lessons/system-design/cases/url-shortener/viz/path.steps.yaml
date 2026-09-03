@@ -1,0 +1,6 @@
+title: Mint then resolve
+steps:
+  - caption: "Writes hit MintPool + ClipStore. Uniqueness lives here."
+    nodes: [mint, keys, store]
+  - caption: "Reads are 100:1. Cache then ClipStore then 302."
+    nodes: [click, cache, store, cdn]

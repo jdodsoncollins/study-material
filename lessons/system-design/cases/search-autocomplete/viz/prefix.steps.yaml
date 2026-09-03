@@ -1,0 +1,6 @@
+title: Sub-100ms prefixes
+steps:
+  - caption: "Hot prefixes never touch the index."
+    nodes: [key, cache, rank]
+  - caption: "Miss: walk the prefix index, then rank."
+    nodes: [cache, trie, rank, ui]

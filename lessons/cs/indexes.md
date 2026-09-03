@@ -102,6 +102,6 @@ If they ask hash vs B-tree: "Hash is equality and RAM-friendly, like a map. B-tr
 - [Why a map is "O(1)" until it isn't](./hashing-internals.md) (id: hashing-internals)
 - [Trees are graphs with a promise](./trees-graphs.md) (id: trees-graphs)
 - [Isolation is which lie you agreed to](./transactions-isolation.md) (id: transactions-isolation)
-- [Split the keyspace on purpose](../system-design/foundations/sharding.md) (id: sharding)
+- [Split the keyspace on purpose](../system-design/foundations/sharding/lesson.md) (id: sharding)
 - [Hash maps as an index](../algorithms/patterns/hash-maps.md) (id: hash-maps)
 - [Pair lookup instead of nested scanning](../algorithms/problems/two-sum/lesson.md) (id: two-sum)

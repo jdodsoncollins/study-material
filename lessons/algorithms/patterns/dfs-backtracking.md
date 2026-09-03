@@ -129,7 +129,7 @@ Board search adds a cell mark: set `floor[r][c] = '#'`, recurse four ways, resto
 
 ## Cross-links
 
-- [Expand level by level](./bfs.md) (id: bfs)
+- [Expand level by level](./bfs/lesson.md) (id: bfs)
 - [Pallet clusters on a flooded floor](../problems/number-of-islands.md) (id: number-of-islands)
 - [Prefix trees as a walking index](./trie.md) (id: trie)
 - [Matched crate tags](../problems/valid-brackets.md) (id: valid-brackets)

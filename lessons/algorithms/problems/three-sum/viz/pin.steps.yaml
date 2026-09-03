@@ -1,0 +1,8 @@
+title: Pin one, squeeze two
+steps:
+  - caption: "Sort so two pointers are legal."
+    nodes: [sort]
+  - caption: "Pin i. The rest is a pair search."
+    nodes: [pin, L, R]
+  - caption: "Walk L/R like two-sum on a sorted slice."
+    nodes: [sum, move]

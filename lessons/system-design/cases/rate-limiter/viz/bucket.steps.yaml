@@ -1,0 +1,8 @@
+title: Cheap shed then fair share
+steps:
+  - caption: "Most traffic dies on a local bucket. No network."
+    nodes: [req, local, pass]
+  - caption: "When the box is dry, ask the shared window."
+    nodes: [local, redis]
+  - caption: "Over quota: 429. Under: allow."
+    nodes: [redis, pass, shed]

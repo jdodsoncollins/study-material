@@ -1,0 +1,8 @@
+title: First time you see it is shortest
+steps:
+  - caption: "Seed the queue with the start."
+    nodes: [start, q]
+  - caption: "Pop a node, enqueue neighbors you have not seen."
+    nodes: [node, nbs, q]
+  - caption: "Layer index is the unweighted distance."
+    nodes: [node, dist]

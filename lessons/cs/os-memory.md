@@ -100,5 +100,5 @@ If they ask about mmap: "It's asking the OS to map a file into that virtual spac
 - [Address spaces versus shared work](./processes-threads.md) (id: processes-threads)
 - [Contiguous slots versus pointer chasing](./arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
 - [Recursion is a stack you didn't allocate](./recursion-call-stack.md) (id: recursion-call-stack)
-- [Cache as a second store](../system-design/foundations/caching.md) (id: caching)
+- [Cache as a second store](../system-design/foundations/caching/lesson.md) (id: caching)
 - [Why a map is "O(1)" until it isn't](./hashing-internals.md) (id: hashing-internals)

@@ -1,0 +1,6 @@
+title: Lookup vs job
+steps:
+  - caption: "RAG is fetch-then-speak. Cite the passage."
+    nodes: [q, rag, doc]
+  - caption: "An agent is a loop with tools and a world that changes."
+    nodes: [q, agent, act]

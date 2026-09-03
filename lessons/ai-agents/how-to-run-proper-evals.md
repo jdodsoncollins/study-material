@@ -60,8 +60,8 @@ The loop:
 1. Mine last month's tickets, pager, and "the agent did what?" Slack.
 2. Turn each into a spec with start state, allowed tools, and a checkable end state.
 3. Prove solvability with a reference path (script, fixture, or recorded human trial).
-4. Boot a clean env per trial. Run *k* trials. See [pass@k versus pass^k](./pass-at-k.md) (id: pass-at-k).
-5. Grade world state with code whenever you can. See [graders](./graders.md) (id: graders).
+4. Boot a clean env per trial. Run *k* trials. See [pass@k versus pass^k](./pass-at-k/lesson.md) (id: pass-at-k).
+5. Grade world state with code whenever you can. See [graders](./graders/lesson.md) (id: graders).
 6. Sample transcripts every time the score jumps or a new failure cluster appears.
 
 Twenty good tasks beat two hundred vague ones because you can actually read them.
@@ -79,7 +79,7 @@ A returns-desk agent in a shop called **Harborline**. Last month it double-refun
 | Outcome grader | `refunds` row amount/target, inventory delta, email fixture to the right `user_id` |
 | Not graded | Exact tool order, apology wording (separate tone rubric, sampled) |
 
-You do not add "be helpful" to the spec. You do not grade the sentence `Refund issued.` See [outcome versus transcript](./outcome-vs-transcript.md) (id: outcome-vs-transcript).
+You do not add "be helpful" to the spec. You do not grade the sentence `Refund issued.` See [outcome versus transcript](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript).
 
 After the first run you sit with ten failing transcripts. Half are one bug (gift-card refunds hit the card tool). That is the whole point of a small suite: you can read.
 
@@ -101,8 +101,8 @@ If they ask what you do next week: add tasks only from new failure clusters, not
 ## Cross-links
 
 - [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
-- [Graders: code, model, human](./graders.md) (id: graders)
-- [Outcome versus transcript](./outcome-vs-transcript.md) (id: outcome-vs-transcript)
+- [Graders: code, model, human](./graders/lesson.md) (id: graders)
+- [Outcome versus transcript](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
 - [Capability versus regression](./capability-vs-regression.md) (id: capability-vs-regression)
 - [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)
 - [How the 2026 AI interview round actually works](./interview-ai-round.md) (id: interview-ai-round)

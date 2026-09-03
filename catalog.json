@@ -298,9 +298,16 @@
         "topological-sort",
         "trees-graphs"
       ],
-      "path": "lessons/algorithms/patterns/bfs.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/patterns/bfs/lesson.md",
+      "dir": "lessons/algorithms/patterns/bfs",
+      "widgets": [
+        {
+          "id": "layers",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/patterns/bfs/viz/layers.md",
+          "steps": "lessons/algorithms/patterns/bfs/viz/layers.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Meta",
@@ -420,9 +427,16 @@
         "news-feed",
         "search-autocomplete"
       ],
-      "path": "lessons/system-design/foundations/caching.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/foundations/caching/lesson.md",
+      "dir": "lessons/system-design/foundations/caching",
+      "widgets": [
+        {
+          "id": "aside",
+          "kind": "mermaid",
+          "file": "lessons/system-design/foundations/caching/viz/aside.md",
+          "steps": "lessons/system-design/foundations/caching/viz/aside.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Meta",
@@ -552,9 +566,16 @@
         "cap-and-consistency",
         "http-and-tcp"
       ],
-      "path": "lessons/system-design/cases/chat-system.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/cases/chat-system/lesson.md",
+      "dir": "lessons/system-design/cases/chat-system",
+      "widgets": [
+        {
+          "id": "delivery",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/chat-system/viz/delivery.md",
+          "steps": "lessons/system-design/cases/chat-system/viz/delivery.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Meta",
@@ -1049,9 +1070,16 @@
         "coding-agent-evals",
         "pass-at-k"
       ],
-      "path": "lessons/ai-agents/graders.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/ai-agents/graders/lesson.md",
+      "dir": "lessons/ai-agents/graders",
+      "widgets": [
+        {
+          "id": "kinds",
+          "kind": "mermaid",
+          "file": "lessons/ai-agents/graders/viz/kinds.md",
+          "steps": "lessons/ai-agents/graders/viz/kinds.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Anthropic",
@@ -1422,9 +1450,16 @@
         "interview-framework",
         "video-streaming"
       ],
-      "path": "lessons/system-design/cases/job-scheduler.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/cases/job-scheduler/lesson.md",
+      "dir": "lessons/system-design/cases/job-scheduler",
+      "widgets": [
+        {
+          "id": "lease",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/job-scheduler/viz/lease.md",
+          "steps": "lessons/system-design/cases/job-scheduler/viz/lease.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Meta",
@@ -1545,9 +1580,16 @@
         "tool-calling",
         "interview-framework"
       ],
-      "path": "lessons/system-design/cases/llm-serving.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/cases/llm-serving/lesson.md",
+      "dir": "lessons/system-design/cases/llm-serving",
+      "widgets": [
+        {
+          "id": "batch",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/llm-serving/viz/batch.md",
+          "steps": "lessons/system-design/cases/llm-serving/viz/batch.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "OpenAI",
@@ -1715,9 +1757,16 @@
         "indexes",
         "hashing-internals"
       ],
-      "path": "lessons/algorithms/problems/lru-cache.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/problems/lru-cache/lesson.md",
+      "dir": "lessons/algorithms/problems/lru-cache",
+      "widgets": [
+        {
+          "id": "evict",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/lru-cache/viz/evict.md",
+          "steps": "lessons/algorithms/problems/lru-cache/viz/evict.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Amazon",
@@ -1896,9 +1945,16 @@
         "rate-limiter",
         "news-feed"
       ],
-      "path": "lessons/system-design/cases/notification-system.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/cases/notification-system/lesson.md",
+      "dir": "lessons/system-design/cases/notification-system",
+      "widgets": [
+        {
+          "id": "channels",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/notification-system/viz/channels.md",
+          "steps": "lessons/system-design/cases/notification-system/viz/channels.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Amazon",
@@ -2059,9 +2115,16 @@
         "eval-harness-vs-agent-harness",
         "tool-calling"
       ],
-      "path": "lessons/ai-agents/outcome-vs-transcript.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/ai-agents/outcome-vs-transcript/lesson.md",
+      "dir": "lessons/ai-agents/outcome-vs-transcript",
+      "widgets": [
+        {
+          "id": "grade",
+          "kind": "mermaid",
+          "file": "lessons/ai-agents/outcome-vs-transcript/viz/grade.md",
+          "steps": "lessons/ai-agents/outcome-vs-transcript/viz/grade.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Anthropic",
@@ -2097,9 +2160,16 @@
         "eval-harness-vs-agent-harness",
         "coding-agent-evals"
       ],
-      "path": "lessons/ai-agents/pass-at-k.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/ai-agents/pass-at-k/lesson.md",
+      "dir": "lessons/ai-agents/pass-at-k",
+      "widgets": [
+        {
+          "id": "k",
+          "kind": "mermaid",
+          "file": "lessons/ai-agents/pass-at-k/viz/k.md",
+          "steps": "lessons/ai-agents/pass-at-k/viz/k.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Anthropic",
@@ -2178,9 +2248,16 @@
         "rate-limiter",
         "job-scheduler"
       ],
-      "path": "lessons/system-design/cases/payment-idempotency.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/cases/payment-idempotency/lesson.md",
+      "dir": "lessons/system-design/cases/payment-idempotency",
+      "widgets": [
+        {
+          "id": "keys",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/payment-idempotency/viz/keys.md",
+          "steps": "lessons/system-design/cases/payment-idempotency/viz/keys.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Stripe",
@@ -2260,9 +2337,16 @@
         "payment-idempotency",
         "cap-and-consistency"
       ],
-      "path": "lessons/system-design/foundations/queues-delivery.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/foundations/queues-delivery/lesson.md",
+      "dir": "lessons/system-design/foundations/queues-delivery",
+      "widgets": [
+        {
+          "id": "once",
+          "kind": "mermaid",
+          "file": "lessons/system-design/foundations/queues-delivery/viz/once.md",
+          "steps": "lessons/system-design/foundations/queues-delivery/viz/once.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Amazon",
@@ -2302,9 +2386,16 @@
         "how-to-run-proper-evals",
         "outcome-vs-transcript"
       ],
-      "path": "lessons/ai-agents/rag-vs-agents.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/ai-agents/rag-vs-agents/lesson.md",
+      "dir": "lessons/ai-agents/rag-vs-agents",
+      "widgets": [
+        {
+          "id": "split",
+          "kind": "mermaid",
+          "file": "lessons/ai-agents/rag-vs-agents/viz/split.md",
+          "steps": "lessons/ai-agents/rag-vs-agents/viz/split.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Anthropic",
@@ -2343,9 +2434,16 @@
         "http-and-tcp",
         "payment-idempotency"
       ],
-      "path": "lessons/system-design/cases/rate-limiter.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/cases/rate-limiter/lesson.md",
+      "dir": "lessons/system-design/cases/rate-limiter",
+      "widgets": [
+        {
+          "id": "bucket",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/rate-limiter/viz/bucket.md",
+          "steps": "lessons/system-design/cases/rate-limiter/viz/bucket.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Amazon",
@@ -2428,9 +2526,16 @@
         "interview-framework",
         "payment-idempotency"
       ],
-      "path": "lessons/system-design/cases/ride-hailing.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/cases/ride-hailing/lesson.md",
+      "dir": "lessons/system-design/cases/ride-hailing",
+      "widgets": [
+        {
+          "id": "match",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/ride-hailing/viz/match.md",
+          "steps": "lessons/system-design/cases/ride-hailing/viz/match.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Uber",
@@ -2468,9 +2573,16 @@
         "indexes",
         "interview-framework"
       ],
-      "path": "lessons/system-design/cases/search-autocomplete.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/cases/search-autocomplete/lesson.md",
+      "dir": "lessons/system-design/cases/search-autocomplete",
+      "widgets": [
+        {
+          "id": "prefix",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/search-autocomplete/viz/prefix.md",
+          "steps": "lessons/system-design/cases/search-autocomplete/viz/prefix.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Google",
@@ -2507,9 +2619,16 @@
         "ride-hailing",
         "indexes"
       ],
-      "path": "lessons/system-design/foundations/sharding.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/foundations/sharding/lesson.md",
+      "dir": "lessons/system-design/foundations/sharding",
+      "widgets": [
+        {
+          "id": "keyspace",
+          "kind": "mermaid",
+          "file": "lessons/system-design/foundations/sharding/viz/keyspace.md",
+          "steps": "lessons/system-design/foundations/sharding/viz/keyspace.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Google",
@@ -2552,9 +2671,16 @@
         "hash-maps",
         "dp-1d"
       ],
-      "path": "lessons/algorithms/patterns/sliding-window.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/patterns/sliding-window/lesson.md",
+      "dir": "lessons/algorithms/patterns/sliding-window",
+      "widgets": [
+        {
+          "id": "window",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/patterns/sliding-window/viz/window.md",
+          "steps": "lessons/algorithms/patterns/sliding-window/viz/window.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Meta",
@@ -2596,9 +2722,16 @@
         "hash-maps",
         "big-o"
       ],
-      "path": "lessons/algorithms/problems/three-sum.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/problems/three-sum/lesson.md",
+      "dir": "lessons/algorithms/problems/three-sum",
+      "widgets": [
+        {
+          "id": "pin",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/problems/three-sum/viz/pin.md",
+          "steps": "lessons/algorithms/problems/three-sum/viz/pin.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Meta",
@@ -2641,9 +2774,16 @@
         "outcome-vs-transcript",
         "rag-vs-agents"
       ],
-      "path": "lessons/ai-agents/tool-calling.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/ai-agents/tool-calling/lesson.md",
+      "dir": "lessons/ai-agents/tool-calling",
+      "widgets": [
+        {
+          "id": "call",
+          "kind": "mermaid",
+          "file": "lessons/ai-agents/tool-calling/viz/call.md",
+          "steps": "lessons/ai-agents/tool-calling/viz/call.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Anthropic",
@@ -2678,9 +2818,16 @@
         "dfs-backtracking",
         "union-find"
       ],
-      "path": "lessons/algorithms/patterns/topological-sort.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/patterns/topological-sort/lesson.md",
+      "dir": "lessons/algorithms/patterns/topological-sort",
+      "widgets": [
+        {
+          "id": "kahn",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/patterns/topological-sort/viz/kahn.md",
+          "steps": "lessons/algorithms/patterns/topological-sort/viz/kahn.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Amazon",
@@ -2877,9 +3024,16 @@
         "sliding-window",
         "fast-slow-pointers"
       ],
-      "path": "lessons/algorithms/patterns/two-pointers.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/patterns/two-pointers/lesson.md",
+      "dir": "lessons/algorithms/patterns/two-pointers",
+      "widgets": [
+        {
+          "id": "squeeze",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/patterns/two-pointers/viz/squeeze.md",
+          "steps": "lessons/algorithms/patterns/two-pointers/viz/squeeze.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Amazon",
@@ -2970,9 +3124,16 @@
         "topological-sort",
         "trees-graphs"
       ],
-      "path": "lessons/algorithms/patterns/union-find.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/algorithms/patterns/union-find/lesson.md",
+      "dir": "lessons/algorithms/patterns/union-find",
+      "widgets": [
+        {
+          "id": "dsu",
+          "kind": "mermaid",
+          "file": "lessons/algorithms/patterns/union-find/viz/dsu.md",
+          "steps": "lessons/algorithms/patterns/union-find/viz/dsu.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Google",
@@ -3017,9 +3178,16 @@
         "load-balancing",
         "rate-limiter"
       ],
-      "path": "lessons/system-design/cases/url-shortener.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/cases/url-shortener/lesson.md",
+      "dir": "lessons/system-design/cases/url-shortener",
+      "widgets": [
+        {
+          "id": "path",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/url-shortener/viz/path.md",
+          "steps": "lessons/system-design/cases/url-shortener/viz/path.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Amazon",
@@ -3151,9 +3319,16 @@
         "interview-framework",
         "job-scheduler"
       ],
-      "path": "lessons/system-design/cases/video-streaming.md",
-      "dir": null,
-      "widgets": [],
+      "path": "lessons/system-design/cases/video-streaming/lesson.md",
+      "dir": "lessons/system-design/cases/video-streaming",
+      "widgets": [
+        {
+          "id": "abr",
+          "kind": "mermaid",
+          "file": "lessons/system-design/cases/video-streaming/viz/abr.md",
+          "steps": "lessons/system-design/cases/video-streaming/viz/abr.steps.yaml"
+        }
+      ],
       "company_signal": [
         {
           "name": "Google",

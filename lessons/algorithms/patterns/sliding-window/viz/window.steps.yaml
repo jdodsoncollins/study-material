@@ -1,0 +1,8 @@
+title: Restore the invariant
+steps:
+  - caption: "Right edge eats the next item."
+    nodes: [R, slice]
+  - caption: "If the invariant breaks, left edge gives items back."
+    nodes: [ok, shrink, L]
+  - caption: "When it holds, record the answer and grow again."
+    nodes: [ok, grow]

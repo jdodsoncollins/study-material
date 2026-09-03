@@ -125,7 +125,7 @@ Four walks. The blocked top-right cell never contributes.
 
 - [Reuse the last few answers](./dp-1d.md) (id: dp-1d)
 - [Explore, undo, try the next branch](./dfs-backtracking.md) (id: dfs-backtracking)
-- [Expand level by level](./bfs.md) (id: bfs)
+- [Expand level by level](./bfs/lesson.md) (id: bfs)
 - [Longest unique radio run](../problems/longest-unique-window.md) (id: longest-unique-window)
 - [Fewest tokens for a fare](../problems/coin-change.md) (id: coin-change)
 - [Trees and graphs](../../cs/trees-graphs.md) (id: trees-graphs)

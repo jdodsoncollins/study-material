@@ -46,7 +46,7 @@ status: canonical
 
 ## Why it shows up in interviews
 
-Every lab wants a coding agent. Interviewers ask how you would know it works without trusting the agent's "tests pass" speech. The expected vocabulary is hidden tests, isolated checkout, fail-to-pass plus pass-to-pass, and a user harness the agent cannot rewrite. See [graders](./graders.md) (id: graders).
+Every lab wants a coding agent. Interviewers ask how you would know it works without trusting the agent's "tests pass" speech. The expected vocabulary is hidden tests, isolated checkout, fail-to-pass plus pass-to-pass, and a user harness the agent cannot rewrite. See [graders](./graders/lesson.md) (id: graders).
 
 ## Core idea
 
@@ -94,7 +94,7 @@ If they ask about languages: the idea is repo-shaped, not Python-shaped. The gra
 ## Cross-links
 
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
-- [Graders: code, model, human](./graders.md) (id: graders)
+- [Graders: code, model, human](./graders/lesson.md) (id: graders)
 - [Capability versus regression](./capability-vs-regression.md) (id: capability-vs-regression)
 - [Vendor harness versus user harness](./vendor-vs-user-harness.md) (id: vendor-vs-user-harness)
 - [Mistakes coding agents keep making](./agent-mistakes.md) (id: agent-mistakes)

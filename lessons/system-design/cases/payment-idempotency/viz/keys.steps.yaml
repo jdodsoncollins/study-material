@@ -1,0 +1,8 @@
+title: Double-tap must not double-charge
+steps:
+  - caption: "Client sends a key. The second tap reuses it."
+    nodes: [tap, key]
+  - caption: "If we already finished this key, replay. Do not charge."
+    nodes: [seen, replay]
+  - caption: "Otherwise append the ledger, call the PSP, remember the result."
+    nodes: [seen, ledger, psp, store]

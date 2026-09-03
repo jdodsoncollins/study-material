@@ -1,0 +1,8 @@
+title: Online vs offline
+steps:
+  - caption: "Persist first. The log is the source of truth."
+    nodes: [send, api, log]
+  - caption: "If the recipient has a socket, fan out live."
+    nodes: [fan, ws, recv]
+  - caption: "Otherwise enqueue a push. Do not block the write."
+    nodes: [api, push]

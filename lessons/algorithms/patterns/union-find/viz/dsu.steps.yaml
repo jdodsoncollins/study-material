@@ -1,0 +1,6 @@
+title: Find then link
+steps:
+  - caption: "Find compresses the path to a root."
+    nodes: [a, ra, b, rb]
+  - caption: "Different roots: link the shorter under the taller."
+    nodes: [same, link]

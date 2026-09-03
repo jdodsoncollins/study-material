@@ -137,6 +137,6 @@ Insert `BOLT`, `BOLT-M8`, `BIN`, `CRANE`.
 - [Explore, undo, try the next branch](./dfs-backtracking.md) (id: dfs-backtracking)
 - [What an index actually stores](../../cs/indexes.md) (id: indexes)
 - [Hashing internals](../../cs/hashing-internals.md) (id: hashing-internals)
-- [Grow and shrink a live range](./sliding-window.md) (id: sliding-window)
+- [Grow and shrink a live range](./sliding-window/lesson.md) (id: sliding-window)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
 - [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)

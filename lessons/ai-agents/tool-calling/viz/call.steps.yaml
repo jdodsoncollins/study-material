@@ -1,0 +1,8 @@
+title: Schema, execute, observe
+steps:
+  - caption: "The model picks a tool and fills the schema."
+    nodes: [model, schema]
+  - caption: "The harness runs it and feeds the observation back."
+    nodes: [exec, obs, model]
+  - caption: "Irreversible tools need a confirm, not a vibe."
+    nodes: [ir, confirm]

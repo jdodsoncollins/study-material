@@ -120,7 +120,7 @@ Answer `[2, 1, 2, 1, 0, 0]`.
 
 - [Matched crate tags](../problems/valid-brackets.md) (id: valid-brackets)
 - [Collapse overlapping ranges](./merge-intervals.md) (id: merge-intervals)
-- [Squeeze from both ends](./two-pointers.md) (id: two-pointers)
+- [Squeeze from both ends](./two-pointers/lesson.md) (id: two-pointers)
 - [Keep only the interesting k](./heaps-top-k.md) (id: heaps-top-k)
 - [Arrays versus linked lists](../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)

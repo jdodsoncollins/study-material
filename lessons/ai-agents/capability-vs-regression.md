@@ -78,7 +78,7 @@ Never average the two columns. A 10-point capability gain that costs 2 regressio
 - Putting only easy tasks in CI so you never notice the agent cannot do the new workflow.
 - Deleting a regression task because "we don't hit gift cards this week."
 - Changing the grader in the same PR as the agent and calling the jump a capability win.
-- Using pass@k on the regression suite to paper over flaky isolation. See [pass@k versus pass^k](./pass-at-k.md) (id: pass-at-k).
+- Using pass@k on the regression suite to paper over flaky isolation. See [pass@k versus pass^k](./pass-at-k/lesson.md) (id: pass-at-k).
 
 ## How to talk about it
 
@@ -89,7 +89,7 @@ If they ask what happens when a capability task starts passing consistently: pro
 ## Cross-links
 
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
-- [Pass@k versus pass^k](./pass-at-k.md) (id: pass-at-k)
+- [Pass@k versus pass^k](./pass-at-k/lesson.md) (id: pass-at-k)
 - [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)
 - [Offline gates and online drift](./online-offline-evals.md) (id: online-offline-evals)
 - [How the 2026 AI interview round actually works](./interview-ai-round.md) (id: interview-ai-round)

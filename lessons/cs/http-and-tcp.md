@@ -101,6 +101,6 @@ If they ask WebSockets: "That's an HTTP upgrade, then a long-lived bidirectional
 
 - [Address spaces versus shared work](./processes-threads.md) (id: processes-threads)
 - [Bytes are not characters](./encoding-unicode.md) (id: encoding-unicode)
-- [Cache as a second store](../system-design/foundations/caching.md) (id: caching)
+- [Cache as a second store](../system-design/foundations/caching/lesson.md) (id: caching)
 - [CAP as a conversation tool](../system-design/foundations/cap-and-consistency.md) (id: cap-and-consistency)
 - [Locks buy correctness, not speed](./locks-and-concurrency.md) (id: locks-and-concurrency)

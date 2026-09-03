@@ -46,7 +46,7 @@ status: canonical
 
 ## Why it shows up in interviews
 
-Platform rounds ask how you would instrument an agent. The junior answer is "we log prompts." The senior answer names four grains and assigns jobs: **serve and bill at span, reproduce at trace, debug at trajectory, report the business at session.** Same instinct as request vs job vs workflow in [job schedulers](../system-design/cases/job-scheduler.md) (id: job-scheduler).
+Platform rounds ask how you would instrument an agent. The junior answer is "we log prompts." The senior answer names four grains and assigns jobs: **serve and bill at span, reproduce at trace, debug at trajectory, report the business at session.** Same instinct as request vs job vs workflow in [job schedulers](../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler).
 
 ## Core idea
 
@@ -62,12 +62,12 @@ Store enough in the trace to rebuild the world: tool args, tool results, env ver
 
 | Noun | Grain | You use it to | You do not use it to |
 | --- | --- | --- | --- |
-| Span | One call | Latency, cost, error rate, [serving](../system-design/foundations/llm-serving.md) (id: llm-serving) SLOs | Declare the job succeeded |
+| Span | One call | Latency, cost, error rate, [serving](../system-design/foundations/llm-serving/lesson.md) (id: llm-serving) SLOs | Declare the job succeeded |
 | Trace | One trial / one turn | Reproduce, bind an outcome grade, compare harness versions | Quote CSAT |
 | Trajectory | Ordered path | Cluster ruts, enforce confirm-before-delete, teach | Be the only grader |
 | Session | Many turns, one user | Product analytics, mine new eval tasks | Be a CI unit (too much shared state) |
 
-Outcome still sits on the trace: after the refund trace, the `refunds` row exists or it does not. See [outcome versus transcript](./outcome-vs-transcript.md) (id: outcome-vs-transcript). The trajectory explains a missing row ("never called `refund`, just spoke").
+Outcome still sits on the trace: after the refund trace, the `refunds` row exists or it does not. See [outcome versus transcript](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript). The trajectory explains a missing row ("never called `refund`, just spoke").
 
 ## Common mistakes
 
@@ -86,9 +86,9 @@ If they ask what to index: `trace_id`, `task_id`, `harness_sha`, `model`, `outco
 
 ## Cross-links
 
-- [Outcome versus transcript](./outcome-vs-transcript.md) (id: outcome-vs-transcript)
+- [Outcome versus transcript](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
 - [Offline gates and online drift](./online-offline-evals.md) (id: online-offline-evals)
 - [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
-- [LLM serving](../system-design/foundations/llm-serving.md) (id: llm-serving)
-- [Job scheduler](../system-design/cases/job-scheduler.md) (id: job-scheduler)
+- [LLM serving](../system-design/foundations/llm-serving/lesson.md) (id: llm-serving)
+- [Job scheduler](../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler)
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)

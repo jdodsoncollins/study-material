@@ -1,0 +1,8 @@
+title: GPUs hate idle
+steps:
+  - caption: "Requests wait. Capacity is the scarce object."
+    nodes: [req, q]
+  - caption: "A batcher fills the GPU; KV cache is the memory tax."
+    nodes: [batch, kv, gpu]
+  - caption: "Tokens stream out. Queueing delay is the SLO fight."
+    nodes: [gpu, tok]

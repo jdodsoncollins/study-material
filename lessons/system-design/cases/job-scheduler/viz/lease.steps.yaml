@@ -1,0 +1,8 @@
+title: Leases beat hope
+steps:
+  - caption: "Due work lands in a queue. Workers pull."
+    nodes: [cron, q, worker]
+  - caption: "A lease + heartbeat owns the attempt."
+    nodes: [worker, lease, run]
+  - caption: "Crash before ack: the lease expires, the job is due again."
+    nodes: [run, q, done]

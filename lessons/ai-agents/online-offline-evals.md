@@ -79,7 +79,7 @@ A model bump that holds offline pass@1 at 0.99 and then dumps online on a new gi
 ## Common mistakes
 
 - Shipping on a playground chat log ("it felt better").
-- Online A/B on irreversible tools without idempotency or shadow. See [tool calling](./tool-calling.md) (id: tool-calling).
+- Online A/B on irreversible tools without idempotency or shadow. See [tool calling](./tool-calling/lesson.md) (id: tool-calling).
 - Offline suite never updated, so it is a 2025 costume party.
 - Using live LLM-as-judge as the only online metric; the judge drifts with the seasons.
 - Different traces in prod and CI, so you cannot turn an online incident into an offline task.
@@ -96,6 +96,6 @@ If they ask about cost: run full k-trial offline on the regression fence; sample
 - [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
 - [Capability versus regression](./capability-vs-regression.md) (id: capability-vs-regression)
 - [Spans, traces, trajectories, sessions](./traces-trajectories.md) (id: traces-trajectories)
-- [Pass@k versus pass^k](./pass-at-k.md) (id: pass-at-k)
+- [Pass@k versus pass^k](./pass-at-k/lesson.md) (id: pass-at-k)
 - [Calibrate the judge before you trust the score](./llm-as-judge-calibration.md) (id: llm-as-judge-calibration)
-- [Tools that are safe to call twice](./tool-calling.md) (id: tool-calling)
+- [Tools that are safe to call twice](./tool-calling/lesson.md) (id: tool-calling)
