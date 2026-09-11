@@ -27,7 +27,7 @@ sources_consulted:
   - Unicode code point vs scalar vs grapheme cluster notes
   - UTF-8 / UTF-16 encoding as taught in systems and web courses
   - JS string UTF-16 code-unit behavior (`.length`, surrogate pairs)
-updated: 2026-09-02
+updated: 2026-09-11
 status: canonical
 ---
 
@@ -45,6 +45,12 @@ status: canonical
 `s.length`, truncation, hashing, and HTTP `Content-Type` are where this leaks. Frontend rounds love `"👍".length`. Backend rounds love "we stored this as latin1 and the name José became JosÃ©." Treat it as a layering problem, same instinct as HTTP vs TCP.
 
 ## Core idea
+
+### ELI5
+
+Unicode is a catalog of names (code points). UTF-8 and UTF-16 are *how you write those names as bytes*. A letter you see (`é`, a waffle emoji) can be one catalog number, two JS `.length` units, and four bytes on the wire.
+
+Never slice "characters" until you say which length you mean.
 
 Three lengths for one string, none of them "obvious."
 
@@ -67,6 +73,18 @@ U+1F9C7 waffle → F0 9F A7 87
 You must not slice UTF-8 in the middle of a sequence. You must not slice JS strings in the middle of a surrogate pair. You must not hash "é" composed and "é" decomposed as the same key unless you normalize.
 
 ## Worked example
+
+### Easy
+
+`"A".length` is 1. ASCII is one UTF-16 unit and one UTF-8 byte.
+
+### Medium
+
+`"👍".length` is 2 in JS (surrogate pair). Four UTF-8 bytes. One grapheme.
+
+### Hard
+
+`"é"` as `e` + combining acute is two code points. Hashing without NFC/NFD treats composed and decomposed as different keys. Do not slice UTF-8 in the middle of a sequence.
 
 A ticket kiosk stores guest names. Naive truncate to 10 "chars" for the badge.
 

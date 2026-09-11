@@ -32,7 +32,7 @@ company_signal:
 sources_consulted:
   - LeetCode Top 100 Liked (Group Anagrams, 2026)
   - r/leetcode hash-map tagged threads
-updated: 2026-09-03
+updated: 2026-09-11
 status: canonical
 ---
 
@@ -62,7 +62,31 @@ This is group-anagrams. The tags are dock SKUs, not a textbook `["eat","tea","ta
 
 ## Worked approach
 
-Walk once. For each tag, sort characters, push the original into `map.get(key)`.
+Same shoebox as [hash-maps](../../patterns/hash-maps.md) (id: hash-maps). The key is no longer the SKU. It is a *signature* of the letters.
+
+### ELI5
+
+Two tags are the same part if they use the same letters.
+
+1. Take `oak`. Sort the letters. You get `ako`. That is the drawer label.
+2. Drop `oak` in drawer `ako`.
+3. Take `koa`. Sort. Also `ako`. Same drawer.
+4. `crate` sorts to `acert`. New drawer, alone.
+
+You never compare every pair. You hash once per tag.
+
+### Syntax
+
+```ts
+const key = "koa".split("").sort().join("");
+console.log(key); // "ako"
+const buckets = new Map<string, string[]>();
+buckets.set(key, ["oak"]);
+buckets.get(key)!.push("koa");
+console.log(buckets.get("ako")); // ["oak", "koa"]
+```
+
+### Then the details
 
 ```ts
 function packGroups(tags: string[]): string[][] {
@@ -82,8 +106,6 @@ console.log(packGroups(["oak", "koa", "bin", "nib", "crate"]));
 console.log(packGroups(["dock"]));
 ```
 
-`oak` and `koa` share `ako`. `bin` and `nib` share `bin`. `crate` is alone.
-
 ## Complexity
 
 | Approach | Time | Space | Notes |
@@ -94,17 +116,27 @@ console.log(packGroups(["dock"]));
 
 ## Walkthrough
 
-`tags = ["oak", "koa", "bin", "nib", "crate"]`
-
 [Bucket by sorted letters](viz/bucket.md)
 
-1. `oak` → key `ako`. New bucket.
-2. `koa` → `ako`. Same bucket.
+### Easy
+
+`tags = ["oak", "koa"]`. Both sort to `ako`. One group of two.
+
+### Medium
+
+`tags = ["oak", "koa", "bin", "nib", "crate"]`
+
+1. `oak` → `ako`. New.
+2. `koa` → `ako`. Same.
 3. `bin` → `bin`. New.
 4. `nib` → `bin`. Same.
 5. `crate` → `acert`. Alone.
 
-Three groups.
+Three groups. Singletons stay.
+
+### Hard
+
+They forbid sorting letters. Count 26 letters into a tuple and use that string as the key (`a1c1e1r1t1`). Same shoebox, cheaper when `k` is large. Mixed case / Unicode: ask; v1 is lowercase a-z. Empty input → no groups.
 
 ## Pitfalls
 

@@ -29,7 +29,7 @@ sources_consulted:
   - Cache-line and locality notes from systems courses
   - r/leetcode threads contrasting array vs list follow-ups
   - Common list patterns (reverse, merge, cycle) in Blind 75 lists
-updated: 2026-09-02
+updated: 2026-09-11
 status: canonical
 ---
 
@@ -50,6 +50,14 @@ A common wrong answer: "linked lists are faster at inserts." Faster than *what*,
 
 ## Core idea
 
+### ELI5
+
+An array is a row of lockers, numbered. Locker 3 is "start + 3 × width." You walk straight to it.
+
+A linked list is a scavenger hunt. Each crate has a note saying where the next crate lives. To get the fourth crate you follow three notes.
+
+Inserting in the *middle of the lockers* means sliding everyone down. Inserting *after a crate you are already holding* on the scavenger hunt is two note rewrites.
+
 Layout is the whole plot.
 
 ```
@@ -58,6 +66,12 @@ list:    a → b → c → d → e   index 3 is three pointer hops
 ```
 
 Hops miss cache. Scans over arrays hit cache. That is why two-pointer and sliding-window problems are almost always arrays, and why "linked list" problems are really pointer puzzles (reverse, merge, detect a cycle), not performance plays.
+
+### Easy / medium / hard in one table
+
+- Easy: read stub #400 — array wins.
+- Medium: append at the end — both can be O(1) if the list keeps a tail.
+- Hard: "lists are faster at inserts" — faster than *what*, at *which position*, *do you already have the node?*
 
 ## Comparison
 

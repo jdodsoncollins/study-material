@@ -33,7 +33,7 @@ company_signal:
 sources_consulted:
   - LeetCode Top 100 Liked (Container With Most Water, 2026)
   - r/leetcode two-pointer tagged threads
-updated: 2026-09-03
+updated: 2026-09-11
 status: canonical
 ---
 
@@ -63,6 +63,29 @@ This is the two-wall area problem. The heights are not the textbook `[1,8,6,2,5,
 
 ## Worked approach
 
+Same two fingers as [two-pointers](../../patterns/two-pointers/lesson.md) (id: two-pointers). The invariant changes: you are maximizing area, not hitting a sum.
+
+### ELI5
+
+Posts in a line. A tarp between two posts holds `min(height) * width`.
+
+1. Start as wide as possible: leftmost post and rightmost post.
+2. The short post is the lid. The tall post cannot lift that lid.
+3. So walk the short post inward. Width drops by 1; maybe the next post is taller and the area grows.
+4. Keep the best area you have seen.
+
+Moving the tall post is wasted motion: width falls and the min cannot rise.
+
+### Syntax
+
+```ts
+let i = 0, j = 6;
+const h = Math.min(3, 5);
+console.log(h * (j - i)); // width 6
+```
+
+### Then the details
+
 ```ts
 function tarpRain(posts: number[]): number {
   let i = 0, j = posts.length - 1, best = 0;
@@ -90,16 +113,24 @@ Ties: move either side. Moving both in one step can skip a candidate; move one.
 
 ## Walkthrough
 
-`posts = [3, 1, 7, 2, 6, 4, 5]`
-
 [Move the short post](viz/span.md)
+
+### Easy
+
+Two posts `[4, 4]`. Width 1, min 4, area 4. The loop runs once.
+
+### Medium
+
+`posts = [3, 1, 7, 2, 6, 4, 5]`
 
 1. `i=0,j=6`: min(3,5)*6 = 18. 3 is shorter. `i++`.
 2. `i=1` height 1. Area 5. `i++`.
 3. `i=2,j=6`: min(7,5)*4 = 20. 5 is shorter. `j--`.
-4. Remaining pairs are narrower. Best stays 20 (posts 2 and 6).
+4. Remaining pairs are narrower. Best stays 20.
 
-Check: 7 and 5, four gaps, min 5 → 20. 3 and 5 at the ends is 18.
+### Hard
+
+Tied heights: move one side, not both, or you skip a candidate. Do not confuse this with "trapping rain in valleys" (that is a stack / two-pass). Unsorted is fine — you still start at the ends.
 
 ## Pitfalls
 

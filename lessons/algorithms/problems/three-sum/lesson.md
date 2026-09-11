@@ -32,7 +32,7 @@ company_signal:
 sources_consulted:
   - Blind 75 / NeetCode pattern lists (2026)
   - r/leetcode Meta and Amazon tagged-list threads
-updated: 2026-09-02
+updated: 2026-09-11
 status: canonical
 ---
 
@@ -64,7 +64,30 @@ This is the three-sum shape. The stubs are not the textbook `[-1, 0, 1, 2, -1, -
 
 [pin](viz/pin.md)
 
-Sort. For each index `i`, run left/right on `i+1..end`. Move the side that makes the sum closer to 0. Skip repeats after a hit.
+This is [two-pointers](../../patterns/two-pointers/lesson.md) (id: two-pointers) after you pin one stub.
+
+### ELI5
+
+1. Sort the stubs, light to heavy.
+2. Pin the leftmost unused stub with a thumb.
+3. The other two fingers squeeze the rest of the line exactly like pair-sum: too small, left finger right; too big, right finger left; hit, write the triple.
+4. Slide the thumb one stub, skip if it is the same number you just pinned, repeat.
+
+You never need a cubic scan. The sort is the tax that makes the squeeze legal.
+
+### Syntax
+
+```ts
+const a = [9, -4, 5].slice().sort((x, y) => x - y);
+let i = 0, l = 1, r = a.length - 1;
+console.log(a[i], a[l], a[r], a[i] + a[l] + a[r]);
+```
+
+Three indices. Inner loop is the ferry-pair `while (l < r)`.
+
+### Then the details
+
+Sort. For each index `i`, run left/right on `i+1..end`. Skip repeats after a hit.
 
 ```ts
 function balanceTriples(stubs: number[]): number[][] {
@@ -104,13 +127,23 @@ If the pinned value is already positive and the array is sorted, later pins cann
 
 ## Walkthrough
 
+### Easy
+
+Sorted suffix already `[-7, 0, 7]`. Pin `-7`, squeeze `0` and `7`. Hit. One triple.
+
+### Medium
+
 `stubs = [9, -4, 5, -5, 2, 7, -7, 0]` → sorted `[-7, -5, -4, 0, 2, 5, 7, 9]`
 
-1. Pin `-7`. Need `+7`. Pair `-5` with `9` (too small wait: -7-5+9=-3, grow left) … `-7 + 0 + 7 = 0`. Triple `[-7, 0, 7]`. `-7 + 2 + 5 = 0`. Triple `[-7, 2, 5]`.
-2. Pin `-5`. `-5 + -4 + 9 = 0`. Triple `[-5, -4, 9]`.
-3. Pin `-4`. Remaining positives are too large or miss. Later pins are ≥ 0 and cannot hit 0 with two non-negative partners except zeros, which we do not have in triplicate.
+1. Pin `-7`. `-7 + 0 + 7 = 0`, `-7 + 2 + 5 = 0`.
+2. Pin `-5`. `-5 + -4 + 9 = 0`.
+3. Later pins cannot finish a zero with two non-negative partners.
 
 Triples: `[-7, 0, 7]`, `[-7, 2, 5]`, `[-5, -4, 9]`.
+
+### Hard
+
+Duplicates in the input: skip a pin when `a[i] === a[i-1]`, and skip inner equals after a hit, or you emit the same triple twice. Need original indices? Do not sort in place without tuples — or hash pairs instead and pay memory.
 
 ## Pitfalls
 

@@ -31,7 +31,7 @@ company_signal:
 sources_consulted:
   - Blind 75 / NeetCode pattern lists (2026)
   - r/leetcode stack tagged threads
-updated: 2026-09-02
+updated: 2026-09-11
 status: canonical
 ---
 
@@ -60,6 +60,33 @@ Same shape as bracket validation. The tape is warehouse straps, not a textbook `
 | HTML-like tags with names | Still a stack; the payload is a string, not a char |
 
 ## Worked approach
+
+Not two-pointers. A stack of unmatched openers. Still Kernel → Index: you need a place to remember what you have seen.
+
+### ELI5
+
+A packer walks the tape left to right with one hand holding unmatched open straps.
+
+1. See `(`, `[`, or `{` → put it on the pile in your hand.
+2. See a closer → it must match the *top* of the pile. Pop that opener.
+3. Closer with empty hand → illegal.
+4. Wrong type on top → illegal (`([)]`).
+5. End of tape with leftovers in your hand → illegal.
+6. Empty hand at the end → legal.
+
+Counting open vs close is not enough. Nesting is the whole plot.
+
+### Syntax
+
+```ts
+const stack: string[] = [];
+stack.push("[");
+stack.push("{");
+console.log(stack.pop() === "{"); // true
+console.log(stack.length);        // 1
+```
+
+### Then the details
 
 ```ts
 function strapsOk(tape: string): boolean {
@@ -93,17 +120,25 @@ Pop on an empty stack is a mismatch. End of tape with leftovers is a mismatch. D
 
 ## Walkthrough
 
-`tape = "[{()}]()"`
-
 [Push and pop straps](viz/stack.md)
 
+### Easy
+
+`tape = "()"` — push `(`, pop on `)`, empty. Legal.
+
+### Medium
+
+`tape = "[{()}]()"`
+
 1. Push `[`, `{`, `(`.
-2. `)` matches `(`. Pop. `{` still on top.
-3. `}` matches `{`. Pop. `[` still on top.
-4. `]` matches `[`. Stack empty.
+2. `)` matches `(`. Pop.
+3. `}` matches `{`. Pop.
+4. `]` matches `[`. Empty.
 5. `(` push, `)` pop. Empty. Legal.
 
-Illegal cousin `"[({)]"`: after `[ { (` the first closer `)` matches, then `]` sees `{` and fails.
+### Hard
+
+`"[({)]"`: after `[ { (` the first closer `)` matches, then `]` sees `{` and fails. Even length, equal counts, still illegal. Leftover opens: `"(["` must fail at end.
 
 ## Pitfalls
 

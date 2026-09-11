@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "generated": "2026-09-03",
+  "generated": "2026-09-11",
   "lesson_count": 87,
   "tags": [
     "ai-agents",
@@ -203,7 +203,7 @@
       {
         "id": "kernel",
         "label": "Kernel",
-        "blurb": "Cost and layout before any pattern.",
+        "blurb": "Cost and layout before any pattern. Read top to bottom; each lesson eases in (ELI5, then syntax).",
         "units": [
           {
             "id": "cost",
@@ -236,7 +236,7 @@
       {
         "id": "index",
         "label": "Index",
-        "blurb": "Remember what you have seen. Scan from both ends.",
+        "blurb": "Remember what you have seen. Scan from both ends. Apply the Kernel drill: ELI5, syntax, then an easy/medium/hard walk.",
         "units": [
           {
             "id": "hash",
@@ -716,7 +716,7 @@
           "confidence": "high"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-11"
     },
     {
       "id": "bfs",
@@ -802,7 +802,7 @@
           "confidence": "high"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-11"
     },
     {
       "id": "binary-search-on-answer",
@@ -1648,7 +1648,7 @@
           "confidence": "medium"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-11"
     },
     {
       "id": "eval-harness-vs-agent-harness",
@@ -1821,7 +1821,7 @@
           "confidence": "medium"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-11"
     },
     {
       "id": "graders",
@@ -1917,7 +1917,7 @@
           "confidence": "medium"
         }
       ],
-      "updated": "2026-09-03"
+      "updated": "2026-09-11"
     },
     {
       "id": "hash-maps",
@@ -1926,7 +1926,7 @@
       "kind": "pattern",
       "track": "algorithms",
       "difficulty": "intro",
-      "estimated_minutes": 12,
+      "estimated_minutes": 18,
       "summary": "Trade linear scans for expected constant lookups by storing the fact you will need later.",
       "tags": [
         "algorithms",
@@ -1960,7 +1960,7 @@
           "confidence": "high"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-11"
     },
     {
       "id": "hashing-internals",
@@ -1999,7 +1999,7 @@
           "confidence": "high"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-11"
     },
     {
       "id": "heaps-top-k",
@@ -3143,7 +3143,7 @@
       "kind": "strategy",
       "track": "algorithms",
       "difficulty": "intro",
-      "estimated_minutes": 14,
+      "estimated_minutes": 16,
       "summary": "Learn about fourteen reusable templates, then drill two or three problems each, instead of grinding hundreds of one-off prompts.",
       "tags": [
         "algorithms",
@@ -3173,7 +3173,7 @@
           "confidence": "medium"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-11"
     },
     {
       "id": "payment-idempotency",
@@ -3907,7 +3907,7 @@
           "confidence": "high"
         }
       ],
-      "updated": "2026-09-03"
+      "updated": "2026-09-11"
     },
     {
       "id": "three-sum",
@@ -3958,7 +3958,7 @@
           "confidence": "high"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-11"
     },
     {
       "id": "tool-calling",
@@ -4262,7 +4262,7 @@
           "confidence": "medium"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-11"
     },
     {
       "id": "two-sum",
@@ -4312,7 +4312,7 @@
           "confidence": "high"
         }
       ],
-      "updated": "2026-09-03"
+      "updated": "2026-09-11"
     },
     {
       "id": "union-find",
@@ -4519,7 +4519,7 @@
           "confidence": "medium"
         }
       ],
-      "updated": "2026-09-02"
+      "updated": "2026-09-11"
     },
     {
       "id": "vendor-vs-user-harness",

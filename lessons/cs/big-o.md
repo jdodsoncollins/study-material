@@ -27,7 +27,7 @@ sources_consulted:
   - Undergrad growth-rate definitions (CLRS-style)
   - r/leetcode threads on "expected O(1)" hash-map answers
   - Blind 75 / NeetCode pattern lists treating complexity as a spoken step
-updated: 2026-09-02
+updated: 2026-09-11
 status: canonical
 ---
 
@@ -48,7 +48,15 @@ A 90-second version: brute force, why it dies at n ≈ 10^5, the cheaper plan, t
 
 ## Core idea
 
-Drop constants and slower terms *after* you know they are slower. `2n` and `n` are the same class. `n` and `n log n` are not, and neither is "I sort every query."
+### ELI5
+
+How does the *bill* grow when the dock gets busier? Not "how many milliseconds on my laptop."
+
+- Twice as many crates, same work per crate → the bill doubles. That is **linear**.
+- For each crate you walk every other crate → the bill squares. That is **quadratic**.
+- You sort the sheet once → extra `log n` on top of the walk.
+
+Drop constants only *after* you know they are slower. `2n` and `n` are the same class. `n` and `n log n` are not, and neither is "I sort every query."
 
 ```
 n = 10     nested scan feels instant
@@ -61,6 +69,18 @@ When two plans share a class, *then* talk constants: "this walks the array twice
 ## Worked example
 
 A dock scanner dumps `n` crate IDs. You must report whether any two IDs sum to a load limit.
+
+### Easy
+
+`n = 10`. Nested scan feels instant. Say "correct, n², fine at this size."
+
+### Medium
+
+`n = 1e5`. n² is 10 billion. Map of seen values is the phone-screen plan: expected O(n) time, O(n) space.
+
+### Hard
+
+They ask "is the map O(1)?" Answer: **expected** per op, amortized across resizes, worst-case O(n) if everything collides. That sentence is [hashing-internals](./hashing-internals.md) (id: hashing-internals).
 
 | Plan | Time | Space | What you say |
 | --- | --- | --- | --- |

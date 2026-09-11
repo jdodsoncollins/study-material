@@ -30,7 +30,7 @@ sources_consulted:
   - Undergrad hash-table collision notes (chaining vs open addressing)
   - r/leetcode threads on adversarial string hashes
   - Language docs on HashMap load factor and resize (Java / V8-style maps)
-updated: 2026-09-02
+updated: 2026-09-11
 status: canonical
 ---
 
@@ -51,6 +51,8 @@ This is the same machine as [two-sum](../algorithms/problems/two-sum/lesson.md) 
 
 ## Core idea
 
+### ELI5
+
 A coat-check with 8 hooks and 12 coats. Ticket number `hash(name) % 8` picks a hook. Two guests can share a hook: you hang a small chain of coats on it.
 
 ```
@@ -67,6 +69,8 @@ Two collision strategies:
 - **Open addressing** — if the slot is full, probe the next empty slot. Dense; deletes are fiddly.
 
 ## Worked example
+
+### Syntax
 
 ```ts
 function bucketOf(key: string, bucketCount: number): number {
@@ -86,7 +90,17 @@ console.log(bucketOf("N-4", 8), bucketOf("K-11", 8));
 | Insert that triggers 2× resize | O(n) this call, amortized O(1) | Mention if they ask about "always O(1)" |
 | Iterate all entries | O(n + buckets) | Walking empty slots costs too |
 
-A hostile interviewer can feed keys that all hash to 0. Languages mitigate with randomized seeds so you cannot *plan* the pileup from outside.
+### Easy
+
+`bucketOf("N-4", 8)` and `bucketOf("K-11", 8)` — two SKUs, maybe two hooks, maybe a collision. Either is fine.
+
+### Medium
+
+Load factor climbs past ~0.7. One insert pays O(n) to rehash. You still say amortized O(1) because that bill is spread across later inserts.
+
+### Hard
+
+A hostile interviewer feeds keys that all hash to 0. Worst-case lookup is O(n). Languages mitigate with randomized seeds so you cannot *plan* the pileup from outside. That is why the adult sentence is **expected** O(1).
 
 ## Common mistakes
 

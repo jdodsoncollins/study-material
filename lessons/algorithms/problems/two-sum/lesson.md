@@ -31,7 +31,7 @@ company_signal:
 sources_consulted:
   - Blind 75 / NeetCode pattern lists (2026)
   - r/leetcode Meta and Amazon tagged-list threads
-updated: 2026-09-03
+updated: 2026-09-11
 status: canonical
 ---
 
@@ -61,7 +61,31 @@ This is the same shape as the famous "two sum" interview question. The story is 
 
 ## Worked approach
 
-Walk the list once. For weight `w` at index `i`, compute `need = target - w`. If `need` is already in the map, you are done. Otherwise record `w → i`.
+This is [hash-maps](../../patterns/hash-maps.md) (id: hash-maps) applied to one prompt. Apply it the same way: ELI5, then the three Map calls, then lookup-before-insert.
+
+### ELI5
+
+The forklift can carry 19. You walk the dock once, left to right, with a shoebox of cards.
+
+1. This bin weighs 8.
+2. Ask the shoebox: have I already parked a bin that weighs `19 - 8`?
+3. Yes → those two indices. Stop.
+4. No → write a card `8 → this index` and keep walking.
+
+You never pick up the same bin twice, because the card you just wrote is for a *later* pallet to find.
+
+### Syntax
+
+```ts
+const seen = new Map<number, number>();
+seen.set(11, 1);
+console.log(seen.get(19 - 8)); // 1
+console.log(seen.get(15));     // undefined
+```
+
+### Then the details
+
+Walk once. Look up the partner, then insert this weight.
 
 ```ts
 function pairIndices(weights: number[], target: number): [number, number] | null {
@@ -92,17 +116,27 @@ If the interviewer then says "the list is already sorted, just return the values
 
 ## Walkthrough
 
-`weights = [4, 11, 8, 3, 15]`, `target = 19`
-
 [Walk the bins](viz/walk.md)
+
+### Easy
+
+`weights = [4, 11, 8, 3, 15]`, `target = 19`
 
 1. `4` → need `15`. Map empty. Store `4 → 0`.
 2. `11` → need `8`. Miss. Store `11 → 1`.
 3. `8` → need `11`. Hit at index 1. Return `[1, 2]`.
 
-Check: `11 + 8 = 19`. Bins 1 and 2.
+Check: `11 + 8 = 19`.
 
-A duplicate-value trap: `[6, 6]`, target `12` must return both indices. The map stores the first `6`; the second `6` finds it. Do not write `if (need === w) skip`.
+### Medium
+
+A miss: `target = 10` on the same list. Every `need` is absent. Return `null`. Narrate one miss out loud so you do not freeze when the happy path is not there.
+
+### Hard
+
+`[6, 6]`, target `12` must return both indices. The map stores the first `6`; the second `6` finds it. Do not write `if (need === w) skip`. Insert-first would return `[0, 0]`.
+
+If they then say "the list is already sorted, just return the values," switch to [two-pointers](../../patterns/two-pointers/lesson.md) (id: two-pointers).
 
 ## Pitfalls
 

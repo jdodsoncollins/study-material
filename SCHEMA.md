@@ -130,12 +130,28 @@ Use exactly these H2 headings, in this order. H3s are allowed under them. No H1 
 2. `## Snapshot` — 3–5 bullet facts
 3. `## Prompt` — original restatement of the task. Never paste LeetCode / Grokking wording.
 4. `## Recognition signals` — table: cue → why it matters
-5. `## Worked approach` — prose + one original code sample
+5. `## Worked approach` — ease-into ladder (H3s below) + original code
 6. `## Complexity` — table: approach / time / space / notes
-7. `## Walkthrough` — numbered steps on an original example
+7. `## Walkthrough` — easy / medium / hard on original examples
 8. `## Pitfalls` — table: trap / what happens / fix
 9. `## Interview moves` — how to talk while solving
 10. `## Cross-links` — markdown links to other lessons using relative paths, plus `id:` in the link text or a trailing `(id: foo)`
+
+Do not jump to typed code. Kernel and the first pattern lessons (Index onward) use this H3 ladder so a reader can apply the technique from [pattern-first-prep](lessons/algorithms/strategy/pattern-first-prep.md):
+
+**Under `## Worked approach`**
+
+1. `### ELI5` — spoken invariant and fake-code / numbered clerk steps. No language syntax.
+2. `### Syntax` — the smallest typed sample that runs (`console.log`). Show the API (`set`/`get`, two indices, a stack) before the full solution.
+3. `### Then the details` — the one footgun (lookup-before-insert, sort-then-pointers, skip duplicates). Full solution lives here if it does not fit Syntax.
+
+**Under `## Walkthrough`**
+
+1. `### Easy` — tiny happy path, same numbers as the prompt
+2. `### Medium` — one twist (duplicates, a miss, original indices)
+3. `### Hard` — the follow-up they get in the room, still original numbers
+
+`concept` / `strategy` lessons use the same idea under `## Core idea` (ELI5) and `## Worked example` (easy → hard) without renaming those H2s.
 
 ### `case-study` (system design)
 

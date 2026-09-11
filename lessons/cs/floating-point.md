@@ -25,7 +25,7 @@ sources_consulted:
   - IEEE-754 binary64 layout as taught in intro architecture / numerical courses
   - JS number (IEEE-754, 2^53-1 safe integer) language notes
   - Classic 0.1 + 0.2 interview warmup threads
-updated: 2026-09-02
+updated: 2026-09-11
 status: canonical
 ---
 
@@ -44,7 +44,13 @@ They are checking whether you will put money, scores, or snowflake IDs in a floa
 
 ## Core idea
 
-Write 13 as 1.101 × 2^3 if you only have binary digits. Now try to write 0.1. There is no finite binary expansion, so the stored value is the *nearest* 52-bit approximation. Adding two approximations does not cancel the error.
+### ELI5
+
+A float is scientific notation in base two: a sign, a power of two, and a short fraction. Most decimals you write in base ten (0.1, 0.2, money) do not land on those fractions, so the machine stores the *nearest* one.
+
+Adding two "nearest" numbers does not give the decimal you had in mind. That is the format, not a broken VM.
+
+Write 13 as 1.101 × 2^3 if you only have binary digits. Now try to write 0.1. There is no finite binary expansion.
 
 ```
 0.1  →  0.0001100110011... repeating in binary
@@ -58,6 +64,18 @@ Never use `===` on computed floats. Compare with a tolerance *relative to magnit
 ## Worked example
 
 Three diners split a $10 tab stored as dollars.
+
+### Easy
+
+`0.1 + 0.2 === 0.3` is false. Print both sides.
+
+### Medium
+
+Split $10 three ways, add the shares, you do not get 10. Use integer cents.
+
+### Hard
+
+IDs past 2^53 − 1 alias. Snowflake IDs and money do not live in `number`.
 
 ```ts
 const share = 10.0 / 3.0;           // 3.333... not 3.33

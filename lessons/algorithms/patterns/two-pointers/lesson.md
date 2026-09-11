@@ -32,7 +32,7 @@ company_signal:
 sources_consulted:
   - Blind 75 / NeetCode pattern lists (2026)
   - r/leetcode two-pointer tagged threads
-updated: 2026-09-02
+updated: 2026-09-11
 status: canonical
 ---
 
@@ -64,7 +64,36 @@ This is the sorted sibling of pair-sum. If the interviewer wanted indices from a
 
 [squeeze](viz/squeeze.md)
 
-Left starts at 0, right at the last index. Compare `masses[L] + masses[R]` to the limit. Too small, `L++`. Too big, `R--`. Equal, done.
+Apply from [pattern-first-prep](../../strategy/pattern-first-prep.md) (id: pattern-first-prep): name the invariant, then the two indices, then why each move is legal.
+
+### ELI5
+
+The boarding sheet is already light-to-heavy.
+
+1. Put a finger on the lightest crate and a finger on the heaviest.
+2. Add them.
+3. Too light? The light crate cannot make it with anyone heavier than the current heavy one — you already used the heaviest. Slide the left finger right.
+4. Too heavy? The heavy crate is the problem. Slide the right finger left.
+5. Equal? Those two ride.
+
+You only ever move inward. That is the whole pattern.
+
+### Syntax
+
+```ts
+let left = 0;
+let right = 5; // last index of a 6-crate sheet
+console.log(left < right);
+left += 1;  // sum was short
+right -= 1; // sum was long
+console.log(left, right);
+```
+
+Two integers. No map.
+
+### Then the details
+
+The move is legal only because the array is sorted. If a sum is short, every partner of the current left is even smaller, so the left crate is useless.
 
 ```ts
 function ferryPair(masses: number[], limit: number): [number, number] | null {
@@ -81,10 +110,7 @@ function ferryPair(masses: number[], limit: number): [number, number] | null {
 
 console.log(ferryPair([3, 5, 8, 12, 14, 21], 26)); // [5, 21]
 console.log(ferryPair([3, 5, 8, 12, 14, 21], 22)); // [8, 14]
-
 ```
-
-The move is legal only because the array is sorted. If a sum is short, every partner of the current left is even smaller, so the left crate is useless.
 
 ## Complexity
 
@@ -96,12 +122,20 @@ The move is legal only because the array is sorted. If a sum is short, every par
 
 ## Walkthrough
 
+### Easy
+
 `masses = [3, 5, 8, 12, 14, 21]`, `limit = 26`
 
 1. `3 + 21 = 24` too small. Advance left.
 2. `5 + 21 = 26`. Return `[5, 21]`.
 
-A miss walk: limit `22`. `3+21=24` shrink right → `3+14=17` grow left → `5+14=19` grow → `8+14=22`. Hit.
+### Medium
+
+Limit `22` on the same sheet. `3+21=24` shrink right → `3+14=17` grow left → `5+14=19` grow → `8+14=22`. Hit `[8, 14]`.
+
+### Hard
+
+They want original indices and the bag is unsorted. Do not sort in place. Either keep `(value, index)` tuples, or switch to [hash-maps](../hash-maps.md) (id: hash-maps). Unique pairs with duplicates: after a hit, move one pointer and skip equals. `left < right` so you never pair a crate with itself.
 
 ## Pitfalls
 

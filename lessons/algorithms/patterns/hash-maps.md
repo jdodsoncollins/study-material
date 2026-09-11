@@ -5,7 +5,7 @@ slug: hash-maps
 kind: pattern
 track: algorithms
 difficulty: intro
-estimated_minutes: 12
+estimated_minutes: 18
 summary: Trade linear scans for expected constant lookups by storing the fact you will need later.
 tags:
   - algorithms
@@ -31,7 +31,7 @@ company_signal:
 sources_consulted:
   - Blind 75 / NeetCode pattern lists (2026)
   - r/leetcode hash-map tagged threads
-updated: 2026-09-02
+updated: 2026-09-11
 status: canonical
 ---
 
@@ -61,7 +61,45 @@ The pair half is the two-sum shape. The index half is why the pattern exists.
 
 ## Worked approach
 
-Decide the key *before* you code. For pair-sum the key is the complement. For "last bin" the key is the SKU.
+Decide the key *before* you code. For "last bin" the key is the SKU. For pair-sum the key is the complement you still need.
+
+### ELI5
+
+A night clerk keeps a shoebox of index cards. Each card is one question you will ask later, and the answer you already know.
+
+Last-bin job:
+
+1. A pallet with SKU `K-11` rolls into bin 1.
+2. Write a card: `K-11 → 1`.
+3. The same SKU later lands in bin 4. Scratch the card, write `K-11 → 4`.
+4. Someone asks "where is K-11?" You do not walk the dock. You flip the card.
+
+Pair job (two weights that add to 19):
+
+1. Look at this pallet's weight, say 8.
+2. Ask the shoebox: have I already seen `19 - 8`?
+3. If yes, those two bins ride together. Stop.
+4. If no, leave a card for 8 so a later pallet can find it.
+
+Say that out loud before you type `Map`. The card is the key. The bin (or index) is the value.
+
+### Syntax
+
+Three calls. That is the whole phone-screen API.
+
+```ts
+const bins = new Map<string, number>();
+bins.set("K-11", 1);           // write a card
+console.log(bins.get("K-11")); // 1  — flip the card
+console.log(bins.has("N-4"));  // false — empty shoebox slot
+console.log(bins.get("N-4"));  // undefined, not an error
+```
+
+Use `Map`, not `{}`. Numeric keys on an object become strings (`10` vs `"10"`).
+
+### Then the details
+
+Build the index in one pass. Last write wins, which is what "last bin" wants.
 
 ```ts
 function lastBin(skus: string[]): Map<string, number> {
@@ -70,6 +108,12 @@ function lastBin(skus: string[]): Map<string, number> {
   return bins;
 }
 
+console.log(Object.fromEntries(lastBin(["N-4", "K-11", "N-8", "K-3"])));
+```
+
+Pair-sum: look up the partner *before* you insert this weight, or a lone `6` will pair with itself when the target is `12`.
+
+```ts
 function pairByWeight(weights: number[], target: number): [number, number] | null {
   const seen = new Map<number, number>();
   for (let i = 0; i < weights.length; i++) {
@@ -80,12 +124,11 @@ function pairByWeight(weights: number[], target: number): [number, number] | nul
   return null;
 }
 
-console.log(Object.fromEntries(lastBin(["N-4", "K-11", "N-8", "K-3"])));
 console.log(pairByWeight([4, 11, 8, 3, 15], 19)); // [1, 2]
-
+console.log(pairByWeight([6, 6], 12));            // [0, 1]
 ```
 
-Look up *before* insert when a value must not pair with itself.
+Grouping (anagrams, rounded geo cells) is the same shoebox: the key is a *signature* you compute, the value is a list. That is the next lesson.
 
 ## Complexity
 
@@ -97,13 +140,39 @@ Look up *before* insert when a value must not pair with itself.
 
 ## Walkthrough
 
-`skus = ["N-4", "K-11", "N-8", "K-3"]`
+### Easy
 
-1. Store `N-4 → 0`, `K-11 → 1`, `N-8 → 2`, `K-3 → 3`.
-2. Query `K-11` hits bin 1.
-3. Weights `[4, 11, 8, 3]`, target 19: `4` needs 15, miss; `11` needs 8, miss; `8` needs 11, hit index 1.
+`skus = ["N-4", "K-11", "N-8", "K-3"]`. Last bin for each SKU.
 
-Duplicates: two copies of `6` and target `12` work only if the first `6` is already in the map when the second arrives.
+1. `N-4 → 0`
+2. `K-11 → 1`
+3. `N-8 → 2`
+4. `K-3 → 3`
+
+Query `K-11` → bin 1. No scan of the dock.
+
+### Medium
+
+Weights `[4, 11, 8, 3, 15]`, target `19`. Same numbers as the prompt.
+
+| i | weight | need | shoebox before | result |
+| --- | --- | --- | --- | --- |
+| 0 | 4 | 15 | empty | miss, store 4→0 |
+| 1 | 11 | 8 | {4} | miss, store 11→1 |
+| 2 | 8 | 11 | {4, 11} | hit index 1 |
+
+Return `[1, 2]`. You never look at 3 or 15.
+
+### Hard
+
+Two copies of `6`, target `12`. Lookup-before-insert is the whole plot.
+
+- First `6`: need 6, shoebox empty, store 6→0.
+- Second `6`: need 6, shoebox has it at 0, return `[0, 1]`.
+
+If you insert first, the first `6` finds itself and you return `[0, 0]`, which is illegal.
+
+Follow-up they actually ask: "group the SKUs that are anagrams." The shoebox key becomes `sorted letters`, the value becomes a list. Walk that in [group-anagrams](../problems/group-anagrams/lesson.md) (id: group-anagrams). Follow-up #2: "why is this O(n)?" → [hashing-internals](../../cs/hashing-internals.md) (id: hashing-internals).
 
 ## Pitfalls
 
