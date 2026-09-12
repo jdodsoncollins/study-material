@@ -1,6 +1,6 @@
 ---
 id: kth-largest
-title: k-th busiest dock
+title: k-th highest view count
 slug: kth-largest
 kind: problem
 track: algorithms
@@ -34,7 +34,7 @@ updated: 2026-09-02
 status: canonical
 ---
 
-# k-th busiest dock
+# k-th highest view count
 
 ## Snapshot
 
@@ -45,9 +45,9 @@ status: canonical
 
 ## Prompt
 
-Dock throughput for the hour, pallets per lane: `scores = [31, 6, 18, 44, 18, 9, 25]`. Return the `k = 3`rd busiest total. Duplicate 18s both count. Lanes are not unique keys; you are ranking numbers.
+View counts on today's videos: `scores = [31, 6, 18, 44, 18, 9, 25]`. Return the `k = 3`rd highest count. Duplicate 18s both count. You are ranking numbers, not unique videos.
 
-This is k-th largest. The scores are a dock sheet, not a textbook random array.
+This is k-th largest. The numbers are not a textbook random array.
 
 ## Recognition signals
 

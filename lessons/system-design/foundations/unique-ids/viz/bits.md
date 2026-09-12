@@ -5,6 +5,6 @@ flowchart LR
   mint[Mint on worker] --> pack[time 41b]
   pack --> worker[worker 10b]
   worker --> seq[seq 12b]
-  seq --> id[64-bit YardTicket]
+  seq --> id[64-bit post id]
   id --> log[Event log]
 ```

@@ -49,7 +49,7 @@ status: canonical
 
 A dock thermometer records `temps = [14, 13, 16, 15, 19, 12]`. For each hour, how many hours until a strictly warmer reading? If none, put 0.
 
-This is the "next greater to the right" family, told as a weather strip on a warehouse wall.
+This is the "next greater to the right" family, told as a temperature strip, not a textbook array.
 
 ## Recognition signals
 
@@ -155,7 +155,7 @@ They want `-1` instead of `0` for "never." Fill that default. Equal temps: match
 
 ## Cross-links
 
-- [Matched crate tags](../problems/valid-brackets/lesson.md) (id: valid-brackets)
+- [Matched brackets in a line of code](../problems/valid-brackets/lesson.md) (id: valid-brackets)
 - [Collapse overlapping ranges](./merge-intervals.md) (id: merge-intervals)
 - [Squeeze from both ends](./two-pointers/lesson.md) (id: two-pointers)
 - [Keep only the interesting k](./heaps-top-k.md) (id: heaps-top-k)

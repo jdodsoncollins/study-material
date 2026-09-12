@@ -631,7 +631,7 @@
     },
     {
       "id": "aisle-loop",
-      "title": "A forklift looping the same aisle",
+      "title": "A next-pointer that loops",
       "slug": "aisle-loop",
       "kind": "problem",
       "track": "algorithms",
@@ -802,7 +802,7 @@
           "confidence": "high"
         }
       ],
-      "updated": "2026-09-11"
+      "updated": "2026-09-12"
     },
     {
       "id": "binary-search-on-answer",
@@ -855,7 +855,7 @@
       "track": "system-design",
       "difficulty": "core",
       "estimated_minutes": 20,
-      "summary": "RollKeep stores dock camera clips as immutable blobs; the fight is resumable upload, a tiny metadata index, and a cold path that is allowed to be slow.",
+      "summary": "RollKeep stores user photo and video uploads as immutable blobs; the fight is resumable upload, a tiny metadata index, and a cold path that is allowed to be slow.",
       "tags": [
         "system-design",
         "system-design/product-cases",
@@ -1337,7 +1337,7 @@
       "track": "ai-agents",
       "difficulty": "core",
       "estimated_minutes": 22,
-      "summary": "DockDesk is an agent behind a chat slash command; the design is verify-then-queue, an idempotent tool loop, and a reply that Slack retries cannot double-post.",
+      "summary": "DeskBot is an agent behind a Slack slash command; the design is verify-then-queue, an idempotent tool loop, and a reply that Slack retries cannot double-post.",
       "tags": [
         "ai-agents",
         "ai-agents/product",
@@ -1960,7 +1960,7 @@
           "confidence": "high"
         }
       ],
-      "updated": "2026-09-11"
+      "updated": "2026-09-12"
     },
     {
       "id": "hashing-internals",
@@ -2303,7 +2303,7 @@
     },
     {
       "id": "kth-largest",
-      "title": "k-th busiest dock",
+      "title": "k-th highest view count",
       "slug": "kth-largest",
       "kind": "problem",
       "track": "algorithms",
@@ -2870,13 +2870,13 @@
     },
     {
       "id": "number-of-islands",
-      "title": "Pallet clusters on a flooded floor",
+      "title": "Land clusters on a map",
       "slug": "number-of-islands",
       "kind": "problem",
       "track": "algorithms",
       "difficulty": "core",
       "estimated_minutes": 12,
-      "summary": "Flood-fill each unvisited pallet cell and count how many times you start a new fill; that count is the number of clusters.",
+      "summary": "Flood-fill each unvisited land cell and count how many times you start a new fill; that count is the number of islands.",
       "tags": [
         "algorithms",
         "algorithms/graphs",
@@ -3455,7 +3455,7 @@
     },
     {
       "id": "reverse-chain",
-      "title": "Flip the pallet chain",
+      "title": "Reverse a next-pointer chain",
       "slug": "reverse-chain",
       "kind": "problem",
       "track": "algorithms",
@@ -3554,7 +3554,7 @@
     },
     {
       "id": "rotated-index",
-      "title": "Lookup in a rotated pallet index",
+      "title": "Lookup in a rotated sorted index",
       "slug": "rotated-index",
       "kind": "problem",
       "track": "algorithms",
@@ -4312,7 +4312,7 @@
           "confidence": "high"
         }
       ],
-      "updated": "2026-09-11"
+      "updated": "2026-09-12"
     },
     {
       "id": "union-find",
@@ -4473,13 +4473,13 @@
     },
     {
       "id": "valid-brackets",
-      "title": "Matched crate tags",
+      "title": "Matched brackets in a line of code",
       "slug": "valid-brackets",
       "kind": "problem",
       "track": "algorithms",
       "difficulty": "intro",
       "estimated_minutes": 10,
-      "summary": "Push opening tags onto a stack and pop only when the matching closer arrives; leftover opens or a mismatched pop means the packing is illegal.",
+      "summary": "Push opening brackets onto a stack and pop only when the matching closer arrives; leftover opens or a mismatched pop means the line is illegal.",
       "tags": [
         "algorithms",
         "algorithms/stacks",

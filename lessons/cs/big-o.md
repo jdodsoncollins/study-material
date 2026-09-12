@@ -27,7 +27,7 @@ sources_consulted:
   - Undergrad growth-rate definitions (CLRS-style)
   - r/leetcode threads on "expected O(1)" hash-map answers
   - Blind 75 / NeetCode pattern lists treating complexity as a spoken step
-updated: 2026-09-11
+updated: 2026-09-12
 status: canonical
 ---
 
@@ -50,11 +50,11 @@ A 90-second version: brute force, why it dies at n ≈ 10^5, the cheaper plan, t
 
 ### ELI5
 
-How does the *bill* grow when the dock gets busier? Not "how many milliseconds on my laptop."
+How does the *work* grow when the inbox gets bigger? Not "how many milliseconds on my laptop."
 
-- Twice as many crates, same work per crate → the bill doubles. That is **linear**.
-- For each crate you walk every other crate → the bill squares. That is **quadratic**.
-- You sort the sheet once → extra `log n` on top of the walk.
+- Twice as many emails, same work per email → the work doubles. That is **linear**.
+- For each email you scan every other email looking for a duplicate subject → the work squares. That is **quadratic**.
+- You sort the inbox once, then walk it → extra `log n` on top of the walk.
 
 Drop constants only *after* you know they are slower. `2n` and `n` are the same class. `n` and `n log n` are not, and neither is "I sort every query."
 
@@ -68,7 +68,7 @@ When two plans share a class, *then* talk constants: "this walks the array twice
 
 ## Worked example
 
-A dock scanner dumps `n` crate IDs. You must report whether any two IDs sum to a load limit.
+A checkout cart has `n` item prices. You must report whether any two add to a gift-card amount.
 
 ### Easy
 
@@ -116,7 +116,7 @@ The loop is O(n) iterations. Each `has` / `add` is expected O(1). Together: expe
 
 ## How to talk about it
 
-"Brute force is a nested scan, O(n²). At 10^5 that is too slow. I'll keep a set of values I've already seen so each crate is O(1) expected work, total expected O(n) time and O(n) space. If extra memory is banned, I sort and walk two pointers in O(n log n)."
+"Brute force is a nested scan, O(n²). At 10^5 that is too slow. I'll keep a set of prices I've already seen so each item is O(1) expected work, total expected O(n) time and O(n) space. If extra memory is banned, I sort and walk two pointers in O(n log n)."
 
 If they ask about the constant: "I would not claim this beats a tight O(n log n) sort on tiny n. I claim it wins as n grows, which is what this prompt is testing."
 

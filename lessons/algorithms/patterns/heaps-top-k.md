@@ -45,9 +45,9 @@ status: canonical
 
 ## Prompt
 
-Dock scanners report how many pallets each lane cleared this hour: `cleared = [19, 4, 27, 12, 27, 8]`. Return the k = 2 busiest lane totals (values, not ranks). Ties stay; you are ranking scores, not unique lanes.
+View counts on today's videos: `cleared = [19, 4, 27, 12, 27, 8]`. Return the k = 2 highest counts (values, not ranks). Ties stay; you are ranking scores, not unique videos.
 
-This is k-th largest / top-k, told as throughput rather than a textbook stream of random ints.
+This is k-th largest / top-k, not a textbook stream of random ints.
 
 ## Recognition signals
 
@@ -158,7 +158,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Cross-links
 
-- [k-th busiest dock](../problems/kth-largest/lesson.md) (id: kth-largest)
+- [k-th highest view count](../problems/kth-largest/lesson.md) (id: kth-largest)
 - [Binary search the feasible number](./binary-search-on-answer.md) (id: binary-search-on-answer)
 - [Hash maps as an index](./hash-maps.md) (id: hash-maps)
 - [Collapse overlapping ranges](./merge-intervals.md) (id: merge-intervals)

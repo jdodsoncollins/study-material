@@ -152,6 +152,6 @@ Store indices, not temperatures. You need `i - j`. Leftovers stay 0 unless they 
 ## Cross-links
 
 - [The next greater is waiting on a stack](../../patterns/monotonic-stack.md) (id: monotonic-stack)
-- [Matched crate tags](../valid-brackets/lesson.md) (id: valid-brackets)
+- [Matched brackets in a line of code](../valid-brackets/lesson.md) (id: valid-brackets)
 - [Collapse overlapping ranges](../../patterns/merge-intervals.md) (id: merge-intervals)
 - [Squeeze from both ends](../../patterns/two-pointers/lesson.md) (id: two-pointers)

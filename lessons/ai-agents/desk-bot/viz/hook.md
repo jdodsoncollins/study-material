@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart LR
-  wire[YardWire retry POST] --> hook[WireHook]
+  wire[Slack retry POST] --> hook[WireHook]
   hook --> ver[Verify signature]
   ver --> dedup{event_id seen?}
   dedup -->|yes| ack[200]

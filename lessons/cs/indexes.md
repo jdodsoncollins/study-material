@@ -56,7 +56,7 @@ This is the same idea as a hash map in [two-sum](../algorithms/problems/two-sum/
 A used bookstore. The shelves are the heap (arrival order). The card catalog is an index: author → shelf slot. Binary-search the cards (B-tree), or hash the author to a drawer (hash index).
 
 ```
-row heap:  [crate 9][crate 3][crate 18]...
+row heap:  [row 9][row 3][row 18]...
 index on (yard, arrived_at):
   (east, 09:01) → row 2
   (east, 09:07) → row 0

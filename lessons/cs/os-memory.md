@@ -49,7 +49,7 @@ Design rounds ask "what happens if the working set no longer fits in RAM?" Codin
 
 ### ELI5
 
-Think of apartment mailboxes. The number on the box (virtual) is what tenants use. The post office (OS) keeps a directory that says box 12B currently maps to crate 4096 in the basement (physical). If the crate was hauled to off-site storage (swap), the next letter waits.
+Think of apartment mailboxes. The number on the box (virtual) is what tenants use. The post office (OS) keeps a directory that says box 12B currently maps to shelf 4096 in the basement (physical). If that shelf was hauled to off-site storage (swap), the next letter waits.
 
 ```
 virtual page  →  page table  →  physical frame
@@ -69,7 +69,7 @@ Copy-on-write: `fork` clones the page *map*, not the bytes. The child writes a p
 
 Walk the small case in the sample, then the miss, then the follow-up they name in Interview moves.
 
-Sum 1 million crate weights two ways: packed `number[]` versus a linked list of nodes.
+Sum 1 million integers two ways: packed `number[]` versus a linked list of nodes.
 
 | Access pattern | What the hardware does | Feel |
 | --- | --- | --- |

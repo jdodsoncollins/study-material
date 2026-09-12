@@ -1,6 +1,6 @@
 ---
 id: reverse-chain
-title: Flip the pallet chain
+title: Reverse a next-pointer chain
 slug: reverse-chain
 kind: problem
 track: algorithms
@@ -35,7 +35,7 @@ updated: 2026-09-03
 status: canonical
 ---
 
-# Flip the pallet chain
+# Reverse a next-pointer chain
 
 ## Snapshot
 
@@ -46,9 +46,9 @@ status: canonical
 
 ## Prompt
 
-Pallets on a chain, head to tail: `4 → 9 → 1 → 7`. Reverse the chain in place. Return the new head. Do not allocate n new nodes.
+A playlist's `next` pointers, head to tail: `4 → 9 → 1 → 7`. Reverse the chain in place. Return the new head. Do not allocate n new nodes.
 
-This is reverse-linked-list. The values are dock marks, not `1→2→3→4→5`.
+This is reverse-linked-list. The values are not `1→2→3→4→5`.
 
 ## Recognition signals
 
@@ -149,6 +149,6 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 ## Cross-links
 
 - [Arrays versus linked lists](../../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
-- [A forklift looping the same aisle](../aisle-loop/lesson.md) (id: aisle-loop)
+- [A next-pointer that loops](../aisle-loop/lesson.md) (id: aisle-loop)
 - [Scanner memory with eviction](../lru-cache/lesson.md) (id: lru-cache)
 - [Two speeds, one list](../../patterns/fast-slow-pointers.md) (id: fast-slow-pointers)

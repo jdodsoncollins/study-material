@@ -46,9 +46,9 @@ status: canonical
 
 ## Prompt
 
-A conveyor must clear crates of sizes `crates = [7, 3, 11, 5]` before the 5pm truck. Speed is "units of mass per hour." Hours available: `hours = 8`. Find the minimum integer speed that finishes on time. A crate cannot be split across two hours, but a slow hour can sit idle after a small crate.
+n video files of sizes `files = [7, 3, 11, 5]`. You have `hours = 8` to transcode them. Speed is "units per hour." Find the minimum integer speed that finishes on time. A file cannot split across two hours, but a slow hour can sit idle after a small file.
 
-This is the "minimum feasible rate" family, restated as a dock deadline.
+This is the "minimum feasible rate" family (Koko / split-array), restated as a transcode deadline.
 
 ## Recognition signals
 
@@ -63,17 +63,17 @@ This is the "minimum feasible rate" family, restated as a dock deadline.
 
 ### ELI5
 
-Lower bound is 1 (or max crate if you cannot split a crate across hours). Upper bound is max crate (one crate per hour) or sum. Bisect. `can(speed)` walks crates and counts hours needed.
+Lower bound is 1 (or max file if you cannot split a file across hours). Upper bound is max file (one file per hour) or sum. Bisect. `can(speed)` walks files and counts hours needed.
 
 ### Then the details
 
 ```ts
-function minSpeed(crates: number[], hours: number): number {
+function minSpeed(files: number[], hours: number): number {
   let lo = 1;
-  let hi = Math.max(...crates);
+  let hi = Math.max(...files);
   const can = (speed: number) => {
     let used = 0;
-    for (const mass of crates) used += Math.ceil(mass / speed);
+    for (const mass of files) used += Math.ceil(mass / speed);
     return used <= hours;
   };
   while (lo < hi) {
@@ -101,7 +101,7 @@ When `can(mid)` is true you still try smaller, so `hi = mid`, not `mid - 1`, if 
 
 ## Walkthrough
 
-`crates = [7, 3, 11, 5]`, `hours = 8`
+`files = [7, 3, 11, 5]`, `hours = 8`
 
 ### Easy
 
@@ -132,14 +132,14 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 - Write `can(x)` first, on the board, with one example. Only then wrap binary search.
 - State the invariant: "all speeds < lo fail; all speeds ≥ hi succeed."
-- Ask whether a crate can split across hours. That changes the predicate, not the pattern.
+- Ask whether a file can split across hours. That changes the predicate, not the pattern.
 - If they want the *count* of ways, this is the wrong tool; that is DP.
 
 ## Cross-links
 
 - [Fewest tokens for a fare](../problems/coin-change/lesson.md) (id: coin-change)
 - [Keep only the interesting k](./heaps-top-k.md) (id: heaps-top-k)
-- [k-th busiest dock](../problems/kth-largest/lesson.md) (id: kth-largest)
+- [k-th highest view count](../problems/kth-largest/lesson.md) (id: kth-largest)
 - [Reuse the last few answers](./dp-1d.md) (id: dp-1d)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
 - [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)

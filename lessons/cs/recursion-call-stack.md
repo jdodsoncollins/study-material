@@ -74,25 +74,25 @@ Memoization collapses the DAG. An explicit stack does the same walk without the 
 
 Walk the small case in the sample, then the miss, then the follow-up they name in Interview moves.
 
-Count folders in a nested crate manifest. Each crate has a name and children.
+Count folders in a nested filesystem tree. Each folder has a name and children.
 
 ```ts
-type Crate = { name: string; kids: Crate[] };
+type Folder = { name: string; kids: Folder[] };
 
-function count(crate: Crate): number {
+function count(folder: Folder): number {
   let n = 1;
-  for (const kid of crate.kids) n += count(kid);
+  for (const kid of folder.kids) n += count(kid);
   return n;
 }
 
-const yard: Crate = {
-  name: "yard",
+const src: Folder = {
+  name: "src",
   kids: [
-    { name: "aisle-a", kids: [{ name: "bin", kids: [] }] },
-    { name: "aisle-b", kids: [] },
+    { name: "app", kids: [{ name: "index", kids: [] }] },
+    { name: "lib", kids: [] },
   ],
 };
-console.log(count(yard)); // 4
+console.log(count(src)); // 4
 
 ```
 
@@ -103,7 +103,7 @@ console.log(count(yard)); // 4
 | Naive fib(n) | O(φ^n) | O(n) | Time dies first |
 | Memo fib(n) | O(n) | O(n) heap + O(n) stack | Stack still O(n) unless you loop |
 
-Iterative rewrite: push crates onto `stack: Crate[]` yourself. Same O(n) time, same O(height) space, but the heap array can be huge and you control it.
+Iterative rewrite: push folders onto `stack: Folder[]` yourself. Same O(n) time, same O(height) space, but the heap array can be huge and you control it.
 
 ## Common mistakes
 

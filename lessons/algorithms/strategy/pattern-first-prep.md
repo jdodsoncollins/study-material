@@ -40,7 +40,7 @@ status: canonical
 - Interview coding rounds test *recognition speed* more than novelty. The graph of prompts is wide; the graph of ideas is not.
 - Fifteen patterns cover the bulk of phone screens: maps, two pointers, windows, fast-slow, binary search on the answer, BFS, DFS/backtracking, heaps, intervals, monotonic stacks, union-find, 1D DP, 2D DP, topo sort, tries.
 - A famous 75-problem community list started as a Teamblind post: one engineer’s short set, not a leaked company exam. Treat it as a sampling frame, not scripture.
-- Grinding 500 random items without naming the pattern is how people stay busy and still freeze on a restated warehouse story.
+- Grinding 500 random items without naming the pattern is how people stay busy and still freeze when the prompt is restated.
 
 ## Why it shows up in interviews
 
@@ -142,7 +142,7 @@ Index — squeeze
 - [Squeeze from both ends](../patterns/two-pointers/lesson.md) (id: two-pointers)
 - [Three-value search](../problems/three-sum/lesson.md) (id: three-sum)
 - [Two posts and a tarp](../problems/tarp-span/lesson.md) (id: tarp-span)
-- [Matched crate tags](../problems/valid-brackets/lesson.md) (id: valid-brackets)
+- [Matched brackets in a line of code](../problems/valid-brackets/lesson.md) (id: valid-brackets)
 
 Later stages (Window through Judge) use the same read order: ELI5, then syntax or the first sketch, then details, then easy / medium / hard.
 

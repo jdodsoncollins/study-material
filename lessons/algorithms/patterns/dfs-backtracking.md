@@ -49,7 +49,7 @@ status: canonical
 
 A locker's digit wheels can be set to `digits = [1, 2, 4]`. You must pick a combination of length 2, order matters, no digit reused. List every combination.
 
-Then, on a warehouse floor of letters, find whether the word `CRANE` can be walked with 4-direction steps, using each cell at most once.
+Then, on a letter grid, find whether the word `CRANE` can be walked with 4-direction steps, using each cell at most once.
 
 The first is permutations. The second is board search. Same choose/undo skeleton.
 
@@ -147,9 +147,9 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 ## Cross-links
 
 - [Expand level by level](./bfs/lesson.md) (id: bfs)
-- [Pallet clusters on a flooded floor](../problems/number-of-islands/lesson.md) (id: number-of-islands)
+- [Land clusters on a map](../problems/number-of-islands/lesson.md) (id: number-of-islands)
 - [Prefix trees as a walking index](./trie.md) (id: trie)
-- [Matched crate tags](../problems/valid-brackets/lesson.md) (id: valid-brackets)
+- [Matched brackets in a line of code](../problems/valid-brackets/lesson.md) (id: valid-brackets)
 - [Trees and graphs](../../cs/trees-graphs.md) (id: trees-graphs)
 - [Fill a grid of overlapping subproblems](./dp-2d.md) (id: dp-2d)
 - [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)

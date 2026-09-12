@@ -54,9 +54,9 @@ A common wrong answer: "linked lists are faster at inserts." Faster than *what*,
 
 An array is a row of lockers, numbered. Locker 3 is "start + 3 × width." You walk straight to it.
 
-A linked list is a scavenger hunt. Each crate has a note saying where the next crate lives. To get the fourth crate you follow three notes.
+A linked list is a scavenger hunt. Each envelope has a note saying where the next envelope lives. To get the fourth envelope you follow three notes.
 
-Inserting in the *middle of the lockers* means sliding everyone down. Inserting *after a crate you are already holding* on the scavenger hunt is two note rewrites.
+Inserting in the *middle of the lockers* means sliding everyone down. Inserting *after an envelope you are already holding* is two note rewrites.
 
 ```
 array:   [a][b][c][d][e]     index 3 is one multiply-add

@@ -50,7 +50,7 @@ status: canonical
 
 A GPS logger stores pings as a singly linked chain. A buggy firmware sometimes stitches the tail back onto an earlier ping, so the recorder loops forever. Given the head of `Ping` nodes, return whether a loop exists. If it does, also return the ping where the loop begins.
 
-The chain is a trail of dock-gate pings, not the textbook `1 → 2 → 3 → 2`.
+The chain is a trail of `next` pointers, not the textbook `1 → 2 → 3 → 2`.
 
 ## Recognition signals
 
@@ -168,6 +168,6 @@ Meeting point is usually mid-cycle, not the entrance. Reset one pointer to head.
 - [Squeeze from both ends](./two-pointers/lesson.md) (id: two-pointers)
 - [Arrays versus linked lists](../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
 - [Scanner memory with eviction](../problems/lru-cache/lesson.md) (id: lru-cache)
-- [Matched crate tags](../problems/valid-brackets/lesson.md) (id: valid-brackets)
+- [Matched brackets in a line of code](../problems/valid-brackets/lesson.md) (id: valid-brackets)
 - [Hash maps as an index](./hash-maps.md) (id: hash-maps)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)

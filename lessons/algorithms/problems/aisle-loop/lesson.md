@@ -1,6 +1,6 @@
 ---
 id: aisle-loop
-title: A forklift looping the same aisle
+title: A next-pointer that loops
 slug: aisle-loop
 kind: problem
 track: algorithms
@@ -36,7 +36,7 @@ updated: 2026-09-03
 status: canonical
 ---
 
-# A forklift looping the same aisle
+# A next-pointer that loops
 
 ## Snapshot
 
@@ -47,9 +47,9 @@ status: canonical
 
 ## Prompt
 
-Aisle nodes `3 → 9 → 1 → 4`, and `4.next` points back at `9`. Return whether a forklift following `next` would loop forever. A second chain `5 → 8 → 2` ends at null.
+A feed of posts, each with a `next` pointer: `3 → 9 → 1 → 4`, and `4.next` points back at `9`. Return whether walking `next` would loop forever. A second chain `5 → 8 → 2` ends at null.
 
-This is cycle detection. The values are bay numbers, not `1→2→3→2`.
+This is cycle detection. The values are not `1→2→3→2`.
 
 ## Recognition signals
 
@@ -66,9 +66,9 @@ Same two runners as [fast-slow-pointers](../../patterns/fast-slow-pointers.md) (
 
 ### ELI5
 
-A forklift aisle that might stitch back on itself.
+A `next` chain that might stitch back on itself.
 
-1. Slow: one bay. Fast: two bays.
+1. Slow: one hop. Fast: two hops.
 2. Fast hits the end → no loop.
 3. They land on the same node → loop.
 
@@ -155,6 +155,6 @@ Compare nodes by identity, not `val`. Duplicate bay numbers are allowed. Meeting
 ## Cross-links
 
 - [Two speeds, one list](../../patterns/fast-slow-pointers.md) (id: fast-slow-pointers)
-- [Flip the pallet chain](../reverse-chain/lesson.md) (id: reverse-chain)
+- [Reverse a next-pointer chain](../reverse-chain/lesson.md) (id: reverse-chain)
 - [Scanner memory with eviction](../lru-cache/lesson.md) (id: lru-cache)
 - [Squeeze from both ends](../../patterns/two-pointers/lesson.md) (id: two-pointers)

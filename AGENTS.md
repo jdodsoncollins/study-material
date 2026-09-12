@@ -12,7 +12,7 @@ That script must exit 0. It is the parser the app trusts.
 
 ## Lessons
 
-- Original writeups. Restate common problems (two-sum, URL shortener, news feed) in a new domain and new numbers. Do not paste LeetCode / Grokking / Hello Interview / Alex Xu text.
+- Original writeups. Restate common problems (two-sum, URL shortener, news feed) with new numbers in a domain the reader already uses (cart, inbox, feed, chat, short URLs). Do not paste LeetCode / Grokking / Hello Interview / Alex Xu text. Do not invent warehouse/dock/forklift scenes.
 - `ts` samples must `console.log` at least one call with the prompt's numbers so the app's **run** prints something.
 - Frontmatter keys are closed. Do not invent extra top-level keys. `id` = filename (flat) or parent directory (`lesson.md`).
 - Required H2s and order depend on `kind` — see SCHEMA.md.

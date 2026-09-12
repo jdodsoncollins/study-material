@@ -1,12 +1,12 @@
 ---
 id: number-of-islands
-title: Pallet clusters on a flooded floor
+title: Land clusters on a map
 slug: number-of-islands
 kind: problem
 track: algorithms
 difficulty: core
 estimated_minutes: 12
-summary: Flood-fill each unvisited pallet cell and count how many times you start a new fill; that count is the number of clusters.
+summary: Flood-fill each unvisited land cell and count how many times you start a new fill; that count is the number of islands.
 tags:
   - algorithms
   - algorithms/graphs
@@ -35,18 +35,18 @@ updated: 2026-09-02
 status: canonical
 ---
 
-# Pallet clusters on a flooded floor
+# Land clusters on a map
 
 ## Snapshot
 
-- A grid of aisle water (`0`) and pallet (`1`). Four-direction connectivity. Count the pallet clusters.
+- A grid of water (`0`) and land (`1`). Four-direction connectivity. Count the islands.
 - Each cell is a graph node. You do not need to build an adjacency list.
 - DFS, BFS, or union-find all work. Interview default is in-place DFS that sinks a cluster to `0`.
-- Mark on visit. If you do not, you recount the same pallet forever.
+- Mark on visit. If you do not, you recount the same island forever.
 
 ## Prompt
 
-After a sprinkler dump, the floor looks like this (`1` = pallet still dry, `0` = water):
+A status map of live regions (`1` = land, `0` = water):
 
 ```
 1 1 0 0 1
@@ -55,9 +55,9 @@ After a sprinkler dump, the floor looks like this (`1` = pallet still dry, `0` =
 1 0 1 1 0
 ```
 
-A cluster is a 4-connected group of dry pallets. Return how many clusters the forklift must visit.
+An island is a 4-connected group of land cells. Return how many islands are on the map.
 
-This is number-of-islands, told as a wet warehouse, not a map of `'1'`/`'0'` from a textbook.
+This is number-of-islands. The grid is not the textbook 3×3 of `'1'`/`'0'`.
 
 ## Recognition signals
 
@@ -77,7 +77,7 @@ Scan. On a `1`, increment the answer and sink the whole cluster.
 ### Then the details
 
 ```ts
-function palletClusters(floor: number[][]): number {
+function islandCount(floor: number[][]): number {
   const rows = floor.length, cols = floor[0]?.length ?? 0;
   const sink = (r: number, c: number) => {
     if (r < 0 || c < 0 || r >= rows || c >= cols || floor[r][c] !== 1) return;
@@ -105,7 +105,7 @@ const floor = [
   [0, 0, 0, 0, 0],
   [1, 0, 1, 1, 0],
 ];
-console.log(palletClusters(floor.map((row) => row.slice()))); // 4
+console.log(islandCount(floor.map((row) => row.slice()))); // 4
 
 ```
 
@@ -136,7 +136,7 @@ Grid in the prompt.
 4. (3,0) is land. Cluster 3. Isolated.
 5. (3,2) is land. Cluster 4. Sink (3,2), (3,3).
 
-Answer 4. Diagonal pallets do not touch; (1,3) never ate (3,2).
+Answer 4. Diagonal land does not touch; (1,3) never ate (3,2).
 
 ### Hard
 

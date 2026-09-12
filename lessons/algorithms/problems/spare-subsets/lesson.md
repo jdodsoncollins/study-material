@@ -139,6 +139,6 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 ## Cross-links
 
 - [Explore, undo, try the next branch](../../patterns/dfs-backtracking.md) (id: dfs-backtracking)
-- [Matched crate tags](../valid-brackets/lesson.md) (id: valid-brackets)
+- [Matched brackets in a line of code](../valid-brackets/lesson.md) (id: valid-brackets)
 - [Hash maps as an index](../../patterns/hash-maps.md) (id: hash-maps)
-- [Pallet clusters on a flooded floor](../number-of-islands/lesson.md) (id: number-of-islands)
+- [Land clusters on a map](../number-of-islands/lesson.md) (id: number-of-islands)

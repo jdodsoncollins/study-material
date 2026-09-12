@@ -43,7 +43,7 @@ status: canonical
 
 ## Snapshot
 
-- Product: **CatalogMoth**. It fetches vendor part pages so the warehouse search index is not a week stale. v1 is GET, HTML only, no login, no JS render.
+- Product: **CatalogMoth**. It fetches vendor product pages so search is not a week stale. v1 is GET, HTML only, no login, no JS render.
 - The scarce resource is **the vendor's patience**, not your CPU. Per-host politeness is the design, not a footnote.
 - Three pieces: a **Frontier** of URLs, a **Seen** filter, a **Fetcher** pool that respects `robots.txt` and a per-host clock.
 - Seen is allowed false positives (skip a URL you might not have fetched). False negatives (fetch twice) are the safe lie.

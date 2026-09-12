@@ -1,12 +1,12 @@
 ---
 id: valid-brackets
-title: Matched crate tags
+title: Matched brackets in a line of code
 slug: valid-brackets
 kind: problem
 track: algorithms
 difficulty: intro
 estimated_minutes: 10
-summary: Push opening tags onto a stack and pop only when the matching closer arrives; leftover opens or a mismatched pop means the packing is illegal.
+summary: Push opening brackets onto a stack and pop only when the matching closer arrives; leftover opens or a mismatched pop means the line is illegal.
 tags:
   - algorithms
   - algorithms/stacks
@@ -35,7 +35,7 @@ updated: 2026-09-11
 status: canonical
 ---
 
-# Matched crate tags
+# Matched brackets in a line of code
 
 ## Snapshot
 
@@ -46,9 +46,9 @@ status: canonical
 
 ## Prompt
 
-Packers wrap crates with three strap types. An open strap must close with the same type, and wraps nest. Given a tape of strap marks `tape = "[{()}]()"`, return whether the packing is legal. Empty tape is legal. Any closer with no opener, or a type mismatch, is illegal.
+A linter walks one line of code `line = "[{()}]()"`. Every `(`, `[`, or `{` must close with the matching partner, and they must nest. Return whether the line is legal. Empty input is legal. Any closer with no opener, or a type mismatch, is illegal.
 
-Same shape as bracket validation. The tape is warehouse straps, not a textbook `"()[]{}"`.
+Same shape as the classic bracket problem. The string is not the textbook `"()[]{}"`.
 
 ## Recognition signals
 
@@ -65,9 +65,9 @@ Not two-pointers. A stack of unmatched openers. Still Kernel → Index: you need
 
 ### ELI5
 
-A packer walks the tape left to right with one hand holding unmatched open straps.
+A linter walks the line left to right with a stack of unmatched openers.
 
-1. See `(`, `[`, or `{` → put it on the pile in your hand.
+1. See `(`, `[`, or `{` → push it.
 2. See a closer → it must match the *top* of the pile. Pop that opener.
 3. Closer with empty hand → illegal.
 4. Wrong type on top → illegal (`([)]`).

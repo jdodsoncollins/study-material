@@ -47,9 +47,9 @@ status: canonical
 
 ## Prompt
 
-Receiving prints SKU tags `tags = ["oak", "koa", "bin", "nib", "crate"]`. Two tags are the same part if they use the same letters. Return the groups. Order of groups and order inside a group may vary.
+Search query tokens `tags = ["oak", "koa", "tab", "bat", "crate"]`. Two tokens are the same anagram if they use the same letters. Return the groups. Order of groups and order inside a group may vary.
 
-This is group-anagrams. The tags are dock SKUs, not a textbook `["eat","tea","tan"]`.
+This is group-anagrams. The tokens are not a textbook `["eat","tea","tan"]`.
 
 ## Recognition signals
 
@@ -102,8 +102,8 @@ function packGroups(tags: string[]): string[][] {
   return out;
 }
 
-console.log(packGroups(["oak", "koa", "bin", "nib", "crate"]));
-console.log(packGroups(["dock"]));
+console.log(packGroups(["oak", "koa", "tab", "bat", "crate"]));
+console.log(packGroups(["solo"]));
 ```
 
 ## Complexity
@@ -124,7 +124,7 @@ console.log(packGroups(["dock"]));
 
 ### Medium
 
-`tags = ["oak", "koa", "bin", "nib", "crate"]`
+`tags = ["oak", "koa", "tab", "bat", "crate"]`
 
 1. `oak` → `ako`. New.
 2. `koa` → `ako`. Same.

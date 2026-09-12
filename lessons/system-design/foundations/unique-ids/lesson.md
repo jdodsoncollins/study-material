@@ -42,7 +42,7 @@ status: canonical
 
 ## Snapshot
 
-- Product need: **YardTicket** IDs for every pallet event. They must be unique across docks, roughly sortable by time, and fit in a 64-bit column.
+- Product need: 64-bit **post IDs** for a news feed, the same job Twitter Snowflake does. They must be unique across machines, roughly sortable by time, and fit in a `BIGINT` column.
 - A central `SELECT nextval` is a [shard](../sharding/lesson.md) (id: sharding) you did not mean to build.
 - UUID v4 is unique and useless for range scans. ULID/KSUID are the string cousins of the same idea.
 - The usual 64-bit layout: **timestamp | worker | sequence**. Uniqueness is "this worker never reuses a sequence in this millisecond."
@@ -55,7 +55,7 @@ After you draw a log or a message table they ask "who assigns the id." They are 
 
 ### ELI5
 
-Split the 64 bits so two boxes cannot mint the same ticket without sharing a worker id.
+Split the 64 bits so two boxes cannot mint the same post id without sharing a worker id.
 
 [bits](viz/bits.md)
 

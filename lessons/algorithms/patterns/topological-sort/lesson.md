@@ -46,9 +46,9 @@ status: canonical
 
 ## Prompt
 
-A warehouse training catalog has modules `0..5`. Edges `a → b` mean "finish a before b": `need = [[0,1], [1,2], [3,2], [4,5]]`. Return one legal study order, or say the catalog is impossible.
+A course catalog has modules `0..5`. Edges `a → b` mean "finish a before b": `need = [[0,1], [1,2], [3,2], [4,5]]`. Return one legal study order, or say the catalog is impossible.
 
-This is course-schedule, told as dock certifications rather than a university transcript.
+This is course-schedule. The numbers are not a textbook CS-degree planner.
 
 ## Recognition signals
 

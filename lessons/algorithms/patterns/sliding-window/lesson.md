@@ -48,9 +48,9 @@ status: canonical
 
 ## Prompt
 
-A radio desk logs one-letter zone codes as crates roll past: `zones = "abcbadef"`. Find the longest stretch of tape where no zone letter repeats. Return the length.
+A search box logs one-letter keystrokes: `typed = "abcbadef"`. Find the longest stretch of the string where no letter repeats. Return the length.
 
-Same shape as the classic unique-substring problem. The tape is a warehouse radio log so the letters are not the textbook `"abcabcbb"`.
+Same shape as the classic unique-substring problem. The letters are not the textbook `"abcabcbb"`.
 
 ## Recognition signals
 

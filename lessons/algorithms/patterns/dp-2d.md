@@ -46,7 +46,7 @@ status: canonical
 
 ## Prompt
 
-A picker may only step right or down through a dock grid. Some cells are blocked pallets (`#`). The rest are aisles (`.`). Start is top-left, door is bottom-right.
+A robot may only step right or down through a city grid. Some cells are blocked buildings (`#`). The rest are streets (`.`). Start is top-left, destination is bottom-right.
 
 ```
 . . #
@@ -54,7 +54,7 @@ A picker may only step right or down through a dock grid. Some cells are blocked
 # . .
 ```
 
-Count the walks that reach the door. This is unique-paths-with-obstacles, told as a warehouse floor.
+Count the walks that reach the destination. This is unique-paths-with-obstacles.
 
 ## Recognition signals
 
@@ -113,7 +113,7 @@ Grid as in the prompt, 3×3, blocked (0,2) and (2,0).
 
 ### Easy
 
-1. `dp[0][0] = 1`. `dp[0][1] = 1`. `dp[0][2] = 0` (pallet).
+1. `dp[0][0] = 1`. `dp[0][1] = 1`. `dp[0][2] = 0` (blocked).
 
 ### Medium
 
@@ -131,7 +131,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 | Trap | What happens | Fix |
 | --- | --- | --- |
 | Not seeding `dp[0][0]` | Whole table stays 0 | Start cell is 1 if open |
-| Adding from a blocked neighbor | Paths leak through pallets | Skip or zero blocked cells |
+| Adding from a blocked neighbor | Paths leak through buildings | Skip or zero blocked cells |
 | Filling knapsack forward with 1D reuse | Item used twice | Walk capacity backward, or use 2D |
 | Recursing without memo | Stack + exponential | Cache the pair `(i, j)` |
 

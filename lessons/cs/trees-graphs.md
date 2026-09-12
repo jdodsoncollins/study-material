@@ -96,12 +96,12 @@ function bfs(start: string, adj: Map<string, string[]>): string[] {
 }
 
 const adj = new Map([
-  ["dock", ["aisle", "ramp"]],
-  ["aisle", ["bin"]],
-  ["ramp", ["bin"]],
-  ["bin", []],
+  ["feed", ["post", "comment"]],
+  ["post", ["like"]],
+  ["comment", ["like"]],
+  ["like", []],
 ]);
-console.log(bfs("dock", adj)); // dock, aisle, ramp, bin
+console.log(bfs("feed", adj)); // feed, post, comment, like
 
 ```
 

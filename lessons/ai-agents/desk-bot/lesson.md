@@ -6,7 +6,7 @@ kind: case-study
 track: ai-agents
 difficulty: core
 estimated_minutes: 22
-summary: DockDesk is an agent behind a chat slash command; the design is verify-then-queue, an idempotent tool loop, and a reply that Slack retries cannot double-post.
+summary: DeskBot is an agent behind a Slack slash command; the design is verify-then-queue, an idempotent tool loop, and a reply that Slack retries cannot double-post.
 tags:
   - ai-agents
   - ai-agents/product
@@ -46,10 +46,10 @@ status: canonical
 
 ## Snapshot
 
-- Product: **DockDesk** lives in **YardWire** (the warehouse chat). `/desk where is N-4` should answer in the thread. `/desk page nights on N-4` may page a human.
+- Product: **DeskBot** lives in Slack. `/desk where is ORD-4` should answer in the thread. `/desk page nights on ORD-4` may page a human.
 - Chat platforms retry HTTP. If you model-call on the webhook, you will post twice and page twice.
 - Split: **WireHook** verifies and acks in < 3s. **DeskJobs** runs the [agent harness](../eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness). **ClerkLoop** is the model + tools.
-- Tools are the product: `lookup_pallet`, `post_thread`, `page_oncall`. `page_oncall` is irreversible and needs a confirm the eval actually checks.
+- Tools are the product: `lookup_order`, `post_thread`, `page_oncall`. `page_oncall` is irreversible and needs a confirm the eval actually checks.
 
 ## What this round is actually scoring
 
@@ -64,14 +64,14 @@ Candidate-reported "design a Slack assistant" prompts at AI and product companie
 | Functional | v1 decision |
 | --- | --- |
 | Slash `/desk …` | Ack in thread immediately, answer later |
-| Lookup a pallet | `lookup_pallet(sku)` → bin, last scan |
+| Lookup an order | `lookup_order(id)` → status, last scan |
 | Page on-call | `page_oncall(sku, team)` after a confirm emoji |
 | Mentions | Same pipeline as slash; `event_id` is the key |
 | Permissions | Bot can read the channel it was invited to, nothing else |
 
 | Non-functional | Budget |
 | --- | --- |
-| Seats | 4,000 warehouse staff |
+| Seats | 4,000 support staff |
 | Commands | 20/s peak, 2/s average |
 | Ack | 2.5s (platform timeout is 3s) |
 | Answer p50 | 8s (one model round + one tool) |
@@ -93,7 +93,7 @@ Sketch the request path and the store it hits. Name the bottleneck before you dr
 
 [hook](viz/hook.md)
 
-YardWire POST `/hooks/desk` with `{event_id, user, channel, thread_ts, text, type}`. **WireHook**:
+Slack POST `/hooks/desk` with `{event_id, user, channel, thread_ts, text, type}`. **WireHook**:
 
 1. Verify the signing secret. Fail closed.
 2. Dedup `event_id` in a 24h set. Duplicate → 200 empty. This is the same instinct as [payment keys](../../system-design/cases/payment-idempotency/lesson.md) (id: payment-idempotency).
@@ -108,7 +108,7 @@ YardWire POST `/hooks/desk` with `{event_id, user, channel, thread_ts, text, typ
 1. Load thread tail + user id + the slash text.
 2. Model proposes a tool call or a final answer.
 3. Tools:
-   - `lookup_pallet(sku)` — read-only, retry-safe.
+   - `lookup_order(sku)` — read-only, retry-safe.
    - `post_thread(markdown)` — idempotent on `(event_id, part)`. Edits the placeholder rather than posting a new message when possible.
    - `page_oncall(sku, team)` — requires a prior `confirm_page` tool result in this job. Without it, the harness refuses. Retries use `Idempotency-Key: event_id`.
 4. Stop when the model emits a final answer, or after 6 tool rounds, or on a budget timer (25s). Then [trace](../traces-trajectories.md) (id: traces-trajectories) the job.
@@ -127,8 +127,8 @@ The platform's retry of the webhook never re-enters the model. The job worker is
 
 ## Failure modes
 
-- YardWire retries the POST three times: dedup on `event_id`, one job, one placeholder.
-- Model loops on `lookup_pallet`: round cap, then post "I failed, human please."
+- Slack retries the POST three times: dedup on `event_id`, one job, one placeholder.
+- Model loops on `lookup_order`: round cap, then post "I failed, human please."
 - `page_oncall` 500: retry with the same key; the pager side must treat it as one page.
 - Signing secret rotated: fail closed, on-call on WireHook, do not run jobs unsigned.
 - User asks in a channel the bot cannot read: 403 from the API, post a short "invite me."
@@ -142,8 +142,8 @@ Capacity and the cache: numbers first, then where a miss goes.
 ### Medium
 
 - DMs vs channels: same pipeline, different authz.
-- Images of pallets: a vision tool, or a link to [RollKeep](../../system-design/cases/blob-store/lesson.md) (id: blob-store).
-- Eval: a fixture YardWire that replays `event_id`s and asserts one page, one final post, confirm-before-page. That is the [eval harness](../eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness), not a vibe check in prod.
+- Images of receipts: a vision tool, or a link to [RollKeep](../../system-design/cases/blob-store/lesson.md) (id: blob-store).
+- Eval: a fixture Slack that replays `event_id`s and asserts one page, one final post, confirm-before-page. That is the [eval harness](../eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness), not a vibe check in prod.
 
 ### Hard
 

@@ -60,7 +60,7 @@ Org chart of shift leads:
 
 Return `[[8], [3, 12], [1, 6, 10, 14]]`.
 
-This is level-order. The values are dock codes, not `[3,9,20,null,null,15,7]`.
+This is level-order. The values are not `[3,9,20,null,null,15,7]`.
 
 ## Recognition signals
 
@@ -161,4 +161,4 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 - [Expand level by level](../../patterns/bfs/lesson.md) (id: bfs)
 - [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)
 - [Explore, undo, try the next branch](../../patterns/dfs-backtracking.md) (id: dfs-backtracking)
-- [Pallet clusters on a flooded floor](../number-of-islands/lesson.md) (id: number-of-islands)
+- [Land clusters on a map](../number-of-islands/lesson.md) (id: number-of-islands)

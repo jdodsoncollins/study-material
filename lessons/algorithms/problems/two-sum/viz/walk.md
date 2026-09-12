@@ -1,4 +1,4 @@
-# Walk the bins
+# Walk the cart
 
 ```mermaid
 flowchart LR

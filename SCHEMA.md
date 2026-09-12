@@ -189,8 +189,9 @@ Relative path must resolve. `id:` must match the target file's frontmatter `id`.
 
 ## Originality rules
 
-- Restate every classic problem in a new domain (warehouse bins, ticket stubs, chat receipts, GPS pings).
+- Restate every classic problem in a domain a software engineer already uses: inbox, cart, calendar, news feed, chat, search, URL shortener, rate limiter, photo upload, DNS (`example.com`), browser history. Do not invent industrial processes (docks, forklifts, crate straps) the reader cannot picture.
 - Invent the numeric walkthrough. Do not use `[2,7,11,15] target 9`.
+- The scene must match how that system actually works. A gift card that needs two cart items totaling 19 is fine. A forklift that "dumps bin weights" is not.
 - Teach the idea; do not paste a famous editorial.
 - Company names appear only in `company_signal` or "Company signal" with evidence and confidence.
 - Short quotes from public essays are allowed only if clearly attributed and under 20 words. Prefer paraphrase.

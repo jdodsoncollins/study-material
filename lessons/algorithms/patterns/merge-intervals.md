@@ -46,9 +46,9 @@ status: canonical
 
 ## Prompt
 
-Loading-dock bookings arrive as half-open hours `[start, end)`: `slots = [[1, 4], [8, 10], [3, 6], [9, 11]]`. Merge any overlapping bookings so the dock sheet shows busy blocks, not raw requests.
+Calendar holds, half-open hours `[start, end)`: `slots = [[1, 4], [8, 10], [3, 6], [9, 11]]`. Merge any overlapping meetings so the busy blocks show on the calendar, not every raw request.
 
-The numbers are dock hours, not the textbook `[[1,3],[2,6],[8,10],[15,18]]`.
+The numbers are not the textbook `[[1,3],[2,6],[8,10],[15,18]]`.
 
 ## Recognition signals
 
@@ -136,7 +136,7 @@ console.log(mergeSlots([[1, 4], [8, 10], [3, 6], [9, 11]])); // [[1,6],[8,11]]
 
 ### Hard
 
-How many docks at once? Merge is the wrong summary. Use a min-heap of end times. Nested range: `close = Math.max(close, end)` so a short inner booking does not shrink the block.
+How many rooms at once? Merge is the wrong summary. Use a min-heap of end times. Nested range: `close = Math.max(close, end)` so a short inner meeting does not shrink the block.
 
 ## Pitfalls
 
@@ -145,13 +145,13 @@ How many docks at once? Merge is the wrong summary. Use a min-heap of end times.
 | Sorting by end | A long early range fails to swallow a later start | Sort by start |
 | Replacing close instead of max | A nested range shrinks the block | `close = Math.max(close, end)` |
 | Mutating the input sort | Caller still holds the unsorted booking list | Copy, or ask if in-place is allowed |
-| Using merge to count rooms | Two overlaps can still need two docks | Heap of end times |
+| Using merge to count rooms | Two overlaps can still need two rooms | Heap of end times |
 
 ## Interview moves
 
 - Ask whether touching endpoints merge, and whether the ranges are closed or half-open.
 - Draw the number line. Interviewers want to see the sort, not a clever tree.
-- If they follow with "how many docks do we need?", switch to a min-heap of closing times and say why merge is the wrong summary.
+- If they follow with "how many rooms do we need?", switch to a min-heap of closing times and say why merge is the wrong summary.
 - Insert-interval: merge as usual, but treat the new slot as one more item in the sorted list, or splice during the walk.
 
 ## Cross-links

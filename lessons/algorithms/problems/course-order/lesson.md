@@ -46,9 +46,9 @@ status: canonical
 
 ## Prompt
 
-Dock certifications are modules `0..4`. Each pair `[a, b]` means "complete a before b": `need = [[0, 1], [1, 3], [2, 3], [0, 2]]`. Return any legal order of all five modules. If a cycle makes that impossible, return an empty list.
+Course modules `0..4`. Each pair `[a, b]` means "complete a before b": `need = [[0, 1], [1, 3], [2, 3], [0, 2]]`. Return any legal order of all five modules. If a cycle makes that impossible, return an empty list.
 
-This is course-order / topo sort. The catalog is warehouse training, not a CS-degree planner.
+This is course-order / topo sort. The numbers are not a textbook CS-degree planner.
 
 ## Recognition signals
 

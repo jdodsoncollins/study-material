@@ -47,7 +47,7 @@ status: canonical
 
 ## Prompt
 
-A warehouse floor is a grid of cells. `.` is aisle, `#` is a stacked pallet, `S` is the picker, `D` is the dock door. Moves are up, down, left, right. Return the fewest steps from S to D, or -1 if pallets block every path.
+A chat office floorplan is a grid. `.` is walkable, `#` is a desk, `S` is you, `D` is the meeting room. Moves are up, down, left, right. Return the fewest steps from S to D, or -1 if desks block every path.
 
 ```
 . # D .
@@ -55,7 +55,7 @@ S . . #
 . # . .
 ```
 
-This is grid BFS, told as a picker route rather than a maze handout.
+This is grid BFS, a shortest path on a map, not a maze handout.
 
 ## Recognition signals
 
@@ -168,7 +168,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 ## Cross-links
 
 - [Explore, undo, try the next branch](../dfs-backtracking.md) (id: dfs-backtracking)
-- [Pallet clusters on a flooded floor](../../problems/number-of-islands/lesson.md) (id: number-of-islands)
+- [Land clusters on a map](../../problems/number-of-islands/lesson.md) (id: number-of-islands)
 - [Order by prerequisites](../topological-sort/lesson.md) (id: topological-sort)
 - [Training modules with prereqs](../../problems/course-order/lesson.md) (id: course-order)
 - [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)

@@ -73,10 +73,10 @@ In JS, the main event loop is one thread. `Worker` / child processes are how you
 | Secret handling / sandbox | Separate process (or VM) | Setup time |
 
 ```ts
-// Main thread owns the socket; workers own CPU. Sticky by crate.
-function pickWorker(crateId: string, n: number): number {
+// Main thread owns the socket; workers own CPU. Sticky by request id.
+function pickWorker(requestId: string, n: number): number {
   let h = 0;
-  for (let i = 0; i < crateId.length; i++) h = (h * 31 + crateId.charCodeAt(i)) | 0;
+  for (let i = 0; i < requestId.length; i++) h = (h * 31 + requestId.charCodeAt(i)) | 0;
   return Math.abs(h) % n;
 }
 
@@ -84,7 +84,7 @@ console.log(pickWorker("N-4", 4), pickWorker("N-4", 4), pickWorker("CRANE", 4));
 
 ```
 
-Sticky assignment keeps a crate's in-memory state on one worker so you do not lock across threads. That is the same instinct as sharding.
+Sticky assignment keeps a request's in-memory state on one worker so you do not lock across threads. That is the same instinct as sharding.
 
 ## Common mistakes
 

@@ -48,7 +48,7 @@ status: canonical
 
 A parts desk stores SKUs `["BOLT", "BOLT-M8", "BIN", "CRANE"]`. Support `insert(sku)`, `has(sku)` for a full match, and `hasPrefix(p)` for "any SKU starts with p." Then, given a typed prefix `"BOL"`, list the SKUs under it.
 
-This is a trie, told as a warehouse catalog, not a dictionary handout.
+This is a trie, told as search autocomplete, not a dictionary handout.
 
 ## Recognition signals
 

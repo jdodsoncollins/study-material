@@ -48,7 +48,7 @@ status: canonical
 
 Radio towers `0..5` can talk if an engineer strings a cable. Cables arrive as `cables = [[0,1], [1,2], [3,4], [2,0]]`. After each cable, say whether the two towers were already in the same network. At the end, how many separate networks remain (include lonely tower 5)?
 
-This is online connectivity, told as a dock-yard radio mesh.
+This is online connectivity, told as chat rooms that merge, not a textbook graph.
 
 ## Recognition signals
 
@@ -147,7 +147,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Cross-links
 
-- [Pallet clusters on a flooded floor](../../problems/number-of-islands/lesson.md) (id: number-of-islands)
+- [Land clusters on a map](../../problems/number-of-islands/lesson.md) (id: number-of-islands)
 - [Expand level by level](../bfs/lesson.md) (id: bfs)
 - [Order by prerequisites](../topological-sort/lesson.md) (id: topological-sort)
 - [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)

@@ -130,5 +130,5 @@ Row 2: `1, 1+2=3, 3+3=6, 6+4=10`.
 
 - [Fill a grid of overlapping subproblems](../../patterns/dp-2d.md) (id: dp-2d)
 - [Reuse the last few answers](../../patterns/dp-1d.md) (id: dp-1d)
-- [Pallet clusters on a flooded floor](../number-of-islands/lesson.md) (id: number-of-islands)
+- [Land clusters on a map](../number-of-islands/lesson.md) (id: number-of-islands)
 - [Expand level by level](../../patterns/bfs/lesson.md) (id: bfs)

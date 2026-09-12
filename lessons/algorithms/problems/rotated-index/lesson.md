@@ -1,6 +1,6 @@
 ---
 id: rotated-index
-title: Lookup in a rotated pallet index
+title: Lookup in a rotated sorted index
 slug: rotated-index
 kind: problem
 track: algorithms
@@ -36,7 +36,7 @@ updated: 2026-09-03
 status: canonical
 ---
 
-# Lookup in a rotated pallet index
+# Lookup in a rotated sorted index
 
 ## Snapshot
 
@@ -47,7 +47,7 @@ status: canonical
 
 ## Prompt
 
-Pallet ids, rotated: `ids = [18, 21, 4, 7, 11, 15]`. Find `target = 11`. If `target = 5`, it is missing.
+Sorted log ids, rotated at an unknown pivot: `ids = [18, 21, 4, 7, 11, 15]`. Find `target = 11`. If `target = 5`, it is missing.
 
 This is rotated sorted search. The ring is not `[4,5,6,7,0,1,2]`.
 

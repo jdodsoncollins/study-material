@@ -6,7 +6,7 @@ kind: case-study
 track: system-design
 difficulty: core
 estimated_minutes: 20
-summary: RollKeep stores dock camera clips as immutable blobs; the fight is resumable upload, a tiny metadata index, and a cold path that is allowed to be slow.
+summary: RollKeep stores user photo and video uploads as immutable blobs; the fight is resumable upload, a tiny metadata index, and a cold path that is allowed to be slow.
 tags:
   - system-design
   - system-design/product-cases
@@ -43,10 +43,10 @@ status: canonical
 
 ## Snapshot
 
-- Product: **RollKeep**. Dock cameras upload 30s clips. A clip is a blob. v1 is upload, download by id, list a camera's day. No collaborative editing, no POSIX.
+- Product: **RollKeep**. Users upload photos and short videos, the same job as S3 or Drive. An object is a blob. v1 is upload, download by id, list a user's day. No collaborative editing, no POSIX.
 - Blobs are **immutable**. A new take is a new id. Mutation is a metadata pointer swing.
 - Two stores: **ClipBytes** (the bytes) and **ClipCard** (who owns it, size, checksum, camera_id, t_start). Never query bytes by camera.
-- Uploads are **chunked and resumable**. A forklift driving through Wi-Fi will drop the TCP session.
+- Uploads are **chunked and resumable**. A phone that walks into an elevator will drop the TCP session.
 
 ## What this round is actually scoring
 
@@ -92,7 +92,7 @@ Sketch the request path and the store it hits. Name the bottleneck before you dr
 
 [put](viz/put.md)
 
-Client asks **CardAPI** for an upload session. CardAPI mints a [YardTicket](../../foundations/unique-ids/lesson.md) (id: unique-ids) `clip_id`, opens a session `{clip_id, chunk_size, expected_chunks}`, returns signed PUT URLs for each chunk against **ClipBytes**.
+Client asks **CardAPI** for an upload session. CardAPI mints a [post-style id](../../foundations/unique-ids/lesson.md) (id: unique-ids) `clip_id`, opens a session `{clip_id, chunk_size, expected_chunks}`, returns signed PUT URLs for each chunk against **ClipBytes**.
 
 Client PUTs chunks 0..n-1. Each PUT is idempotent on `(clip_id, n, checksum)`. A retry with the same checksum is a no-op. A retry with a different checksum is a 409.
 

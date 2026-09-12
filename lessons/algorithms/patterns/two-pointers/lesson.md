@@ -47,7 +47,7 @@ status: canonical
 
 ## Prompt
 
-A ferry boarding sheet lists crate masses already sorted: `masses = [3, 5, 8, 12, 14, 21]`. The gangway holds exactly `limit = 26` if two crates ride together. Return any pair of values that add to 26. You may not reuse a crate.
+A checkout cart's prices, already sorted: `prices = [3, 5, 8, 12, 14, 21]`. A gift card covers exactly `limit = 26` if two items are chosen. Return any pair of values that add to 26. You may not reuse an item.
 
 This is the sorted sibling of pair-sum. If the interviewer wanted indices from an unsorted bag, you would not sort; you would hash.
 
@@ -66,13 +66,13 @@ This is the sorted sibling of pair-sum. If the interviewer wanted indices from a
 
 ### ELI5
 
-The boarding sheet is already light-to-heavy.
+The cart is already cheap-to-expensive.
 
-1. Put a finger on the lightest crate and a finger on the heaviest.
+1. Put a finger on the cheapest item and a finger on the most expensive.
 2. Add them.
-3. Too light? Even the heaviest leftover partner is not enough. Throw the light crate away: slide the left finger right.
-4. Too heavy? The heavy crate is the problem. Slide the right finger left.
-5. Equal? Those two ride.
+3. Too light? Even the dearest leftover partner is not enough. Drop the cheap item: slide the left finger right.
+4. Too heavy? The expensive item is the problem. Slide the right finger left.
+5. Equal? Those two items.
 
 You only ever move inward.
 
@@ -80,7 +80,7 @@ You only ever move inward.
 
 ```ts
 let left = 0;
-let right = 5; // last index of a 6-crate sheet
+let right = 5; // last index of a 6-item cart
 console.log(left < right);
 left += 1;  // sum was short
 right -= 1; // sum was long
@@ -91,23 +91,23 @@ Two integers. No map.
 
 ### Then the details
 
-The move is legal only because the array is sorted. If a sum is short, every partner of the current left is even smaller, so the left crate is useless.
+The move is legal only because the array is sorted. If a sum is short, every partner of the current left is even smaller, so the cheap item is useless.
 
 ```ts
-function ferryPair(masses: number[], limit: number): [number, number] | null {
+function cartPair(prices: number[], limit: number): [number, number] | null {
   let left = 0;
-  let right = masses.length - 1;
+  let right = prices.length - 1;
   while (left < right) {
-    const sum = masses[left] + masses[right];
-    if (sum === limit) return [masses[left], masses[right]];
+    const sum = prices[left] + prices[right];
+    if (sum === limit) return [prices[left], prices[right]];
     if (sum < limit) left += 1;
     else right -= 1;
   }
   return null;
 }
 
-console.log(ferryPair([3, 5, 8, 12, 14, 21], 26)); // [5, 21]
-console.log(ferryPair([3, 5, 8, 12, 14, 21], 22)); // [8, 14]
+console.log(cartPair([3, 5, 8, 12, 14, 21], 26)); // [5, 21]
+console.log(cartPair([3, 5, 8, 12, 14, 21], 22)); // [8, 14]
 ```
 
 ## Complexity
@@ -122,7 +122,7 @@ console.log(ferryPair([3, 5, 8, 12, 14, 21], 22)); // [8, 14]
 
 ### Easy
 
-`masses = [3, 5, 8, 12, 14, 21]`, `limit = 26`
+`prices = [3, 5, 8, 12, 14, 21]`, `limit = 26`
 
 1. `3 + 21 = 24` too small. Advance left.
 2. `5 + 21 = 26`. Return `[5, 21]`.
@@ -133,7 +133,7 @@ Limit `22` on the same sheet. `3+21=24` shrink right → `3+14=17` grow left →
 
 ### Hard
 
-They want original indices and the bag is unsorted. Do not sort in place. Either keep `(value, index)` tuples, or switch to [hash-maps](../hash-maps.md) (id: hash-maps). Unique pairs with duplicates: after a hit, move one pointer and skip equals. `left < right` so you never pair a crate with itself.
+They want original indices and the bag is unsorted. Do not sort in place. Either keep `(value, index)` tuples, or switch to [hash-maps](../hash-maps.md) (id: hash-maps). Unique pairs with duplicates: after a hit, move one pointer and skip equals. `left < right` so you never pair an item with itself.
 
 ## Pitfalls
 

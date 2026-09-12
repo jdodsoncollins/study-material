@@ -31,7 +31,7 @@ company_signal:
 sources_consulted:
   - Blind 75 / NeetCode pattern lists (2026)
   - r/leetcode Meta and Amazon tagged-list threads
-updated: 2026-09-11
+updated: 2026-09-12
 status: canonical
 ---
 
@@ -46,9 +46,9 @@ status: canonical
 
 ## Prompt
 
-A warehouse scanner dumps a list of bin weights, `weights = [4, 11, 8, 3, 15]`. A forklift can carry exactly `target = 19` if it picks two bins. Return the indices of any two bins that add to 19. Each bin may be used once. If nothing works, say so.
+A checkout cart has item prices `prices = [4, 11, 8, 3, 15]`. A gift card covers exactly `target = 19` if the shopper picks two items. Return the indices of any two items that add to 19. Each item may be used once. If nothing works, say so.
 
-This is the same shape as the famous "two sum" interview question. The story is a warehouse so the numbers are not the textbook `[2, 7, 11, 15]`.
+This is the same shape as the famous "two sum" interview question. The numbers are not the textbook `[2, 7, 11, 15]`.
 
 ## Recognition signals
 
@@ -65,13 +65,13 @@ This is [hash-maps](../../patterns/hash-maps.md) (id: hash-maps) applied to one 
 
 ### ELI5
 
-The forklift can carry 19. You walk the dock once, left to right, with a shoebox of cards.
+The gift card is $19. You walk the cart once, left to right, with a map of prices you have already seen.
 
-1. Bin 0 weighs 4. Need 15. Shoebox empty. Write `4 → 0`.
-2. Bin 1 weighs 11. Need 8. Miss. Write `11 → 1`.
-3. Bin 2 weighs 8. Need 11. The card is there at index 1. Stop. Those two ride.
+1. Item 0 costs 4. Need 15. Map empty. Store `4 → 0`.
+2. Item 1 costs 11. Need 8. Miss. Store `11 → 1`.
+3. Item 2 costs 8. Need 11. The map has it at index 1. Stop. Those two items.
 
-You never pick up the same bin twice: the card you just wrote is for a *later* pallet to find. Look up first, then insert.
+You never pair an item with itself: the price you just stored is for a *later* item to find. Look up first, then insert.
 
 ### Syntax
 
@@ -84,16 +84,16 @@ console.log(seen.get(15));     // undefined
 
 ### Then the details
 
-Walk once. Look up the partner, then insert this weight.
+Walk once. Look up the partner, then insert this price.
 
 ```ts
-function pairIndices(weights: number[], target: number): [number, number] | null {
+function pairIndices(prices: number[], target: number): [number, number] | null {
   const seen = new Map<number, number>();
-  for (let i = 0; i < weights.length; i++) {
-    const need = target - weights[i];
+  for (let i = 0; i < prices.length; i++) {
+    const need = target - prices[i];
     const partner = seen.get(need);
     if (partner !== undefined) return [partner, i];
-    seen.set(weights[i], i);
+    seen.set(prices[i], i);
   }
   return null;
 }
@@ -115,11 +115,11 @@ If the interviewer then says "the list is already sorted, just return the values
 
 ## Walkthrough
 
-[Walk the bins](viz/walk.md)
+[Walk the cart](viz/walk.md)
 
 ### Easy
 
-`weights = [4, 11, 8, 3, 15]`, `target = 19`
+`prices = [4, 11, 8, 3, 15]`, `target = 19`
 
 1. `4` → need `15`. Map empty. Store `4 → 0`.
 2. `11` → need `8`. Miss. Store `11 → 1`.
