@@ -62,6 +62,12 @@ This is rotated sorted search. The ring is not `[4,5,6,7,0,1,2]`.
 
 ## Worked approach
 
+### ELI5
+
+Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+
+### Then the details
+
 ```ts
 function rotatedIndex(ids: number[], target: number): number {
   let lo = 0, hi = ids.length - 1;
@@ -99,10 +105,19 @@ console.log(rotatedIndex([18, 21, 4, 7, 11, 15], 5));  // -1
 
 [Drop the half that cannot hold it](viz/half.md)
 
+### Easy
+
 1. lo=0, hi=5, mid=2, value 4. Left `[18,21,4]` is not sorted. Right is sorted and 11 lives there. `lo = 3`.
+
+### Medium
+
 2. lo=3, hi=5, mid=4, value 11. Return 4.
 
 Target 5, same first cut: 4 < 5 ≤ 15, so `lo = 3` again. Next mid is 11, 5 is not in the sorted left `[7,11]`, so `lo` walks to 15, then off the end. `-1`.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

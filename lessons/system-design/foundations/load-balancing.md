@@ -52,6 +52,8 @@ Every design that has more than one app box needs a policy for spreading work. I
 
 ## Core idea
 
+### ELI5
+
 Name the unit of work, then pick a policy.
 
 - **Stateless HTTP** — any healthy box. Round robin or least-connections.

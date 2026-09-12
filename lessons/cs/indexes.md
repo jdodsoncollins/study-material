@@ -51,6 +51,8 @@ This is the same idea as a hash map in [two-sum](../algorithms/problems/two-sum/
 
 ## Core idea
 
+### ELI5
+
 A used bookstore. The shelves are the heap (arrival order). The card catalog is an index: author → shelf slot. Binary-search the cards (B-tree), or hash the author to a drawer (hash index).
 
 ```
@@ -90,9 +92,7 @@ console.log(lookupYard(idx, "east"));
 
 ```
 
-At n = 10^7 rows, a seek is tens of page reads. A scan is millions. That is the whole product pitch.
-
-## Common mistakes
+At n = 10^7 rows, a seek is tens of page reads. A scan is millions. ## Common mistakes
 
 - Indexing every column "just in case." Writes crawl; planner gets confused.
 - Expecting `LIKE '%east'` to use a B-tree. Leading wildcard kills the order.

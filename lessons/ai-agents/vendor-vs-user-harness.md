@@ -52,6 +52,8 @@ Teams argue about models while the repo has no `AGENTS.md` and CI is optional. I
 
 ## Core idea
 
+### ELI5
+
 Boeckeler's line, paraphrased: an agent is a model dropped into a harness. For coding, that harness has two landlords.
 
 The vendor landlord gives you a loop that already knows how to read files, run a shell, and fold a long context. You will lose an arms race if you reimplement that from a blog post.

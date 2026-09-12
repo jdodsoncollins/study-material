@@ -48,6 +48,8 @@ Tree problems often hide recursion and stack depth. Graph problems hide visited-
 
 ## Core idea
 
+### ELI5
+
 ```
 tree (org chart)          graph (shuttle stops)
     Maja                      A -- B

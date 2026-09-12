@@ -61,6 +61,12 @@ This is course-order / topo sort. The catalog is warehouse training, not a CS-de
 
 ## Worked approach
 
+### ELI5
+
+Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+
+### Then the details
+
 ```ts
 function moduleOrder(n: number, need: [number, number][]): number[] {
   const adj: number[][] = Array.from({ length: n }, () => []);
@@ -104,12 +110,21 @@ n = 5, `need = [[0,1], [1,3], [2,3], [0,2]]`. Module 4 is a loner.
 
 [Peel indegree zero](viz/peel.md)
 
+### Easy
+
 1. Indegree: 0:0, 1:1, 2:1, 3:2, 4:0. Queue `[0, 4]`.
+
+### Medium
+
 2. Peel 0. 1 and 2 drop to 0. Queue `[4, 1, 2]`.
 3. Peel 4, 1, 2. After 1 and 2, node 3 drops to 0.
 4. Peel 3. Order example: `[0, 4, 1, 2, 3]`.
 
 Add `[3, 0]` and 0 never reaches indegree 0 after the first pass. Peel length < 5. Return `[]`.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

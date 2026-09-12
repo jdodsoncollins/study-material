@@ -70,7 +70,11 @@ This is number-of-islands, told as a wet warehouse, not a map of `'1'`/`'0'` fro
 
 ## Worked approach
 
+### ELI5
+
 Scan. On a `1`, increment the answer and sink the whole cluster.
+
+### Then the details
 
 ```ts
 function palletClusters(floor: number[][]): number {
@@ -121,13 +125,22 @@ Grid in the prompt.
 
 [Sink a cluster](viz/sink.md)
 
+### Easy
+
 1. (0,0) is land. Cluster 1. Sink (0,0), (0,1), (1,0).
+
+### Medium
+
 2. (0,4) is land. Cluster 2. Sink (0,4), (1,4), (1,3).
 3. Row 2 is all water.
 4. (3,0) is land. Cluster 3. Isolated.
 5. (3,2) is land. Cluster 4. Sink (3,2), (3,3).
 
 Answer 4. Diagonal pallets do not touch; (1,3) never ate (3,2).
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

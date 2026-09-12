@@ -48,6 +48,8 @@ Quoting "the agent is 81%" without *k*, without trial count, and without saying 
 
 ## Core idea
 
+### ELI5
+
 [k](viz/k.md)
 
 Hold the task fixed. Run *k* i.i.d. trials in isolated envs. Let *c* be the number of successes.

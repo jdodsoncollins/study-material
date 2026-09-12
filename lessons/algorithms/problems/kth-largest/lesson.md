@@ -60,7 +60,11 @@ This is k-th largest. The scores are a dock sheet, not a textbook random array.
 
 ## Worked approach
 
+### ELI5
+
 TypeScript has no stdlib heap. In the room, say so, then keep a tiny sorted buffer of size k (fine for the board) or sketch the heap.
+
+### Then the details
 
 ```ts
 function kthBusiest(scores: number[], k: number): number {
@@ -94,12 +98,21 @@ The sort-per-insert is O(n k log k). Swap in a real min-heap for O(n log k). The
 
 [Keep a size-k floor](viz/buf.md)
 
+### Easy
+
 1. First three: `[31, 6, 18]`. Sorted buffer `[6, 18, 31]`. Root/smallest of winners = 6.
+
+### Medium
+
 2. 44 beats 6. Buffer `[18, 31, 44]`.
 3. 18 ties 18. Does not beat 18. Stay.
 4. 9 loses. 25 beats 18. Buffer `[25, 31, 44]`.
 
 k-th largest is 25. Check: sorted descending `44, 31, 25, 18, 18, 9, 6`. Yes.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

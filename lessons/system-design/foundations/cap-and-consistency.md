@@ -53,6 +53,8 @@ It is a trap for people who say "we are AP because we care about users." Intervi
 
 ## Core idea
 
+### ELI5
+
 Split three different conversations:
 
 1. **Failure mode** — disk dies, process dies, *network splits*. CAP only cares about the split.

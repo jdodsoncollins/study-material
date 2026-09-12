@@ -82,6 +82,12 @@ Publish: 5k boxes pulling 5 MB every 30s ≈ 830 MB/s of origin if naive. Use a 
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 **Control plane**: authors edit a flag, Switchyard writes a new immutable snapshot to object storage, records `vN` in a tiny metadata table, and notifies **Relays**.
 
 **Data plane**: each app embeds a SDK. SDK holds snapshot `vN` in memory. Evaluation: hash(`flag_id:user_id`) → bucket 0–9999; compare to percent; apply allow-list and kill. Sticky because the hash is stable.
@@ -110,10 +116,19 @@ Consistency for users: a user may see old then new within the freshness window. 
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - Entitlements vs flags: paid features belong in Till's customer record, not a 30s-stale percent.
 - Per-request overrides for support: a header, audited, never in the public SDK.
 - Fieldnote ranking flags: ramp by user, not by post, so a session is coherent.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Remembering the expensive answer nearby](../foundations/caching/lesson.md) (id: caching)

@@ -60,7 +60,19 @@ This is k-th largest / top-k, told as throughput rather than a textbook stream o
 
 ## Worked approach
 
+### ELI5
+
 TypeScript has no stdlib heap. In an interview, say you would use one, then either sketch the array-heap or, for small k, keep a sorted buffer. The logic is: push, and if size > k, pop the min.
+
+### Syntax
+
+```ts
+const heap = [19, 4];
+heap.sort((a, b) => a - b);
+console.log(heap[0]); // min of a size-k buffer
+```
+
+### Then the details
 
 ```ts
 function topK(cleared: number[], k: number): number[] {
@@ -113,11 +125,20 @@ Min-heap of size k → k largest. Max-heap of size k → k smallest. Do not mix 
 
 `cleared = [19, 4, 27, 12, 27, 8]`, `k = 2`
 
+### Easy
+
 1. Heap `[19]`, then `[4, 19]`. Size 2.
+
+### Medium
+
 2. 27 beats 4. Pop 4. Heap `[19, 27]`.
 3. 12 loses to 19. Stay.
 4. Second 27 beats 19. Heap `[27, 27]`.
 5. 8 loses. Answer the two 27s.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

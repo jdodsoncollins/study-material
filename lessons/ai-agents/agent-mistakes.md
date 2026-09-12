@@ -53,6 +53,8 @@ AI-assisted coding rounds and "why did this agent regress" prompts are transcrip
 
 ## Core idea
 
+### ELI5
+
 Treat the agent like a junior who types fast and does not like to read. The harness must force the scientific-method order: **reproduce → read the error → change the smallest true cause → re-run the same test.**
 
 Evals then score two things: the [outcome](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript) (fail-to-pass plus pass-to-pass) and, when you debug, the trajectory for which rut it fell into. Do not grade "used my favorite files." Do grade "did not claim green while tests are red."

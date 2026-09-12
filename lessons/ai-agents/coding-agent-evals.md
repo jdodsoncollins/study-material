@@ -50,6 +50,8 @@ Every lab wants a coding agent. Interviewers ask how you would know it works wit
 
 ## Core idea
 
+### ELI5
+
 Unit of work = one PR-shaped job.
 
 1. **Start state.** A known commit, dependencies pinned, no leftover `node_modules` from the last trial.

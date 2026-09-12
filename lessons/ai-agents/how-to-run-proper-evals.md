@@ -53,6 +53,8 @@ Demos pass; production does not. Interviewers in 2026 ask you to "stand up an ev
 
 ## Core idea
 
+### ELI5
+
 An eval task is a job, not a chat prompt. Write it so two engineers would agree on pass/fail without a meeting.
 
 The loop:

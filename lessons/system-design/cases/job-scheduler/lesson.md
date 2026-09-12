@@ -80,6 +80,12 @@ Payloads stay in object storage if > 10 KB. RunLog holds ids, state, lease owner
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [lease](viz/lease.md)
 
 **Definitions** table: cron expression, TZ, handler name, overlap policy, retry policy.
@@ -110,10 +116,19 @@ Overlap `forbid`: if the previous run is still `leased`, skip this fire and reco
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - 10k/s *executions* that each take 2s: that is a worker-fleet problem (Kiln, encoders), not a ticker problem. Separate dispatch from execute.
 - DAG of jobs: v2. v1 is a single handler.
 - Fairness: per-tenant tokens so one merchant cannot consume the 10k/s.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [At-least-once, idempotency, and the dead-letter lane](../../foundations/queues-delivery/lesson.md) (id: queues-delivery)

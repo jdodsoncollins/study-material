@@ -67,7 +67,11 @@ Count the walks that reach the door. This is unique-paths-with-obstacles, told a
 
 ## Worked approach
 
+### ELI5
+
 `dp[r][c]` = ways to reach that cell. Blocked cells stay 0. First row (and column) can only come from one direction.
+
+### Then the details
 
 ```ts
 function aisleWays(floor: string[][]): number {
@@ -107,11 +111,20 @@ If they then forbid extra O(rows · cols) memory, keep one rolling row: `new[c] 
 
 Grid as in the prompt, 3×3, blocked (0,2) and (2,0).
 
+### Easy
+
 1. `dp[0][0] = 1`. `dp[0][1] = 1`. `dp[0][2] = 0` (pallet).
+
+### Medium
+
 2. Row 1: (1,0) from above = 1. (1,1) = 1 (up) + 1 (left) = 2. (1,2) = 0 + 2 = 2.
 3. Row 2: (2,0) blocked = 0. (2,1) = 2 + 0 = 2. (2,2) = 2 + 2 = 4.
 
 Four walks. The blocked top-right cell never contributes.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

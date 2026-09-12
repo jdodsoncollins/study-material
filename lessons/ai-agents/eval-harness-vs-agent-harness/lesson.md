@@ -54,6 +54,8 @@ A useful one-liner: **LLM evals grade an answer. Agent evals grade a job.**
 
 ## Core idea
 
+### ELI5
+
 Think of three nested machines:
 
 1. **Model** — next-token brain.

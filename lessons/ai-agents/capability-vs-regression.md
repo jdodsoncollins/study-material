@@ -48,6 +48,8 @@ status: canonical
 
 ## Core idea
 
+### ELI5
+
 Treat the two suites as different datasets, different aggregators, different reactions.
 
 **Capability.** Sourced from jobs you *wish* you could sell. Scores are low. You track pass@k, error clusters, and whether a new harness trick moves the frontier. A drop can mean the tasks got harder, which is allowed if you say so.

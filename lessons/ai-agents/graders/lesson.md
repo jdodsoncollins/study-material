@@ -49,6 +49,8 @@ status: canonical
 
 ## Core idea
 
+### ELI5
+
 [kinds](viz/kinds.md)
 
 Pick the cheapest grader that cannot be talked into a yes.

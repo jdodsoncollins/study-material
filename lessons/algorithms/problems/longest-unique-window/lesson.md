@@ -63,6 +63,30 @@ Same shape as the famous unique-substring question. The tape is a zone log, not 
 
 ## Worked approach
 
+Same live range as [sliding-window](../../patterns/sliding-window/lesson.md) (id: sliding-window). The invariant is uniqueness.
+
+### ELI5
+
+A radio log on a tape. Two fingers.
+
+1. Right hops onto the next letter.
+2. If you have already seen that letter *between the fingers*, slide left just past the old copy.
+3. Letters between the fingers stay unique. Keep the widest stretch.
+
+A letter from *before* the current window is stale. Ignore it.
+
+### Syntax
+
+```ts
+const last = new Map<string, number>();
+last.set("p", 1);
+const left = 0;
+const prev = last.get("p");
+console.log(prev !== undefined && prev >= left); // still inside the window
+```
+
+### Then the details
+
 ```ts
 function longestUnique(log: string): number {
   const last = new Map<string, number>();
@@ -83,7 +107,7 @@ console.log(longestUnique("aaaa"));        // 1
 
 ```
 
-The `prev >= left` guard is the whole correctness story. A letter seen *before* the current window is stale and must not move left.
+The `prev >= left` guard is the correctness check. A letter seen *before* the current window is stale and must not move left.
 
 ## Complexity
 
@@ -95,16 +119,26 @@ The `prev >= left` guard is the whole correctness story. A letter seen *before* 
 
 ## Walkthrough
 
-`log = "mparkpklane"`
-
 [Slide past the repeat](viz/slide.md)
+
+### Easy
+
+`log = "aaaa"`. Width stays 1.
+
+### Medium
+
+`log = "mparkpklane"`
 
 1. `m p a r k` all new. Width 5. Map ends at `k → 4`.
 2. Next `p` last seen at 1, still inside. Jump left to 2. Window `arkp`. Width 4.
 3. Next `k` last seen at 4, inside. Jump left to 5. Window `pk`. Width 2.
-4. `l a n e` all new to this window. `p` at 5, `k` at 6, then `lane`. Window `pklane`. Width 6.
+4. `l a n e` all new to this window. Window `pklane`. Width 6.
 
-Best is 6 (`pklane`). Check: p,k,l,a,n,e are unique.
+Best is 6 (`pklane`).
+
+### Hard
+
+They want at most k distinct letters. Use counts, shrink while `counts.size > k`. They want the slice, not the length: save `left` when `best` updates. Surrogate pairs: ask the alphabet.
 
 ## Pitfalls
 

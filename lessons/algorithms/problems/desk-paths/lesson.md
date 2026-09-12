@@ -61,6 +61,12 @@ This is unique-paths. The floor is 3×4, not the textbook 3×7.
 
 ## Worked approach
 
+### ELI5
+
+Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+
+### Then the details
+
 ```ts
 function walksToDesk(rows: number, cols: number): number {
   const dp = Array.from({ length: cols }, () => 1);
@@ -87,7 +93,11 @@ One array. `dp[c]` is the current row's cell `c`. Adding `dp[c-1]` uses the cell
 
 ## Walkthrough
 
+### Easy
+
 3×4.
+
+### Medium
 
 [Add above and left](viz/grid.md)
 
@@ -96,6 +106,8 @@ Row 0: `1 1 1 1` (only right).
 Row 1: `1, 1+1=2, 2+1=3, 3+1=4`.
 
 Row 2: `1, 1+2=3, 3+3=6, 6+4=10`.
+
+### Hard
 
 10 paths. Check: you must take 2 down and 3 right, in some order. `C(5,2)=10`.
 

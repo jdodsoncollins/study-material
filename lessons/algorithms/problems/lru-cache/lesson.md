@@ -66,7 +66,11 @@ This is LRU cache, told as scanner memory.
 
 [evict](viz/evict.md)
 
+### ELI5
+
 Sentinel head and tail so unlink never special-cases empty. Move-to-head is unlink then insert after head.
+
+### Then the details
 
 ```ts
 class Node {
@@ -145,11 +149,20 @@ console.log(mem.get("N-4"));  // 17
 
 Capacity 2.
 
+### Easy
+
 1. `put N-4,17`. List: N-4.
+
+### Medium
+
 2. `put K-11,8`. List: K-11, N-4.
 3. `get N-4` → 17. List: N-4, K-11.
 4. `put CRANE,3`. Full; evict tail K-11. List: CRANE, N-4.
 5. `get K-11` → -1. `get N-4` → 17.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

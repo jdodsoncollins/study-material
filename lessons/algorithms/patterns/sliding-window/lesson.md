@@ -65,6 +65,28 @@ Same shape as the classic unique-substring problem. The tape is a warehouse radi
 
 [window](viz/window.md)
 
+### ELI5
+
+A live range on a tape. Two fingers: left and right. Right only walks forward. Left only walks forward.
+
+1. Slide right onto the next letter.
+2. If that letter is already between the fingers, slide left just past the old copy.
+3. The letters between the fingers stay unique. Remember the widest gap you have seen.
+
+Left never goes backward. That is what keeps it linear.
+
+### Syntax
+
+```ts
+let left = 0;
+let right = 0;
+console.log(right - left + 1); // width, including both ends
+left += 1; // throw away a stale prefix, never decrease
+console.log(left <= right);
+```
+
+### Then the details
+
 Advance `right`. Record the last index of each letter. If the new letter was already inside the window, jump `left` just past that last index. Track the best width.
 
 ```ts
@@ -99,14 +121,24 @@ Do not rebuild the map each shrink. Amortized O(n) only holds if both pointers t
 
 ## Walkthrough
 
+### Easy
+
+`zones = "bbbb"`. Every letter repeats. Width stays 1.
+
+### Medium
+
 `zones = "abcbadef"`
 
-1. `a b c` — all new. Width 3. Map `{a:0,b:1,c:2}`.
-2. Next `b` last seen at 1, still inside. Jump left to 2. Window is `c b`. Width 2.
+1. `a b c` all new. Width 3. Map `{a:0,b:1,c:2}`.
+2. Next `b` last seen at 1, still inside. Jump left to 2. Window is `cb`. Width 2.
 3. `a` is new to this window. `cba`. Width 3.
 4. `d e f` all new. Window `cbadef`. Width 6.
 
-Best is 6. The repeat of `b` never forces you to restart from scratch; you only throw away the stale prefix.
+Best is 6. The repeat of `b` does not restart the scan; you only throw away the stale prefix.
+
+### Hard
+
+Follow-up: at most k distinct letters. Swap last-index for counts, and shrink while `counts.size > k`. Alphabet tiny (ASCII) → array of 256 instead of a map.
 
 ## Pitfalls
 

@@ -47,6 +47,8 @@ Design rounds ask "what happens if the working set no longer fits in RAM?" Codin
 
 ## Core idea
 
+### ELI5
+
 Think of apartment mailboxes. The number on the box (virtual) is what tenants use. The post office (OS) keeps a directory that says box 12B currently maps to crate 4096 in the basement (physical). If the crate was hauled to off-site storage (swap), the next letter waits.
 
 ```
@@ -62,6 +64,10 @@ virtual page  →  page table  →  physical frame
 Copy-on-write: `fork` clones the page *map*, not the bytes. The child writes a page → OS copies that page only. Cheap until someone mutates everything.
 
 ## Worked example
+
+### Easy / medium / hard
+
+Walk the small case in the sample, then the miss, then the follow-up they name in Interview moves.
 
 Sum 1 million crate weights two ways: packed `number[]` versus a linked list of nodes.
 

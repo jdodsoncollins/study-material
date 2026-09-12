@@ -50,6 +50,8 @@ Platform rounds ask how you would instrument an agent. The junior answer is "we 
 
 ## Core idea
 
+### ELI5
+
 Think of Harborline's refund agent as a distributed system that happens to include a model.
 
 A customer opens ticket `T-441`. That session may contain three user turns: "where is my mug," "actually refund it," "thanks." Each turn is a trace. Inside the refund trace, spans might be `llm.plan`, `tool.get_order`, `llm.choose`, `tool.refund`, `grader.outcome`. The trajectory is those spans read as a story, including the text the model produced between tools.

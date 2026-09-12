@@ -62,6 +62,12 @@ This is house-robber. The row is dock bays, not `[1,2,3,1]`.
 
 ## Worked approach
 
+### ELI5
+
+Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+
+### Then the details
+
 ```ts
 function maxBays(loot: number[]): number {
   let prev2 = 0;
@@ -95,13 +101,22 @@ console.log(maxBays([4, 4]));          // 4
 
 [Take or skip this bay](viz/take.md)
 
+### Easy
+
 1. 6. best=6.
+
+### Medium
+
 2. 2 vs 6. Keep 6.
 3. 6+9=15 vs 6. Take 15.
 4. 6+8=14 vs 15. Keep 15.
 5. 15+1=16 vs 15. Take 16.
 
 `6+9+1`. Check: 2+8=10, 6+8=14, 2+9+1=12. 16 wins.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

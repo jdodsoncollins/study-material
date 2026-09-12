@@ -61,7 +61,19 @@ This is unbounded knapsack / coin change, told as a tram fare box.
 
 ## Worked approach
 
+### ELI5
+
 `dp[x]` = fewest tokens to make x. `dp[0] = 0`. For each amount, try each token that fits.
+
+### Syntax
+
+```ts
+const dp = Array(13).fill(Infinity);
+dp[0] = 0;
+console.log(dp[0], dp[12]);
+```
+
+### Then the details
 
 ```ts
 function fewestTokens(tokens: number[], amount: number): number {
@@ -94,12 +106,21 @@ Loop amount in the outer position for "number of tokens." If you need *combinati
 
 `tokens = [1, 6, 10]`, `amount = 12`
 
+### Easy
+
 1. `dp[0] = 0`.
+
+### Medium
+
 2. `dp[1]..dp[5]` all 1,2,3,4,5 using ones.
 3. `dp[6] = min(6 ones, 1 six) = 1`.
 4. `dp[10] = 1` via the 10. `dp[11] = 2`, `dp[12] = min(dp[11]+1, dp[6]+1, dp[2]+1) = 2` (two sixes).
 
 Greedy would take 10 + 1 + 1 and answer 3. The table beats it.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

@@ -82,6 +82,12 @@ Local buckets on 12 Resolve boxes: 58k / 12 ≈ 4.8k/s/box, all in process. Accu
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [bucket](viz/bucket.md)
 
 Two layers:
@@ -115,10 +121,19 @@ Fail-open on resolve: a MeterStore outage should not take ClipForge down. Fail-c
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - Rate limit by URL path vs by user: different keys, same engine.
 - Distributed consistency of the count: we want *good enough* shed, not a linearizable counter, except on money endpoints.
 - Sliding window vs leaky bucket naming: leaky bucket is constant drain; token bucket is the one you want for APIs.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Remembering the expensive answer nearby](../../foundations/caching/lesson.md) (id: caching)

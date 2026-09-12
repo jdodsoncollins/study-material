@@ -61,6 +61,12 @@ This is reverse-linked-list. The values are dock marks, not `1→2→3→4→5`.
 
 ## Worked approach
 
+### ELI5
+
+Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+
+### Then the details
+
 ```ts
 type Node = { val: number; next: Node | null };
 
@@ -95,9 +101,7 @@ console.log(toArr(reverse(fromArr([4, 9, 1, 7])))); // [7, 1, 9, 4]
 console.log(toArr(reverse(fromArr([5]))));          // [5]
 ```
 
-Save `nxt` before you overwrite `cur.next`. That is the whole trick.
-
-## Complexity
+Save `nxt` before you overwrite `cur.next`. ## Complexity
 
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
@@ -111,12 +115,21 @@ Save `nxt` before you overwrite `cur.next`. That is the whole trick.
 
 [Swing next to prev](viz/swing.md)
 
+### Easy
+
 1. prev=null, cur=4. nxt=9. 4.next=null. prev=4, cur=9.
+
+### Medium
+
 2. nxt=1. 9.next=4. prev=9, cur=1.
 3. nxt=7. 1.next=9. prev=1, cur=7.
 4. nxt=null. 7.next=1. prev=7, cur=null. Head is 7.
 
 `7 → 1 → 9 → 4`. Old 4.next is null, so it is the tail.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

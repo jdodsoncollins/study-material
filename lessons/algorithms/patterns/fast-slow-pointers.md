@@ -63,6 +63,26 @@ The chain is a trail of dock-gate pings, not the textbook `1 → 2 → 3 → 2`.
 
 ## Worked approach
 
+### ELI5
+
+Two runners on a path that might loop.
+
+1. Slow takes one hop. Fast takes two.
+2. If the path is a line, fast hits the end.
+3. If the path loops, fast laps slow and they land on the same node.
+4. To find where the loop starts: put one runner back at the start, both walk one hop at a time. They meet at the entrance.
+
+### Syntax
+
+```ts
+type Ping = { id: number; next: Ping | null };
+let slow: Ping | null = { id: 1, next: null };
+let fast = slow;
+console.log(slow === fast);
+```
+
+### Then the details
+
 Send `fast` two hops and `slow` one hop. If they meet, a cycle exists. To find the entrance, reset one pointer to head and walk both one hop at a time; they meet at the entrance.
 
 ```ts
@@ -109,13 +129,23 @@ Null-check `fast` and `fast.next` before the double hop. Empty and single-node l
 
 ## Walkthrough
 
+### Easy
+
+`A → B → null`. Fast hits null. No loop.
+
+### Medium
+
 Pings `A → B → C → D → E → C` (E stitches back to C).
 
 1. Start both on A.
 2. Slow: B, C, D. Fast: C, E, D. Meet at D.
 3. Reset seek to A. Walk: seek A/B/C, slow D/E/C. Meet at C.
 
-C is the loop start. Distance from head to entrance equals distance from meeting point to entrance around the cycle.
+C is the loop start.
+
+### Hard
+
+Meeting point is usually mid-cycle, not the entrance. Reset one pointer to head. Compare node identity, not ids. Null-check `fast && fast.next` before the double hop.
 
 ## Pitfalls
 

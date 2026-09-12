@@ -63,6 +63,12 @@ This is online connectivity, told as a dock-yard radio mesh.
 
 [dsu](viz/dsu.md)
 
+### ELI5
+
+Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+
+### Then the details
+
 ```ts
 class Nets {
   parent: number[];
@@ -109,10 +115,19 @@ for (const [a, b] of [[0, 1], [1, 2], [3, 4], [2, 0]]) {
 
 Towers 0..5, cables `[0-1], [1-2], [3-4], [2-0]`.
 
+### Easy
+
 1. 0-1: different roots, merge. Parts 5.
+
+### Medium
+
 2. 1-2: 1's root is 0, merge 2. Parts 4. Components `{0,1,2}`, `{3,4}`, `{5}`.
 3. 3-4: merge. Parts 3.
 4. 2-0: both already under 0. Redundant. Parts stay 3.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

@@ -47,6 +47,8 @@ Tree, graph, and backtracking prompts are recursion in costume. Interviewers lis
 
 ## Core idea
 
+### ELI5
+
 Unbox a nested gift. Each box is a frame.
 
 ```
@@ -67,6 +69,10 @@ fib(5)
 Memoization collapses the DAG. An explicit stack does the same walk without the language's call limit.
 
 ## Worked example
+
+### Easy / medium / hard
+
+Walk the small case in the sample, then the miss, then the follow-up they name in Interview moves.
 
 Count folders in a nested crate manifest. Each crate has a name and children.
 

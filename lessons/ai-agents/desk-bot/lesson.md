@@ -85,6 +85,12 @@ The 3s ack is the hard number. DNS plus TLS plus verify plus enqueue must fit. T
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [hook](viz/hook.md)
 
 YardWire POST `/hooks/desk` with `{event_id, user, channel, thread_ts, text, type}`. **WireHook**:
@@ -129,10 +135,19 @@ The platform's retry of the webhook never re-enters the model. The job worker is
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - DMs vs channels: same pipeline, different authz.
 - Images of pallets: a vision tool, or a link to [RollKeep](../../system-design/cases/blob-store/lesson.md) (id: blob-store).
 - Eval: a fixture YardWire that replays `event_id`s and asserts one page, one final post, confirm-before-page. That is the [eval harness](../eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness), not a vibe check in prod.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Tools that are safe to call twice](../tool-calling/lesson.md) (id: tool-calling)

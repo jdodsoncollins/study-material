@@ -63,6 +63,12 @@ This is the one-buy one-sell profit question. The tape is not `[7,1,5,3,6,4]`.
 
 ## Worked approach
 
+### ELI5
+
+Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+
+### Then the details
+
 ```ts
 function oneLot(tape: number[]): number {
   let low = tape[0] ?? 0;
@@ -95,13 +101,22 @@ Update profit before you update `low`, or a same-day buy/sell of 0 slips in. Sam
 
 [Track the cheapest buy](viz/low.md)
 
+### Easy
+
 1. low=9, best=0.
+
+### Medium
+
 2. 3 is cheaper. low=3. Profit still 0.
 3. 8 - 3 = 5. best=5.
 4. 1 is cheaper. low=1. best stays 5.
 5. 6 - 1 = 5. Tie. 4 - 1 = 3.
 
 Best is 5: buy at 3, sell at 8, or buy at 1, sell at 6.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

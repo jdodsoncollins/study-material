@@ -53,6 +53,8 @@ Notifications, feed fan-out, payment capture, job schedulers, and LLM GPU queues
 
 ## Core idea
 
+### ELI5
+
 [once](viz/once.md)
 
 A message has a life:

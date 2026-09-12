@@ -47,6 +47,8 @@ status: canonical
 
 ## Core idea
 
+### ELI5
+
 [split](viz/split.md)
 
 Start from the user's success condition.

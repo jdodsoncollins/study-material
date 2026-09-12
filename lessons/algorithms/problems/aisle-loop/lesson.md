@@ -62,6 +62,27 @@ This is cycle detection. The values are bay numbers, not `1→2→3→2`.
 
 ## Worked approach
 
+Same two runners as [fast-slow-pointers](../../patterns/fast-slow-pointers.md) (id: fast-slow-pointers).
+
+### ELI5
+
+A forklift aisle that might stitch back on itself.
+
+1. Slow: one bay. Fast: two bays.
+2. Fast hits the end → no loop.
+3. They land on the same node → loop.
+
+### Syntax
+
+```ts
+type Node = { val: number; next: Node | null };
+let slow: Node | null = { val: 3, next: null };
+let fast = slow;
+console.log(slow === fast);
+```
+
+### Then the details
+
 ```ts
 type Node = { val: number; next: Node | null };
 
@@ -97,16 +118,24 @@ Compare nodes by identity, not by `val`. Duplicate bay numbers are allowed.
 
 ## Walkthrough
 
-`3 → 9 → 1 → 4 ↘ 9`
-
 [Meet inside the loop](viz/meet.md)
+
+### Easy
+
+`5 → 8 → 2`. Fast hits null. No loop.
+
+### Medium
+
+`3 → 9 → 1 → 4 ↘ 9`
 
 1. slow and fast start on 3.
 2. slow=9, fast=1.
 3. slow=1, fast=9 (4.next is 9).
 4. slow=4, fast=4. Meet. Loop.
 
-On `5 → 8 → 2`, fast reaches null after 2. No meet.
+### Hard
+
+Compare nodes by identity, not `val`. Duplicate bay numbers are allowed. Meeting node is not always the entrance; a second walk from head finds that.
 
 ## Pitfalls
 

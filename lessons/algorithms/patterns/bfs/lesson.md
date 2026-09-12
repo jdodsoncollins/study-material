@@ -70,7 +70,19 @@ This is grid BFS, told as a picker route rather than a maze handout.
 
 [layers](viz/layers.md)
 
+### ELI5
+
 Find S, push it at distance 0, mark visited. Pop, try four neighbors, skip walls and repeats. First time you stand on D, return that distance.
+
+### Syntax
+
+```ts
+const q: [number, number, number][] = [[1, 0, 0]];
+const [r, c, d] = q.shift()!;
+console.log(r, c, d);
+```
+
+### Then the details
 
 ```ts
 function stepsToDock(floor: string[][]): number {
@@ -123,10 +135,19 @@ console.log(stepsToDock([
 
 Grid as in the prompt. S is (1,0), D is (0,2).
 
+### Easy
+
 1. Queue `(1,0,0)`. Neighbors: `(0,0)` and `(1,1)` and `(2,0)`.
+
+### Medium
+
 2. Distance 1 cells expand. `(0,0)` cannot go north; east is a wall.
 3. Distance 2 reaches `(1,2)` via `(1,1)`.
 4. Distance 3 stands on `(0,2)` = D. Return 3.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

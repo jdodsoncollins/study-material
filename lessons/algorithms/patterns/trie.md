@@ -61,6 +61,12 @@ This is a trie, told as a warehouse catalog, not a dictionary handout.
 
 ## Worked approach
 
+### ELI5
+
+Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+
+### Then the details
+
 ```ts
 type Node = { kids: Map<string, Node>; end: boolean };
 
@@ -115,11 +121,20 @@ console.log(t.hasPrefix("BOL"), t.hasPrefix("ZZ")); // true false
 
 Insert `BOLT`, `BOLT-M8`, `BIN`, `CRANE`.
 
+### Easy
+
 1. `B → O → L → T (end)`. `BOLT-M8` reuses `BOLT` and extends `- M 8 (end)`.
+
+### Medium
+
 2. `BIN` shares only `B`, then branches `I → N (end)`.
 3. `CRANE` is a disjoint path from the root.
 4. `hasPrefix("BOL")` walks B,O,L and stops on a live node. `has("BOL")` sees `end === false`.
 5. `has("BIN")` true. `has("CRAN")` false.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

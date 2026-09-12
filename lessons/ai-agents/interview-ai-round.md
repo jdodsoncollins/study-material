@@ -53,6 +53,8 @@ Product orgs shipped agents, then shipped incidents. Interviewers added a round 
 
 ## Core idea
 
+### ELI5
+
 You are being scored on **control**, not on prompt cleverness.
 
 **AI-assisted coding.** Use the model to search, draft, and explain. You still: restate the spec, write or run a failing test, read errors, reject invented APIs, and submit only what you have seen go green. Treat the model's "tests pass" line as speech. See [agent mistakes](./agent-mistakes.md) (id: agent-mistakes).

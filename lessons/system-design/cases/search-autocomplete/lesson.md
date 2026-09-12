@@ -81,6 +81,12 @@ Debounce 30 ms on the client still leaves several QPS per typer. Design for 100k
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [prefix](viz/prefix.md)
 
 Offline: **LogMill** aggregates yesterday's queries + clicks. **Builder** produces an immutable snapshot: for each prefix, the top 8 queries after filtering. Snapshot is a file, versioned, ~12 GB.
@@ -113,10 +119,19 @@ Trending inject: a side map merged at read for prefixes that match a "hot this h
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - Full document search: different system, different SLA, do not reuse the trie as a search engine.
 - Multi-language: snapshot per locale, detect from the query, do not mix alphabets in one top-8.
 - Privacy: queries in LogMill are aggregated; no raw per-user string in the snapshot.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Remembering the expensive answer nearby](../../foundations/caching/lesson.md) (id: caching)

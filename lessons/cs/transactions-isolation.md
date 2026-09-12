@@ -48,6 +48,8 @@ Any "two requests hit the last oat milk" prompt is isolation plus locking. They 
 
 ## Core idea
 
+### ELI5
+
 Two baristas, one fridge row `oat_ml = 200`. Each sale reads, subtracts 40, writes.
 
 ```

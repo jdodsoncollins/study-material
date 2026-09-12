@@ -49,6 +49,8 @@ A 90-second pass: TCP handshake and reliability, HTTP as messages, status codes 
 
 ## Core idea
 
+### ELI5
+
 Mail analogy: TCP is numbered, acknowledged postcards that reconstruct a novel in order. HTTP is the novel's chapter format — "GET /menus/42" is a sentence, not a postcard.
 
 ```

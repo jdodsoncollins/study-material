@@ -48,6 +48,8 @@ status: canonical
 
 ## Core idea
 
+### ELI5
+
 Build the judge like a test, not like a coworker.
 
 1. **Name one quality.** "Email is plain and names the amount" is a quality. "Good job" is not.

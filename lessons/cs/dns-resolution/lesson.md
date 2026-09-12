@@ -47,6 +47,8 @@ status: canonical
 
 ## Core idea
 
+### ELI5
+
 The recursor is a [cache](../../system-design/foundations/caching/lesson.md) (id: caching) in front of a read-only tree. You do not query the whole internet from the laptop; you query one recursor that already asked last minute.
 
 [lookup](viz/lookup.md)

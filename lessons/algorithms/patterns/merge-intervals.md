@@ -61,6 +61,27 @@ The numbers are dock hours, not the textbook `[[1,3],[2,6],[8,10],[15,18]]`.
 
 ## Worked approach
 
+### ELI5
+
+Bookings on a number line.
+
+1. Sort them by when they start.
+2. Hold the block that is still open.
+3. Next booking starts before this one ends → stretch the end.
+4. Next booking starts after this one ends → close the block, open a new one.
+
+Touching endpoints: ask if 4pm-end and 4pm-start are one block or two.
+
+### Syntax
+
+```ts
+const slots: [number, number][] = [[1, 4], [3, 6]];
+const sorted = [...slots].sort((a, b) => a[0] - b[0]);
+console.log(sorted[1][0] <= sorted[0][1]); // 3 <= 4, overlap
+```
+
+### Then the details
+
 Sort by start. Seed `current` with the first slot. For each next slot, either extend `current.end` or push `current` and open a new one.
 
 ```ts
@@ -99,6 +120,12 @@ console.log(mergeSlots([[1, 4], [8, 10], [3, 6], [9, 11]])); // [[1,6],[8,11]]
 
 ## Walkthrough
 
+### Easy
+
+`[[1, 4], [3, 6]]` → `[[1, 6]]`.
+
+### Medium
+
 `slots = [[1, 4], [8, 10], [3, 6], [9, 11]]`
 
 1. Sort: `[1,4], [3,6], [8,10], [9,11]`.
@@ -106,6 +133,10 @@ console.log(mergeSlots([[1, 4], [8, 10], [3, 6], [9, 11]])); // [[1,6],[8,11]]
 3. `[8,10]` starts after 6. Push `[1,6]`, open `[8,10]`.
 4. `[9,11]` overlaps. Extend to `[8,11]`.
 5. Result `[[1,6], [8,11]]`.
+
+### Hard
+
+How many docks at once? Merge is the wrong summary. Use a min-heap of end times. Nested range: `close = Math.max(close, end)` so a short inner booking does not shrink the block.
 
 ## Pitfalls
 

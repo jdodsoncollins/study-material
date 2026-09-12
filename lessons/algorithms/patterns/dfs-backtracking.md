@@ -64,7 +64,11 @@ The first is permutations. The second is board search. Same choose/undo skeleton
 
 ## Worked approach
 
+### ELI5
+
 Keep a path array and a used mask. Push, recurse, pop. Copy the path into the answer when it is full.
+
+### Then the details
 
 ```ts
 function lockerPairs(digits: number[]): number[][] {
@@ -107,13 +111,22 @@ Copy with `[...path]`. Pushing `path` itself stores the same array over and over
 
 `digits = [1, 2, 4]`, length 2.
 
+### Easy
+
 1. Pick 1. Branch: 2 → `[1,2]`; 4 → `[1,4]`. Undo 1.
+
+### Medium
+
 2. Pick 2. Branch: `[2,1]`, `[2,4]`.
 3. Pick 4. Branch: `[4,1]`, `[4,2]`.
 
 Six pairs. The undo is visible: after `[1,2]` you pop 2, then try 4, then pop 1 before touching 2 as a start.
 
 Board search adds a cell mark: set `floor[r][c] = '#'`, recurse four ways, restore the letter.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

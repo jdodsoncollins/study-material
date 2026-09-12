@@ -84,6 +84,12 @@ HTML 80 KB average × 400/s ≈ 32 MB/s ingest. Cheap. The index write is a [job
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [crawl](viz/crawl.md)
 
 **Frontier** is a queue per host (or a heap of host-queues keyed by `next_allowed_at`). A **Dispatcher** pops the host whose clock is due, hands one URL to a **Fetcher**.
@@ -119,10 +125,19 @@ Seeds and sitemaps enter the same Frontier. Recrawl: a successful fetch writes `
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - Login / paywall: out of v1; that is a crawler with secrets and a lawyer.
 - Canonical URL across `www` and `m.`: extra normalization, not a new store.
 - Priority: price pages before blog. Weighted host queues, still polite.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [At-least-once, idempotency, and the dead-letter lane](../../foundations/queues-delivery/lesson.md) (id: queues-delivery)

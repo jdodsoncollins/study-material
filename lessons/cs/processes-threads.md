@@ -47,6 +47,8 @@ Design a worker pool, a browser sandbox, or a Node service and someone will ask 
 
 ## Core idea
 
+### ELI5
+
 A food truck is a process. Cooks are threads. They share the fridge (heap) and the one gas line (sockets). Two trucks are two processes: separate fridges, talk by handing tickets through the window (IPC).
 
 ```

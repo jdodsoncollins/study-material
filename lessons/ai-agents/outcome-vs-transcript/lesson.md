@@ -48,6 +48,8 @@ LLM evals trained a generation of engineers to grade the final string. Agents ca
 
 ## Core idea
 
+### ELI5
+
 [grade](viz/grade.md)
 
 The product promise is a state change, not a paragraph.

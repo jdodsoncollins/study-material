@@ -41,8 +41,7 @@ status: canonical
 ## Snapshot
 
 - Distinct parts. Return every subset, including empty and the full set. Order of subsets does not matter.
-- At index `i`: skip `parts[i]`, or push it, recurse, pop. That is the whole tree.
-- Iterative doubling (start `[[]]`, for each part append a copy-plus-part) is the same tree flattened. Either is fine.
+- At index `i`: skip `parts[i]`, or push it, recurse, pop. - Iterative doubling (start `[[]]`, for each part append a copy-plus-part) is the same tree flattened. Either is fine.
 - Duplicates in the input is a different prompt: sort and skip equal neighbors.
 
 ## Prompt
@@ -61,6 +60,12 @@ This is the power set. The parts are not `[1,2,3]`.
 | Duplicates in input | Sort, skip equals after a skip branch |
 
 ## Worked approach
+
+### ELI5
+
+Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+
+### Then the details
 
 ```ts
 function spareSets(parts: number[]): number[][] {
@@ -100,12 +105,21 @@ Push a *copy* of `path`. If you push `path` itself, every row in `out` mutates t
 
 [Include or skip](viz/branch.md)
 
+### Easy
+
 1. Skip 7, skip 2, skip 9 → `[]`.
+
+### Medium
+
 2. Skip 7, skip 2, take 9 → `[9]`.
 3. Skip 7, take 2, then skip/take 9 → `[2]`, `[2,9]`.
 4. Take 7, then the same suffix → `[7]`, `[7,9]`, `[7,2]`, `[7,2,9]`.
 
 Eight rows. `2^3`.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

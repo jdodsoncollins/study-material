@@ -84,6 +84,12 @@ Each attempt: a 200-byte ticket in **DeliveryLog**. 80k/s × 200 B ≈ 16 MB/s. 
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [channels](viz/channels.md)
 
 **TopicRouter** accepts events (idempotent on `event_id`). It loads preferences from a cached snapshot, expands to `N` **delivery tickets** `{event_id, user_id, channel, device_token}`, and enqueues them.
@@ -118,10 +124,19 @@ Tickets use a 30s lease. Success writes `delivered` to DeliveryLog. Crash before
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - Marketing blasts: different fleet, different opt-in, never share the transactional queue.
 - Digest email: Clockyard cron, not per-event email.
 - Cross-region: tickets are user-sharded; vendors are global.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [At-least-once, idempotency, and the dead-letter lane](../../foundations/queues-delivery/lesson.md) (id: queues-delivery)

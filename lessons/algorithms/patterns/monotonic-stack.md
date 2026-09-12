@@ -62,6 +62,29 @@ This is the "next greater to the right" family, told as a weather strip on a war
 
 ## Worked approach
 
+### ELI5
+
+A line of people facing right, each asking "when do I get a warmer hour?"
+
+1. Walk the hours left to right.
+2. Keep a pile of people still waiting (coldest on top, looking right).
+3. When a warmer hour arrives, it answers everyone on top who is colder. Pop them and write how many hours they waited.
+4. Then this hour joins the pile.
+
+Equals stay waiting if they need a *strictly* warmer hour.
+
+### Syntax
+
+```ts
+const stack: number[] = [];
+stack.push(0);
+console.log(stack[stack.length - 1]); // top
+const j = stack.pop();
+console.log(j);
+```
+
+### Then the details
+
 Store indices of unresolved hours. Walk left to right. While the current temp is warmer than `temps[stack.top]`, pop and write the wait.
 
 ```ts
@@ -94,6 +117,12 @@ The stack of temps is decreasing (strictly, if you require a strictly warmer hou
 
 ## Walkthrough
 
+### Easy
+
+Two hours `[14, 16]`. 16 pops 14. Wait `[1, 0]`.
+
+### Medium
+
 `temps = [14, 13, 16, 15, 19, 12]`
 
 1. Push 0 (14). 13 is colder; push 1.
@@ -103,6 +132,10 @@ The stack of temps is decreasing (strictly, if you require a strictly warmer hou
 5. 12 colder; push 5. End. Unresolved stay 0.
 
 Answer `[2, 1, 2, 1, 0, 0]`.
+
+### Hard
+
+They want `-1` instead of `0` for "never." Fill that default. Equal temps: match the inequality to the prompt (`>` vs `>=`). Histogram area is the same stack twice (next smaller on each side).
 
 ## Pitfalls
 

@@ -89,6 +89,12 @@ Read: 200M × 8 home opens/day ≈ 18.5k/s average, ~185k/s peak. This is why in
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [Hybrid fanout](viz/hybrid.md)
 
 Publish path: API writes the post body to **PostStore** (sharded by `post_id`), then enqueues a fanout job on **WaveFan**.
@@ -118,10 +124,19 @@ Do not pre-render HTML. Cache post bodies and inboxes, not personalized pages.
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - Stories / ephemeral: a second inbox with a 24h TTL, same hybrid rule.
 - Notifications for "X posted": that is [Herald](../notification-system/lesson.md) (id: notification-system), not WaveFan.
 - Multi-hop ranking features: offline, not in the 200 ms path.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)

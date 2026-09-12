@@ -53,6 +53,8 @@ After you draw a log or a message table they ask "who assigns the id." They are 
 
 ## Core idea
 
+### ELI5
+
 Split the 64 bits so two boxes cannot mint the same ticket without sharing a worker id.
 
 [bits](viz/bits.md)
@@ -62,6 +64,10 @@ One working split (not a standard you must memorize): 1 unused bit, 41 bit milli
 Worker ids come from the orchestrator at boot (or from the machine's rack+slot). Sequence resets every millisecond. If a worker mints more than 4096 events in one ms, it waits.
 
 ## Worked example
+
+### Easy / medium / hard
+
+Walk the small case in the sample, then the miss, then the follow-up they name in Interview moves.
 
 Dock 7, epoch `2024-01-01`. At `ms = 1_700_000_000_000` relative to epoch it mints sequence 0, 1, 2.
 

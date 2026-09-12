@@ -50,6 +50,8 @@ status: canonical
 
 ## Core idea
 
+### ELI5
+
 [call](viz/call.md)
 
 Assume every tool will be called zero times, once, twice with the same args, and once with wrong args. Design for all four.

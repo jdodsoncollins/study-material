@@ -89,6 +89,12 @@ Video JobLane: 10-minute gens, 8 dedicated GPUs. Throughput is jobs/hour, not to
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [batch](viz/batch.md)
 
 **Front door**: auth, [QuotaDesk](../rate-limiter/lesson.md) (id: rate-limiter) per tenant, then **Queue**. Interactive queue is small and expires (fail the request after 5s waiting). JobLane queue is durable.
@@ -123,10 +129,19 @@ Eval: same Kiln, but eval traffic cannot starve interactive. Separate credit poo
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - Multi-model: one queue per model (different weights), not one magical GPU that swaps 40 GB every request.
 - Speculative decoding / smaller draft models: a throughput trick, mention if they zoom.
 - Why this is not "design ChatGPT": the product loop is the agent harness; Kiln is the scarce-resource scheduler underneath.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Cron, ad-hoc, leases, and retries](../job-scheduler/lesson.md) (id: job-scheduler)

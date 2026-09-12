@@ -84,6 +84,12 @@ Bandwidth into a region: 5.8 TB/h ≈ 13 Gbps. Size the ingest VIPs for that, no
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [put](viz/put.md)
 
 Client asks **CardAPI** for an upload session. CardAPI mints a [YardTicket](../../foundations/unique-ids/lesson.md) (id: unique-ids) `clip_id`, opens a session `{clip_id, chunk_size, expected_chunks}`, returns signed PUT URLs for each chunk against **ClipBytes**.
@@ -115,10 +121,19 @@ Three replicas in three racks. A put is durable when two of three ack. The third
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - Cross-region: async replicate cards and bytes; reads are sticky to the home region in v1.
 - Video transcode: that is a [job](../job-scheduler/lesson.md) (id: job-scheduler) on finalize, output a second blob, pointer on the card.
 - POSIX sync / block-level: out of v1. That is a different product (and a longer round).
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [IDs that sort without a coordinator](../../foundations/unique-ids/lesson.md) (id: unique-ids)

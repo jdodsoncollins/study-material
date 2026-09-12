@@ -53,6 +53,8 @@ Almost every product case in this track is read-heavy: short-link resolve, feed 
 
 ## Core idea
 
+### ELI5
+
 [aside](viz/aside.md)
 
 A cache is a second copy with a lie budget. You must say how stale is acceptable.

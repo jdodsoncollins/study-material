@@ -49,6 +49,8 @@ Threads share a heap; see [processes-threads](./processes-threads.md) (id: proce
 
 ## Core idea
 
+### ELI5
+
 One bathroom key on a hook. The key is the mutex. The bathroom is the invariant (only one writer). Holding the key while you walk to the store is a critical section that is too big: everyone queues for no reason.
 
 ```

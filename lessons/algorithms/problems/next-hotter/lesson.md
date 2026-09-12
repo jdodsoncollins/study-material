@@ -62,6 +62,28 @@ This is next-warmer-day. The tape is not `[73,74,75,71,69,72,76,73]`.
 
 ## Worked approach
 
+Same decreasing stack as [monotonic-stack](../../patterns/monotonic-stack.md) (id: monotonic-stack).
+
+### ELI5
+
+Each day asks "how many days until a strictly hotter one?"
+
+1. Walk days left to right.
+2. Keep a pile of days still waiting, colder on top.
+3. A hotter day pops everyone on top who is cooler and writes the wait.
+4. Then this day joins the pile.
+
+### Syntax
+
+```ts
+const stack: number[] = [];
+stack.push(0);
+const j = stack.pop()!;
+console.log(1 - j); // wait in days
+```
+
+### Then the details
+
 ```ts
 function daysUntilHotter(temps: number[]): number[] {
   const wait = Array(temps.length).fill(0);
@@ -91,9 +113,15 @@ Store indices, not temperatures. You need the distance `i - j`.
 
 ## Walkthrough
 
-`temps = [62, 64, 61, 70, 63, 72]`
-
 [Pop when a hotter day arrives](viz/wait.md)
+
+### Easy
+
+`[50, 50]` → `[0, 0]`. Equals are not strictly hotter.
+
+### Medium
+
+`temps = [62, 64, 61, 70, 63, 72]`
 
 1. Push 62. 64 is hotter. Pop 62, wait=1. Push 64.
 2. 61 is cooler. Push 61.
@@ -101,6 +129,10 @@ Store indices, not temperatures. You need the distance `i - j`.
 4. 63 cooler. Push. 72 pops 63 (1) and 70 (2). Push 72. End: 72 waits 0.
 
 Answer `[1, 2, 1, 2, 1, 0]`.
+
+### Hard
+
+Store indices, not temperatures. You need `i - j`. Leftovers stay 0 unless they asked for `-1`.
 
 ## Pitfalls
 

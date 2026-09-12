@@ -85,6 +85,12 @@ Connections: 80M sockets / 50k per **Relay** box ≈ 1,600 Relays. That fleet is
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [delivery](viz/delivery.md)
 
 Client opens a websocket to **Relay** (L7 balancer with sticky *connection*, not sticky user forever). Relay authenticates, then subscribes to the user's mailbox.
@@ -119,10 +125,19 @@ Group of 50: fanout 50 is cheap. Do not use Fieldnote's stadium path here; the p
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - 10k-user rooms: that is a broadcast channel, different fanout, different order rules. Out of v1.
 - E2E encryption: Relay becomes a ciphertext pipe; seq still exists, search dies.
 - Typing indicators: at-most-once, drop freely, never InboxLog.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [At-least-once, idempotency, and the dead-letter lane](../../foundations/queues-delivery/lesson.md) (id: queues-delivery)

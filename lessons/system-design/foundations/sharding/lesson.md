@@ -54,6 +54,8 @@ status: canonical
 
 ## Core idea
 
+### ELI5
+
 [keyspace](viz/keyspace.md)
 
 Write the access pattern first:

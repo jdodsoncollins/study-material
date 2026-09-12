@@ -61,7 +61,11 @@ This is the "minimum feasible rate" family, restated as a dock deadline.
 
 ## Worked approach
 
+### ELI5
+
 Lower bound is 1 (or max crate if you cannot split a crate across hours). Upper bound is max crate (one crate per hour) or sum. Bisect. `can(speed)` walks crates and counts hours needed.
+
+### Then the details
 
 ```ts
 function minSpeed(crates: number[], hours: number): number {
@@ -99,12 +103,21 @@ When `can(mid)` is true you still try smaller, so `hi = mid`, not `mid - 1`, if 
 
 `crates = [7, 3, 11, 5]`, `hours = 8`
 
+### Easy
+
 1. Range `[1, 11]`. Mid 6: hours = ceil(7/6)+ceil(3/6)+ceil(11/6)+ceil(5/6) = 2+1+2+1 = 6 ≤ 8. Try slower.
+
+### Medium
+
 2. Mid 3: 3+1+4+2 = 10 > 8. Need faster.
 3. Mid 4: 2+1+3+2 = 8. Works. Try slower.
 4. Mid 3 already failed. Answer 4.
 
 Check: 4 units/hour clears 7 in two hours, 3 in one, 11 in three, 5 in two. Total 8.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

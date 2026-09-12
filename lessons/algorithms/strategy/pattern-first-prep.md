@@ -144,6 +144,8 @@ Index — squeeze
 - [Two posts and a tarp](../problems/tarp-span/lesson.md) (id: tarp-span)
 - [Matched crate tags](../problems/valid-brackets/lesson.md) (id: valid-brackets)
 
+Later stages (Window through Judge) use the same read order: ELI5, then syntax or the first sketch, then details, then easy / medium / hard.
+
 Later patterns (same read order once Index is boring)
 
 - [Grow and shrink a live range](../patterns/sliding-window/lesson.md) (id: sliding-window)

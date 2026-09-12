@@ -83,6 +83,12 @@ Chunks: 4-second segments. A 12-minute 720p watch is 180 chunk GETs. Small objec
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [abr](viz/abr.md)
 
 Upload: client splits into 8 MB blocks, checksums each, PUTs to IngestMill (object store). Completion writes a **Title** row `status=uploaded` and enqueues an encode job on [Clockyard](../job-scheduler/lesson.md) (id: job-scheduler).
@@ -116,10 +122,19 @@ Origin shield: regional mid-tier caches in front of object storage so a global m
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - Live: different ingest (RTMP/WHIP), sliding manifest, DVR window. Do not pretend VOD is live.
 - Comments / likes: Fieldnote-shaped, out of this round.
 - Cost: cold storage for titles with no watch in 90 days, keep 360p hot.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Remembering the expensive answer nearby](../../foundations/caching/lesson.md) (id: caching)

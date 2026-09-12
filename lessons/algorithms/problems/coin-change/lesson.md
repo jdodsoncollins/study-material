@@ -60,6 +60,12 @@ This is coin change, told as a fare box. The set is not US coins, on purpose.
 
 ## Worked approach
 
+### ELI5
+
+Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+
+### Then the details
+
 ```ts
 function fewestTokens(tokens: number[], amount: number): number {
   const dp = Array(amount + 1).fill(Infinity);
@@ -93,11 +99,20 @@ If they also want one actual combination, keep `pick[x] = t` whenever you improv
 
 [Fill the fare table](viz/table.md)
 
+### Easy
+
 1. Even amounts 2,4,6,8,10,12 can be all twos. `dp[2] = 1`, `dp[4] = 2`, …
+
+### Medium
+
 2. `dp[5] = 1`. `dp[7] = dp[5]+1 = 2` (5+2), better than three 2s plus leftover.
 3. `dp[9] = 1`. `dp[11] = 2` (9+2). `dp[13] = min(dp[11]+1, dp[8]+1, dp[4]+1) = 3`.
 
 One optimal: 9 + 2 + 2. Greedy 9 + 5 leftover 0? 9+5=14, overshoot. Greedy 9 then 2s also lands on 3. Try amount 10 with `[6, 5, 1]`: greedy 6+1+1+1+1 vs table 5+5. That is the counterexample to say out loud.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

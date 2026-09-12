@@ -49,6 +49,8 @@ status: canonical
 
 ## Core idea
 
+### ELI5
+
 Offline is an experiment. You choose the tasks, you own isolation, you can say "this sha is worse on gift-card refunds." That sentence is illegal online unless you have traces and a grader that still makes sense on live state.
 
 Online is a sensor. Users will ask for things not in your 40 tasks. Tools will 504. Prompts will collide with a holiday SKU. You log [traces](./traces-trajectories.md) (id: traces-trajectories), sample outcomes you *can* grade automatically (refund ledger vs ticket close reason), and mine failures into the offline suite.

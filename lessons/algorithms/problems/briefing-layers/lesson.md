@@ -73,6 +73,12 @@ This is level-order. The values are dock codes, not `[3,9,20,null,null,15,7]`.
 
 ## Worked approach
 
+### ELI5
+
+Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+
+### Then the details
+
 ```ts
 type Node = { v: number; L: Node | null; R: Node | null };
 
@@ -120,11 +126,20 @@ The tree in the prompt.
 
 [Drain one depth](viz/layers.md)
 
+### Easy
+
 1. Queue `[8]`. Row `[8]`. Enqueue 3, 12.
+
+### Medium
+
 2. Queue `[3,12]`. Row `[3,12]`. Enqueue 1, 6, 10, 14.
 3. Queue of four leaves. Row `[1,6,10,14]`. Nothing left.
 
 Three briefings.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

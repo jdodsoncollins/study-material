@@ -63,7 +63,11 @@ This is course-schedule, told as dock certifications rather than a university tr
 
 [kahn](viz/kahn.md)
 
+### ELI5
+
 Build adjacency and indegree. Seed the queue with indegree 0. Peel.
+
+### Then the details
 
 ```ts
 function studyOrder(n: number, need: [number, number][]): number[] | null {
@@ -106,13 +110,22 @@ Edge direction is a classic trap. Confirm: `a → b` means a first. If they stor
 
 n = 6, `need = [[0,1], [1,2], [3,2], [4,5]]`
 
+### Easy
+
 1. Indegrees: 1 has 1, 2 has 2, 5 has 1. 0, 3, 4 start at 0.
+
+### Medium
+
 2. Peel 0, 3, 4 (queue order). After 0, node 1 drops to 0 and joins.
 3. Peel 1; node 2 drops to 1 (still waiting on 3, already peeled, so actually 2 may already be 0 depending on order).
 4. Peel 5 after 4. Peel 2 once both 1 and 3 are gone.
 5. Six nodes peeled. One valid order: `[0, 3, 4, 1, 5, 2]`.
 
 Add `2 → 0` and the peel stops with `{0,1,2}` still holding indegree. Return null.
+
+### Hard
+
+Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Pitfalls
 

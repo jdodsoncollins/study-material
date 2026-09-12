@@ -88,6 +88,12 @@ A 95% cache hit rate on resolve leaves ~2.9k/s for ClipStore. That is the databa
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [path](viz/path.md)
 
 **EdgeSplit** (two L7 balancers) → **Resolve API** and **Mint API** as separate pools.
@@ -119,10 +125,19 @@ Redirect stays a 302, not a 301, so revoke can actually stop traffic.
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - Custom aliases: extra unique index, abuse, and a different rate limit. See [rate-limiter](../rate-limiter/lesson.md) (id: rate-limiter).
 - Analytics: append-only click log, not ClipStore. Do not add a write on the 302 path without a queue.
 - Multi-region mint: uniqueness needs one authority per key range, not two live writers.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)

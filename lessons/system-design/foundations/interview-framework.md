@@ -58,6 +58,8 @@ If you skip numbers, every later choice is unfalsifiable. If you skip failures, 
 
 ## Core idea
 
+### ELI5
+
 Run the same seven moves every time. Budget them out loud so the interviewer can redirect you.
 
 | Clock | Move | Exit criterion |
@@ -95,9 +97,7 @@ Same skeleton, different zoom. A candidate who draws Kubernetes on a feed questi
 
 "I will freeze v1 in six minutes, put QPS and storage on the page, then spend the middle of the round on the bottleneck those numbers create. If this is a product-heavy prompt I will start with the write vs read path. If it is operations-heavy I will start with what we do when a box dies. Redirect me at minute ten if you want a different zoom."
 
-Then actually check the clock. If they say "assume 100:1 reads," update the cache story on the spot. That is the interview.
-
-## Cross-links
+Then actually check the clock. If they say "assume 100:1 reads," update the cache story on the spot. ## Cross-links
 
 - [Spreading work without creating a new bottleneck](./load-balancing.md) (id: load-balancing)
 - [Remembering the expensive answer nearby](./caching/lesson.md) (id: caching)

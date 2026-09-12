@@ -84,6 +84,12 @@ The card network is the slow neighbor (200–800 ms). Till must not hold a row l
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [keys](viz/keys.md)
 
 **IdempotencyVault**: unique `(merchant_id, key)` → `intent_id` + hash of canonical body. Insert-first. If the row exists and the hash matches, return the stored response (even if still `pending`). If the hash differs, `409`.
@@ -119,10 +125,19 @@ Webhooks are [at-least-once](../../foundations/queues-delivery/lesson.md) (id: q
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - Exactly-once to the card network: you cannot promise it; you promise *one logical capture* via reconcile.
 - Multi-region active-active: uniqueness of the vault row needs a single authority per merchant (or CRDT-free fail-closed).
 - Tips / splits: more ledger lines, same key story.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [At-least-once, idempotency, and the dead-letter lane](../../foundations/queues-delivery/lesson.md) (id: queues-delivery)

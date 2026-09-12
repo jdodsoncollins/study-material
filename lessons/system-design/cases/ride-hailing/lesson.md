@@ -82,6 +82,12 @@ Surge: thousands of hexes, a tiny time series. Cheap to store, easy to get *wron
 
 ## Design
 
+### ELI5
+
+Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+
+### Then the details
+
 [match](viz/match.md)
 
 **GeoHex** shards the city (H3-style, ~500 m). Each hex has a **MatchBroker** owner (consistent hash). Driver pings update `driver:{id} → {hex, loc, status}` in an in-memory map plus a short TTL store. Idle drivers are in a per-hex set.
@@ -121,10 +127,19 @@ Trip complete: enqueue billing to Till with an idempotency key `trip_id`.
 
 ## Follow-ups an interviewer may ask
 
+### Easy
+
+Capacity and the cache: numbers first, then where a miss goes.
+
+### Medium
+
 - Pooling: a second matcher on overlapping routes, different SLA. Do not bolt it onto v1.
 - Fraud / GPS spoof: a scoring service off the 3s path.
 - Why this is not "design Uber": because the map, chat, and payments are other rounds. Stay on match + surge.
 
+### Hard
+
+The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Splitting a keyspace so one box is not the product](../../foundations/sharding/lesson.md) (id: sharding)
