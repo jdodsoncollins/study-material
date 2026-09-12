@@ -46,11 +46,11 @@ status: canonical
 
 Companies do not need you to have seen the exact prompt. They need you to classify a new story in two minutes, pick a template, and talk while you adapt it. Pattern-first prep is how you practice that classification, not how you memorize titles.
 
-Candidate reports across Meta, Amazon, and Google tagged lists keep rhyming: pair-sum, unique window, island flood, k-th largest, course order. Different numbers, same moves. That is the point of this catalog.
+Candidate reports across Meta, Amazon, and Google tagged lists keep rhyming: pair-sum, unique window, island flood, k-th largest, course order. Different numbers, same moves.
 
 ## Core idea
 
-Each pattern lesson on this path is written as an ease-into, not a dump of the final function. Read Kernel first (cost, layout), then Index (maps, then squeeze). Inside a lesson, read in this order, then stop and try the next problem from a blank buffer.
+Read Kernel first (cost, layout), then Index (maps, then squeeze). Inside a lesson, read in this order, then try the next problem from a blank buffer.
 
 ### How to read the next lesson
 
@@ -61,8 +61,6 @@ Each pattern lesson on this path is written as an ease-into, not a dump of the f
 5. **Walkthrough Easy / Medium / Hard** — same story, one twist, then the follow-up they ask in the room.
 6. **Complexity + Interview moves** — the sentence you say before you type.
 
-That is how you *apply* the technique, not how you collect greens.
-
 ### Drill loop (after you can say the ELI5)
 
 1. Name the invariant in one sentence.
@@ -70,7 +68,7 @@ That is how you *apply* the technique, not how you collect greens.
 3. Re-solve one of them a week later from a blank buffer, narrating out loud.
 4. File a miss as "I did not recognize X," not as "I need fifty more problems."
 
-Stop adding new patterns until the current ones are boring. Breadth without retrieval is entertainment.
+Stop adding new patterns until the current ones are boring.
 
 ### What to say when you open each lesson
 
@@ -87,7 +85,7 @@ Index — hash, then squeeze.
 
 | Lesson | First sentence (apply the technique) |
 | --- | --- |
-| [hashing-internals](../../cs/hashing-internals.md) (id: hashing-internals) | Expected O(1), not a law; collisions and resizes are why. |
+| [hashing-internals](../../cs/hashing-internals.md) (id: hashing-internals) | Expected O(1); collisions and resizes are why. |
 | [hash-maps](../patterns/hash-maps.md) (id: hash-maps) | The key is the question I will ask later; the value is the answer I already have. |
 | [two-sum](../problems/two-sum/lesson.md) (id: two-sum) | For this weight, have I already seen the complement? Look up, then insert. |
 | [group-anagrams](../problems/group-anagrams/lesson.md) (id: group-anagrams) | The map key is a signature (sorted letters), the value is a list. |
@@ -117,7 +115,7 @@ The Blind 75 list is useful as a *coverage checklist* because it was built to be
 
 ## How to talk about it
 
-In the room, lead with the pattern name, then the invariant, then the complexity kill-shot. "This is a complement index; nested pairs are n²; I will store values I have already walked." That is the interview-framework move applied to algorithms.
+In the room, lead with the pattern name, then the invariant, then the complexity. "This is a complement index; nested pairs are n²; I will store values I have already walked."
 
 When you miss, write one line: cue you ignored, pattern you should have named, pitfall that bit you. That log is worth more than another hundred greens.
 

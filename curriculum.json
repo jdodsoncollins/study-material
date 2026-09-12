@@ -6,7 +6,7 @@
     {
       "id": "kernel",
       "label": "Kernel",
-      "blurb": "Cost and layout before any pattern. Read top to bottom; each lesson eases in (ELI5, then syntax).",
+      "blurb": "Cost and layout before any pattern.",
       "units": [
         {
           "id": "cost",
@@ -31,7 +31,7 @@
     {
       "id": "index",
       "label": "Index",
-      "blurb": "Remember what you have seen. Scan from both ends. Apply the Kernel drill: ELI5, syntax, then an easy/medium/hard walk.",
+      "blurb": "Remember what you have seen. Scan from both ends.",
       "units": [
         {
           "id": "hash",

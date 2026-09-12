@@ -74,7 +74,7 @@ A packer walks the tape left to right with one hand holding unmatched open strap
 5. End of tape with leftovers in your hand → illegal.
 6. Empty hand at the end → legal.
 
-Counting open vs close is not enough. Nesting is the whole plot.
+Equal open and close counts can still be illegal if they interleave, as in `([)]`.
 
 ### Syntax
 

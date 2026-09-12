@@ -58,8 +58,6 @@ A linked list is a scavenger hunt. Each crate has a note saying where the next c
 
 Inserting in the *middle of the lockers* means sliding everyone down. Inserting *after a crate you are already holding* on the scavenger hunt is two note rewrites.
 
-Layout is the whole plot.
-
 ```
 array:   [a][b][c][d][e]     index 3 is one multiply-add
 list:    a → b → c → d → e   index 3 is three pointer hops

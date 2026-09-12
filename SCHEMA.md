@@ -137,7 +137,7 @@ Use exactly these H2 headings, in this order. H3s are allowed under them. No H1 
 9. `## Interview moves` — how to talk while solving
 10. `## Cross-links` — markdown links to other lessons using relative paths, plus `id:` in the link text or a trailing `(id: foo)`
 
-Do not jump to typed code. Kernel and the first pattern lessons (Index onward) use this H3 ladder so a reader can apply the technique from [pattern-first-prep](lessons/algorithms/strategy/pattern-first-prep.md):
+Do not jump to typed code. Kernel and the first pattern lessons (Index onward) use this H3 ladder. See [pattern-first-prep](lessons/algorithms/strategy/pattern-first-prep.md).
 
 **Under `## Worked approach`**
 

@@ -86,7 +86,7 @@ Say that out loud before you type `Map`. The card is the key. The bin (or index)
 
 ### Syntax
 
-Three calls. That is the whole phone-screen API.
+You need `set`, `get`, and `has`.
 
 ```ts
 const bins = new Map<string, number>();
@@ -129,7 +129,7 @@ console.log(pairByWeight([4, 11, 8, 3, 15], 19)); // [1, 2]
 console.log(pairByWeight([6, 6], 12));            // [0, 1]
 ```
 
-Grouping (anagrams, rounded geo cells) is the same shoebox: the key is a *signature* you compute, the value is a list. That is the next lesson.
+Grouping (anagrams, rounded geo cells) is the same shoebox: the key is a *signature* you compute, the value is a list.
 
 ## Complexity
 
@@ -166,7 +166,7 @@ Return `[1, 2]`. You never look at 3 or 15.
 
 ### Hard
 
-Two copies of `6`, target `12`. Lookup-before-insert is the whole plot.
+Two copies of `6`, target `12`. Look up before you insert.
 
 - First `6`: need 6, shoebox empty, store 6→0.
 - Second `6`: need 6, shoebox has it at 0, return `[0, 1]`.

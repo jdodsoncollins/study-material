@@ -16,7 +16,7 @@ That script must exit 0. It is the parser the app trusts.
 - `ts` samples must `console.log` at least one call with the prompt's numbers so the app's **run** prints something.
 - Frontmatter keys are closed. Do not invent extra top-level keys. `id` = filename (flat) or parent directory (`lesson.md`).
 - Required H2s and order depend on `kind` — see SCHEMA.md.
-- Pattern/problem lessons ease in: ELI5 fake-code, then syntax, then details, then easy/medium/hard walkthroughs. Do not open with a full typed solution. Kernel → Index is the proof of that ladder; later stages should match.
+- Pattern/problem lessons: ELI5 fake-code, then syntax, then details, then easy/medium/hard walkthroughs. Do not open with a full typed solution. Kernel → Index is the proof of that ladder; later stages should match.
 - Nested tags include parents (`algorithms` and `algorithms/hash-maps`).
 - Cross-links: relative `.md` path plus `(id: foo)`. Incoming links to a directory lesson use `…/<id>/lesson.md`.
 - New lessons must be placed on the path in `curriculum.json` (exactly once). Do not clone a public leetcode roadmap; this order is for *this* corpus.

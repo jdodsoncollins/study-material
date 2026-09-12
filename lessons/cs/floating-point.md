@@ -48,7 +48,7 @@ They are checking whether you will put money, scores, or snowflake IDs in a floa
 
 A float is scientific notation in base two: a sign, a power of two, and a short fraction. Most decimals you write in base ten (0.1, 0.2, money) do not land on those fractions, so the machine stores the *nearest* one.
 
-Adding two "nearest" numbers does not give the decimal you had in mind. That is the format, not a broken VM.
+Adding two "nearest" numbers does not give the decimal you had in mind.
 
 Write 13 as 1.101 × 2^3 if you only have binary digits. Now try to write 0.1. There is no finite binary expansion.
 

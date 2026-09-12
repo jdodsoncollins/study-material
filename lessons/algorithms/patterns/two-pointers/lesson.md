@@ -74,7 +74,7 @@ The boarding sheet is already light-to-heavy.
 4. Too heavy? The heavy crate is the problem. Slide the right finger left.
 5. Equal? Those two ride.
 
-You only ever move inward. That is the whole pattern.
+You only ever move inward.
 
 ### Syntax
 

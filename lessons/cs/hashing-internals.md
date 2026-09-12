@@ -45,7 +45,7 @@ status: canonical
 
 ## Why it shows up in interviews
 
-Almost every "make it faster than nested loops" answer is a hash map. Interviewers then check whether you treat O(1) as a law of physics. The adult sentence is: **expected O(1) per op, O(n) space, amortized across resizes, assuming a decent hash.**
+Almost every "make it faster than nested loops" answer is a hash map. Interviewers then check whether you treat O(1) as a physical law. Say **expected O(1) per op, O(n) space, amortized across resizes, assuming a decent hash.**
 
 This is the same machine as [two-sum](../algorithms/problems/two-sum/lesson.md) (id: two-sum) and as a DB hash index.
 
@@ -100,7 +100,7 @@ Load factor climbs past ~0.7. One insert pays O(n) to rehash. You still say amor
 
 ### Hard
 
-A hostile interviewer feeds keys that all hash to 0. Worst-case lookup is O(n). Languages mitigate with randomized seeds so you cannot *plan* the pileup from outside. That is why the adult sentence is **expected** O(1).
+A hostile interviewer feeds keys that all hash to 0. Worst-case lookup is O(n). Languages mitigate with randomized seeds so you cannot *plan* the pileup from outside. That is why we say **expected** O(1).
 
 ## Common mistakes
 
