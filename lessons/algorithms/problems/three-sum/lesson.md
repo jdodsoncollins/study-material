@@ -78,9 +78,9 @@ You never need a cubic scan. The sort is the tax that makes the squeeze legal.
 ### Syntax
 
 ```ts
-const a = [9, -4, 5].slice().sort((x, y) => x - y);
+const a = [9, -4, -5].slice().sort((x, y) => x - y); // [-5, -4, 9]
 let i = 0, l = 1, r = a.length - 1;
-console.log(a[i], a[l], a[r], a[i] + a[l] + a[r]);
+console.log(a[i], a[l], a[r], a[i] + a[l] + a[r]); // -5 -4 9 0
 ```
 
 Three indices. Inner loop is the ferry-pair `while (l < r)`.
@@ -129,7 +129,7 @@ If the pinned value is already positive and the array is sorted, later pins cann
 
 ### Easy
 
-Sorted suffix already `[-7, 0, 7]`. Pin `-7`, squeeze `0` and `7`. Hit. One triple.
+Three stubs, already sorted: `[-7, 0, 7]`. Pin `-7`, squeeze `0` and `7`. Sum is 0. One triple.
 
 ### Medium
 

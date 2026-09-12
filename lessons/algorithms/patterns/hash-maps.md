@@ -46,9 +46,12 @@ status: canonical
 
 ## Prompt
 
-A night dock stamps each pallet with a SKU and a bin index. Given `skus = ["N-4", "K-11", "N-8", "K-3"]` and a query SKU, return the bin you last saw it in. Then, given a *pair* of SKUs that should ride together because their weights add to a target, find them in one pass.
+Two jobs, same shoebox.
 
-The pair half is the two-sum shape. The index half is why the pattern exists.
+1. Last bin: `skus = ["N-4", "K-11", "N-8", "K-3"]`. A query SKU should return the index you last saw it at.
+2. Pair by weight: `weights = [4, 11, 8, 3, 15]`, `target = 19`. Return two indices whose values add to 19.
+
+The index half is why the pattern exists. The pair half is the two-sum shape.
 
 ## Recognition signals
 
@@ -67,19 +70,17 @@ Decide the key *before* you code. For "last bin" the key is the SKU. For pair-su
 
 A night clerk keeps a shoebox of index cards. Each card is one question you will ask later, and the answer you already know.
 
-Last-bin job:
+Last-bin job (the SKU list above):
 
-1. A pallet with SKU `K-11` rolls into bin 1.
-2. Write a card: `K-11 → 1`.
-3. The same SKU later lands in bin 4. Scratch the card, write `K-11 → 4`.
-4. Someone asks "where is K-11?" You do not walk the dock. You flip the card.
+1. Pallet `K-11` is at index 1. Write a card: `K-11 → 1`.
+2. If that SKU showed up again later, you would scratch the card and write the new index. Last write wins.
+3. Someone asks "where is K-11?" You do not walk the dock. You flip the card.
 
-Pair job (two weights that add to 19):
+Pair job (the weight list above):
 
-1. Look at this pallet's weight, say 8.
-2. Ask the shoebox: have I already seen `19 - 8`?
-3. If yes, those two bins ride together. Stop.
-4. If no, leave a card for 8 so a later pallet can find it.
+1. Walk left to right. This pallet weighs 4. Need 15. Shoebox empty. Leave a card `4 → 0`.
+2. Next weighs 11. Need 8. Still a miss. Leave `11 → 1`.
+3. Next weighs 8. Need 11. The card is there. Those two bins ride. Stop.
 
 Say that out loud before you type `Map`. The card is the key. The bin (or index) is the value.
 
@@ -158,8 +159,8 @@ Weights `[4, 11, 8, 3, 15]`, target `19`. Same numbers as the prompt.
 | i | weight | need | shoebox before | result |
 | --- | --- | --- | --- | --- |
 | 0 | 4 | 15 | empty | miss, store 4→0 |
-| 1 | 11 | 8 | {4} | miss, store 11→1 |
-| 2 | 8 | 11 | {4, 11} | hit index 1 |
+| 1 | 11 | 8 | 4→0 | miss, store 11→1 |
+| 2 | 8 | 11 | 4→0, 11→1 | hit index 1 |
 
 Return `[1, 2]`. You never look at 3 or 15.
 

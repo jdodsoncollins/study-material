@@ -67,12 +67,11 @@ This is [hash-maps](../../patterns/hash-maps.md) (id: hash-maps) applied to one 
 
 The forklift can carry 19. You walk the dock once, left to right, with a shoebox of cards.
 
-1. This bin weighs 8.
-2. Ask the shoebox: have I already parked a bin that weighs `19 - 8`?
-3. Yes → those two indices. Stop.
-4. No → write a card `8 → this index` and keep walking.
+1. Bin 0 weighs 4. Need 15. Shoebox empty. Write `4 → 0`.
+2. Bin 1 weighs 11. Need 8. Miss. Write `11 → 1`.
+3. Bin 2 weighs 8. Need 11. The card is there at index 1. Stop. Those two ride.
 
-You never pick up the same bin twice, because the card you just wrote is for a *later* pallet to find.
+You never pick up the same bin twice: the card you just wrote is for a *later* pallet to find. Look up first, then insert.
 
 ### Syntax
 

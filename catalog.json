@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "generated": "2026-09-11",
+  "generated": "2026-09-12",
   "lesson_count": 87,
   "tags": [
     "ai-agents",
@@ -3144,7 +3144,7 @@
       "track": "algorithms",
       "difficulty": "intro",
       "estimated_minutes": 16,
-      "summary": "Learn about fourteen reusable templates, then drill two or three problems each, instead of grinding hundreds of one-off prompts.",
+      "summary": "Learn about fifteen reusable templates, then drill two or three problems each, instead of grinding hundreds of one-off prompts.",
       "tags": [
         "algorithms",
         "interviews/leetcode"

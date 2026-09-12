@@ -6,7 +6,7 @@ kind: strategy
 track: algorithms
 difficulty: intro
 estimated_minutes: 16
-summary: Learn about fourteen reusable templates, then drill two or three problems each, instead of grinding hundreds of one-off prompts.
+summary: Learn about fifteen reusable templates, then drill two or three problems each, instead of grinding hundreds of one-off prompts.
 tags:
   - algorithms
   - interviews/leetcode
@@ -38,7 +38,7 @@ status: canonical
 ## Snapshot
 
 - Interview coding rounds test *recognition speed* more than novelty. The graph of prompts is wide; the graph of ideas is not.
-- Roughly fourteen patterns cover the bulk of phone screens: maps, two pointers, windows, fast-slow, binary search on the answer, BFS, DFS/backtracking, heaps, intervals, monotonic stacks, union-find, 1D DP, 2D DP, topo sort, tries.
+- Fifteen patterns cover the bulk of phone screens: maps, two pointers, windows, fast-slow, binary search on the answer, BFS, DFS/backtracking, heaps, intervals, monotonic stacks, union-find, 1D DP, 2D DP, topo sort, tries.
 - A famous 75-problem community list started as a Teamblind post: one engineer’s short set, not a leaked company exam. Treat it as a sampling frame, not scripture.
 - Grinding 500 random items without naming the pattern is how people stay busy and still freeze on a restated warehouse story.
 
@@ -50,7 +50,7 @@ Candidate reports across Meta, Amazon, and Google tagged lists keep rhyming: pai
 
 ## Core idea
 
-Each pattern lesson on this path is written as an ease-into, not a dump of the final function. Read it in this order, then stop and try the next problem from a blank buffer.
+Each pattern lesson on this path is written as an ease-into, not a dump of the final function. Read Kernel first (cost, layout), then Index (maps, then squeeze). Inside a lesson, read in this order, then stop and try the next problem from a blank buffer.
 
 ### How to read the next lesson
 
@@ -72,20 +72,29 @@ That is how you *apply* the technique, not how you collect greens.
 
 Stop adding new patterns until the current ones are boring. Breadth without retrieval is entertainment.
 
-### What to say when you open each Index lesson
+### What to say when you open each lesson
+
+Kernel — name the cost before the trick.
+
+| Lesson | First sentence |
+| --- | --- |
+| [big-o](../../cs/big-o.md) (id: big-o) | Nested loops die at n ≈ 10^5; say the class, then the plan. |
+| [arrays-vs-linked-lists](../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists) | These prompts are arrays because index and cache beat pointer hops. |
+| [floating-point](../../cs/floating-point.md) (id: floating-point) | Money and IDs do not live in IEEE-754. |
+| [encoding-unicode](../../cs/encoding-unicode.md) (id: encoding-unicode) | `.length` is units, not letters. |
+
+Index — hash, then squeeze.
 
 | Lesson | First sentence (apply the technique) |
 | --- | --- |
-| [hash-maps](../patterns/hash-maps.md) (id: hash-maps) | The key is the question I will ask later; the value is the answer I already have. |
 | [hashing-internals](../../cs/hashing-internals.md) (id: hashing-internals) | Expected O(1), not a law; collisions and resizes are why. |
+| [hash-maps](../patterns/hash-maps.md) (id: hash-maps) | The key is the question I will ask later; the value is the answer I already have. |
 | [two-sum](../problems/two-sum/lesson.md) (id: two-sum) | For this weight, have I already seen the complement? Look up, then insert. |
 | [group-anagrams](../problems/group-anagrams/lesson.md) (id: group-anagrams) | The map key is a signature (sorted letters), the value is a list. |
 | [two-pointers](../patterns/two-pointers/lesson.md) (id: two-pointers) | Sorted, so each comparison throws away a whole side. |
 | [three-sum](../problems/three-sum/lesson.md) (id: three-sum) | Pin one value, squeeze the other two; skip duplicates. |
 | [tarp-span](../problems/tarp-span/lesson.md) (id: tarp-span) | Width starts max; move the short post because it is the limit. |
-| [valid-brackets](../problems/valid-brackets/lesson.md) (id: valid-brackets) | Closers only look at the top of the unmatched openers. |
-
-Kernel first: [big-o](../../cs/big-o.md) (id: big-o) so you can name why nested loops die, [arrays-vs-linked-lists](../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists) so you know why these prompts are arrays.
+| [valid-brackets](../problems/valid-brackets/lesson.md) (id: valid-brackets) | Closers only look at the top of the unmatched openers. This is a stack, sitting next to squeeze so Index has a "remember what you opened" drill. |
 
 The Blind 75 list is useful as a *coverage checklist* because it was built to be short. It is not a ranking of company questions. If a prompt is not on it, still ask "which pattern?" before you search for a solution.
 
@@ -95,7 +104,7 @@ The Blind 75 list is useful as a *coverage checklist* because it was built to be
 | --- | --- | --- |
 | 500 random accepted | Syntax, not transfer | New story, old panic |
 | Memorize a 75-title list | Titles | Warehouse restatement looks unknown |
-| ~14 patterns × 2–3 problems, spaced | Recognition + invariant | None, if you keep a miss log |
+| ~15 patterns × 2–3 problems, spaced | Recognition + invariant | Skipping retrieval; a miss log is the fix |
 | Patterns with no timed narration | Silent coding | You go quiet in the room |
 
 ## Common mistakes
@@ -152,6 +161,6 @@ Later patterns (same read order once Index is boring)
 - [Fill a grid of overlapping subproblems](../patterns/dp-2d.md) (id: dp-2d)
 - [Order by prerequisites](../patterns/topological-sort/lesson.md) (id: topological-sort)
 - [Prefix trees as a walking index](../patterns/trie.md) (id: trie)
-- [Interview framework](./interview-framework.md) (id: interview-framework)
+- [Interview framework](../../system-design/foundations/interview-framework.md) (id: interview-framework)
 - [Trees and graphs](../../cs/trees-graphs.md) (id: trees-graphs)
 - [What an index actually stores](../../cs/indexes.md) (id: indexes)

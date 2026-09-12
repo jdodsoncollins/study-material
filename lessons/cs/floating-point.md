@@ -89,6 +89,7 @@ function cents(dollars: number): number {
   return Math.round(dollars * 100); // still a trap if dollars was already dirty
 }
 
+console.log(0.1 + 0.2 === 0.3); // false
 console.log(share, back, nearlyEqual(back, 10), cents(share));
 
 ```

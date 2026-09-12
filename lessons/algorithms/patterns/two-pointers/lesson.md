@@ -64,15 +64,13 @@ This is the sorted sibling of pair-sum. If the interviewer wanted indices from a
 
 [squeeze](viz/squeeze.md)
 
-Apply from [pattern-first-prep](../../strategy/pattern-first-prep.md) (id: pattern-first-prep): name the invariant, then the two indices, then why each move is legal.
-
 ### ELI5
 
 The boarding sheet is already light-to-heavy.
 
 1. Put a finger on the lightest crate and a finger on the heaviest.
 2. Add them.
-3. Too light? The light crate cannot make it with anyone heavier than the current heavy one — you already used the heaviest. Slide the left finger right.
+3. Too light? Even the heaviest leftover partner is not enough. Throw the light crate away: slide the left finger right.
 4. Too heavy? The heavy crate is the problem. Slide the right finger left.
 5. Equal? Those two ride.
 
