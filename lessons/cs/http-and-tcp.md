@@ -18,6 +18,7 @@ related:
   - caching
   - cap-and-consistency
   - dns-resolution
+  - file-download
 company_signal:
   - name: Amazon
     evidence: API-design and service-design screens still ask what lives on TCP vs HTTP, idempotency of methods, and why a retry doubled a charge.
@@ -112,3 +113,4 @@ If they ask WebSockets: "That's an HTTP upgrade, then a long-lived bidirectional
 - [CAP as a conversation tool](../system-design/foundations/cap-and-consistency.md) (id: cap-and-consistency)
 - [Locks buy correctness, not speed](./locks-and-concurrency.md) (id: locks-and-concurrency)
 - [A name is not an address](./dns-resolution/lesson.md) (id: dns-resolution)
+- [A download is bytes plus a name](./file-download.md) (id: file-download)

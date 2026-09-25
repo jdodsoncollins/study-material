@@ -2,7 +2,7 @@
 
 Public interview corpus consumed by [Codeatrophy](https://github.com/jdodsoncollins/Codeatrophy). You write **lessons**, not app UI. The app downloads this repo; it never writes back.
 
-Read [SCHEMA.md](./SCHEMA.md) before adding or editing a lesson. Tags: [TAGS.md](./TAGS.md). Ordered path: [curriculum.json](./curriculum.json). Index: [catalog.json](./catalog.json). After any lesson, viz, or path change, run:
+Read [SCHEMA.md](./SCHEMA.md) before adding or editing a lesson. Tags: [TAGS.md](./TAGS.md). Ordered path: [curriculum.json](./curriculum.json). Day sessions: [schedule.json](./schedule.json). Index: [catalog.json](./catalog.json). After any lesson, viz, path, or schedule change, run:
 
 ```bash
 node scripts/build-catalog.mjs
@@ -19,7 +19,7 @@ That script must exit 0. It is the parser the app trusts.
 - Pattern/problem lessons: ELI5 fake-code, then syntax, then details, then easy/medium/hard walkthroughs. Do not open with a full typed solution. Kernel → Index is the proof of that ladder; later stages should match.
 - Nested tags include parents (`algorithms` and `algorithms/hash-maps`).
 - Cross-links: relative `.md` path plus `(id: foo)`. Incoming links to a directory lesson use `…/<id>/lesson.md`.
-- New lessons must be placed on the path in `curriculum.json` (exactly once). Do not clone a public leetcode roadmap; this order is for *this* corpus.
+- New lessons must be placed on the path in `curriculum.json` (exactly once) **and** in `schedule.json` as a `read`, `attempt`, or `redraw` (mixed repeats do not count). Do not clone a public leetcode roadmap; this order is for *this* corpus.
 - Company names only in `company_signal` (or the case-study “Company signal” section), labeled candidate-reported, with `confidence`.
 
 ## Viz (on demand)

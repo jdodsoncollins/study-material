@@ -12,13 +12,7 @@
           "id": "cost",
           "title": "Cost",
           "track": "cs",
-          "lessons": ["big-o", "arrays-vs-linked-lists", "floating-point"]
-        },
-        {
-          "id": "glyphs",
-          "title": "Glyphs",
-          "track": "cs",
-          "lessons": ["encoding-unicode"]
+          "lessons": ["big-o", "arrays-vs-linked-lists"]
         },
         {
           "id": "drill",
@@ -43,14 +37,14 @@
           "id": "squeeze",
           "title": "Squeeze",
           "track": "algorithms",
-          "lessons": ["two-pointers", "three-sum", "tarp-span", "valid-brackets"]
+          "lessons": ["two-pointers", "three-sum", "tarp-span"]
         }
       ]
     },
     {
       "id": "window",
       "label": "Window",
-      "blurb": "A live range, a waiting stack, two speeds.",
+      "blurb": "A live range, a waiting stack, a pointer chain.",
       "units": [
         {
           "id": "range",
@@ -59,42 +53,54 @@
           "lessons": ["sliding-window", "longest-unique-window"]
         },
         {
-          "id": "next",
-          "title": "Next",
+          "id": "stack",
+          "title": "Stack",
           "track": "algorithms",
-          "lessons": ["monotonic-stack", "next-hotter", "merge-intervals", "fast-slow-pointers", "aisle-loop"]
+          "lessons": ["valid-brackets", "monotonic-stack", "next-hotter"]
+        },
+        {
+          "id": "span",
+          "title": "Span",
+          "track": "algorithms",
+          "lessons": ["merge-intervals"]
+        },
+        {
+          "id": "chain",
+          "title": "Chain",
+          "track": "algorithms",
+          "lessons": ["reverse-chain", "fast-slow-pointers", "aisle-loop"]
         }
       ]
     },
     {
       "id": "runtime",
       "label": "Runtime",
-      "blurb": "What the machine is doing while your loop runs.",
+      "blurb": "Keep the k hottest. Forget the rest.",
       "units": [
-        {
-          "id": "machine",
-          "title": "Machine",
-          "track": "cs",
-          "lessons": ["os-memory", "processes-threads", "recursion-call-stack"]
-        },
         {
           "id": "keep",
           "title": "Keep k",
           "track": "algorithms",
-          "lessons": ["heaps-top-k", "kth-largest", "lru-cache", "reverse-chain"]
+          "lessons": ["heaps-top-k", "kth-largest", "lru-cache"]
         }
       ]
     },
     {
       "id": "graph",
       "label": "Graph",
-      "blurb": "Shape first, then walk, then order.",
+      "blurb": "Shape first, then the call stack, then walk, then order.",
       "units": [
         {
           "id": "shape",
           "title": "Shape",
           "track": "cs",
           "lessons": ["trees-graphs", "indexes"]
+        },
+        {
+          "id": "recur",
+          "title": "Recur",
+          "track": "cs",
+          "lessons": ["recursion-call-stack"]
         },
         {
           "id": "walk",
@@ -138,8 +144,14 @@
     {
       "id": "wire",
       "label": "Wire",
-      "blurb": "Packets, locks, and the lie isolation sells.",
+      "blurb": "The machine, downloads, and the lie isolation sells.",
       "units": [
+        {
+          "id": "machine",
+          "title": "Machine",
+          "track": "cs",
+          "lessons": ["os-memory", "processes-threads"]
+        },
         {
           "id": "pipe",
           "title": "Pipe",
@@ -147,10 +159,22 @@
           "lessons": ["http-and-tcp", "dns-resolution"]
         },
         {
+          "id": "fetch",
+          "title": "Fetch",
+          "track": "cs",
+          "lessons": ["file-download", "ranged-download", "chunk-retry", "request-budget"]
+        },
+        {
           "id": "lock",
           "title": "Lock",
           "track": "cs",
           "lessons": ["locks-and-concurrency", "transactions-isolation"]
+        },
+        {
+          "id": "glyphs",
+          "title": "Glyphs",
+          "track": "cs",
+          "lessons": ["floating-point", "encoding-unicode"]
         }
       ]
     },
@@ -223,10 +247,10 @@
       "blurb": "The loop you rent versus the loop you write.",
       "units": [
         {
-          "id": "not-rag",
-          "title": "Not RAG",
+          "id": "bot",
+          "title": "Bot",
           "track": "ai-agents",
-          "lessons": ["rag-vs-agents"]
+          "lessons": ["desk-bot", "rag-vs-agents"]
         },
         {
           "id": "split-loop",
@@ -238,7 +262,7 @@
           "id": "call",
           "title": "Call",
           "track": "ai-agents",
-          "lessons": ["tool-calling", "traces-trajectories", "outcome-vs-transcript", "graders", "desk-bot"]
+          "lessons": ["tool-calling", "traces-trajectories", "outcome-vs-transcript", "graders"]
         }
       ]
     },

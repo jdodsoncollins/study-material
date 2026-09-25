@@ -36,7 +36,44 @@ Every lesson is one Markdown file. The Codeatrophy app parses this schema. Do no
 | `lessons` | Lesson `id`s, in recommended order inside the unit. |
 | coverage | Every lesson `id` appears **exactly once**. `build-catalog.mjs` fails otherwise. |
 
-`catalog.json` embeds this object as `curriculum` (catalog `version` 3).
+`catalog.json` embeds this object as `curriculum` (catalog `version` 5).
+
+## Schedule (days)
+
+`schedule.json` is how to *walk* the path: numbered sessions (`day-01` …), not calendar dates. The app stores progress locally. Do not put completion flags in lesson files.
+
+```json
+{
+  "version": 1,
+  "title": "Path",
+  "blurb": "Sessions, not calendar dates. One sitting at a time.",
+  "session_minutes": 55,
+  "days": [
+    {
+      "id": "day-01",
+      "title": "Cost",
+      "kind": "acquire",
+      "blurb": "Name growth before you type.",
+      "blocks": [
+        { "type": "read", "lesson": "big-o" },
+        { "type": "speak", "text": "Say the n≈1e5 sentence out loud." }
+      ]
+    }
+  ]
+}
+```
+
+| Field | Rules |
+| --- | --- |
+| `days[].id` | unique, stable (`day-01`). Display ordinal is the array index, not the id. |
+| `kind` | `acquire` `drill` `review` |
+| `blocks[].type` | `read` `attempt` `speak` `mixed` `redraw` |
+| `read` / `attempt` / `redraw` | `lesson` is a catalog `id`. Optional `minutes`. Optional `after: "attempt"` (read after a closed-book try). |
+| `speak` | `text` only. No new markdown. |
+| `mixed` | `lessons` array, at least 2 ids. Unlabeled review. |
+| coverage | Every lesson `id` appears at least once as `read`, `attempt`, or `redraw`. Mixed repeats do not count. `build-catalog.mjs` fails otherwise. |
+
+`catalog.json` embeds this object as `schedule`. Reorder or split days here; do not clone a public study-plan calendar.
 
 ## File location
 

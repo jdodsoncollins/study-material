@@ -247,13 +247,74 @@ for (const f of allWidgetFiles) {
   }
 }
 
+const schedulePath = path.join(ROOT, "schedule.json");
+let schedule = null;
+try {
+  schedule = JSON.parse(fs.readFileSync(schedulePath, "utf8"));
+} catch (err) {
+  errors.push(`schedule.json: ${err.message}`);
+}
+
+const BLOCK_TYPES = new Set(["read", "attempt", "speak", "mixed", "redraw"]);
+const DAY_KINDS = new Set(["acquire", "drill", "review"]);
+
+if (schedule) {
+  const days = schedule.days;
+  if (!Array.isArray(days) || days.length === 0) {
+    errors.push("schedule.json: days must be a non-empty array");
+  } else {
+    const dayIds = new Set();
+    const scheduled = new Set();
+    for (const day of days) {
+      if (!day?.id || !day.title || !DAY_KINDS.has(day.kind) || !Array.isArray(day.blocks)) {
+        errors.push(`schedule day ${day?.id ?? "?"}: missing id, title, kind, or blocks`);
+        continue;
+      }
+      if (dayIds.has(day.id)) errors.push(`schedule.json: duplicate day ${day.id}`);
+      dayIds.add(day.id);
+      if (day.blocks.length === 0) errors.push(`schedule day ${day.id}: empty blocks`);
+      for (const [i, block] of day.blocks.entries()) {
+        const where = `${day.id} block ${i}`;
+        if (!BLOCK_TYPES.has(block?.type)) {
+          errors.push(`${where}: unknown type ${block?.type}`);
+          continue;
+        }
+        if (block.type === "speak") {
+          if (!block.text) errors.push(`${where}: speak needs text`);
+          continue;
+        }
+        if (block.type === "mixed") {
+          if (!Array.isArray(block.lessons) || block.lessons.length < 2) {
+            errors.push(`${where}: mixed needs at least 2 lessons`);
+            continue;
+          }
+          for (const id of block.lessons) {
+            if (!ids.has(id)) errors.push(`${where}: unknown lesson ${id}`);
+          }
+          continue;
+        }
+        if (!block.lesson) {
+          errors.push(`${where}: ${block.type} needs lesson`);
+          continue;
+        }
+        if (!ids.has(block.lesson)) errors.push(`${where}: unknown lesson ${block.lesson}`);
+        else scheduled.add(block.lesson);
+      }
+    }
+    for (const id of ids) {
+      if (!scheduled.has(id)) errors.push(`schedule.json: lesson ${id} never appears as read/attempt/redraw`);
+    }
+  }
+}
+
 const catalog = {
-  version: 3,
+  version: 5,
   generated: new Date().toISOString().slice(0, 10),
   lesson_count: lessons.length,
   tags: allTags,
   tag_tree: nestTags(allTags),
   curriculum,
+  schedule,
   lessons,
 };
 
