@@ -6,11 +6,12 @@ kind: concept
 track: cs
 difficulty: core
 estimated_minutes: 13
-summary: Unicode assigns code points to characters; UTF-8 and UTF-16 encode those points as bytes. Length, truncation, and HTTP headers all lie if you mix the layers.
+summary: Separate UTF-16 units, Unicode code points, grapheme clusters, and UTF-8 bytes before counting, comparing, or truncating text.
 tags:
   - cs
   - cs/data-structures
   - cs/networking
+  - interviews
   - interviews/frontend
 prerequisites: []
 related:
@@ -18,16 +19,11 @@ related:
   - hashing-internals
   - floating-point
   - two-pointers
-company_signal:
-  - name: Google
-    evidence: Frontend and API screens still catch candidates on string length, emoji, and "why did this JSON filename break in transit."
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Unicode code point vs scalar vs grapheme cluster notes
-  - UTF-8 / UTF-16 encoding as taught in systems and web courses
-  - JS string UTF-16 code-unit behavior (`.length`, surrogate pairs)
-updated: 2026-09-11
+  - https://www.unicode.org/reports/tr29/
+  - https://www.rfc-editor.org/rfc/rfc8259.html#section-8.1
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -35,104 +31,82 @@ status: canonical
 
 ## Snapshot
 
-- **Unicode** is a catalog: U+0041 is "A", U+00E9 is "é", U+1F9C7 is "waffle." Those numbers are **code points**, not bytes.
-- **UTF-8** encodes a code point as 1–4 bytes. ASCII is unchanged. It is the internet default.
-- **UTF-16** encodes most BMP code points as one 16-bit unit and the rest as a *surrogate pair*. JS strings are UTF-16 units.
-- A user-perceived character (grapheme) can be several code points: `e` + combining acute.
+- Unicode code points identify characters and other text elements. They are not byte positions.
+- UTF-8 encodes Unicode scalar values in one to four bytes. Surrogate code points are not scalar values.
+- JavaScript strings expose UTF-16 code units. One code point can occupy one or two units.
+- A grapheme cluster approximates a user-perceived character and can contain multiple code points.
 
 ## Why it shows up in interviews
 
-`s.length`, truncation, hashing, and HTTP `Content-Type` are where this leaks. Frontend rounds love `"👍".length`. Backend rounds love "we stored this as latin1 and the name José became JosÃ©." Treat it as a layering problem, same instinct as HTTP vs TCP.
+String length, truncation, byte limits, and equality are different requirements. A correct answer first specifies what “character” means for the operation: a code unit, code point, or grapheme cluster.
 
 ## Core idea
 
 ### ELI5
 
-Unicode is a catalog of names (code points). UTF-8 and UTF-16 are *how you write those names as bytes*. A letter you see (`é`, a waffle emoji) can be one catalog number, two JS `.length` units, and four bytes on the wire.
+The same text has several valid counts. A message length limit for people may count visible characters; a network buffer counts bytes. Neither count can replace the other.
 
-Never slice "characters" until you say which length you mean.
+| Text | UTF-16 units | Code points | UTF-8 bytes | Grapheme clusters |
+| --- | --- | --- | --- | --- |
+| `A` | 1 | 1 | 1 | 1 |
+| `é` | 1 | 1 | 2 | 1 |
+| `e` + combining acute | 2 | 2 | 3 | 1 |
+| `🧇` | 2 | 1 | 4 | 1 |
 
-Three lengths for one string, none of them "obvious."
-
-```
-text:  waffle emoji 🧇
-code points:     1
-UTF-16 units:    2   (surrogate pair)   ← JS .length
-UTF-8 bytes:     4
-grapheme:        1   (what a user counts)
-```
-
-UTF-8:
-
-```
-U+0041  A     → 41
-U+00E9  é     → C3 A9
-U+1F9C7 waffle → F0 9F A7 87
-```
-
-You must not slice UTF-8 in the middle of a sequence. You must not slice JS strings in the middle of a surrogate pair. You must not hash "é" composed and "é" decomposed as the same key unless you normalize.
+For example, U+1F9C7 (`🧇`) is `F0 9F A7 87` in UTF-8. Other emoji can contain several code points, so “an emoji is two JS units” is not a general rule.
 
 ## Worked example
 
 ### Easy
 
-`"A".length` is 1. ASCII is one UTF-16 unit and one UTF-8 byte.
+Predict `"A".length` and `"🧇".length`: one and two. Spreading a well-formed string iterates code points; it still does not group combining marks or joined emoji into graphemes.
 
 ### Medium
 
-`"👍".length` is 2 in JS (surrogate pair). Four UTF-8 bytes. One grapheme.
+A chat preview should keep its first two grapheme clusters. Cutting two UTF-16 units from `A🧇B` would split the waffle's surrogate pair. Use grapheme segmentation for the requested unit.
+
+```ts
+function preview(text: string, limit: number): string {
+  if (!Number.isInteger(limit) || limit < 0) throw new Error("Invalid limit");
+  const segmenter = new Intl.Segmenter("en", { granularity: "grapheme" });
+  let result = "";
+  let count = 0;
+  for (const part of segmenter.segment(text)) {
+    if (count === limit) break;
+    result += part.segment;
+    count++;
+  }
+  return result;
+}
+console.log(preview("A🧇B", 2)); // A🧇
+console.log(preview("e\u0301clair", 1)); // e + combining acute, kept together
+console.log(preview("hello", 0)); // empty string
+```
+
+Use a maintained segmentation implementation if the runtime lacks `Intl.Segmenter`. A byte limit needs a separate check; two graphemes can occupy many bytes.
 
 ### Hard
 
-`"é"` as `e` + combining acute is two code points. Hashing without NFC/NFD treats composed and decomposed as different keys. Do not slice UTF-8 in the middle of a sequence.
+`"é"` and `"e\u0301"` look alike but have different code-point sequences. NFC normalization can make these canonically equivalent forms compare equal. Decide whether that matches the product's identifier policy; normalization does not solve visual confusables, and silently changing opaque IDs can be wrong.
 
-A ticket kiosk stores guest names. Naive truncate to 10 "chars" for the badge.
-
-```ts
-function utf16Units(s: string): number {
-  return s.length; // code units, not graphemes
-}
-
-function truncateUtf16(s: string, max: number): string {
-  if (s.length <= max) return s;
-  let cut = max;
-  const hi = s.charCodeAt(cut - 1);
-  if (hi >= 0xd800 && hi <= 0xdbff) cut -= 1; // don't split a pair
-  return s.slice(0, cut);
-}
-
-console.log(utf16Units("crane"), utf16Units("crane🚛"));
-console.log(JSON.stringify(truncateUtf16("crane🚛x", 7)));
-
-```
-
-| API | Counts | Trap |
-| --- | --- | --- |
-| JS `s.length` | UTF-16 units | Emoji = 2; some flags = 4 |
-| `[...s].length` | Code points (mostly) | Still not graphemes |
-| `TextEncoder#encode` | UTF-8 bytes | Right for buffers / HTTP |
-| Grapheme splitter | User-perceived chars | Needed for "first letter" avatars |
-
-HTTP: `Content-Type: application/json; charset=utf-8`. A body of UTF-8 bytes decoded as latin1 is mojibake, not a random bug. See [http-and-tcp](./http-and-tcp.md) (id: http-and-tcp).
+**Try it:** which count should a UTF-8 upload limit use? Use the encoded byte length, not `.length` or the grapheme count. Which should a chat preview use? Its specified display unit, usually grapheme clusters.
 
 ## Common mistakes
 
-- Using `.length` to validate "max 20 characters" in a form. Say *graphemes* or *bytes* and pick one.
-- Truncating a UTF-8 buffer at byte 255 for a `VARCHAR`. You can cut a 4-byte emoji in half and fail the next parse.
-- Hashing usernames without NFC/NFD normalization. The same visual name misses the cache.
-- Assuming one byte per English letter in a mixed-language column, then overflowing a `CHAR(10)`.
+- Truncating at an arbitrary byte or code-unit boundary. It can split an encoded value; even a code-point boundary can split a grapheme.
+- Applying a database “character” limit without checking the database type and collation rules.
+- Decoding UTF-8 as a different encoding and blaming the stored text. Check the bytes and decoder separately.
+- Adding a charset parameter as a fix for all JSON errors. Interoperable JSON uses UTF-8; `application/json` does not define a charset parameter.
 
 ## How to talk about it
 
-"I separate code points, UTF-8 bytes, UTF-16 units, and graphemes. In JS, `.length` is units, so emoji is not 1. On the wire I send UTF-8 and I set the charset. If I key a map on a name, I normalize first. If I truncate, I truncate on a boundary, not a raw byte index."
-
-If they ask why UTF-8 won: "ASCII compatibility, no endianness, and streaming-friendly. UTF-16 won inside JS/Java/Windows for history, which is why the lengths disagree."
+“I will define the unit before counting. For a preview I segment graphemes; for a network limit I count encoded bytes. For equality I specify normalization and case rules, then apply the same policy at every boundary.”
 
 ## Cross-links
 
 - [HTTP is a conversation, TCP is the pipe](./http-and-tcp.md) (id: http-and-tcp)
 - [Why a map is "O(1)" until it isn't](./hashing-internals.md) (id: hashing-internals)
 - [Floats are scientific notation, not decimals](./floating-point.md) (id: floating-point)
-- [Two pointers](../algorithms/patterns/two-pointers/lesson.md) (id: two-pointers)
+- [Squeeze from both ends](../algorithms/patterns/two-pointers/lesson.md) (id: two-pointers)
 - [Hash maps as an index](../algorithms/patterns/hash-maps.md) (id: hash-maps)
-- [Cache as a second store](../system-design/foundations/caching/lesson.md) (id: caching)
+- [Remembering the expensive answer nearby](../system-design/foundations/caching/lesson.md) (id: caching)

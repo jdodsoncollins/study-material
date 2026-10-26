@@ -1,10 +1,8 @@
-title: Polite then seen
+title: crawl
 steps:
-  - caption: "Seeds land in a frontier sharded by host, not by URL hash."
-    nodes: [seed, front]
-  - caption: "Dispatcher pops a host whose politeness clock is due and hands one URL to a Fetcher."
-    nodes: [disp, fetch, robots]
-  - caption: "New links go back on that host's queue. Bloom says probably-seen → drop (safe skip)."
-    nodes: [seen, front, drop]
-  - caption: "HTML parse is off the fetch path. A job writes the index."
-    nodes: [fetch, idx]
+  - caption: "Admission checks happen before fetching, and destination checks repeat across redirects."
+    nodes: [front, gate, fetch]
+  - caption: "Extracted links pass scope and deduplication checks before entering the frontier."
+    nodes: [result, seen, front]
+  - caption: "A Bloom positive is not proof of prior fetch; essential coverage needs exact confirmation. Revisit policy uses durable state."
+    nodes: [seen, later]

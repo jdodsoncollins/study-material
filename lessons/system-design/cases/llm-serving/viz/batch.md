@@ -2,9 +2,10 @@
 
 ```mermaid
 flowchart TB
-  req[Completion req] --> q[GPU wait queue]
-  q --> batch[Continuous batch]
-  batch --> kv[KV cache]
-  batch --> gpu[GPU]
-  gpu --> tok[Tokens out]
+  req[Prompt and output budget] --> admit[Token, memory and tenant admission]
+  admit --> q[Bounded queue]
+  q --> batch[Schedule prefill and decode]
+  batch --> memory[Weights, KV, buffers and headroom]
+  batch --> gpu[Device execution]
+  gpu --> tok[Identified streamed events]
 ```

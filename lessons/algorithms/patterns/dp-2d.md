@@ -10,6 +10,7 @@ summary: When the state needs two indices, fill a table in an order that only re
 tags:
   - algorithms
   - algorithms/dynamic-programming
+  - interviews
   - interviews/leetcode
 prerequisites:
   - dp-1d
@@ -19,19 +20,9 @@ related:
   - dfs-backtracking
   - bfs
   - longest-unique-window
-company_signal:
-  - name: Google
-    evidence: Candidate reports list unique-paths / edit-distance / LCS-style tables as a common onsite DP.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Tagged-list threads keep grid-path and string-alignment DPs in the medium/hard band.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode 2D DP tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -40,7 +31,7 @@ status: canonical
 ## Snapshot
 
 - Two moving parts in the state: index i in A and j in B, or row and column, or index and remaining budget.
-- Write `dp[i][j]` in English first. If you cannot, you are about to code a mess.
+- Write `dp[i][j]` in English first. This definition determines the recurrence and the fill order.
 - Fill order is a dependency graph. Usually top-left to bottom-right, sometimes last row backward for knapsack reuse.
 - Recursion + memo is the same table. Bottom-up just makes the fill order visible.
 
@@ -71,10 +62,18 @@ Count the walks that reach the destination. This is unique-paths-with-obstacles.
 
 `dp[r][c]` = ways to reach that cell. Blocked cells stay 0. First row (and column) can only come from one direction.
 
+### Syntax
+
+```ts
+const fromAbove = 1, fromLeft = 1;
+console.log(fromAbove + fromLeft); // 2 ways reach the center
+```
+
 ### Then the details
 
 ```ts
 function aisleWays(floor: string[][]): number {
+  if (floor.length === 0 || floor[0].length === 0) return 0;
   const rows = floor.length, cols = floor[0].length;
   const dp: number[][] = Array.from({ length: rows }, () => Array(cols).fill(0));
   dp[0][0] = floor[0][0] === "#" ? 0 : 1;
@@ -124,7 +123,7 @@ Four walks. The blocked top-right cell never contributes.
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+Block the start cell: every count stays zero. On a much larger open grid, path counts can exceed the safe integer range. Use bigint or a specified modulus if exact large counts are required. The example assumes a rectangular grid and safely representable counts.
 
 ## Pitfalls
 
@@ -132,7 +131,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 | --- | --- | --- |
 | Not seeding `dp[0][0]` | Whole table stays 0 | Start cell is 1 if open |
 | Adding from a blocked neighbor | Paths leak through buildings | Skip or zero blocked cells |
-| Filling knapsack forward with 1D reuse | Item used twice | Walk capacity backward, or use 2D |
+| Filling 0/1 knapsack capacity forward with 1D reuse | An item can be used twice | Walk capacity backward, or use 2D |
 | Recursing without memo | Stack + exponential | Cache the pair `(i, j)` |
 
 ## Interview moves
@@ -147,7 +146,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 - [Reuse the last few answers](./dp-1d.md) (id: dp-1d)
 - [Explore, undo, try the next branch](./dfs-backtracking.md) (id: dfs-backtracking)
 - [Expand level by level](./bfs/lesson.md) (id: bfs)
-- [Longest unique radio run](../problems/longest-unique-window/lesson.md) (id: longest-unique-window)
+- [Longest substring without repeated letters](../problems/longest-unique-window/lesson.md) (id: longest-unique-window)
 - [Fewest tokens for a fare](../problems/coin-change/lesson.md) (id: coin-change)
-- [Trees and graphs](../../cs/trees-graphs.md) (id: trees-graphs)
+- [Trees are graphs with a promise](../../cs/trees-graphs.md) (id: trees-graphs)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)

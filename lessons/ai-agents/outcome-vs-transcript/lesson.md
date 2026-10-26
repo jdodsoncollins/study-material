@@ -1,12 +1,12 @@
 ---
 id: outcome-vs-transcript
-title: Grade the world, not the speech
+title: Grade the result and the constraints that matter
 slug: outcome-vs-transcript
 kind: concept
 track: ai-agents
 difficulty: core
 estimated_minutes: 12
-summary: The transcript is what the agent said and called; the outcome is what the environment became. Product success lives in the second, debugging in the first.
+summary: Grade observable outcomes and required constraints rather than trusting the agent’s report or one preferred tool sequence.
 tags:
   - ai-agents
   - ai-agents/evals
@@ -20,91 +20,71 @@ related:
   - how-to-run-proper-evals
   - eval-harness-vs-agent-harness
   - tool-calling
-company_signal:
-  - name: Anthropic
-    evidence: The 2026 agent-eval essay uses outcome versus transcript as the core scoring distinction, including the refund-utterance failure mode.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Anthropic, Demystifying evals for AI agents (2026-01-09)
-  - X threads on grading trajectories versus final strings
-  - Arize tracing versus evaluation posts (2026)
-updated: 2026-09-02
+  - https://www.anthropic.com/research/demystifying-evals-for-ai-agents
+updated: 2026-10-26
 status: canonical
 ---
 
-# Grade the world, not the speech
+# Grade the result and the constraints that matter
 
 ## Snapshot
 
-- **Outcome** — environment after the trial: rows, files, test results, emails actually queued, money moved.
-- **Transcript** — the ordered record of messages, tool calls, and observations. Also called a trajectory when you care about the path.
-- "Refund issued" in the assistant text is speech. A `refunds` row for `$24.00` on order `HL-9041` is an outcome.
-- Score the outcome for pass/fail. Read the transcript to see why.
+- A fluent report is not evidence that an external action succeeded.
+- Check final state, artifacts, and observed effects against the task contract.
+- Path constraints matter when authorization, cost, privacy, or required procedure makes them part of success.
+- Allow valid alternative solutions unless the task requires a particular method.
 
 ## Why it shows up in interviews
 
-LLM evals trained a generation of engineers to grade the final string. Agents can talk a perfect job and do nothing, or do the job with an ugly path. Interviewers listen for whether you can name both artifacts and assign them different jobs: **gate on the world, debug on the trace.**
+Agents can describe a correct result while leaving files, records, or external systems unchanged. Conversely, different tool sequences can produce equally valid results.
 
 ## Core idea
 
 ### ELI5
 
-[grade](viz/grade.md)
+Start with what must be true after the task. Then add limits on how the system may get there. Grade both from trustworthy evidence rather than from the agent's description of itself.
 
-The product promise is a state change, not a paragraph.
+[Compare claims with evidence](viz/grade.md)
 
-Write the grader against the same stores the user would notice. If the user notices a refund, query `refunds`. If the user notices a merged PR, run the tests. If the user notices an email, look at the mail fixture, not the model's narration of sending one.
+If the task is “prepare a patch,” inspect the patch and its behavior. If it is “merge this approved pull request,” tests alone are insufficient: inspect the repository's merge state too. The required outcome determines the evidence.
 
-Use the transcript when:
+A final state comparison can miss transient or external effects. Restoring a deleted file does not erase an unauthorized email sent during the run. Record and grade effects that the contract prohibits even if the final local state looks correct.
 
-- You need to enforce a **policy on the path** (must `confirm` before `delete_account`).
-- You are clustering failures (wrong file, tool loop, ignored error).
-- You are calibrating a judge on tone.
+## Worked example
 
-Do not use the transcript as a poor man's outcome ("the model said it restocked"). Models lie in the helpful register.
+### Easy
 
-## Comparison
+A support agent says it updated a customer's address. The grader reads the authorized customer's actual address record and verifies the requested fields. It also checks that other customers were unchanged.
 
-Harborline trial on order `HL-9041`.
+### Medium
 
-| Check | Transcript says | Outcome is | Grade this? |
-| --- | --- | --- | --- |
-| Refund | `Refund issued!` | No row in `refunds` | Fail on outcome |
-| Refund | Tool error, then retry with idempotency key | One row, `$24.00`, right card | Pass on outcome |
-| Restock | Called `adjust_inventory` twice | `mug-blue` +1 net | Pass if net is the spec |
-| Email | "I emailed Sam" | Mail fixture empty | Fail on outcome |
-| Path policy | Never called `confirm` | Account deleted | Fail on transcript *and* outcome |
+Two agents use different valid lookup sequences and produce the same authorized update. Do not fail one for deviating from a preferred trace unless that sequence was a real constraint. Latency and cost can be separate measurements.
 
-The second row is the important one: a messy transcript and a correct world. Punishing the mess trains the agent to imitate your sketch. Unless the path is regulated, let it be ugly.
+### Hard
 
-See [traces, trajectories, sessions](../traces-trajectories.md) (id: traces-trajectories) for how these artifacts nest.
+The address is correct, but the agent exported the customer list to an unapproved endpoint. Outcome correctness passes; the privacy constraint fails. The overall task fails under a contract that requires both.
+
+**Practice:** write three assertions for “create one draft invoice, do not send it.” Check its fields, count matching drafts, and verify no send event occurred. A message saying “draft created” satisfies none of those assertions by itself.
 
 ## Common mistakes
 
-- String-matching the last assistant message for keywords (`refund`, `done`, `fixed`).
-- Requiring an exact tool-call sequence copied from the author's reference solution.
-- Grading mocked tool *return values* the agent invented, not the fake Stripe the eval harness owns.
-- Dumping the whole transcript into an LLM judge with "did it succeed?" — that is a second narrator.
-- Ignoring side effects outside the happy store (emailed the wrong `user_id` while refunding the right order).
-- No screenshot of the world: you cannot replay the outcome, only the chat.
+| Mistake | What it misses | Better evidence |
+| --- | --- | --- |
+| Grade the final sentence | Actions may not have happened | Stored state and artifacts |
+| Require one exact tool trace | Valid alternative paths | Outcome plus necessary constraints |
+| Check only the final database | External or temporary side effects | Relevant event evidence |
+| Assume a test pass proves a merge | Repository state is separate | PR/commit state and tests |
 
 ## How to talk about it
 
-"I grade database rows, inventory, and queued emails — the world the customer would see. I read transcripts to cluster failures and to enforce a short list of path policies like confirm-before-delete. If the agent says 'refund issued' and the table is empty, that is a fail, and it is also a reason not to trust speech as a grader."
-
-If they want a picture:
-
-```
-env₀ → agent harness (transcript grows) → env₁
-                         ↓                  ↓
-                    debug / policy      pass/fail
-```
+“I will define success as observable state plus required constraints. The transcript helps explain a failure, but the agent cannot certify its own outcome.”
 
 ## Cross-links
 
-- [Graders: code, model, human](../graders/lesson.md) (id: graders)
-- [Spans, traces, trajectories, sessions](../traces-trajectories.md) (id: traces-trajectories)
-- [Start evals from real failures](../how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
-- [Eval harness versus agent harness](../eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
-- [Tools that are safe to call twice](../tool-calling/lesson.md) (id: tool-calling)
+- [Choose a grader for the evidence available](../graders/lesson.md) (id: graders)
+- [Use observable execution evidence to diagnose failures](../traces-trajectories.md) (id: traces-trajectories)
+- [Build an evaluation from the task contract](../how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
+- [Separate the system doing the work from the system measuring it](../eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
+- [Make tool contracts enforceable](../tool-calling/lesson.md) (id: tool-calling)

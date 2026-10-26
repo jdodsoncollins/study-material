@@ -1,12 +1,12 @@
 ---
 id: feature-flags
-title: Shipping dark, flipping in production
+title: Distribute versioned feature decisions
 slug: feature-flags
 kind: case-study
 track: system-design
 difficulty: intro
 estimated_minutes: 14
-summary: Switchyard evaluates flags from a local snapshot so a config change is a versioned publish, not a 2M QPS dependency.
+summary: Distribute validated rule versions and define stable assignment, propagation targets, and stale-value behavior.
 tags:
   - system-design
   - system-design/product-cases
@@ -22,118 +22,92 @@ related:
   - interview-framework
   - job-scheduler
   - news-feed
-company_signal:
-  - name: Stripe
-    evidence: Candidate-reported loops treat feature-flag / config-evaluation systems as a recurring mid-level prompt.
-    year: 2026
-    confidence: medium
-  - name: Meta
-    evidence: Prep-site frequency and candidate reports on feed/product ramps mention percentage rollouts and kill switches as follow-ups.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Stripe candidate-report roundups (feature flags)
-  - Design Gurus 2026 FAANG guides
-  - r/cscareerquestions threads on ramping and kill switches
-updated: 2026-09-02
+  - https://openfeature.dev/specification/sections/flag-evaluation/
+updated: 2026-10-26
 status: canonical
 ---
 
-# Shipping dark, flipping in production
+# Distribute versioned feature decisions
 
 ## Snapshot
 
-- Product: **Switchyard**. Services ask "is `quiet_lane_v2` on for this user?" and get a boolean (or a small payload) in microseconds.
-- The serving path is a **local snapshot**, not a database round trip. 2M evaluations/s cannot call a config API.
-- A flag is a versioned rule: percentage, allow-list, segment, or kill switch. Publish is transactional. Rollback is "restore last snapshot."
-- Consistency is **bounded stale** (a few seconds), except kill switches which push immediately. That is a [CAP](../foundations/cap-and-consistency.md) (id: cap-and-consistency) budget, not a personality.
+- Separate flag authoring from fast local evaluation.
+- Use stable assignment inputs and versioned rule snapshots.
+- Define staleness and safe defaults per flag.
+- A disconnected client cannot receive an immediate kill switch.
 
 ## What this round is actually scoring
 
-Can you keep evaluation off the critical dependency list, and can you ramp 1% → 10% → 100% without splitting a user's session every request? Interviewers will ask about stampede when everyone fetches a new snapshot, and about a bad flag taking production down.
+Whether rollout assignment, propagation, and fallback behavior remain understandable during an outage.
 
 ## Company signal
 
-Candidate-reported Stripe loops, plus prep-site frequency on ramps / kill switches at product companies (Meta-shaped feed ramps). Confidence: **medium**. Label it candidate-reported / prep-site frequency.
+This is an original practice scenario. No traceable company-specific frequency evidence is supplied.
 
 ## Requirements
 
-| Functional | v1 decision |
+| Area | Requirement |
 | --- | --- |
-| Boolean + multivariate flags | Payload ≤ 2 KB |
-| Targeting | User id hash, percent, allow-list, employee override |
-| Kill switch | Forces off, bypasses percent |
-| Audit who flipped | Immutable change log |
-| Experiment assignment | Sticky per user for the flag's life |
-
-| Non-functional | Budget |
-| --- | --- |
-| Eval p99 in-process | < 1 ms |
-| Snapshot freshness | 30s default, 2s for kill |
-| Eval QPS | 2M (every Fieldnote request asks 5 flags) |
-| Publish p99 | 2 s to first box, 10 s to fleet |
-| Fail | Last-known snapshot, never empty-deny the app |
+| Author | Authorized changes with validation, audit history, and rollback |
+| Evaluate | Low-latency decisions from a validated local snapshot |
+| Roll out | Stable percentage assignment under documented rule changes |
+| Fail | Explicit last-known-value and expiry/default policy per flag |
 
 ## Back-of-envelope
 
-2M evals/s. If each eval were a 1 ms RPC, you would need a heroic central cluster and you would still add a failure domain. In-process: 5 flags × a hash + a percent compare is nanoseconds. Snapshot size: 5k flags × 1 KB rules ≈ 5 MB. Trivial to mmap.
+These are illustrative workload assumptions, not production measurements.
 
-Publish: 5k boxes pulling 5 MB every 30s ≈ 830 MB/s of origin if naive. Use a CDN or an internal object store plus **version gossip** ("latest is `v1842`") so boxes download only on change. Same origin-shield idea as [Stagecast](./video-streaming/lesson.md) (id: video-streaming).
+Assume 100,000 server processes fetch a 5 MB snapshot every ten minutes. Full polling alone transfers about 833 MB/s on average, before protocol overhead. Smaller deltas, caching, and randomized polling can reduce pressure.
+
+A two-second propagation target is a healthy-network objective, not a guarantee for every disconnected client. Measure local evaluation cost rather than asserting a nanosecond figure for arbitrary rules.
 
 ## Design
 
 ### ELI5
 
-Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+Publish a numbered rulebook. Each application validates and keeps a copy, then evaluates requests locally. The rulebook's version and fallback policy tell us what happens when updates stop arriving.
 
-### Then the details
+### Rules and rollout
 
-**Control plane**: authors edit a flag, Switchyard writes a new immutable snapshot to object storage, records `vN` in a tiny metadata table, and notifies **Relays**.
+Store immutable snapshot versions, rule schemas, ownership, and an audit trail. Validate types and references before publication. Use notifications or a watch stream for quick refresh, with randomized polling and version checks as recovery. A notification tells the client to obtain a validated version; it is not the authoritative rule data by itself.
 
-**Data plane**: each app embeds a SDK. SDK holds snapshot `vN` in memory. Evaluation: hash(`flag_id:user_id`) → bucket 0–9999; compare to percent; apply allow-list and kill. Sticky because the hash is stable.
+For percentage rollout, hash a stable subject ID with a flag-specific salt into a fixed bucket range. A threshold increase can include more subjects while retaining already-included ones. Variant experiments may need persistent assignments when allocation rules change; deterministic hashing alone does not make arbitrary rule edits sticky.
 
-Kill switch: metadata watch (long-poll or websocket) so `vN+1` is applied in ~2s. Regular ramps ride the 30s poll.
+Evaluate server-side rules for decisions requiring trusted identity or authorization. A client-visible flag is not an access-control boundary. Record exposure using a bounded telemetry path so an analytics outage does not block evaluations.
 
-[Clockyard](./job-scheduler/lesson.md) (id: job-scheduler) can time a ramp (`10% at 16:00`) as a job that publishes a new snapshot — do not put a clock inside every SDK.
-
-Consistency for users: a user may see old then new within the freshness window. For money or legal copy, the *product* should not hide behind a flag that is still ramping; use a server-authoritative check on that path.
+For each flag, choose whether an old snapshot remains valid, for how long, and which value to use after expiry. A safety-critical feature may fail closed after a short freshness deadline, sacrificing availability during a partition. Other features may keep the last known value.
 
 ## Tradeoffs
 
-| Choice | Gain | Cost |
+| Choice | Benefit | Cost |
 | --- | --- | --- |
-| Local snapshot vs RPC eval | Survives Switchyard outages | Seconds of skew across boxes |
-| Hash stickiness vs random per request | Stable UX, honest experiments | A user is stuck on a bad variant until you change the salt |
-| One snapshot for all flags vs per-flag files | Atomic multi-flag changes | Tiny flags pay for a 5 MB download |
-| Kill via push vs waiting for poll | Incidents end faster | Another moving part |
+| Local evaluation | Low request latency | Rules may be stale |
+| Remote evaluation | Central policy enforcement | Network dependency and latency |
+| Watch plus polling | Fast normal updates with recovery | More lifecycle handling |
+| Expiring snapshots | Bounds use of stale rules | Degradation during disconnection |
 
 ## Failure modes
 
-- Bad snapshot (rule that throws): SDK keeps `vN-1`, marks `vN` poison, alerts. Canary a slice of boxes first.
-- Stampede on publish: jitter the download 0–5s, or push the file through a CDN. See [caching](../foundations/caching/lesson.md) (id: caching).
-- Hash salt change mid-experiment: everyone reshuffles; never do this silently.
-- Flag default `false` with fail-closed SDK: a missing snapshot turns the app off. Default is **fail-open to last-known**.
+- An invalid rule ships: schema validation and last-valid-version fallback prevent a fleet-wide parse failure.
+- Watch connections silently stall: version/freshness checks detect the condition.
+- A rollback changes the hash salt: assignments reshuffle unless the policy explicitly permits it.
+- A kill switch cannot reach a client: enforce that flag's stale-value policy rather than claiming immediate propagation.
 
 ## Follow-ups an interviewer may ask
 
-### Easy
+**Easy:** raise rollout from 10% to 20% using the same bucket mapping. Which existing users change?
 
-Capacity and the cache: numbers first, then where a miss goes.
+**Medium:** change a variant's allocation boundaries. Explain whether previously assigned users remain in their variants.
 
-### Medium
+**Hard:** disconnect a client before a kill switch. State the maximum stale-use policy and the availability cost of enforcing it.
 
-- Entitlements vs flags: paid features belong in Till's customer record, not a 30s-stale percent.
-- Per-request overrides for support: a header, audited, never in the public SDK.
-- Fieldnote ranking flags: ramp by user, not by post, so a session is coherent.
-
-### Hard
-
-The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Remembering the expensive answer nearby](../foundations/caching/lesson.md) (id: caching)
-- [Token buckets and sliding windows at the edge](./rate-limiter/lesson.md) (id: rate-limiter)
-- [Cron, ad-hoc, leases, and retries](./job-scheduler/lesson.md) (id: job-scheduler)
-- [Hybrid fanout when some authors are stadiums](./news-feed/lesson.md) (id: news-feed)
+- [Enforce request budgets across servers](./rate-limiter/lesson.md) (id: rate-limiter)
+- [Schedule occurrences and recover leased work](./job-scheduler/lesson.md) (id: job-scheduler)
+- [Build a feed with bounded fanout](./news-feed/lesson.md) (id: news-feed)
 - [Forty-five minutes is a navigation problem](../foundations/interview-framework.md) (id: interview-framework)
-- [CAP as a conversation, not a religion](../foundations/cap-and-consistency.md) (id: cap-and-consistency)
+- [Consistency promises during failures](../foundations/cap-and-consistency.md) (id: cap-and-consistency)

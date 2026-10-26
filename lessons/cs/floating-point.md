@@ -6,26 +6,22 @@ kind: concept
 track: cs
 difficulty: intro
 estimated_minutes: 12
-summary: IEEE-754 floats store a sign, a power of two, and a short mantissa; most decimals never land exactly, and money should not live there.
+summary: Binary floating point approximates many decimal fractions; choose numeric types, comparison rules, and rounding policies to match the task.
 tags:
   - cs
   - cs/complexity
+  - interviews
   - interviews/leetcode
 prerequisites: []
 related:
   - encoding-unicode
   - big-o
   - hashing-internals
-company_signal:
-  - name: Stripe
-    evidence: Payments screens and take-homes still ding candidates who store currency in float or compare totals with `===`.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - IEEE-754 binary64 layout as taught in intro architecture / numerical courses
-  - JS number (IEEE-754, 2^53-1 safe integer) language notes
-  - Classic 0.1 + 0.2 interview warmup threads
-updated: 2026-09-11
+  - https://docs.python.org/3/tutorial/floatingpoint.html
+  - https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number.max_safe_integer
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -33,91 +29,79 @@ status: canonical
 
 ## Snapshot
 
-- A typical `number` in JS/TS is IEEE-754 **binary64**: 1 sign bit, 11 exponent bits, 52 mantissa bits (plus an implicit 1).
-- It represents values of the form ±(1.mantissa) × 2^(exponent). Fractions that are not dyadic (1/2, 1/4, 1/8, …) cannot be exact.
-- `0.1 + 0.2 !== 0.3`. That is the format, not a broken VM.
-- Integers are exact only up to 2^53 − 1. Past that, IDs start aliasing.
+- JavaScript `number` uses IEEE-754 binary64. Normal values have 53 bits of significand precision, including an implicit leading bit; subnormal values use a different encoding.
+- Fractions such as 3/8 have finite binary expansions. Fractions such as 1/10 do not, so they are rounded to representable values.
+- `0.1 + 0.2 === 0.3` is false. Rounding is deterministic, not random.
+- All integers from −(2^53−1) through 2^53−1 are safe integers. Some larger integers are exact, but adjacent integers can collapse to the same `number`.
 
 ## Why it shows up in interviews
 
-They are checking whether you will put money, scores, or snowflake IDs in a float. They also check whether you know `NaN !== NaN` and why a sort comparator that subtracts floats is a landmine. A 90-second answer names the bits, names the trap, names the alternative (integer cents, decimal type, string IDs).
+A numeric representation is part of the problem contract. A price, measurement, and identifier may need different rules. Explain the required precision, range, rounding rule, and comparison before choosing a type.
 
 ## Core idea
 
 ### ELI5
 
-A float is scientific notation in base two: a sign, a power of two, and a short fraction. Most decimals you write in base ten (0.1, 0.2, money) do not land on those fractions, so the machine stores the *nearest* one.
+Think of scientific notation with a fixed number of binary digits. For example, 13 is `1.101 × 2³` in binary. One tenth repeats forever in base two, so a finite format stores an approximation. Arithmetic rounds again when the result needs more precision than the format has.
 
-Adding two "nearest" numbers does not give the decimal you had in mind.
+An exact comparison can be appropriate for safe integers or a deliberately exact result. For approximate measurements, choose tolerances based on the domain and expected error. A universal epsilon cannot decide whether two values are interchangeable for every application.
 
-Write 13 as 1.101 × 2^3 if you only have binary digits. Now try to write 0.1. There is no finite binary expansion.
-
-```
-0.1  →  0.0001100110011... repeating in binary
-      stored as a rounded 52-bit slice
-```
-
-Special values: `+Inf`, `-Inf`, `NaN` (failed math), and **two zeros** (`+0` and `-0`) that compare equal but divide into different infinities.
-
-Never use `===` on computed floats. Compare with a tolerance *relative to magnitude*, or better, do not use floats for that domain.
+`NaN` means the result is not a number and is unequal to itself. Infinities and signed zero need explicit handling in algorithms that accept them.
 
 ## Worked example
 
-Three diners split a $10 tab stored as dollars.
-
 ### Easy
 
-`0.1 + 0.2 === 0.3` is false. Print both sides.
+Predict `0.1 + 0.2 === 0.3`, then run the sample. The sum is `0.30000000000000004`, so the comparison is false. By contrast, adding three copies of `10 / 3` rounds to exactly 10 in JavaScript. Inexact inputs do not mean every final result differs from the intended value.
 
 ### Medium
 
-Split $10 three ways, add the shares, you do not get 10. Use integer cents.
+Split a 1,000-cent bill three ways. Giving everyone 333 cents loses one cent. Divide in integers, then allocate the remainder using a stated rule: the first share gets the extra cent.
+
+```ts
+function splitCents(total: number, people: number): number[] {
+  if (!Number.isSafeInteger(total) || total < 0 ||
+      !Number.isSafeInteger(people) || people < 1) throw new Error("Invalid inputs");
+  const base = Math.floor(total / people);
+  const remainder = total % people;
+  return Array.from({ length: people }, (_, i) => base + (i < remainder ? 1 : 0));
+}
+function nearlyEqual(a: number, b: number, absTol = 1e-12, relTol = 1e-9): boolean {
+  if (a === b) return true;
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return false;
+  return Math.abs(a - b) <= Math.max(absTol, relTol * Math.max(Math.abs(a), Math.abs(b)));
+}
+console.log(0.1 + 0.2 === 0.3); // false
+console.log(splitCents(1000, 3), splitCents(2, 3)); // [334,333,333] [1,1,0]
+console.log(nearlyEqual(0.1 + 0.2, 0.3), nearlyEqual(Infinity, 1)); // true false
+```
+
+The tolerance helper assumes nonnegative, finite tolerance arguments. It is a comparison policy, not a cure for accumulated numerical error. The split function starts with an integer amount; converting an already rounded dollar amount to cents cannot recover lost information.
 
 ### Hard
 
-IDs past 2^53 − 1 alias. Snowflake IDs and money do not live in `number`.
+`2 ** 53` is representable, but `2 ** 53 + 1` rounds to the same value. Use strings for large identifiers crossing JSON boundaries, or `bigint` with an explicit serialization format. Ordinary `JSON.stringify` does not serialize bigint values automatically.
 
-```ts
-const share = 10.0 / 3.0;           // 3.333... not 3.33
-const back = share + share + share; // not exactly 10
-
-function nearlyEqual(a: number, b: number, eps = 1e-9): boolean {
-  return Math.abs(a - b) <= eps * Math.max(1, Math.abs(a), Math.abs(b));
-}
-
-function cents(dollars: number): number {
-  return Math.round(dollars * 100); // still a trap if dollars was already dirty
-}
-
-console.log(0.1 + 0.2 === 0.3); // false
-console.log(share, back, nearlyEqual(back, 10), cents(share));
-
-```
-
-| Job | Use | Avoid |
+| Need | Suitable representation | Check |
 | --- | --- | --- |
-| Money, inventory counts | Integer cents / DECIMAL | `number` dollars |
-| Graphics, physics, ML | Float / SIMD | Exact equality |
-| IDs past 2^53 | String or bigint | JSON numbers in JS |
-| Loop `x += 0.1` until 1 | Integer loop, scale later | Float counter |
+| Currency in a fixed minor unit | Safe integer cents, bigint, or decimal arithmetic | Currency scale, range, and rounding rule |
+| Inventory count | Safe integer number or bigint | Nonnegative values and overflow |
+| Physical measurement | Floating point | Units and acceptable error |
+| Large opaque identifier | String | Preserve the original digits |
 
-JSON has one number type. A 64-bit order ID through `JSON.parse` in JS is already rounded. Send it as a string.
+**Try it:** split 1,001 cents among three people before running the function. The answer is `[334,334,333]`; the sum must stay 1,001 and shares differ by at most one cent.
 
 ## Common mistakes
 
-| Trap | What happens | Fix |
-| --- | --- | --- |
-| `if (sum === 0.3)` | Randomly false | Epsilon, or integer math |
-| Float as a map key | `0.1 + 0.2` misses `0.3` | Canonicalize or don't |
-| `NaN` checks with `===` | Always false | `Number.isNaN` |
-| Sorting by `a - b` on floats | Overflow / NaN wrecks order | Comparator with defined NaN policy |
-| Accumulating millions of tiny values | Rounding bias | Kahan, or higher precision |
+- Calling 2^53 the last *safe* integer. `Number.MAX_SAFE_INTEGER` is 2^53−1.
+- Rounding every share independently without reconciling the total.
+- Treating all exact comparisons as wrong. Decide whether the values should be exact or approximate.
+- Rejecting `a - b` as a comparator for finite numbers. It is useful for numeric sorting; define a policy if inputs can include `NaN` or infinities.
+- Assuming multiplying a decimal amount by 100 always produces an integer. Parse a specified decimal format or use decimal arithmetic when that boundary must be exact.
 
 ## How to talk about it
 
-"Floats are binary scientific notation with a short mantissa. I will not store money there; I will store integer cents. I will not compare computed floats with equality. If they hand me JS, I will also refuse to put 64-bit IDs in `number` because 2^53 is the last safe integer."
-
-If they ask why `Math.round(1.005 * 100)` is ugly: "1.005 is not exact in binary, so it may already be 1.004999… before you round. Scale at the boundary, or use a decimal library."
+“I need exact cents here, so I will keep integer minor units within the safe range and allocate any remainder explicitly. For measurements, I would choose a tolerance from the error budget. For large IDs, I preserve digits as strings.”
 
 ## Cross-links
 

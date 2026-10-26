@@ -2,10 +2,9 @@
 
 ```mermaid
 flowchart LR
-  L[left] --> sum[L + R]
-  R[right] --> sum
-  sum --> cmp{vs target}
-  cmp -->|small| moveL[left++]
-  cmp -->|big| moveR[right--]
-  cmp -->|equal| done[pair]
+  ends[Sorted values with left below right] --> sum[values left plus values right]
+  sum --> cmp{Compare with target}
+  cmp -->|smaller| moveL[Advance left]
+  cmp -->|larger| moveR[Retreat right]
+  cmp -->|equal| done[Return matching pair]
 ```

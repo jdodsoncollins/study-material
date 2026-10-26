@@ -1,6 +1,6 @@
-title: Split the keyspace
+title: keyspace
 steps:
-  - caption: "Pick a key that matches the hot query."
-    nodes: [key]
-  - caption: "Hash or range maps that key onto a box."
-    nodes: [hash, s0, s1, s2]
+  - caption: "Choose the key from queries and invariants. This example separates logical placement from physical hosts."
+    nodes: [key, bucket]
+  - caption: "A bucket move copies and catches up data before a fenced ownership switch; updating this directory alone is insufficient."
+    nodes: [directory, s0, s1]

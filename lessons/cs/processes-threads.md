@@ -11,6 +11,7 @@ tags:
   - cs
   - cs/os
   - cs/concurrency
+  - interviews
   - interviews/system-design
 prerequisites:
   - os-memory
@@ -19,16 +20,11 @@ related:
   - locks-and-concurrency
   - http-and-tcp
   - recursion-call-stack
-company_signal:
-  - name: Amazon
-    evidence: Backend screens still ask process vs thread, when to isolate a crash, and why a thread pool is not "free parallelism."
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Undergrad process/thread/context-switch notes
-  - Candidate-reported OS warmup questions on isolation vs shared memory
-  - Node/JS event-loop vs worker-thread comparisons in backend interviews
-updated: 2026-09-02
+  - https://nodejs.org/api/worker_threads.html
+  - https://pages.cs.wisc.edu/~remzi/OSTEP/
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -36,10 +32,10 @@ status: canonical
 
 ## Snapshot
 
-- A **process** is a program in execution: virtual memory, file descriptors, credentials. Crash it and siblings live.
+- A **process** is a program in execution: virtual memory, file descriptors, credentials. A process boundary usually contains ordinary memory faults, though resource exhaustion and shared dependencies can still affect others.
 - A **thread** is a schedulable stack inside a process. Threads share heap, globals, and sockets. Crash one, usually the process dies.
 - Switching processes is heavier (page tables, TLB) than switching threads, but isolation is the feature.
-- Parallelism needs extra cores *and* a plan for shared state. More threads ≠ more speed.
+- CPU parallelism needs execution resources and a plan for shared state. More threads ≠ more speed.
 
 ## Why it shows up in interviews
 
@@ -60,7 +56,7 @@ process A                     process B
 
 Context switch: save registers and stack pointer, pick the next runnable, restore. If the next thread is another process, also switch the address space. That is why thread pools on one service are cheap compared to "one OS process per request" — until a wild write corrupts the shared heap.
 
-In JS, the main event loop is one thread. `Worker` / child processes are how you actually use extra cores. Do not pretend `async` is parallelism.
+JavaScript callbacks on one event loop run one at a time. Workers or processes can run JavaScript on other cores, while runtime and OS services may also do work concurrently. Node workers have separate JavaScript heaps; sharing ordinary object references is not the same as using shared memory.
 
 ## Comparison
 
@@ -70,25 +66,28 @@ In JS, the main event loop is one thread. `Worker` / child processes are how you
 | Shared in-memory cache, tight loop | Threads | Locks, races, one crash kills all |
 | CPU-bound work in Node | Child process or worker | Serialization at the boundary |
 | Huge burst of sockets | Thread pool *or* event loop | Pool size vs latency |
-| Secret handling / sandbox | Separate process (or VM) | Setup time |
+| Untrusted code isolation | Restricted process, container, or VM | Separate address spaces alone do not remove filesystem or network permissions |
 
 ```ts
 // Main thread owns the socket; workers own CPU. Sticky by request id.
 function pickWorker(requestId: string, n: number): number {
+  if (!Number.isInteger(n) || n < 1) throw new Error("Invalid worker count");
   let h = 0;
   for (let i = 0; i < requestId.length; i++) h = (h * 31 + requestId.charCodeAt(i)) | 0;
   return Math.abs(h) % n;
 }
 
-console.log(pickWorker("N-4", 4), pickWorker("N-4", 4), pickWorker("CRANE", 4));
+console.log(pickWorker("N-4", 4), pickWorker("N-4", 4), pickWorker("request-8", 4));
 
 ```
 
-Sticky assignment keeps a request's in-memory state on one worker so you do not lock across threads. That is the same instinct as sharding.
+Sticky routing can keep ownership local if all access follows that rule. Hashing a request ID alone does not protect shared user state; route by the state key, handle worker failures, and define what happens when the pool size changes.
+
+**Try it:** two requests modify the same account but have different request IDs. Can the hash above protect the account? No: they may reach different workers. Choose a shared ownership or synchronization rule.
 
 ## Common mistakes
 
-- "Threads don't share memory." They share everything except their stacks.
+- "Threads don't share memory." Native threads share an address space but have their own registers, stacks, and thread-local state. Stack memory is not inherently inaccessible to another thread.
 - Equating goroutines/green threads with OS threads. User-space tasks multiplex onto fewer OS threads.
 - Spawning a thread per request with no bound. You thrash the scheduler.
 - Using a process pool and then sharing a mutable file without advisory locks.
@@ -101,8 +100,8 @@ If they ask fork vs thread: "Fork copy-on-write-clones the map. Great for read-m
 
 ## Cross-links
 
-- [Virtual memory is a lie the CPU believes](./os-memory.md) (id: os-memory)
+- [Virtual addresses, physical pages, and locality](./os-memory.md) (id: os-memory)
 - [Locks buy correctness, not speed](./locks-and-concurrency.md) (id: locks-and-concurrency)
 - [HTTP is a conversation, TCP is the pipe](./http-and-tcp.md) (id: http-and-tcp)
 - [Recursion is a stack you didn't allocate](./recursion-call-stack.md) (id: recursion-call-stack)
-- [Split the keyspace on purpose](../system-design/foundations/sharding/lesson.md) (id: sharding)
+- [Splitting a keyspace so one box is not the product](../system-design/foundations/sharding/lesson.md) (id: sharding)

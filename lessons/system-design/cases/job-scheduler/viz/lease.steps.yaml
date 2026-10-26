@@ -1,8 +1,8 @@
-title: Leases beat hope
+title: lease
 steps:
-  - caption: "Due work lands in a queue. Workers pull."
-    nodes: [cron, q, worker]
-  - caption: "A lease + heartbeat owns the attempt."
-    nodes: [worker, lease, run]
-  - caption: "Crash before ack: the lease expires, the job is due again."
-    nodes: [run, q, done]
+  - caption: "A unique occurrence and schedule advancement share one transaction."
+    nodes: [cron, tx]
+  - caption: "Lease generations reject stale heartbeats and completions, but downstream effects need their own protection."
+    nodes: [claim, run, done]
+  - caption: "Recovery retries the same occurrence; a lease expiry does not prove the old worker stopped."
+    nodes: [retry, claim]

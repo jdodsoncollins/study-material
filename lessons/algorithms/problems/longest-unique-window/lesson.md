@@ -1,6 +1,6 @@
 ---
 id: longest-unique-window
-title: Longest unique radio run
+title: Longest substring without repeated letters
 slug: longest-unique-window
 kind: problem
 track: algorithms
@@ -12,6 +12,7 @@ tags:
   - algorithms/strings
   - algorithms/sliding-window
   - algorithms/hash-maps
+  - interviews
   - interviews/leetcode
 prerequisites:
   - sliding-window
@@ -21,34 +22,24 @@ related:
   - hash-maps
   - two-pointers
   - dp-1d
-company_signal:
-  - name: Meta
-    evidence: Candidate phone-screen reports keep listing longest unique substring as the sliding-window warmup.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: Tagged-list threads treat unique-window string problems as a default OA easy/medium.
-    year: 2025
-    confidence: high
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode sliding-window tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
-# Longest unique radio run
+# Longest substring without repeated letters
 
 ## Snapshot
 
 - Longest contiguous slice with all unique symbols. Gaps would make it a subsequence, which is a different problem.
 - Right pointer walks once. Left pointer only jumps forward, to one past the previous copy of the new symbol.
 - Store last-seen index, not just a set, so the jump is O(1).
-- Alphabet size is the space budget. Bytes → 256-slot array. General unicode → map.
+- Alphabet size is the space budget. Bytes → 256-slot array. For general Unicode, first choose code-point or grapheme segmentation; a map alone does not change what string indexing counts.
 
 ## Prompt
 
-Night-shift radios log which zone a picker entered, one letter per ping: `log = "mparkpklane"`. A replay tool wants the longest stretch of tape where no zone letter repeats, so overlapping coverage is easy to hear. Return that length.
+A text editor receives `log = "mparkpklane"`. Find the longest contiguous substring with no repeated letters and return its length. Assume lowercase ASCII letters for this example.
 
 Same shape as the famous unique-substring question. The tape is a zone log, not `"abcabcbb"`.
 
@@ -63,7 +54,7 @@ Same shape as the famous unique-substring question. The tape is a zone log, not 
 
 ## Worked approach
 
-Same live range as [sliding-window](../../patterns/sliding-window/lesson.md) (id: sliding-window). The invariant is uniqueness.
+Same live range as [Grow and shrink a live range](../../patterns/sliding-window/lesson.md) (id: sliding-window). The invariant is uniqueness.
 
 ### ELI5
 
@@ -154,7 +145,7 @@ They want at most k distinct letters. Use counts, shrink while `counts.size > k`
 - State the invariant: "log[left..right] has unique letters."
 - Ask whether they want the length or the slice, and whether the alphabet is ASCII.
 - Offer the k-distinct follow-up unprompted. It is the same skeleton with a count map.
-- If they forbid extra memory, say you cannot beat O(n²) in the worst alphabet; then they usually allow the map.
+- If memory is constrained, clarify the alphabet and input-access model. A fixed alphabet permits fixed-size state; do not claim a general lower bound without those assumptions.
 
 ## Cross-links
 

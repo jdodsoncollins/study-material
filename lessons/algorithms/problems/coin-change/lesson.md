@@ -10,6 +10,7 @@ summary: Fill a one-dimensional table of fewest tokens for each amount so greedy
 tags:
   - algorithms
   - algorithms/dynamic-programming
+  - interviews
   - interviews/leetcode
 prerequisites:
   - dp-1d
@@ -18,19 +19,9 @@ related:
   - binary-search-on-answer
   - heaps-top-k
   - dfs-backtracking
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA reports list coin-change / fewest-denominations as the standard 1D DP medium.
-    year: 2026
-    confidence: high
-  - name: Google
-    evidence: Phone-screen writeups describe unbounded-knapsack fare/coin variants as a common DP ask.
-    year: 2025
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode DP tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -47,7 +38,7 @@ status: canonical
 
 A tram hopper accepts tokens `tokens = [2, 5, 9]`. A rider owes `amount = 13`. Tokens may be reused. Return the fewest tokens that total 13, or -1 if the hopper cannot make that fare.
 
-This is coin change, told as a fare box. The set is not US coins, on purpose.
+Assume positive integer token values and a nonnegative integer amount small enough for the table. Duplicate denominations do not change the minimum.
 
 ## Recognition signals
 
@@ -62,7 +53,14 @@ This is coin change, told as a fare box. The set is not US coins, on purpose.
 
 ### ELI5
 
-Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+For every amount x, ask which token could be the final token. If token t fits and x−t is reachable, that choice uses dp[x−t]+1 tokens. Keep the smallest of those choices; leave impossible amounts unreachable.
+
+### Syntax
+
+```ts
+const dp = [0,Infinity,1,Infinity,2,1];
+console.log(dp[5] + 1); // 2 tokens make 7: 5 + 2
+```
 
 ### Then the details
 
@@ -91,7 +89,7 @@ If they also want one actual combination, keep `pick[x] = t` whenever you improv
 | --- | --- | --- | --- |
 | Recurse remaining fare | Exponential | O(amount / min token) | Memo turns it into the table |
 | 1D DP | O(amount · tokens) | O(amount) | Default |
-| Greedy | O(tokens log) | O(1) | Wrong on this set |
+| Greedy | O(k log k + k), for k denominations | O(1) | Wrong on this set |
 
 ## Walkthrough
 
@@ -105,14 +103,14 @@ If they also want one actual combination, keep `pick[x] = t` whenever you improv
 
 ### Medium
 
-2. `dp[5] = 1`. `dp[7] = dp[5]+1 = 2` (5+2), better than three 2s plus leftover.
+2. `dp[5] = 1`. `dp[7] = dp[5]+1 = 2` (5+2), while twos alone cannot make this odd amount.
 3. `dp[9] = 1`. `dp[11] = 2` (9+2). `dp[13] = min(dp[11]+1, dp[8]+1, dp[4]+1) = 3`.
 
-One optimal: 9 + 2 + 2. Greedy 9 + 5 leftover 0? 9+5=14, overshoot. Greedy 9 then 2s also lands on 3. Try amount 10 with `[6, 5, 1]`: greedy 6+1+1+1+1 vs table 5+5. That is the counterexample to say out loud.
+One optimum is 9+2+2. Largest-first happens to work for amount 13, but fails on the same denominations at amount 10: taking 9 leaves an impossible remainder 1, while 5+5 uses two tokens. A strategy must work for every input in the contract, not only the walkthrough.
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+Amount zero needs zero tokens, even with an empty token list. A positive amount with an empty list is unreachable. To return a combination as well as the count, follow saved token choices backward; each step must strictly reduce the amount.
 
 ## Pitfalls
 
@@ -125,7 +123,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Interview moves
 
-- Kill greedy first: "If they were US coins I might greedy. These are not."
+- Give the amount-10 counterexample before choosing DP; a nonstandard denomination set alone is not a proof that greedy fails.
 - Speak the cell before the loops.
 - Ask whether order matters (no) and whether a token can be reused (yes).
 - Binary search on the *count* of tokens is a worse idea here; the predicate is not simpler than the DP. Name that so they know you considered it.

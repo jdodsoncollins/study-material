@@ -1,12 +1,12 @@
 ---
 id: skip-bay
-title: Skip a neighboring bay
+title: Choose a maximum sum without adjacent items
 slug: skip-bay
 kind: problem
 track: algorithms
 difficulty: core
 estimated_minutes: 12
-summary: For each bay, the best take is that bay plus the best two-back, or skip it and keep the best so far.
+summary: For each item, compare skipping it with taking its score plus the best result before its neighbor.
 tags:
   - algorithms
   - algorithms/dynamic-programming
@@ -20,36 +20,26 @@ related:
   - coin-change
   - one-trade
   - dfs-backtracking
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA reports list house-robber / skip-adjacent as the standard 1D DP easy/medium after climb-stairs.
-    year: 2026
-    confidence: high
-  - name: Google
-    evidence: Phone-screen writeups describe adjacent-skip loot as a common linear DP.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - LeetCode Top 100 Liked (House Robber, 2026)
-  - r/leetcode 1D DP tagged threads
-updated: 2026-09-03
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
-# Skip a neighboring bay
+# Choose a maximum sum without adjacent items
 
 ## Snapshot
 
-- Bays in a line, each with a loot value. Take a subset. Adjacent bays alarm if both are taken. Maximize loot.
-- `best[i] = max(best[i-1], best[i-2] + loot[i])`. Two scalars are enough.
-- Circular bays (first and last also adjacent) is a follow-up: run the recurrence twice.
-- Greedy "always take the bigger neighbor" fails. A small bay can unlock two large ones.
+- Choose nonadjacent items from an ordered list of scores and maximize their total.
+- `best[i] = max(best[i-1], best[i-2] + scores[i])`. Two scalars are enough.
+- Circular items (first and last also adjacent) is a follow-up: run the recurrence twice.
+- Greedy "always take the bigger neighbor" fails. A small item can unlock two large ones.
 
 ## Prompt
 
-Bay loot, dollars: `loot = [6, 2, 9, 8, 1]`. Taking two neighbors trips the alarm. Return the most you can take.
+A playlist editor assigns scores `scores = [6,2,9,8,1]` to tracks in order. Choose tracks with the largest total score, without choosing adjacent tracks. Scores are nonnegative, and choosing no tracks is allowed.
 
-This is house-robber. The row is dock bays, not `[1,2,3,1]`.
+This uses the same recurrence as the nonadjacent-sum family of problems.
 
 ## Recognition signals
 
@@ -64,15 +54,22 @@ This is house-robber. The row is dock bays, not `[1,2,3,1]`.
 
 ### ELI5
 
-Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+At each position, compare two legal options: skip it and keep the previous best, or take it plus the best ending before its neighbor. Save the old previous best before updating the two rolling states.
+
+### Syntax
+
+```ts
+const bestTwoBack = 6, bestOneBack = 6, value = 9;
+console.log(Math.max(bestOneBack, bestTwoBack + value)); // 15
+```
 
 ### Then the details
 
 ```ts
-function maxBays(loot: number[]): number {
+function maxNonAdjacent(scores: number[]): number {
   let prev2 = 0;
   let prev1 = 0;
-  for (const x of loot) {
+  for (const x of scores) {
     const take = prev2 + x;
     const skip = prev1;
     prev2 = prev1;
@@ -81,11 +78,11 @@ function maxBays(loot: number[]): number {
   return prev1;
 }
 
-console.log(maxBays([6, 2, 9, 8, 1])); // 16
-console.log(maxBays([4, 4]));          // 4
+console.log(maxNonAdjacent([6, 2, 9, 8, 1])); // 16
+console.log(maxNonAdjacent([4, 4]));          // 4
 ```
 
-`prev1` is best ending at or before the last bay. `prev2` is best ending at or before the one before that.
+`prev1` is best ending at or before the last item. `prev2` is best ending at or before the one before that.
 
 ## Complexity
 
@@ -97,9 +94,9 @@ console.log(maxBays([4, 4]));          // 4
 
 ## Walkthrough
 
-`loot = [6, 2, 9, 8, 1]`
+`scores = [6, 2, 9, 8, 1]`
 
-[Take or skip this bay](viz/take.md)
+[Take or skip this item](viz/take.md)
 
 ### Easy
 
@@ -112,26 +109,26 @@ console.log(maxBays([4, 4]));          // 4
 4. 6+8=14 vs 15. Keep 15.
 5. 15+1=16 vs 15. Take 16.
 
-`6+9+1`. Check: 2+8=10, 6+8=14, 2+9+1=12. 16 wins.
+`6+9+1 = 16`, using positions 0, 2, and 4. Other legal selections include 2+8=10 and 6+8=14. The apparent 2+9+1 selection is invalid because 2 and 9 are adjacent.
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+If the first and last positions are also adjacent, solve once excluding the first and once excluding the last, then take the maximum. Handle zero and one item separately so the single item is not accidentally excluded from both runs.
 
 ## Pitfalls
 
 | Trap | What happens | Fix |
 | --- | --- | --- |
-| Greedy biggest-first | Skip a small bay you needed | Recurrence |
+| Greedy biggest-first | Skip a small item you needed | Recurrence |
 | Using `prev1` as `prev2` before copying | Off-by-one | Save `take` first |
-| Starting both scalars at `loot[0]` | Double-counts bay 0 | `prev2=0`, `prev1=0`, then the loop |
+| Starting both scalars at `scores[0]` | Double-counts item 0 | `prev2=0`, `prev1=0`, then the loop |
 | Circular without splitting | First and last both taken | Two runs, drop first or last |
 
 ## Interview moves
 
-- Speak the cell: "skip this bay, or take it plus the best from two back."
+- Speak the cell: "skip this item, or take it plus the best from two back."
 - If they add a circle, do not mutate the recurrence. Run `[0..n-2]` and `[1..n-1]`.
-- Climb-stairs is the same skeleton with `+1` instead of `+ loot[i]`.
+- Climbing-stairs counting also uses two earlier states, but adds their counts instead of maximizing a score. Define the state and recurrence separately.
 
 ## Cross-links
 

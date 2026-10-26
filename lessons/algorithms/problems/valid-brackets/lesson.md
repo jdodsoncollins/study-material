@@ -11,6 +11,7 @@ tags:
   - algorithms
   - algorithms/stacks
   - algorithms/strings
+  - interviews
   - interviews/leetcode
 prerequisites:
   - arrays-vs-linked-lists
@@ -19,19 +20,9 @@ related:
   - dfs-backtracking
   - two-pointers
   - lru-cache
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA reports list parentheses-validation as a near-universal easy.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Phone-screen writeups still use nested-tag validation as a five-minute warmup before a harder stack problem.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode stack tagged threads
-updated: 2026-09-11
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -46,9 +37,9 @@ status: canonical
 
 ## Prompt
 
-A linter walks one line of code `line = "[{()}]()"`. Every `(`, `[`, or `{` must close with the matching partner, and they must nest. Return whether the line is legal. Empty input is legal. Any closer with no opener, or a type mismatch, is illegal.
+A simplified delimiter checker reads `line = "[{()}]()"`. Every `(`, `[`, or `{` must close with the matching partner, and they must nest. Return whether the line is legal. Empty input is legal. Any closer with no opener, or a type mismatch, is illegal.
 
-Same shape as the classic bracket problem. The string is not the textbook `"()[]{}"`.
+The input contains only these six bracket characters. This is not a full source-code linter: strings, comments, escapes, and other syntax require tokenization.
 
 ## Recognition signals
 
@@ -120,7 +111,7 @@ Pop on an empty stack is a mismatch. End of tape with leftovers is a mismatch. D
 
 ## Walkthrough
 
-[Push and pop straps](viz/stack.md)
+[Push and pop brackets](viz/stack.md)
 
 ### Easy
 
@@ -138,7 +129,7 @@ Pop on an empty stack is a mismatch. End of tape with leftovers is a mismatch. D
 
 ### Hard
 
-`"[({)]"`: after `[ { (` the first closer `)` matches, then `]` sees `{` and fails. Even length, equal counts, still illegal. Leftover opens: `"(["` must fail at end.
+`"[({)]"`: the stack becomes `[`, `(`, `{`. The next character is `)`, which does not match the top `{`, so the function fails immediately. For an even-length example with matching counts, `([)]` fails because `)` sees `[`. Leftover opens: `"(["` must fail at end.
 
 ## Pitfalls
 
@@ -161,6 +152,6 @@ Pop on an empty stack is a mismatch. End of tape with leftovers is a mismatch. D
 - [The next greater is waiting on a stack](../../patterns/monotonic-stack.md) (id: monotonic-stack)
 - [Explore, undo, try the next branch](../../patterns/dfs-backtracking.md) (id: dfs-backtracking)
 - [Squeeze from both ends](../../patterns/two-pointers/lesson.md) (id: two-pointers)
-- [Scanner memory with eviction](../lru-cache/lesson.md) (id: lru-cache)
-- [Arrays versus linked lists](../../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
+- [A lookup cache with least-recently-used eviction](../lru-cache/lesson.md) (id: lru-cache)
+- [Contiguous slots versus pointer chasing](../../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
 - [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)

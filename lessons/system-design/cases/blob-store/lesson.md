@@ -1,12 +1,12 @@
 ---
 id: blob-store
-title: Camera rolls that never fit on one disk
+title: Upload large objects with resumable parts
 slug: blob-store
 kind: case-study
 track: system-design
 difficulty: core
 estimated_minutes: 20
-summary: RollKeep stores user photo and video uploads as immutable blobs; the fight is resumable upload, a tiny metadata index, and a cold path that is allowed to be slow.
+summary: Design versioned multipart uploads, verified completion, durability, and explicit read-revocation behavior.
 tags:
   - system-design
   - system-design/product-cases
@@ -22,122 +22,93 @@ related:
   - video-streaming
   - sharding
   - dns-resolution
-company_signal:
-  - name: Dropbox
-    evidence: Candidate-reported loops and prep-site lists keep "design Dropbox / Google Drive" as a mid/senior storage prompt; the real score is chunking, metadata, and sync, not a filesystem drawing.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: S3-shaped object-store prompts show up in L5/L6 backend loops as durability and multipart-upload probes.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Public S3 multipart / immutability talk
-  - Dropbox-style metadata vs block-store split in system-design roundups
-  - r/cscareerquestions storage-round writeups
-updated: 2026-09-02
+  - https://www.rfc-editor.org/rfc/rfc9110.html
+updated: 2026-10-26
 status: canonical
 ---
 
-# Camera rolls that never fit on one disk
+# Upload large objects with resumable parts
 
 ## Snapshot
 
-- Product: **RollKeep**. Users upload photos and short videos, the same job as S3 or Drive. An object is a blob. v1 is upload, download by id, list a user's day. No collaborative editing, no POSIX.
-- Blobs are **immutable**. A new take is a new id. Mutation is a metadata pointer swing.
-- Two stores: **ClipBytes** (the bytes) and **ClipCard** (who owns it, size, checksum, camera_id, t_start). Never query bytes by camera.
-- Uploads are **chunked and resumable**. A phone that walks into an elevator will drop the TCP session.
+- Separate upload-session metadata from immutable object bytes.
+- Verify parts before publishing a complete manifest.
+- A durability claim needs a failure model and a repair process.
+- Deleting metadata and revoking access to cached or signed URLs are different operations.
 
 ## What this round is actually scoring
 
-Whether you split metadata from bytes, whether an upload can restart, and what "durable" means (how many disks, which region, when the client gets a 201). Drawing a folder tree is a fail.
+Whether interrupted uploads, duplicate parts, and storage failures leave an unambiguous complete object.
 
 ## Company signal
 
-Candidate-reported Dropbox/Drive prompts and Amazon object-store prompts both live here. Confidence: **high**. Expect multipart upload, consistency of the metadata pointer, and "what if a chunk is lost."
+This is an original practice scenario. No traceable company-specific frequency evidence is supplied.
 
 ## Requirements
 
-| Functional | v1 decision |
+| Area | Requirement |
 | --- | --- |
-| Upload a clip | Resumable, 8 MiB chunks, SHA-256 of the whole |
-| Download by clip_id | 302 to a signed URL, 15 min |
-| List a camera's day | Metadata only, 1000 clips max |
-| Delete | Tombstone the card; GC bytes later |
-| Dedup | Same checksum, two cards may share bytes |
-
-| Non-functional | Budget |
-| --- | --- |
-| Cameras | 40,000 |
-| Clip size | 12 MB average |
-| Write | 40k clips/hour peak ≈ 110/s |
-| Durability | 11 nines talk, 3 replicas in-region |
-| Upload p99 | Resume, not a single 12 MB POST |
+| Upload | Resumable multipart clips with checksums |
+| Read | Authorized range reads from a completed version |
+| Publish | Incomplete uploads remain invisible as completed objects |
+| Delete | Define deletion and access-revocation behavior, including existing URLs |
 
 ## Back-of-envelope
 
-40k cameras × 12 clips/hour × 12 MB ≈ **5.8 TB/hour** ingest at peak. 140 TB/day. Keep 14 days hot ≈ 2 PB. That is not a Postgres BYTEA.
+These are illustrative workload assumptions, not production measurements.
 
-110 clips/s × 2 chunks (12/8) ≈ 220 chunk PUTs/s. Trivial for a blob fleet. The metadata writes (one row per clip) are the thing you shard: hash(`camera_id`) so a list-by-day is one shard.
+Assume 40,000 cameras each upload twelve 12 MB clips per hour. That is 480,000 clips/hour, about 133 clips/s, and 5.76 TB/hour using decimal units. Two parts per clip mean about 267 part uploads/s. Raw ingress is about 12.8 Gb/s.
 
-Bandwidth into a region: 5.8 TB/h ≈ 13 Gbps. Size the ingest VIPs for that, not for QPS.
+Fourteen days retain about 1.94 PB of raw clips, before replication or erasure-coding overhead. A durability target such as “eleven nines” cannot be derived merely from using three replicas.
 
 ## Design
 
 ### ELI5
 
-Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+Create an upload session, place verified pieces in storage, and publish one manifest naming the complete set. Readers use that manifest; they never guess whether a half-uploaded object is finished.
 
-### Then the details
+[Follow a multipart upload](viz/put.md)
 
-[put](viz/put.md)
+### Data and completion
 
-Client asks **CardAPI** for an upload session. CardAPI mints a [post-style id](../../foundations/unique-ids/lesson.md) (id: unique-ids) `clip_id`, opens a session `{clip_id, chunk_size, expected_chunks}`, returns signed PUT URLs for each chunk against **ClipBytes**.
+Give each upload a tenant, object ID, immutable version, expected length, part plan, expiry, and authorized owner. Bind a part number to its expected byte range and checksum. Replaying the same part with the same content is safe; conflicting content is rejected or explicitly replaces that part under a versioned protocol.
 
-Client PUTs chunks 0..n-1. Each PUT is idempotent on `(clip_id, n, checksum)`. A retry with the same checksum is a no-op. A retry with a different checksum is a 409.
+On completion, verify every required part, total length, checksums, and the chosen storage durability condition. Atomically publish the manifest in the metadata store. A completion retry returns the same committed version. Orphaned parts are garbage-collected only after a grace period that respects in-flight sessions.
 
-When the last chunk lands, CardAPI concatenates (logically — ClipBytes may store chunks separately and stream them in order), verifies the whole SHA, writes **ClipCard** `{clip_id, camera_id, t_start, size, sha, replica_set}`, and returns 201. Readers never see the clip until the card exists.
+Place replicas across the failure domains the promise covers, or choose an erasure code with a stated repair budget. Acknowledging two of three replicas tolerates some failures only under the specified placement, consistency, and recovery assumptions; it is not a universal durability percentage.
 
-Download: CardAPI authz, then a signed GET for the object (or a 302 to the [CDN](../../foundations/caching/lesson.md) (id: caching) if the camera is public playback). Bytes do not flow through CardAPI.
-
-Three replicas in three racks. A put is durable when two of three ack. The third catches up. That is the durability sentence; do not say "RAID" and sit down.
+Authorize reads by tenant and object version. A fifteen-minute signed URL can remain usable after the metadata entry is deleted unless the serving layer supports revocation. Choose shorter lifetimes or an online authorization check when the product needs faster revocation. Cross-tenant deduplication must not reveal whether another tenant owns particular content.
 
 ## Tradeoffs
 
-| Choice | Gain | Cost |
+| Choice | Benefit | Cost |
 | --- | --- | --- |
-| Immutable blobs | Simple replication, cheap dedup | "Edit" is a new id |
-| Metadata separate | List-by-day is a small query | Two systems to keep in sync |
-| Client-side chunking | Survives Wi-Fi | Client complexity, abort GC |
-| Shared bytes on same SHA | Saves disk | Privacy: two tenants must not learn they matched |
-| Sync 2-of-3 | Fast 201 | A rack loss can still be ok; two racks is not |
+| Larger parts | Fewer requests and metadata entries | More bytes retransmitted after a failed part |
+| Replication | Simple reads and repair | Storage overhead |
+| Erasure coding | Lower storage overhead | More complex reconstruction and repair |
+| Signed URLs | Direct byte serving | Revocation limited by URL/cache policy |
 
 ## Failure modes
 
-- Client dies at chunk 3 of 8: session expires in 24h, GC deletes orphan chunks. Card never published.
-- ClipBytes node dies mid-put: retry the signed URL (or a new one for a replica). Idempotent PUTs.
-- Card written, replica 3 never got bytes: repair job from replica 1/2. Reads prefer a healthy replica.
-- Checksum mismatch at finalize: 422, do not publish a card, keep the session open for retry.
+- A response is lost after a part is stored: query or replay that part safely.
+- Completion races a final part: publish only after verified durability is established.
+- A repair backlog grows: alert on redundancy loss and recovery time, not just successful reads.
+- Delete races a download: apply the documented revocation policy.
 
 ## Follow-ups an interviewer may ask
 
-### Easy
+**Easy:** one of two parts is missing. Explain why a complete manifest cannot yet be published.
 
-Capacity and the cache: numbers first, then where a miss goes.
+**Medium:** a client retries part 2 with a different checksum. Show how the conflict is detected.
 
-### Medium
+**Hard:** a region fails while repair is behind. Explain which acknowledged objects remain recoverable and what evidence supports the durability claim.
 
-- Cross-region: async replicate cards and bytes; reads are sticky to the home region in v1.
-- Video transcode: that is a [job](../job-scheduler/lesson.md) (id: job-scheduler) on finalize, output a second blob, pointer on the card.
-- POSIX sync / block-level: out of v1. That is a different product (and a longer round).
-
-### Hard
-
-The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
-- [IDs that sort without a coordinator](../../foundations/unique-ids/lesson.md) (id: unique-ids)
+- [Time-ordered IDs with per-worker sequences](../../foundations/unique-ids/lesson.md) (id: unique-ids)
 - [Remembering the expensive answer nearby](../../foundations/caching/lesson.md) (id: caching)
-- [Chunked playback from ingest to CDN](../video-streaming/lesson.md) (id: video-streaming)
+- [Publish renditions and serve adaptive playback](../video-streaming/lesson.md) (id: video-streaming)
 - [Splitting a keyspace so one box is not the product](../../foundations/sharding/lesson.md) (id: sharding)
 - [A name is not an address](../../../cs/dns-resolution/lesson.md) (id: dns-resolution)

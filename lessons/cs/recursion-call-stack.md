@@ -11,6 +11,7 @@ tags:
   - cs
   - cs/data-structures
   - cs/os
+  - interviews
   - interviews/leetcode
 prerequisites:
   - big-o
@@ -19,16 +20,9 @@ related:
   - os-memory
   - processes-threads
   - big-o
-company_signal:
-  - name: Google
-    evidence: Tree/backtracking phone screens still ask candidates to name stack depth and to rewrite a recursive walk as an explicit stack when n is large.
-    year: 2026
-    confidence: high
-sources_consulted:
-  - Undergrad call-stack / activation-record notes
-  - r/leetcode threads on stack-overflow on deep left-skewed trees
-  - Language notes that JS/TS does not guarantee tail-call optimization
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -39,11 +33,11 @@ status: canonical
 - A function call pushes a **frame**: locals, arguments, return address. Return pops it.
 - Recursion is that stack growing with your problem, not a different machine.
 - Time often follows the *call tree*. Space often follows the *deepest chain* still live.
-- JS/TS engines do not promise tail-call optimization. A "tail recursive" loop can still overflow.
+- Tail-call optimization is not portable across JavaScript runtimes; TypeScript does not add it. A "tail recursive" loop can still overflow.
 
 ## Why it shows up in interviews
 
-Tree, graph, and backtracking prompts are recursion in costume. Interviewers listen for two sentences: what is the base case, and how deep can this go. "This is O(n) space because of the stack" is the line that separates people who drew the frames from people who only wrote the pretty function.
+Tree, graph, and backtracking prompts are recursion in costume. Interviewers listen for two sentences: what is the base case, and how deep can this go. "The stack uses O(height) frames" is the line that separates people who drew the frames from people who only wrote the pretty function.
 
 ## Core idea
 
@@ -66,13 +60,21 @@ fib(5)
   ... overlapping subtrees, no sharing
 ```
 
-Memoization collapses the DAG. An explicit stack does the same walk without the language's call limit.
+Memoization reuses answers to repeated states; it does not remove the dependency graph or the recursive depth. An explicit stack does the same walk without the language's call limit.
 
 ## Worked example
 
-### Easy / medium / hard
+### Easy
 
-Walk the small case in the sample, then the miss, then the follow-up they name in Interview moves.
+Predict how many folders the sample visits: `src`, `app`, `index`, and `lib`, for a total of four.
+
+### Medium
+
+Trace the live calls at `index`: `count(src) → count(app) → count(index)`. There are three frames, although four nodes are visited overall.
+
+### Hard
+
+Replace this tree with a chain of 100,000 folders. The work stays linear, but a recursive implementation may exceed the runtime’s stack limit. Explain how an explicit stack avoids that limit.
 
 Count folders in a nested filesystem tree. Each folder has a name and children.
 
@@ -99,18 +101,18 @@ console.log(count(src)); // 4
 | Input shape | Time | Extra space (stack) | Risk |
 | --- | --- | --- | --- |
 | Balanced tree, n nodes | O(n) | O(log n) | Fine |
-| Linked-list-shaped tree | O(n) | O(n) | Stack overflow at ~10^4 in many VMs |
-| Naive fib(n) | O(φ^n) | O(n) | Time dies first |
+| Linked-list-shaped tree | O(n) | O(n) | Stack limit depends on runtime, frame size, and configuration |
+| Naive fib(n) | O(φ^n) | O(n) | Exponential work grows quickly |
 | Memo fib(n) | O(n) | O(n) heap + O(n) stack | Stack still O(n) unless you loop |
 
-Iterative rewrite: push folders onto `stack: Folder[]` yourself. Same O(n) time, same O(height) space, but the heap array can be huge and you control it.
+An explicit stack avoids the language call-stack limit, but its space depends on what it stores. Pushing all children of a general tree can require O(n) pending nodes (consider a root with n−1 children). To retain O(height) traversal state, store one frame per ancestor with the next child index.
 
 ## Common mistakes
 
 | Trap | What happens | Fix |
 | --- | --- | --- |
 | No base case | Infinite recursion | Write the empty-node return first |
-| Recursing on a graph without `seen` | Cycle → blow the stack | See [trees-graphs](./trees-graphs.md) (id: trees-graphs) |
+| Recursing on a graph without `seen` | Cycle → blow the stack | See [Trees are graphs with a promise](./trees-graphs.md) (id: trees-graphs) |
 | Quoting O(1) space for DFS | You hid O(height) in the call stack | Count frames as memory |
 | Trusting tail-call in TypeScript | Overflow on a 20k-long spine | Write a loop |
 
@@ -123,7 +125,7 @@ If they ask to convert to iteration: "I push a frame object `{ node, state }` on
 ## Cross-links
 
 - [Trees are graphs with a promise](./trees-graphs.md) (id: trees-graphs)
-- [Virtual memory is a lie the CPU believes](./os-memory.md) (id: os-memory)
+- [Virtual addresses, physical pages, and locality](./os-memory.md) (id: os-memory)
 - [Address spaces versus shared work](./processes-threads.md) (id: processes-threads)
 - [Big-O as a conversation](./big-o.md) (id: big-o)
 - [Locks buy correctness, not speed](./locks-and-concurrency.md) (id: locks-and-concurrency)

@@ -1,6 +1,6 @@
 title: Map + list
 steps:
-  - caption: "The map finds the node in O(1)."
+  - caption: "The hash-table model gives expected constant-time lookup; JavaScript Map does not mandate that implementation."
     nodes: [get, map, node]
   - caption: "Use moves that node to the front."
     nodes: [node, front]

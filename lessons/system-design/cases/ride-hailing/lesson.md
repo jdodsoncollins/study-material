@@ -1,12 +1,12 @@
 ---
 id: ride-hailing
-title: Matching and surge, not a map with cars on it
+title: Reserve drivers before confirming a match
 slug: ride-hailing
 kind: case-study
 track: system-design
 difficulty: deep
 estimated_minutes: 22
-summary: Driftway is a matching problem plus a pricing engine; drawing cars on a map is the shallow version senior interviewers bounce.
+summary: Use approximate locations for candidates and authoritative reservations for offers and trip assignment.
 tags:
   - system-design
   - system-design/product-cases
@@ -24,127 +24,96 @@ related:
   - rate-limiter
   - interview-framework
   - payment-idempotency
-company_signal:
-  - name: Uber
-    evidence: Candidate-reported senior loops (prep-site frequency plus loop writeups) say "design Uber" is too shallow; the real ask is the surge-pricing / matching engine.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Hello Interview / Design Gurus ride-hailing notes (consulted, not copied)
-  - r/cscareerquestions and r/OfferEngineering Uber senior reports
-  - meta/RESEARCH.md frequency table
-updated: 2026-09-02
+  - https://www.postgresql.org/docs/current/transaction-iso.html
+updated: 2026-10-26
 status: canonical
 ---
 
-# Matching and surge, not a map with cars on it
+# Reserve drivers before confirming a match
 
 ## Snapshot
 
-- Product: **Driftway**. Riders request a trip; drivers get an offer; a **SurgeBoard** prices the hex.
-- v1 is point-to-point, one region, no pooling. The map is a client. The system is **geo-index + match + price + trip state**.
-- Senior reports (Uber-shaped) bounce candidates who stop at "websocket the nearest car." The interesting engine is **how a hex's multiplier moves**, and how matching still terminates when demand spikes.
-- Location pings are a firehose. You store the latest ping, not the whole trail, on the matching path.
+- Location updates provide approximate candidates, not authoritative availability.
+- Match reservation and acceptance require atomic state transitions.
+- Offer expiry must reject stale accepts without releasing a newer offer.
+- Nearby search, dispatch, trip state, and pricing have different consistency needs.
 
 ## What this round is actually scoring
 
-Can you pick a geo shard, bound the match loop, and talk about surge as a control system (stability, gaming, fairness) rather than a lookup table? Depth beats a fleet of microservices named after cars.
+Whether two riders or delayed events can assign the same driver to conflicting trips.
 
 ## Company signal
 
-Candidate-reported Uber senior loops, plus prep-site frequency, say "design Uber" is too shallow and the surge / dispatch engine is the real ask. Confidence: **medium** (repeated reports, not a huge independent pile). Label it as candidate-reported, not official.
+This is an original practice scenario. No traceable company-specific frequency evidence is supplied.
 
 ## Requirements
 
-| Functional | v1 decision |
+| Area | Requirement |
 | --- | --- |
-| Rider requests a trip | Pickup hex, dropoff, product type |
-| Driver offers | One offer at a time, 15s TTL |
-| Surge multiplier | Per hex, published every few seconds |
-| Trip lifecycle | `requested → offered → accepted → enroute → complete` |
-| Pooling, scheduled, cross-city | Non-goals |
-
-| Non-functional | Budget |
-| --- | --- |
-| Match p99 (first offer) | 3 s |
-| Location ping | 4 s while on shift |
-| Surge update | 5 s publish |
-| Double-assign a driver | Never |
-| Payment | Hand off to Till; do not design the ledger here |
+| Locate | Show approximate nearby available drivers |
+| Offer | Reserve a driver for at most one active offer in this scenario |
+| Accept | Confirm only a current, authorized offer |
+| Timing | Target a first offer within three seconds; driver acceptance has a separate timeout |
 
 ## Back-of-envelope
 
-2 million trips/day ≈ 23/s average, **~230/s** peak city-wide. That is small. The firehose is pings: 80k on-shift drivers × 1 ping/4s = **20k/s** location writes. Riders opening the map: 50k concurrent viewers × 1 ping/8s ≈ 6k/s.
+These are illustrative workload assumptions, not production measurements.
 
-Match QPS follows requests (~230/s peak), but each request may query a neighboring set of hexes and 20 candidate drivers. CPU, not disk.
+Assume one million online drivers update location every five seconds: 200,000 updates/s. At 100 bytes per update, raw ingress is about 20 MB/s before protocol and replication overhead.
 
-Surge: thousands of hexes, a tiny time series. Cheap to store, easy to get *wrong* as a control loop.
+Search load depends on ride requests and candidates examined, not just location updates. Downtown cells can be much hotter than the geographic average.
 
 ## Design
 
 ### ELI5
 
-Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+Use recent locations to find possible drivers. Then reserve one driver's authoritative availability before sending an offer. A driver's reply refers to that specific offer, so an old reply cannot accept a newer or expired one.
 
-### Then the details
+[Trace reservation and acceptance](viz/match.md)
 
-[match](viz/match.md)
+### Search and transitions
 
-**GeoHex** shards the city (H3-style, ~500 m). Each hex has a **MatchBroker** owner (consistent hash). Driver pings update `driver:{id} → {hex, loc, status}` in an in-memory map plus a short TTL store. Idle drivers are in a per-hex set.
+Maintain an approximate geographic index with timestamped positions. Expand the search area when necessary, filtering stale locations. A driver moving between cells must still have one authoritative availability record independent of the cell index.
 
-Request path:
+Atomically transition that record from `idle` to `offered(offer_id, expiry, generation)` before dispatching the offer. Two matchers racing for the same driver cannot both reserve it. Persist delivery intent so a crash after reservation can recover or expire the offer.
 
-1. Rider request lands on the pickup hex's broker.
-2. Broker gathers idle drivers in that hex + neighbors (k-ring), filters product type, ranks by ETA.
-3. Offer goes to driver 1. 15s timer. Reject or timeout → driver 2.
-4. Accept: compare-and-set driver status `idle → busy`. If CAS fails, the driver was stolen; continue. This is the [idempotency](../payment-idempotency/lesson.md) (id: payment-idempotency) cousin: at-least-once offers, exactly-one assignment.
+Acceptance verifies driver identity, current offer ID, generation, expiry, and the trip's state. Commit the driver/trip assignment through a transaction or an explicit coordinated protocol with recovery. A compare-and-set on the driver alone is insufficient if the trip can already be assigned elsewhere.
 
-**SurgeBoard** is a separate loop, not a line inside MatchBroker:
+Expiry releases only the matching current offer generation. It must not release a later offer created after a delayed timer. Retries carry stable operation IDs. Nearby map updates can remain approximate even while assignment is strict.
 
-- Input: requests/min and idle drivers/min per hex (and neighbors).
-- Output: multiplier `m` in [1.0, 5.0], smoothed (do not jump 1.0 → 4.2 in one tick).
-- Publish to a snapshot the app reads. Matching *uses* `m` to decide whether to wait for more drivers or to shed riders with a high quote.
-
-Do not "set price = demand/supply." That oscillates. Talk in terms of a damped controller and a max step per 5s tick. Mention gaming: drivers going offline at the hex border, riders walking 200 m. Neighbor smoothing exists to make that less profitable.
-
-Trip complete: enqueue billing to Till with an idempotency key `trip_id`.
+Pricing uses separately defined inputs, update cadence, and product constraints. A multiplier in a practice example is a policy assumption, not evidence of a particular company's algorithm.
 
 ## Tradeoffs
 
-| Choice | Gain | Cost |
+| Choice | Benefit | Cost |
 | --- | --- | --- |
-| Hex-owned broker vs global matcher | Locality, shard by city | Airport hex is a hotspot |
-| Offer waterfall vs broadcast to 10 drivers | No thundering accept | Extra seconds of wait |
-| Surge as a snapshot vs computed at request | Stable quote on the client | 5s stale price |
-| Store every ping vs latest-only | Matching stays small | You need a different store for "trail" / fraud |
+| Approximate location index | Fast nearby search | Stale or duplicate candidates |
+| Authoritative reservation | Prevents concurrent offers to one driver | Coordination and recovery work |
+| Sequential offers | Simpler reservation model | Longer time if drivers decline |
+| Multiple concurrent offers | Faster response opportunities | More complex cancellation and winner selection |
 
 ## Failure modes
 
-- Airport hex melts: split into sub-hexes, or add a queue of riders (a *virtual* hex) so the broker does not scan 3,000 idle drivers on every request.
-- Surge oscillation: cap `Δm` per tick, include neighbors, never use a single-tick ratio.
-- Broker death: pings have TTL; another box takes the hex; in-flight offers timeout and retry. See [queues-delivery](../../foundations/queues-delivery/lesson.md) (id: queues-delivery).
-- Double accept: CAS on driver status; loser gets "offer expired."
+- Two riders choose the same candidate: one authoritative reservation wins.
+- An old offer is accepted after expiry: reject by offer identity and generation.
+- A reservation succeeds but notification fails: retry delivery or expire it under the stored policy.
+- Trip and driver states diverge: reconcile using the durable assignment operation, not map position.
 
 ## Follow-ups an interviewer may ask
 
-### Easy
+**Easy:** two requests try to reserve the same idle driver. Name the atomic transition.
 
-Capacity and the cache: numbers first, then where a miss goes.
+**Medium:** the driver's location crosses a cell boundary while an offer is active. Explain why ownership cannot live only in the spatial index.
 
-### Medium
+**Hard:** an old expiry timer fires after a new offer is created. Show the compare condition that keeps the new offer intact.
 
-- Pooling: a second matcher on overlapping routes, different SLA. Do not bolt it onto v1.
-- Fraud / GPS spoof: a scoring service off the 3s path.
-- Why this is not "design Uber": because the map, chat, and payments are other rounds. Stay on match + surge.
-
-### Hard
-
-The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Splitting a keyspace so one box is not the product](../../foundations/sharding/lesson.md) (id: sharding)
 - [At-least-once, idempotency, and the dead-letter lane](../../foundations/queues-delivery/lesson.md) (id: queues-delivery)
-- [Making a double-click charge once](../payment-idempotency/lesson.md) (id: payment-idempotency)
-- [Token buckets and sliding windows at the edge](../rate-limiter/lesson.md) (id: rate-limiter)
+- [Make a payment retry refer to one operation](../payment-idempotency/lesson.md) (id: payment-idempotency)
+- [Enforce request budgets across servers](../rate-limiter/lesson.md) (id: rate-limiter)
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)
-- [CAP as a conversation, not a religion](../../foundations/cap-and-consistency.md) (id: cap-and-consistency)
+- [Consistency promises during failures](../../foundations/cap-and-consistency.md) (id: cap-and-consistency)

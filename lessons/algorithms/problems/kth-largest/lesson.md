@@ -6,10 +6,11 @@ kind: problem
 track: algorithms
 difficulty: intro
 estimated_minutes: 10
-summary: Stream scores through a min-heap of size k so the root is the k-th largest without sorting the whole hour.
+summary: Keep the k largest observed values and compare a simple sorted buffer with a scalable min-heap.
 tags:
   - algorithms
   - algorithms/heaps
+  - interviews
   - interviews/leetcode
 prerequisites:
   - heaps-top-k
@@ -18,19 +19,9 @@ related:
   - binary-search-on-answer
   - two-pointers
   - hash-maps
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA reports list k-th largest / top-k as a default heap question.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Phone-screen writeups describe k-th largest in a stream as a common follow-up after a static sort.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode heap tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -62,12 +53,23 @@ This is k-th largest. The numbers are not a textbook random array.
 
 ### ELI5
 
-TypeScript has no stdlib heap. In the room, say so, then keep a tiny sorted buffer of size k (fine for the board) or sketch the heap.
+Keep only the k largest values seen so far. The smallest retained value is the current k-th largest. A larger arrival replaces it; smaller arrivals cannot affect the answer.
+
+### Syntax
+
+```ts
+const winners = [6,18,31];
+winners.push(44);
+winners.sort((a,b) => a-b);
+winners.shift();
+console.log(winners[0]); // 18: new third largest
+```
 
 ### Then the details
 
 ```ts
 function kthBusiest(scores: number[], k: number): number {
+  if (!Number.isInteger(k) || k < 1 || k > scores.length) throw new Error("Invalid k");
   const buf: number[] = [];
   for (const s of scores) {
     buf.push(s);
@@ -82,14 +84,14 @@ console.log(kthBusiest([31, 6, 18], 1));                 // 31
 
 ```
 
-The sort-per-insert is O(n k log k). Swap in a real min-heap for O(n log k). The *logic* is identical: drop the smallest of the k winners.
+The sort-per-insert is O(n k log(k + 1)). Swap in a real min-heap for O(n log(k + 1)). The *logic* is identical: drop the smallest of the k winners.
 
 ## Complexity
 
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
 | Sort descending, pick `[k-1]` | O(n log n) | O(n) | Fine if they allow it |
-| Size-k min-heap | O(n log k) | O(k) | Default |
+| Size-k min-heap | O(n log(k + 1)) | O(k) | Default |
 | Quickselect | O(n) average, O(n²) worst | O(1) extra | One-shot, mutates the array |
 
 ## Walkthrough
@@ -112,7 +114,7 @@ k-th largest is 25. Check: sorted descending `44, 31, 25, 18, 18, 9, 6`. Yes.
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+For k = n, the answer is the minimum; for k = 1, it is the maximum. k must be an integer in 1..n, so an empty input has no valid k. The sorted buffer is a teaching step; use the heap from heaps-top-k when the O(n log k) bound is required.
 
 ## Pitfalls
 
@@ -128,7 +130,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 - Ask: k-th largest value, or k-th distinct? 1-indexed from the top?
 - Offer sort first, then upgrade to a heap when they mention n = 10^7, k = 10.
 - If they add "as scores stream in, report after each," the size-k heap is already online.
-- Binary search on the answer also works (count how many scores ≥ mid) in O(n log range). Mention it if the values are huge and k is irrelevant.
+- Binary search on the answer also works (count how many scores ≥ mid) in O(n log range). Its usefulness depends on the integer range; a huge range increases the number of feasibility tests.
 
 ## Cross-links
 

@@ -21,19 +21,9 @@ related:
   - trees-graphs
   - dfs-backtracking
   - number-of-islands
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA reports list binary-tree level-order as the default BFS-on-a-tree easy.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Phone-screen writeups treat layer-by-layer tree print as the BFS warmup before zigzag / right-side view.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - LeetCode Top 100 Liked (Binary Tree Level Order Traversal, 2026)
-  - r/leetcode tree tagged threads
-updated: 2026-09-03
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -75,7 +65,14 @@ This is level-order. The values are not `[3,9,20,null,null,15,7]`.
 
 ### ELI5
 
-Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+Process one whole level at a time. Put each node’s value in the current row and its children in a separate next-level list. Replace the queue only after the current level is complete.
+
+### Syntax
+
+```ts
+const level = [8], nextLevel = [3,12];
+console.log([level,nextLevel]); // two separate depth groups
+```
 
 ### Then the details
 
@@ -111,14 +108,14 @@ console.log(briefings(tree));
 console.log(briefings(null));
 ```
 
-`n = q.length` is the layer fence. Without it you drain the whole tree in one row.
+This implementation separates current-level q from next, which preserves the layer boundary. In a single growing queue, snapshot the current level’s end before adding children.
 
 ## Complexity
 
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
-| BFS by layer | O(n) | O(width) | Default |
-| DFS into `out[depth]` | O(n) | O(height) extra | Fine if they want recursion |
+| BFS by layer | O(n) | O(width) auxiliary + O(n) output | Default |
+| DFS into `out[depth]` | O(n) | O(height) auxiliary + O(n) output | Fine if they want recursion |
 
 ## Walkthrough
 
@@ -139,7 +136,7 @@ Three briefings.
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+For a chain of nodes, each output row contains one value, and the queue stays small. For a wide final level, queue space grows with that width. An empty tree returns []; repeated values stay in their original positions and are not deduplicated.
 
 ## Pitfalls
 
@@ -159,6 +156,6 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 ## Cross-links
 
 - [Expand level by level](../../patterns/bfs/lesson.md) (id: bfs)
-- [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)
+- [Trees are graphs with a promise](../../../cs/trees-graphs.md) (id: trees-graphs)
 - [Explore, undo, try the next branch](../../patterns/dfs-backtracking.md) (id: dfs-backtracking)
 - [Land clusters on a map](../number-of-islands/lesson.md) (id: number-of-islands)

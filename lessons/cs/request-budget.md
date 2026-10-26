@@ -11,6 +11,7 @@ tags:
   - cs
   - cs/networking
   - cs/concurrency
+  - interviews
   - interviews/system-design
 prerequisites:
   - http-and-tcp
@@ -21,15 +22,10 @@ related:
   - file-download
   - rate-limiter
   - http-and-tcp
-company_signal:
-  - name: Meta
-    evidence: Client and backend screens ask why a page that fires 200 requests on load fails, and what a pool or a gate does about it.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Browser per-host connection limits and HTTP/2 stream behavior
-  - 429 Retry-After and client pool writeups
-updated: 2026-09-25
+  - https://www.rfc-editor.org/rfc/rfc9110.html
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -37,9 +33,9 @@ status: canonical
 
 ## Snapshot
 
-- Browsers will not actually run 200 GETs at once. They queue, stall, or fail. You should queue on purpose.
+- Transport concurrency limits vary with browser and protocol. Bound application work deliberately instead of relying on an unspecified browser limit.
 - A **budget** is an integer: how many requests may be in flight. Everyone else waits on a line.
-- The budget is per host, not global. Eight calls to RollKeep plus eight to an analytics host are two budgets.
+- Use per-origin limits for downstream pressure and, when needed, a global cap for memory, CPU, or radio usage. Prioritize visible content over background work.
 - `429` and `503` mean "slow down," not "try all of them again immediately." Honor `Retry-After` when it is there.
 - Cancel the waiters when the user leaves. A queue that outlives the screen is how you saturate the radio after the page is gone.
 
@@ -70,10 +66,12 @@ in flight: 0 1 2
 waiting:   3 4 5 6 7
 ```
 
-This is the same shape as a semaphore. The number is the product decision. 3 is a fine mobile default. 32 can be fine on HTTP/2 to one origin if you measured it. "Unlimited" is not a number.
+This is the same shape as a semaphore. The number is the product decision. A cap of 3 is the example here, not a universal mobile recommendation. Measure latency, memory, and error rates to tune it. "Unlimited" is not a number.
 
 ```ts
 function runBudget(jobs: number, budget: number): number[][] {
+  if (!Number.isSafeInteger(jobs) || jobs < 0 || !Number.isSafeInteger(budget) || budget < 1)
+    throw new Error("Invalid budget");
   const waves: number[][] = [];
   for (let i = 0; i < jobs; i += budget) {
     const wave: number[] = [];
@@ -96,27 +94,29 @@ The waves above are the picture, not the implementation. A real pool starts the 
 
 ### Medium
 
-Part 2 returns `429` with `Retry-After: 2`. That slot stays occupied by the retry timer. You do not immediately launch part 3 into a host that just told you to stop. After the pause, part 2 retries in that same slot.
+Part 2 returns `429` with `Retry-After: 2`. Pause new starts for the affected rate-limit scope until its cooldown expires. Holding only this request’s slot would still let other slots send traffic. Release the network slot while waiting, then requeue the retry under the same cap and cooldown. Retry-After may be a number of seconds or an HTTP date.
 
 ### Hard
 
-The user backgrounds the app with 5 parts still queued. Abort the queue. In-flight bodies stop. Finished parts stay on disk. Coming back resumes the missing indexes under the same budget.
+The user backgrounds the app with five parts queued. Apply the product’s lifecycle policy: cancel queued work and request cancellation of active transfers, or hand approved work to a supported background-transfer mechanism. Aborting a queue alone does not stop active requests. Preserve only verified durable ranges and resume the missing ones later.
+
+**Try it:** if each of three requests takes 10 ms, does a concurrency cap of three enforce three requests per second? No: it can start far more over a second. Use a separate rate policy when the contract is about rate.
 
 ## Common mistakes
 
-- `Promise.all` of every thumb on a 400-photo grid. You will hit the per-host cap and time out the ones that mattered.
-- Treating the budget as a retry policy. The budget says how many. [chunk-retry](./chunk-retry.md) (id: chunk-retry) says whether a given part may try again.
-- One global pool for every host. A slow analytics call then blocks the file you actually need.
+- Starting every thumbnail on a 400-photo grid at once can waste resources and delay visible content. Use priorities and bounded concurrency.
+- Treating the budget as a retry policy. The budget says how many. [One dead chunk is not a dead file](./chunk-retry.md) (id: chunk-retry) says whether a given part may try again.
+- Using only an undifferentiated global queue. Separate priorities and per-origin limits can keep analytics from blocking visible downloads; a global resource ceiling may still be useful.
 - Ignoring `429` and launching the rest of the queue anyway. That is a retry storm.
 
 ## How to talk about it
 
-"I keep an in-flight cap per origin, queue the rest, and start the next job when a slot frees. On `429` I hold the slot for `Retry-After` instead of refilling it. Leaving the screen aborts waiters. The server still has its own limiter; mine is so I do not become the incident."
+"I keep an in-flight cap per origin, queue the rest, and start the next job when a slot frees. On `429` I apply Retry-After to the affected queue scope, then requeue eligible retries. Leaving the screen aborts waiters. The server still enforces its own rate limits. My pool controls local concurrency, not requests per second."
 
 ## Cross-links
 
 - [A large file is a list of ranges](./ranged-download.md) (id: ranged-download)
 - [One dead chunk is not a dead file](./chunk-retry.md) (id: chunk-retry)
 - [A download is bytes plus a name](./file-download.md) (id: file-download)
-- [Token buckets and sliding windows at the edge](../system-design/cases/rate-limiter/lesson.md) (id: rate-limiter)
+- [Enforce request budgets across servers](../system-design/cases/rate-limiter/lesson.md) (id: rate-limiter)
 - [HTTP is a conversation, TCP is the pipe](./http-and-tcp.md) (id: http-and-tcp)

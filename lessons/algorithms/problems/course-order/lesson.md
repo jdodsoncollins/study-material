@@ -6,10 +6,11 @@ kind: problem
 track: algorithms
 difficulty: core
 estimated_minutes: 12
-summary: Peel directed modules with indegree zero until none remain; a leftover node is a cycle and the catalog is impossible.
+summary: Emit directed modules with indegree zero; if not all modules can be emitted, the graph contains a cycle.
 tags:
   - algorithms
   - algorithms/graphs
+  - interviews
   - interviews/leetcode
 prerequisites:
   - topological-sort
@@ -19,19 +20,9 @@ related:
   - bfs
   - dfs-backtracking
   - union-find
-company_signal:
-  - name: Amazon
-    evidence: Candidate reports list course-schedule / return-the-order as the standard topo-sort coding prompt.
-    year: 2026
-    confidence: high
-  - name: Google
-    evidence: Onsite writeups describe build-order and task-prereq graphs in the same family.
-    year: 2025
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode course-schedule tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -63,7 +54,14 @@ This is course-order / topo sort. The numbers are not a textbook CS-degree plann
 
 ### ELI5
 
-Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+Count unfinished prerequisites for every module. Begin with all zero-count modules, including isolated ones. Completing a module reduces its successors’ counts. If fewer than n modules finish, a directed cycle prevents a full order.
+
+### Syntax
+
+```ts
+const indegree = [0,1,1,2,0];
+console.log(indegree.flatMap((n,id) => n === 0 ? [id] : [])); // [0,4]
+```
 
 ### Then the details
 
@@ -78,8 +76,8 @@ function moduleOrder(n: number, need: [number, number][]): number[] {
   const q: number[] = [];
   for (let i = 0; i < n; i++) if (indeg[i] === 0) q.push(i);
   const order: number[] = [];
-  while (q.length) {
-    const cur = q.shift()!;
+  for (let head = 0; head < q.length; head++) {
+    const cur = q[head];
     order.push(cur);
     for (const nxt of adj[cur]) {
       indeg[nxt] -= 1;
@@ -124,7 +122,7 @@ Add `[3, 0]` and 0 never reaches indegree 0 after the first pass. Peel length < 
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+Add edge 3→0 to the prompt. Only isolated module 4 can be removed; the remaining modules depend on a cycle, so return []. For n = 0, [] is also a valid empty order. If callers need to distinguish those cases, return a separate success flag. Assume valid endpoint IDs.
 
 ## Pitfalls
 
@@ -148,6 +146,6 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 - [Expand level by level](../../patterns/bfs/lesson.md) (id: bfs)
 - [Explore, undo, try the next branch](../../patterns/dfs-backtracking.md) (id: dfs-backtracking)
 - [Cluster membership in nearly constant time](../../patterns/union-find/lesson.md) (id: union-find)
-- [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)
+- [Trees are graphs with a promise](../../../cs/trees-graphs.md) (id: trees-graphs)
 - [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)
 - [How to run a pattern-first loop](../../strategy/pattern-first-prep.md) (id: pattern-first-prep)

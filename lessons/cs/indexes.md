@@ -6,11 +6,12 @@ kind: concept
 track: cs
 difficulty: core
 estimated_minutes: 14
-summary: An index is extra storage that turns a scan into a seek; you pay for it on every write, and the wrong index is worse than none.
+summary: An index can narrow a search, but its benefit depends on query shape, data distribution, result size, and maintenance cost.
 tags:
   - cs
   - cs/databases
   - cs/data-structures
+  - interviews
   - interviews/system-design
 prerequisites:
   - hashing-internals
@@ -21,16 +22,12 @@ related:
   - transactions-isolation
   - sharding
   - two-sum
-company_signal:
-  - name: Amazon
-    evidence: Service-design and backend screens still ask "what index would you add" and "why did this write get slower after the index."
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - B-tree vs hash index notes from database courses
-  - Hello Interview / system-design talks on secondary indexes and write amplification
-  - Query-plan intuition (seek vs seq scan) as used in interview debriefs
-updated: 2026-09-02
+  - https://www.postgresql.org/docs/current/indexes-multicolumn.html
+  - https://www.postgresql.org/docs/current/indexes-index-only-scans.html
+  - https://www.postgresql.org/docs/current/indexes-partial.html
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -38,78 +35,86 @@ status: canonical
 
 ## Snapshot
 
-- A table without a useful index is a heap you scan. An index is a sorted (or hashed) copy of *some* columns plus a pointer back to the row.
-- **B-tree** indexes answer range and equality. **Hash** indexes answer equality only.
-- Every write updates the table *and* each index that mentions a changed column.
-- Selectivity matters: an index on `status` with two values often loses to a sequential scan.
+- An index stores searchable keys with a way to locate the corresponding rows.
+- B-tree indexes support equality, ordered access, and ranges; hash indexes target equality.
+- Indexes cost storage and maintenance on writes. Their value depends on the queries and data distribution.
+- Use a query plan and measurements to check whether the database benefits from an index.
 
 ## Why it shows up in interviews
 
-"The listings page is slow" is a database round in disguise. They want you to ask which columns appear in `WHERE`, `JOIN`, and `ORDER BY`, then name an index, then name the write cost. "Just add an index" without a workload is the junior move.
-
-This is the same idea as a hash map in [two-sum](../algorithms/problems/two-sum/lesson.md) (id: two-sum): precompute a lookup so you do not nest-scan.
+A slow inbox query is an access-pattern question: which rows does it filter, how are they ordered, and how many does it return? An index proposal should answer those questions and explain its write and storage costs.
 
 ## Core idea
 
 ### ELI5
 
-A used bookstore. The shelves are the heap (arrival order). The card catalog is an index: author → shelf slot. Binary-search the cards (B-tree), or hash the author to a drawer (hash index).
+Think of a separate list of message references sorted by folder and received time. To read recent messages from one folder, first find that folder's section, then scan the relevant range. Avoid rereading unrelated folders.
 
-```
-row heap:  [row 9][row 3][row 18]...
-index on (yard, arrived_at):
-  (east, 09:01) → row 2
-  (east, 09:07) → row 0
-  (west, 08:44) → row 1
-```
+An index on `(folder, received_at)` is well suited to equality on folder followed by a time range or order. Leading columns matter, but “a later column can never use the index” is too strong: a planner may scan it or use optimizations such as skip scan, depending on the engine and distribution.
 
-A **covering** index has every column the query needs, so you never touch the heap. A **composite** index on `(yard, arrived_at)` helps `WHERE yard = ? ORDER BY arrived_at`, not `WHERE arrived_at = ?` alone — left prefix matters.
-
-Primary keys are indexes. Secondary indexes in a clustered store often hold the PK, then bounce to the row (bookmark lookup).
+A covering index includes all columns needed by a query. Whether an index-only scan can avoid every table visit also depends on engine details; PostgreSQL may need heap visibility checks. A primary key is a logical constraint, typically enforced with a unique index, not a synonym for an index.
 
 ## Comparison
 
-| Tool | Answers | Weak at | Write tax |
-| --- | --- | --- | --- |
-| Heap scan | Anything, slowly | Point lookups | None extra |
-| B-tree | `=`, `<`, `BETWEEN`, `ORDER BY` | Low-selectivity flags | Log n per insert |
-| Hash index | `=` | Ranges | Expected O(1) per insert |
-| Composite (a, b) | Prefix `a`, then `b` | Leading with `b` | Wider keys, more I/O |
+| Access path | Useful for | Main cost or limitation |
+| --- | --- | --- |
+| Table scan | A large fraction of rows | Reads rows that a selective query might skip |
+| B-tree | Equality, order, and ranges | Tree traversal, result scanning, and write maintenance |
+| Hash index | Equality | Does not provide range order |
+| Composite B-tree | A query matching its key order | Wider keys; later predicates may not narrow the scan much |
+
+### Easy
+
+This sorted-array model demonstrates seek followed by scan. It is not a database implementation. Entries are already sorted by folder, then time; sorting and index maintenance are excluded from the lookup cost.
 
 ```ts
-// Left-prefix: this index helps q1, not q2.
-type Idx = { yard: string; arrivedAt: number; row: number };
-function lookupYard(idx: Idx[], yard: string): Idx[] {
-  return idx.filter((e) => e.yard === yard); // real engine: B-tree seek + scan
+type Entry = { folder: string; receivedAt: number; row: number };
+function lookupFolder(index: Entry[], folder: string): Entry[] {
+  let lo = 0, hi = index.length;
+  while (lo < hi) {
+    const mid = Math.floor((lo + hi) / 2);
+    if (index[mid].folder < folder) lo = mid + 1;
+    else hi = mid;
+  }
+  const matches: Entry[] = [];
+  while (lo < index.length && index[lo].folder === folder) matches.push(index[lo++]);
+  return matches;
 }
-
-const idx: Idx[] = [
-  { yard: "east", arrivedAt: 8, row: 0 },
-  { yard: "west", arrivedAt: 9, row: 1 },
-  { yard: "east", arrivedAt: 11, row: 2 },
+const index: Entry[] = [
+  { folder: "inbox", receivedAt: 8, row: 0 },
+  { folder: "inbox", receivedAt: 11, row: 2 },
+  { folder: "sent", receivedAt: 9, row: 1 },
 ];
-console.log(lookupYard(idx, "east"));
-
+console.log(lookupFolder(index, "inbox").map(e => e.row)); // [0,2]
+console.log(lookupFolder(index, "drafts")); // []
 ```
 
-At n = 10^7 rows, a seek is tens of page reads. A scan is millions. ## Common mistakes
+### Medium
 
-- Indexing every column "just in case." Writes crawl; planner gets confused.
-- Expecting `LIKE '%east'` to use a B-tree. Leading wildcard kills the order.
-- Forgetting unique constraints *are* indexes. You already paid for them.
-- Adding a secondary index, then filtering on a column that is not in it — still a heap bounce per hit.
+With n entries and k matches, this model takes O(log n + k) lookup time and O(k) output space. A range is not free: returning a million matches still requires work proportional to the output.
+
+### Hard
+
+A boolean flag can be selective when only a tiny fraction of rows is true. A partial index on pending work may help, while an index for a query returning most rows may not. Test the actual distribution instead of banning boolean indexes.
+
+**Try it:** can a binary search on this array locate `receivedAt = 9` using time alone? Not as a single time-sorted range: time restarts within each folder. Consider a separate time index if that query matters.
+
+## Common mistakes
+
+- Adding indexes without a workload. Each extra structure consumes storage and adds maintenance.
+- Calling a JavaScript `.filter()` demonstration an indexed seek. Filter scans its input.
+- Assuming every table is a heap, or every secondary index stores the same kind of row reference. Storage layouts differ.
+- Expecting an ordinary B-tree to efficiently seek arbitrary leading-wildcard text searches. Choose an index type and operator suited to the query.
 
 ## How to talk about it
 
-"I will look at the query, not the table. Equality and range on high-selectivity columns go into a B-tree, matching the left prefix. I will not index a boolean. I will mention write amplification and storage. If the keyspace is huge, the index is what we shard on, not a random column."
-
-If they ask hash vs B-tree: "Hash is equality and RAM-friendly, like a map. B-tree is the default on disk because pages stay ordered and ranges are free."
+“I will start with the filter and order, estimate how many rows match, propose a key order, and inspect the plan. I will account for writes, result size, and table lookups. The index choice and the sharding key are related workload decisions, but they are not automatically the same key.”
 
 ## Cross-links
 
 - [Why a map is "O(1)" until it isn't](./hashing-internals.md) (id: hashing-internals)
 - [Trees are graphs with a promise](./trees-graphs.md) (id: trees-graphs)
-- [Isolation is which lie you agreed to](./transactions-isolation.md) (id: transactions-isolation)
-- [Split the keyspace on purpose](../system-design/foundations/sharding/lesson.md) (id: sharding)
+- [Isolation defines what concurrent transactions can observe](./transactions-isolation.md) (id: transactions-isolation)
+- [Splitting a keyspace so one box is not the product](../system-design/foundations/sharding/lesson.md) (id: sharding)
 - [Hash maps as an index](../algorithms/patterns/hash-maps.md) (id: hash-maps)
 - [Pair lookup instead of nested scanning](../algorithms/problems/two-sum/lesson.md) (id: two-sum)

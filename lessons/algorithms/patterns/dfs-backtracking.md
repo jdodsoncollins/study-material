@@ -11,6 +11,7 @@ tags:
   - algorithms
   - algorithms/backtracking
   - algorithms/graphs
+  - interviews
   - interviews/leetcode
 prerequisites:
   - trees-graphs
@@ -20,19 +21,9 @@ related:
   - number-of-islands
   - trie
   - valid-brackets
-company_signal:
-  - name: Meta
-    evidence: Candidate onsite reports frequently mention permutations, subsets, and board-search prompts as backtracking.
-    year: 2026
-    confidence: high
-  - name: Google
-    evidence: Phone-screen writeups describe word-search / combination-sum style DFS as a recurring medium.
-    year: 2025
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode backtracking tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -42,7 +33,7 @@ status: canonical
 
 - DFS on a graph visits nodes. Backtracking DFS on a *decision tree* builds partial answers.
 - The three lines that matter: choose, recurse, un-choose. Forget the un-choose and every path shares a mutated array.
-- Prune as soon as a partial path cannot win. That is the difference between 4^n and something that finishes.
+- Prune when a partial choice cannot lead to a valid answer. Pruning can reduce work but may leave exponential worst-case growth.
 - Use BFS when you need shortest. Use backtracking when you need all valid constructions, or any construction under constraints.
 
 ## Prompt
@@ -51,7 +42,7 @@ A locker's digit wheels can be set to `digits = [1, 2, 4]`. You must pick a comb
 
 Then, on a letter grid, find whether the word `CRANE` can be walked with 4-direction steps, using each cell at most once.
 
-The first is permutations. The second is board search. Same choose/undo skeleton.
+The digits are distinct. The first task enumerates ordered pairs (permutations of length two). The second is board search. Same choose/undo skeleton.
 
 ## Recognition signals
 
@@ -67,6 +58,16 @@ The first is permutations. The second is board search. Same choose/undo skeleton
 ### ELI5
 
 Keep a path array and a used mask. Push, recurse, pop. Copy the path into the answer when it is full.
+
+### Syntax
+
+```ts
+const path = [1];
+path.push(2);
+console.log([...path]); // [1,2]: copy the current answer
+path.pop();
+console.log(path); // [1]: restore the earlier choice
+```
 
 ### Then the details
 
@@ -103,8 +104,8 @@ Copy with `[...path]`. Pushing `path` itself stores the same array over and over
 
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
-| Generate all, filter later | n! · extra | n! | Usually too slow |
-| Backtracking with prune | bounded by the tree size | O(depth) plus answers | Default |
+| All ordered pairs of distinct input positions | Θ(n²) | Θ(n²) output | The sample produces n(n−1) pairs |
+| General backtracking | Depends on the decision tree and output copying | State, recursion depth, and output | No universal polynomial bound |
 | BFS of partial states | similar time, more memory | queue of paths | Use only for shortest construction |
 
 ## Walkthrough
@@ -126,13 +127,13 @@ Board search adds a cell mark: set `floor[r][c] = '#'`, recurse four ways, resto
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+Change the input to `[1,1,4]`. The sample treats positions as distinct and emits duplicate value pairs. If the contract requires unique value sequences, sort and skip an equal unused sibling at the same decision depth. State which contract you implement.
 
 ## Pitfalls
 
 | Trap | What happens | Fix |
 | --- | --- | --- |
-| Not copying the path | Answer list is n copies of the last path | `[...path]` |
+| Not copying the path | Stored entries alias one array and can all end up empty | `[...path]` |
 | Not undoing a board mark | Later branches see a destroyed grid | Restore on the way back |
 | Sorting-sensitive duplicates skipped wrong | Missing or repeated subsets | Sort first, skip `nums[i] === nums[i-1]` when `i` is a sibling |
 | Recursing after a prune fail without return | Extra work, sometimes wrong | Return when the partial is dead |
@@ -150,6 +151,6 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 - [Land clusters on a map](../problems/number-of-islands/lesson.md) (id: number-of-islands)
 - [Prefix trees as a walking index](./trie.md) (id: trie)
 - [Matched brackets in a line of code](../problems/valid-brackets/lesson.md) (id: valid-brackets)
-- [Trees and graphs](../../cs/trees-graphs.md) (id: trees-graphs)
+- [Trees are graphs with a promise](../../cs/trees-graphs.md) (id: trees-graphs)
 - [Fill a grid of overlapping subproblems](./dp-2d.md) (id: dp-2d)
 - [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)

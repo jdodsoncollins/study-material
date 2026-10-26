@@ -1,12 +1,12 @@
 ---
 id: tarp-span
-title: Two posts and a tarp
+title: Choose two boundaries for the largest area
 slug: tarp-span
 kind: problem
 track: algorithms
 difficulty: core
 estimated_minutes: 12
-summary: Start at both ends of a post row and always walk the shorter post inward so each move can only raise the limiting height.
+summary: Compare boundary areas and discard the shorter endpoint because it cannot improve with a narrower partner.
 tags:
   - algorithms
   - algorithms/two-pointers
@@ -21,23 +21,13 @@ related:
   - three-sum
   - sliding-window
   - two-sum
-company_signal:
-  - name: Meta
-    evidence: Candidate phone-screen reports list max-area-between-two-lines as the usual two-pointer medium after pair-sum.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: Tagged OA lists keep the two-wall water-area prompt next to 3-sum.
-    year: 2026
-    confidence: high
-sources_consulted:
-  - LeetCode Top 100 Liked (Container With Most Water, 2026)
-  - r/leetcode two-pointer tagged threads
-updated: 2026-09-11
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
-# Two posts and a tarp
+# Choose two boundaries for the largest area
 
 ## Snapshot
 
@@ -48,7 +38,7 @@ status: canonical
 
 ## Prompt
 
-Dock posts, heights `posts = [3, 1, 7, 2, 6, 4, 5]`. Stretch a tarp between any two. Return the most rain that tarp can hold. Posts have width 1. The tarp does not sag.
+A chart editor shows vertical boundaries with heights `posts = [3,1,7,2,6,4,5]` at unit-spaced x coordinates. Choose two to maximize `min(height[i], height[j]) × (j−i)`. Heights are nonnegative. Return 0 when fewer than two boundaries exist.
 
 This is the two-wall area problem. The heights are not the textbook `[1,8,6,2,5,4,8,3,7]`.
 
@@ -63,7 +53,7 @@ This is the two-wall area problem. The heights are not the textbook `[1,8,6,2,5,
 
 ## Worked approach
 
-Same two fingers as [two-pointers](../../patterns/two-pointers/lesson.md) (id: two-pointers). The invariant changes: you are maximizing area, not hitting a sum.
+Same two fingers as [Squeeze from both ends](../../patterns/two-pointers/lesson.md) (id: two-pointers). The invariant changes: you are maximizing area, not hitting a sum.
 
 ### ELI5
 
@@ -102,13 +92,13 @@ console.log(tarpRain([3, 1, 7, 2, 6, 4, 5])); // 20
 console.log(tarpRain([4, 4]));                 // 4
 ```
 
-Ties: move either side. Moving both in one step can skip a candidate; move one.
+On equal heights, moving either side is sufficient. Moving both is also safe for finding the maximum area, since any narrower pair retaining either equal endpoint cannot improve the area just measured.
 
 ## Complexity
 
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
-| Nested pairs | O(n²) | O(1) | Fine for n < ~200 |
+| Nested pairs | O(n²) | O(1) | Useful as a small-input reference solution |
 | End-inward, move the short post | O(n) | O(1) | Default |
 
 ## Walkthrough
@@ -130,7 +120,7 @@ Two posts `[4, 4]`. Width 1, min 4, area 4. The loop runs once.
 
 ### Hard
 
-Tied heights: move one side, not both, or you skip a candidate. Do not confuse this with "trapping rain in valleys" (that is a stack / two-pass). Unsorted is fine — you still start at the ends.
+On tied heights, explain why neither equal endpoint can improve the current area with a narrower partner. The sample moves one for simplicity. Do not confuse this with "trapping rain in valleys" (that is a stack / two-pass). Unsorted is fine — you still start at the ends.
 
 ## Pitfalls
 

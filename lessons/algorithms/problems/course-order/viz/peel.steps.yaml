@@ -1,8 +1,8 @@
-title: Peel indegree zero
+title: peel
 steps:
-  - caption: "Modules 0 and 4 start at indegree 0. Loners still belong in the order."
-    nodes: [seed, peel]
-  - caption: "Peeling 0 unlocks 1 and 2. Peeling those unlocks 3."
-    nodes: [drop, zero, seed]
-  - caption: "If anything is left with indegree > 0, there is a cycle. Return empty."
-    nodes: [done, cycle, ok]
+  - caption: "Include isolated vertices in the initial queue."
+    nodes: [seed]
+  - caption: "Process one available module and enqueue newly available neighbors."
+    nodes: [peel, drop, zero]
+  - caption: "Check the final count only after the queue is exhausted. Leftover vertices include a cycle and may include its blocked descendants."
+    nodes: [more, done, cycle, ok]

@@ -1,8 +1,6 @@
-title: Keep a size-k floor
+title: buf
 steps:
-  - caption: "First k scores fill the buffer. The smallest of them is the current k-th."
-    nodes: [score]
-  - caption: "44 beats 6. Evict 6. Winners are 18, 31, 44."
-    nodes: [beat, evict]
-  - caption: "25 later beats 18. The floor of the winners is 25, the 3rd busiest."
-    nodes: [evict, score]
+  - caption: "The sample uses a sorted size-k buffer; a min-heap is the scalable alternative discussed in the lesson."
+    nodes: [score, room, add]
+  - caption: "Once full, retain only values that improve the k largest; duplicates count as separate values."
+    nodes: [beat, skip, evict]

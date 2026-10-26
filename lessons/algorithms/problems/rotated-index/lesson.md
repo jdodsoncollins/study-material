@@ -20,19 +20,9 @@ related:
   - two-pointers
   - indexes
   - hashing-internals
-company_signal:
-  - name: Meta
-    evidence: Candidate phone-screen reports list rotated-array search as the standard binary-search medium.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: OA writeups keep rotated-search next to plain binary search.
-    year: 2026
-    confidence: high
-sources_consulted:
-  - LeetCode Top 100 Liked (Search in Rotated Sorted Array, 2026)
-  - r/leetcode binary-search tagged threads
-updated: 2026-09-03
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -64,7 +54,15 @@ This is rotated sorted search. The ring is not `[4,5,6,7,0,1,2]`.
 
 ### ELI5
 
-Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+At each step one half is sorted. Check whether the target falls inside that half’s value range. Keep it if so; otherwise keep the other half. The target, if present, stays inside lo..hi.
+
+### Syntax
+
+```ts
+const ids = [18,21,4,7,11,15], mid = 2;
+console.log(ids[0] <= ids[mid]); // false: left half crosses the rotation
+console.log(ids[mid] < 11 && 11 <= ids.at(-1)!); // true: keep right
+```
 
 ### Then the details
 
@@ -89,7 +87,7 @@ console.log(rotatedIndex([18, 21, 4, 7, 11, 15], 11)); // 4
 console.log(rotatedIndex([18, 21, 4, 7, 11, 15], 5));  // -1
 ```
 
-`lo <= mid` means the left half is sorted (including a one-element half). Use `<` on the target vs `mid` so you do not steal a case the equality check already handled.
+`ids[lo] <= ids[mid]` means the left half is sorted (including a one-element half). Use `<` on the target vs `mid` so you do not steal a case the equality check already handled.
 
 ## Complexity
 
@@ -117,14 +115,14 @@ Target 5, same first cut: 4 < 5 ≤ 15, so `lo = 3` again. Next mid is 11, 5 is 
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+Search an empty array or a singleton that misses: both return −1. If duplicates are allowed, equal endpoint values can hide which half is sorted; shrinking ambiguous bounds can make worst-case time linear. That requires a changed algorithm, not just a changed complexity comment.
 
 ## Pitfalls
 
 | Trap | What happens | Fix |
 | --- | --- | --- |
 | Always shrinking the unsorted half | You drop the target | Ask "can the *sorted* half contain it?" |
-| `lo + hi >> 1` overflow theater | Fine in JS, still write `lo + (hi-lo)//2` | Habit |
+| Bitwise midpoint arithmetic in JS | Bitwise operators coerce to signed 32-bit integers | Use lo + Math.floor((hi - lo) / 2) within safe integer bounds |
 | `while (lo < hi)` without a last check | Miss a singleton | `lo <= hi` |
 | Treating equals as rotated | Duplicate prompt | This lesson assumes unique ids |
 

@@ -11,6 +11,7 @@ tags:
   - algorithms
   - algorithms/arrays
   - algorithms/hash-maps
+  - interviews
   - interviews/leetcode
 prerequisites:
   - hash-maps
@@ -19,19 +20,9 @@ related:
   - two-pointers
   - hash-maps
   - big-o
-company_signal:
-  - name: Meta
-    evidence: Phone-screen writeups and LeetCode company tags keep listing pair-sum / complement-index problems as warmups.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: Tagged-list prep threads treat this family as a default OA/phone screen.
-    year: 2025
-    confidence: high
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode Meta and Amazon tagged-list threads
-updated: 2026-09-12
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -40,7 +31,7 @@ status: canonical
 ## Snapshot
 
 - You are handed a bag of integers and a target total. Return any two distinct positions whose values add to that total.
-- Nested loops are correct and too slow the moment the bag is thousands of items.
+- Nested loops are a correct baseline; their quadratic work can become expensive as the input grows.
 - The useful trick is a map from *value already seen* to *index*, so each new number asks "have I already seen the partner I need?"
 - Interviewers are checking whether you reach O(n) without wrecking correctness on duplicates.
 
@@ -61,7 +52,7 @@ This is the same shape as the famous "two sum" interview question. The numbers a
 
 ## Worked approach
 
-This is [hash-maps](../../patterns/hash-maps.md) (id: hash-maps) applied to one prompt. Apply it the same way: ELI5, then the three Map calls, then lookup-before-insert.
+This is [Hash maps as an index](../../patterns/hash-maps.md) (id: hash-maps) applied to one prompt. Apply it the same way: ELI5, then the three Map calls, then lookup-before-insert.
 
 ### ELI5
 
@@ -109,9 +100,9 @@ If the interviewer then says "the list is already sorted, just return the values
 
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
-| Nested loops | O(n²) | O(1) | Fine for n < ~200, a trap otherwise |
+| Nested loops | O(n²) | O(1) | Compare n(n−1)/2 candidate pairs with the constraints |
 | Hash map of complements | O(n) expected | O(n) | Default answer |
-| Sort + two pointers | O(n log n) | O(n) if you keep original indices | Use when they forbid extra memory *or* input is sorted |
+| Sort + two pointers | O(n log n) | O(n) if you keep original indices | Account for index storage and the sort’s workspace |
 
 ## Walkthrough
 
@@ -135,7 +126,9 @@ A miss: `target = 10` on the same list. Every `need` is absent. Return `null`. N
 
 `[6, 6]`, target `12` must return both indices. The map stores the first `6`; the second `6` finds it. Do not write `if (need === w) skip`. Insert-first would return `[0, 0]`.
 
-If they then say "the list is already sorted, just return the values," switch to [two-pointers](../../patterns/two-pointers/lesson.md) (id: two-pointers).
+If they then say "the list is already sorted, just return the values," switch to [Squeeze from both ends](../../patterns/two-pointers/lesson.md) (id: two-pointers).
+
+**Try it:** `[10]` with target 20 returns null, while `[10,10]` returns two distinct indices. Explain why a duplicate value is allowed but reusing one position is not.
 
 ## Pitfalls
 
@@ -157,5 +150,5 @@ If they then say "the list is already sorted, just return the values," switch to
 
 - [Hash maps as an index](../../patterns/hash-maps.md) (id: hash-maps)
 - [Three-value search](../three-sum/lesson.md) (id: three-sum)
-- [Two pointers](../../patterns/two-pointers/lesson.md) (id: two-pointers)
+- [Squeeze from both ends](../../patterns/two-pointers/lesson.md) (id: two-pointers)
 - [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)

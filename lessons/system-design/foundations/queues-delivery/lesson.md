@@ -6,7 +6,7 @@ kind: concept
 track: system-design
 difficulty: core
 estimated_minutes: 15
-summary: Default delivery is at-least-once; exactly-once is at-least-once plus an idempotent consumer and a place for poison.
+summary: Separate repeated delivery from repeated effects and design crash-safe deduplication at the correct boundary.
 tags:
   - system-design
   - system-design/foundations
@@ -21,20 +21,10 @@ related:
   - chat-system
   - payment-idempotency
   - cap-and-consistency
-company_signal:
-  - name: Amazon
-    evidence: Candidate-reported L5 loops and prep-site frequency lists treat queues, retries, and poison messages as the operational heart of notification and job designs.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Candidate-reported messenger and feed fanout probes ask what happens when a consumer crashes after sending but before ack.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Hello Interview job-scheduler and notification writeups (consulted, not copied)
-  - Design Gurus 2026 FAANG guides
-  - X threads on idempotency keys and at-least-once delivery
-updated: 2026-09-02
+  - https://kafka.apache.org/41/design/design/#message-delivery-semantics
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -42,75 +32,64 @@ status: canonical
 
 ## Snapshot
 
-- Brokers retry. Networks retry. Your consumer will see the same message more than once. Design for **at-least-once**.
-- **At-most-once** means you may drop work. That is a conscious product choice (presence pings), not a default.
-- **Exactly-once** in interviews means: at-least-once delivery + a unique work id + a consumer that can see "already done" and skip.
-- After N failures, stop retrying the happy queue. Put the body in a **dead-letter lane** (DLQ) with the error, and page a human or a replay job.
+- A queue separates when work is accepted from when a worker attempts it.
+- At-least-once processing can repeat work after a crash or an uncertain acknowledgement.
+- A deduplication record is useful only when its relationship to the effect is safe across crashes.
+- Exactly-once claims require a named boundary and cooperation from the systems inside it.
 
 ## Why it shows up in interviews
 
-Notifications, feed fan-out, payment capture, job schedulers, and LLM GPU queues all have a buffer between "accepted" and "done." Interviewers are scoring whether you understand that the crash happens *after* the side effect and *before* the ack. If you only draw a queue box, you have not designed delivery.
+The important moment is often between “the effect happened” and “the worker recorded success.” A design must explain both retries after that moment and crashes just before it.
 
 ## Core idea
 
 ### ELI5
 
-[once](viz/once.md)
+Give each logical operation a stable ticket. A worker may receive the ticket again. It must determine whether the operation already happened, still needs to happen, or has an unknown outcome that needs reconciliation.
 
-A message has a life:
+[Follow a retry safely](viz/once.md)
 
-1. Producer writes to the broker (or is rejected). Client keeps a `work_id`.
-2. Consumer leases the message, does the side effect, then acks.
-3. If the consumer dies between side effect and ack, the lease expires and someone else gets the same body.
+For an effect inside one transactional database, insert the processed ticket and apply the effect in the **same transaction**, protected by a unique key. A crash commits both or neither. A later delivery finds the committed ticket and returns the recorded result.
 
-So the side effect must be **idempotent**: doing it twice equals doing it once. Patterns that actually work:
+An external API call is not included in that database transaction. Persisting “done” before the call can lose the effect; persisting it afterward can repeat the effect. Use a durable outbox for pending work and a stable operation key that the downstream system enforces. If the response is lost, replay with that key or query the operation's state. An outbox alone does not prevent duplicate external effects.
 
-- Store `work_id` in a processed table before or with the side effect, same transaction when you can.
-- Make the downstream API itself idempotent (Till capture with an idempotency key).
-- Use a compare-and-set: "move job from `leased` to `done` only if `lease_owner = me`."
+Some platforms offer transactional exactly-once processing within a defined scope. For example, Kafka can coordinate consumed offsets and produced records inside Kafka transactions; an unrelated payment or email system needs its own cooperation. See the [Kafka delivery semantics](https://kafka.apache.org/41/design/design/#message-delivery-semantics).
 
-Ordering is a separate axis. A queue can be at-least-once *and* per-key ordered (one consumer on `conversation_id`) or concurrent and unordered. Do not promise global order.
+## Worked example
 
-Visibility timeout / lease: too short and you double-run healthy work. Too long and a crash stalls the key. Clockyard-style jobs often use 30s leases with heartbeats.
+### Easy
 
-## Comparison
+A job adds a comment to a database. Store `job_id` under a unique constraint and insert the comment in the same transaction. Redelivery finds the existing result. Verify that a failed insert rolls back the processed marker too.
 
-| Guarantee | Retry? | Duplicate side effects? | Honest use |
-| --- | --- | --- | --- |
-| At-most-once | No | No, but you drop | Presence, metrics, "best effort" pings |
-| At-least-once | Yes | Yes, unless consumer is idempotent | Default for email, fan-out, jobs |
-| Effectively-once | Yes | No, because of `work_id` fencing | Payments, ticket locks, job run-once |
-| Broker "exactly-once" flag | Marketing | Still need an idempotent sink | Do not rest the design on the flag |
+### Medium
 
-DLQ policy worth saying out loud:
+A job sends a receipt through a provider. The provider accepts it, but the response times out. The local worker cannot infer whether delivery occurred. It retries with the same provider operation key if supported, or reconciles the unknown state. A local “seen IDs” set cannot close this gap.
 
-| Poison symptom | Action |
-| --- | --- |
-| 5 failures, error looks transient | Exponential backoff, then DLQ |
-| Schema cannot parse | DLQ immediately, do not block the partition |
-| Downstream 429 | Slow the consumer, do not DLQ on the first blip |
-| DLQ growing | Page; replay is a product decision, not automatic |
+### Hard
+
+Worker A pauses until its lease expires. Worker B takes over. A resumes. A generation number can reject A's stale completion in the job database, but it cannot undo an external call A already made. The external operation also needs an enforced fencing token or idempotency protocol where the product requires it.
+
+**Practice:** mark every crash point in “record ticket → charge → acknowledge.” Explain which ordering loses a charge and which can duplicate it. Then replace the sequence with a durable operation record and a cooperating downstream API.
 
 ## Common mistakes
 
-- Drawing Kafka/SQS and saying "that gives us exactly-once."
-- Retrying forever on a bad payload and stalling every later message on that partition.
-- Using the same queue for high-priority password-reset mail and bulk marketing.
-- Forgetting the producer can also retry: two copies may be *enqueued*, not just redelivered.
-- Ack-before-work (at-most-once by accident) or work-before-dedup-record (double send after crash).
+| Mistake | Failure | Repair |
+| --- | --- | --- |
+| Mark processed, then act | Crash skips the effect forever | Commit marker with local effect, or track external operation state |
+| Act, then mark processed | Redelivery may repeat the effect | Downstream idempotency or reconciliation |
+| Retry every error forever | Poison work consumes capacity | Classify errors, bound attempts, inspect a dead-letter queue |
+| Expire keys before retries stop | Old work becomes new work | Define retention and late-retry behavior |
 
 ## How to talk about it
 
-"Producers send `work_id`s. The broker is at-least-once with a 30s lease. Consumers upsert into a processed table keyed by `work_id` and only then call the side effect, or they call an idempotent downstream with that same key. Failures go to a DLQ after five tries. I will not block a conversation partition on one poison payload. If this is money, the ledger write and the processed-row commit together."
-
-That sentence works for [Herald](../../cases/notification-system/lesson.md) (id: notification-system), [Clockyard](../../cases/job-scheduler/lesson.md) (id: job-scheduler), and [Till](../../cases/payment-idempotency/lesson.md) (id: payment-idempotency).
+“The queue may deliver again. I will make the database effect and processed marker atomic. For external effects, I will state the provider's key retention and recovery protocol instead of assuming the queue can guarantee them.”
 
 ## Cross-links
 
-- [CAP as a conversation, not a religion](../cap-and-consistency.md) (id: cap-and-consistency)
-- [Fan-out that survives flaky devices](../../cases/notification-system/lesson.md) (id: notification-system)
-- [Cron, ad-hoc, leases, and retries](../../cases/job-scheduler/lesson.md) (id: job-scheduler)
-- [Making a double-click charge once](../../cases/payment-idempotency/lesson.md) (id: payment-idempotency)
-- [Ordered delivery for a 1:1 and small-group messenger](../../cases/chat-system/lesson.md) (id: chat-system)
-- [Batching tokens onto scarce GPUs](../../cases/llm-serving/lesson.md) (id: llm-serving)
+- [Consistency promises during failures](../cap-and-consistency.md) (id: cap-and-consistency)
+- [Route notifications without confusing acceptance and delivery](../../cases/notification-system/lesson.md) (id: notification-system)
+- [Schedule occurrences and recover leased work](../../cases/job-scheduler/lesson.md) (id: job-scheduler)
+- [Make a payment retry refer to one operation](../../cases/payment-idempotency/lesson.md) (id: payment-idempotency)
+- [Order messages and resume delivery](../../cases/chat-system/lesson.md) (id: chat-system)
+- [Budget model memory and schedule streamed generation](../../cases/llm-serving/lesson.md) (id: llm-serving)
 - [Forty-five minutes is a navigation problem](../interview-framework.md) (id: interview-framework)

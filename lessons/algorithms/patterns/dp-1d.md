@@ -6,10 +6,11 @@ kind: pattern
 track: algorithms
 difficulty: core
 estimated_minutes: 14
-summary: When a subproblem depends on a prefix of the input, store one number per prefix instead of recomputing the tree.
+summary: Define a one-dimensional subproblem and reuse earlier answers under the recurrence’s dependency order.
 tags:
   - algorithms
   - algorithms/dynamic-programming
+  - interviews
   - interviews/leetcode
 prerequisites:
   - big-o
@@ -19,19 +20,9 @@ related:
   - one-trade
   - dp-2d
   - binary-search-on-answer
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA reports keep listing house-robber / climb-stairs / coin-change as the 1D DP cluster.
-    year: 2026
-    confidence: high
-  - name: Google
-    evidence: Phone-screen writeups describe "min cost to reach n" style recurrences as a common medium.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode 1D DP tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -40,15 +31,15 @@ status: canonical
 ## Snapshot
 
 - Define `dp[i]` in one sentence: the best answer using the first i items, or to reach position i.
-- The recurrence must look only at earlier cells. If it looks at later cells, you have the fill order wrong.
-- Most 1D DPs collapse to a handful of rolling variables. Keep the array first; compress after it is correct.
+- Compute dependencies before the state that uses them. Depending on the recurrence, that can mean filling forward, backward, or in another topological order.
+- Some 1D DPs collapse to rolling variables when only a fixed number of earlier states are needed. Keep the array first; compress after it is correct.
 - Greedy is not 1D DP. If a local choice can poison a later one, you need the table.
 
 ## Prompt
 
 A vending hopper takes tokens of values `tokens = [1, 6, 10]`. A rider needs fare `amount = 12`. Return the fewest tokens that sum to 12, or -1 if impossible. Order does not matter; unlimited supply of each token.
 
-This is unbounded knapsack / coin change, told as a tram fare box.
+Assume a nonnegative integer amount and positive integer denominations; values fit the array and safe integer limits.
 
 ## Recognition signals
 
@@ -92,7 +83,7 @@ console.log(fewestTokens([6, 10], 5));     // -1
 
 ```
 
-Loop amount in the outer position for "number of tokens." If you need *combinations not permutations*, loop tokens outside and amounts inside so each token is considered once per amount.
+This minimum-count recurrence uses amounts outside. Counting ways is a different recurrence: adding counts with tokens outside counts combinations, while amounts outside generally counts ordered sequences. Do not change loop order without defining the state and update.
 
 ## Complexity
 
@@ -100,7 +91,7 @@ Loop amount in the outer position for "number of tokens." If you need *combinati
 | --- | --- | --- | --- |
 | Recurse on remaining fare | Exponential | O(amount) stack | Need a memo to survive |
 | 1D table | O(amount · tokens) | O(amount) | Default |
-| Greedy biggest token | O(tokens log) | O(1) | Wrong for `[1,6,10]` and 12 |
+| Greedy biggest token | O(k log k + k), for k denominations | O(1) | Wrong for `[1,6,10]` and 12 |
 
 ## Walkthrough
 
@@ -120,14 +111,14 @@ Greedy would take 10 + 1 + 1 and answer 3. The table beats it.
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+For amount 0, the answer is 0 even with no denominations. For a positive amount and no denominations, it is −1. To return an actual combination, record which token improved each dp[x], then follow those choices back to zero.
 
 ## Pitfalls
 
 | Trap | What happens | Fix |
 | --- | --- | --- |
 | Leaving `Infinity` in the answer | `Infinity` leaks to the caller | Map non-finite to -1 |
-| Greedy on canonical coin systems | Works on US coins, fails here | Table unless they prove canonical |
+| Assuming every coin system is canonical | Largest-first can fail on `[1,6,10]` | Table unless they prove canonical |
 | Off-by-one array of size `amount` | Cannot store `dp[amount]` | Size `amount + 1` |
 | Mixing "ways" and "fewest" | Counts instead of min | Separate recurrences |
 

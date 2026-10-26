@@ -1,8 +1,8 @@
-title: Ack before the model
+title: hook
 steps:
-  - caption: "Slack will POST the same event_id more than once. WireHook is the only thing on that path."
-    nodes: [wire, hook]
-  - caption: "Verify the signing secret. Fail closed. Then collapse retries on event_id."
-    nodes: [ver, dedup, ack]
-  - caption: "Enqueue the job and post one placeholder. The model is not invited to the webhook."
-    nodes: [q, hold, ack]
+  - caption: "Commands and Events API messages have different payloads; normalize them without inventing absent fields."
+    nodes: [wire, verify, normalize]
+  - caption: "Persist accepted work and deduplication state atomically, then acknowledge within the platform deadline."
+    nodes: [tx, ack]
+  - caption: "Posting progress happens asynchronously; it must not delay acknowledgement."
+    nodes: [worker, reply]

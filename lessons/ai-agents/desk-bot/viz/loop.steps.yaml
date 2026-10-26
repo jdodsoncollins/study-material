@@ -1,10 +1,8 @@
-title: Tools are the product
+title: loop
 steps:
-  - caption: "The worker loads the thread tail and asks the model. This is the agent harness, not Slack."
-    nodes: [job, model, tool]
-  - caption: "Reads and chat posts are retry-safe. post_thread edits the placeholder when it can."
-    nodes: [inv, post, model]
-  - caption: "page_oncall is refused unless this job already confirmed. Retries use event_id as the key."
-    nodes: [gate, refuse, page]
-  - caption: "Stop on final answer, round cap, or timer. Always write a trace."
-    nodes: [stop]
+  - caption: "Trusted context and narrow tool permissions constrain the model loop."
+    nodes: [job, model, auth]
+  - caption: "Required approval must bind the real user to the exact action; the model cannot supply its own authority."
+    nodes: [gate, approve]
+  - caption: "Retries preserve operation identity and unknown outcomes remain explicit."
+    nodes: [execute, obs, stop]

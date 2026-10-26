@@ -6,5 +6,5 @@ steps:
     nodes: [rec, cache, root]
   - caption: "TLD points at the example.com nameservers. Glue avoids a loop."
     nodes: [tld, auth]
-  - caption: "Auth returns the A and a TTL. Next stub in that TTL is a hit."
+  - caption: "Auth returns the A and a TTL. A later query can reuse a still-cached answer within its remaining TTL."
     nodes: [auth, rec, ans]

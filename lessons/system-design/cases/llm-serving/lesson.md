@@ -1,12 +1,12 @@
 ---
 id: llm-serving
-title: Batching tokens onto scarce GPUs
+title: Budget model memory and schedule streamed generation
 slug: llm-serving
 kind: case-study
 track: system-design
 difficulty: deep
 estimated_minutes: 20
-summary: Kiln serves tokens by batching, paging a KV cache, and queuing work because the GPU, not the JSON API, is the scarce resource.
+summary: Budget model and request memory, schedule prefill and decode, and distinguish stream recovery from a new generation.
 tags:
   - system-design
   - system-design/product-cases
@@ -25,129 +25,97 @@ related:
   - eval-harness-vs-agent-harness
   - tool-calling
   - interview-framework
-company_signal:
-  - name: OpenAI
-    evidence: Candidate-reported 2025–26 roundups describe GPU job scheduling (Sora-style long generations) as a cousin of token serving; confidence is low-medium.
-    year: 2026
-    confidence: low
-  - name: Anthropic
-    evidence: Prep-site frequency and public harness essays make "how the serving loop batches and tools" a 2025–26 interview category, distinct from classic CRUD design.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - meta/RESEARCH.md (Sora-style GPU scheduler, LLM/RAG new category)
-  - Public 2025–26 serving notes on continuous batching and KV cache (consulted, not copied)
-  - Anthropic eval-harness vocabulary (for the agent-vs-serving split)
-updated: 2026-09-02
+  - https://arxiv.org/abs/2309.06180
+updated: 2026-10-26
 status: canonical
 ---
 
-# Batching tokens onto scarce GPUs
+# Budget model memory and schedule streamed generation
 
 ## Snapshot
 
-- Product: **Kiln**, an internal LLM serving layer for a coding assistant and a short-form video generator. Two shapes share a queue philosophy and *not* a runtime.
-- Token serving: a GPU wants **continuous batches** of decode steps. The scarce memory is the **KV cache** per live sequence, not the weights (weights are shared).
-- Long jobs (Sora-style video, big fine-tunes): minutes to hours, closer to [Clockyard](../job-scheduler/lesson.md) (id: job-scheduler) leases than to a 50 ms token loop.
-- The JSON API is a lie if you skip admission control. When GPUs are full, you **queue or reject**, you do not start a 14th sequence on an 80 GB card.
+- Model weights, KV cache, activations, workspaces, and fragmentation all consume memory.
+- Prefill and decode have different resource profiles and interact when sharing a device.
+- Admission control should budget tokens and memory, not only request count.
+- Reconnecting to an existing response is different from generating a new response.
 
 ## What this round is actually scoring
 
-2025–26 category: can you talk about batching, KV memory, and queues without hand-waving "we will scale the model"? Interviewers also want you to separate **serving** (Kiln) from the **agent harness** (tools, retries, stop conditions) and the **eval harness** (how you score it). See [eval-harness-vs-agent-harness](../../../ai-agents/eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness).
+Whether the service sustains latency targets under mixed prompt lengths, cancellations, and overload without exceeding memory.
 
 ## Company signal
 
-Candidate-reported OpenAI-shaped rounds (Sora-style GPU schedulers) plus a broader 2025–26 LLM/RAG/coding-assistant design category. Confidence: **low** for a specific Sora scheduler prompt, **medium** for "design LLM serving / a coding assistant backend" as a family. Prep-site frequency is rising; this is not an official bank.
+This is an original practice scenario. No traceable company-specific frequency evidence is supplied.
 
 ## Requirements
 
-| Functional | v1 decision |
+| Area | Requirement |
 | --- | --- |
-| Chat completions, streaming | SSE tokens, client can cancel |
-| Tool-calling round trips | Pause decode, run tools, resume with prefix | 
-| Video / long GPU jobs | Separate **JobLane**, not the token pool |
-| Fairness | Per-tenant tokens of credit |
-| Eval traffic | Same serving path, marked `eval=true` |
-
-| Non-functional | Budget |
-| --- | --- |
-| Interactive p50 TTFT | 200 ms when not queued |
-| Interactive p99 | Includes queue time; publish it separately |
-| GPU memory | 80 GB class, weights 40 GB, rest is KV |
-| Admission | Never overcommit KV to swap on the hot pool |
-| Failure | Cancel is prompt; retry is at-least-once on JobLane |
+| Request | Bounded prompt and output lengths with tenant quotas |
+| Stream | Observable time to first token and inter-token latency |
+| Schedule | Fairness between short and long requests under overload |
+| Recover | Explicit cancellation, reconnect, and failed-generation behavior |
 
 ## Back-of-envelope
 
-Weights 40 GB on an 80 GB GPU → **~40 GB for KV**. A 32k-context sequence at a typical 16-bit KV might cost on the order of **a few GB**. That is why "concurrent 32k chats" is a single-digit number per GPU, not hundreds.
+These are illustrative workload assumptions, not production measurements.
 
-Interactive fleet: 64 GPUs. If each holds 8 live sequences, 512 in-flight. At 40 tokens/s/sequence decode, you have plenty of tokens — until everyone sends a 20k prefix at 17:00 and prefill saturates.
+For an illustrative model, KV bytes per sequence are approximately `2 × layers × KV heads × head dimension × cached tokens × bytes per element`. The factor two accounts for keys and values.
 
-Prefill (prompt) is compute-heavy; decode is memory-bandwidth-heavy. **BatchWaiter** groups arriving prefills for a few milliseconds so the GPU does one fat kernel instead of 12 skinny ones. Too much wait and TTFT dies.
+With 32 layers, 8 KV heads, dimension 128, 32,768 tokens, and two-byte elements, that is 4 GiB per sequence. An illustrative 80 GiB device with 40 GiB of weights and 8 GiB reserved for other runtime memory leaves 32 GiB for KV storage: at most eight such sequences before additional headroom and allocator effects. Actual model architecture, quantization, prefix sharing, and runtime matter.
 
-Video JobLane: 10-minute gens, 8 dedicated GPUs. Throughput is jobs/hour, not tokens/s. Queue in Clockyard, lease the GPU, heartbeat, DLQ on poison checkpoints.
+A throughput claim such as 512 sequences × 40 tokens/s = 20,480 tokens/s is arithmetic over assumed measurements, not a demonstrated capability. It must be benchmarked with the intended prefill/decode mix.
 
 ## Design
 
 ### ELI5
 
-Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+Load a model, admit requests that fit, and repeatedly schedule their next work. Long prompts first need processing; each active response then needs memory for its context and repeated decode steps.
 
-### Then the details
+[Follow generation scheduling](viz/batch.md)
 
-[batch](viz/batch.md)
+### Admission and execution
 
-**Front door**: auth, [QuotaDesk](../rate-limiter/lesson.md) (id: rate-limiter) per tenant, then **Queue**. Interactive queue is small and expires (fail the request after 5s waiting). JobLane queue is durable.
+Estimate prompt and maximum output token requirements before admission. Maintain per-tenant request, token, and concurrency budgets. Queue bounded work, reject excess promptly, and expose retry guidance rather than allowing an unbounded wait.
 
-**BatchWaiter** + **KVBlock**:
+Use continuous batching where supported to replace completed sequences with waiting ones. Chunked prefill or separate prefill/decode resources can reduce interference, but their benefit is workload- and runtime-dependent. Paged KV allocation can reduce wasted memory; it does not remove the need to account for weights and runtime buffers.
 
-- New request: estimate KV pages from `max_tokens + prompt_len`. If the pool cannot reserve pages, stay in queue.
-- Prefill, then decode in a continuous batch: every step, the GPU runs whatever sequences are live. Finished sequences free pages; the waiter admits the next.
-- Cancel: drop from the batch, free KV immediately.
+Stream identified response events and record cancellation. Reclaim memory after in-flight device work can safely stop using it. For tool waits, keeping, offloading, or recomputing KV state is an engine-specific tradeoff.
 
-Tool calls: the sequence **yields** (KV stays reserved for a bounded time) while the [tool-calling](../../../ai-agents/tool-calling/lesson.md) (id: tool-calling) harness talks to tools. Bound that pause or you have a KV leak. Long tools should snapshot KV to host memory and give the pages back.
-
-JobLane (Sora cousin): Clockyard run, GPU lease, progress checkpoints in object storage. A crash resumes from the last checkpoint, not from token 0. Different SLO, different dashboards, **do not** mix these workers with interactive decode.
-
-Eval: same Kiln, but eval traffic cannot starve interactive. Separate credit pool. Scores belong in the eval harness, not in Kiln.
+If the product supports stream reconnect, persist generated events with sequence IDs and resume the same response from that log. A fresh model call may generate different text; an idempotency key alone does not make it safe to splice a new completion onto an old prefix. Otherwise return an explicit interrupted response and offer a new generation.
 
 ## Tradeoffs
 
-| Choice | Gain | Cost |
+| Choice | Benefit | Cost |
 | --- | --- | --- |
-| Continuous batch vs static batch of 8 | GPU stays busy as sequences finish | Harder isolation; noisy neighbor |
-| Reserve KV vs overcommit + swap | Predictable latency | Lower concurrency |
-| Yield-on-tool vs evict KV | Fast resume | KV held during a potentially slow tool |
-| Interactive + JobLane on one GPU | Utilization | A 10-minute gen wrecks TTFT |
+| Larger batches | Potentially better throughput | Higher waiting time and memory demand |
+| Short output caps | Predictable resource bounds | May truncate useful answers |
+| Prefix sharing | Less repeated prefill/KV storage | Cache isolation and lifecycle complexity |
+| Persisted stream events | Reliable reconnect to one response | Storage and retention cost |
 
 ## Failure modes
 
-- KV fragmentation: page allocator (blocks) rather than one contiguous allocation per sequence.
-- Retry of a streamed chat: client may already have 40 tokens; use an idempotency key and resume, or accept duplicate prefix and let the client splice. At-least-once is the honest story ([queues-delivery](../../foundations/queues-delivery/lesson.md) (id: queues-delivery)).
-- One tenant's 32k prefills: credit tokens, not just QPS.
-- GPU ECC / job hang: lease watchdog, fence the device, requeue the JobLane run.
+- Long prompts consume the device: token-aware admission and scheduling protect other work.
+- Cancellation leaks memory: track request and device-work lifetimes explicitly.
+- A worker dies mid-stream: resume only if the product has a compatible durable recovery mechanism; otherwise mark the response interrupted.
+- A checkpoint is loaded under another model/runtime version: validate compatibility before reuse.
 
 ## Follow-ups an interviewer may ask
 
-### Easy
+**Easy:** double cached tokens in the example. What happens to KV memory per sequence?
 
-Capacity and the cache: numbers first, then where a miss goes.
+**Medium:** short requests slow down during large prefills. Identify measurements that separate queue delay, prefill, and decode.
 
-### Medium
+**Hard:** reconnect after receiving token event 120. Explain the difference between replaying events from the same response and starting a new stochastic generation.
 
-- Multi-model: one queue per model (different weights), not one magical GPU that swaps 40 GB every request.
-- Speculative decoding / smaller draft models: a throughput trick, mention if they zoom.
-- Why this is not "design ChatGPT": the product loop is the agent harness; Kiln is the scarce-resource scheduler underneath.
-
-### Hard
-
-The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
-- [Cron, ad-hoc, leases, and retries](../job-scheduler/lesson.md) (id: job-scheduler)
+- [Schedule occurrences and recover leased work](../job-scheduler/lesson.md) (id: job-scheduler)
 - [At-least-once, idempotency, and the dead-letter lane](../../foundations/queues-delivery/lesson.md) (id: queues-delivery)
-- [Eval harness versus agent harness](../../../ai-agents/eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
-- [Tool calling as a contract](../../../ai-agents/tool-calling/lesson.md) (id: tool-calling)
-- [Token buckets and sliding windows at the edge](../rate-limiter/lesson.md) (id: rate-limiter)
+- [Separate the system doing the work from the system measuring it](../../../ai-agents/eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
+- [Make tool contracts enforceable](../../../ai-agents/tool-calling/lesson.md) (id: tool-calling)
+- [Enforce request budgets across servers](../rate-limiter/lesson.md) (id: rate-limiter)
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)
-- [Chunked playback from ingest to CDN](../video-streaming/lesson.md) (id: video-streaming)
+- [Publish renditions and serve adaptive playback](../video-streaming/lesson.md) (id: video-streaming)

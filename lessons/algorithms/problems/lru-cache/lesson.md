@@ -1,16 +1,17 @@
 ---
 id: lru-cache
-title: Scanner memory with eviction
+title: A lookup cache with least-recently-used eviction
 slug: lru-cache
 kind: problem
 track: algorithms
 difficulty: core
 estimated_minutes: 14
-summary: Pair a hash map with a doubly linked list so get and put both move a key to most-recent and evict the tail in constant time.
+summary: Combine expected constant-time hash lookup with a doubly linked recency list to update and evict entries.
 tags:
   - algorithms
   - algorithms/hash-maps
   - algorithms/linked-lists
+  - interviews
   - interviews/leetcode
 prerequisites:
   - hash-maps
@@ -20,23 +21,13 @@ related:
   - arrays-vs-linked-lists
   - indexes
   - hashing-internals
-company_signal:
-  - name: Amazon
-    evidence: Candidate reports list LRU implementation as a recurring OA/phone-screen systems-flavored coding question.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Onsite writeups describe "implement a cache with eviction" as a common design-in-code prompt.
-    year: 2026
-    confidence: high
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode LRU tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
-# Scanner memory with eviction
+# A lookup cache with least-recently-used eviction
 
 ## Snapshot
 
@@ -47,11 +38,11 @@ status: canonical
 
 ## Prompt
 
-A handheld scanner remembers the last `capacity` SKUs it looked up, because the radio is slow. Implement `get(sku)` and `put(sku, bin)`. If the memory is full, drop the SKU that was used least recently. `get` returns the bin or `-1`.
+A shopping app caches product locations for the last `capacity` SKUs it looked up. Implement `get(sku)` and `put(sku, bin)`. If the memory is full, drop the SKU that was used least recently. `get` returns the bin or `-1`.
 
 Example capacity 2: put `N-4 → 17`, put `K-11 → 8`, get `N-4` (hit 17), put `CRANE → 3` (evicts `K-11`), get `K-11` (miss).
 
-This is LRU cache, told as scanner memory.
+A cache hit refreshes recency; a miss does not insert a value.
 
 ## Recognition signals
 
@@ -68,25 +59,37 @@ This is LRU cache, told as scanner memory.
 
 ### ELI5
 
-Sentinel head and tail so unlink never special-cases empty. Move-to-head is unlink then insert after head.
+Keep two structures synchronized: a map locates a key’s node, and a doubly linked list records recency. A hit moves its node to the front. Adding a new key beyond capacity removes the last real node from both structures. Sentinels make boundary updates uniform.
+
+### Syntax
+
+```ts
+const recency = ["N-4","K-11"];
+console.log(recency.at(-1)); // K-11: least recent in this example
+```
 
 ### Then the details
 
 ```ts
 class Node {
-  constructor(
-    public key: string,
-    public val: number,
-    public prev: Node | null = null,
-    public next: Node | null = null,
-  ) {}
+  prev: Node | null = null;
+  next: Node | null = null;
+  key: string;
+  val: number;
+  constructor(key: string, val: number) {
+    this.key = key;
+    this.val = val;
+  }
 }
 
-class ScannerMem {
+class LruCache {
   private map = new Map<string, Node>();
   private head = new Node("", 0);
   private tail = new Node("", 0);
-  constructor(private cap: number) {
+  private cap: number;
+  constructor(cap: number) {
+    this.cap = cap;
+    if (!Number.isInteger(cap) || cap < 0) throw new Error("Invalid capacity");
     this.head.next = this.tail;
     this.tail.prev = this.head;
   }
@@ -126,7 +129,7 @@ class ScannerMem {
   }
 }
 
-const mem = new ScannerMem(2);
+const mem = new LruCache(2);
 mem.put("N-4", 17);
 mem.put("K-11", 8);
 console.log(mem.get("N-4"));  // 17
@@ -142,8 +145,8 @@ console.log(mem.get("N-4"));  // 17
 | --- | --- | --- | --- |
 | Array of pairs, scan for LRU | O(n) per op | O(capacity) | Reject |
 | Map + timestamps | O(n) eviction | O(capacity) | Reject |
-| Map + doubly linked list | O(1) per op | O(capacity) | Default |
-| `Map` insertion order (JS) | O(1) in practice | O(capacity) | Mention as a language gift; still implement the list |
+| Map + doubly linked list | O(1) expected per op | O(capacity) | Default |
+| `Map` insertion order (JS) | Depends on implementation; average sublinear access is specified | O(capacity) | Delete and reinsert to refresh order; a list makes the recency operations explicit |
 
 ## Walkthrough
 
@@ -162,7 +165,7 @@ Capacity 2.
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+At capacity zero, each put immediately evicts its new entry and every get misses. Updating an existing key at positive capacity must change its value and recency without evicting another key. This sample reserves −1 for a miss; use a different result type if −1 is a valid stored value.
 
 ## Pitfalls
 
@@ -171,7 +174,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 | Singly linked list | Tail eviction is O(n) | Doubly linked |
 | Evicting on update of an existing key | Wrong victim | Update in place, no size change |
 | Forgetting to delete the map entry | Ghost keys after eviction | `map.delete(lru.key)` |
-| Using JS `Map` order without saying so | Looks like you skipped the data structure | Implement the list, then mention the language shortcut |
+| Assuming Map.set refreshes an existing key’s order | Updating a value leaves insertion order unchanged | A Map-based LRU must delete and reinsert a hit or update |
 
 ## Interview moves
 
@@ -183,8 +186,8 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 ## Cross-links
 
 - [Hash maps as an index](../../patterns/hash-maps.md) (id: hash-maps)
-- [Arrays versus linked lists](../../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
-- [What an index actually stores](../../../cs/indexes.md) (id: indexes)
-- [Hashing internals](../../../cs/hashing-internals.md) (id: hashing-internals)
+- [Contiguous slots versus pointer chasing](../../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
+- [Indexes are precomputed answers](../../../cs/indexes.md) (id: indexes)
+- [Why a map is "O(1)" until it isn't](../../../cs/hashing-internals.md) (id: hashing-internals)
 - [Two speeds, one list](../../patterns/fast-slow-pointers.md) (id: fast-slow-pointers)
 - [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)

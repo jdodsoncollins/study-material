@@ -1,8 +1,6 @@
-title: Bucket by sorted letters
+title: bucket
 steps:
-  - caption: "oak sorts to ako. First time that key appears, open a bucket."
-    nodes: [tag, key, fresh]
-  - caption: "koa also sorts to ako. Same part. Push it on the existing list."
-    nodes: [key, hit, push]
-  - caption: "crate sorts to acert. New key, singleton group. You still keep it."
-    nodes: [key, fresh]
+  - caption: "oak and koa share the key ako. Keep the original strings in the bucket."
+    nodes: [tag, key]
+  - caption: "Create a missing bucket, then append the current token too; do not lose the first member."
+    nodes: [hit, fresh, push]

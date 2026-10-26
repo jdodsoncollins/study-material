@@ -11,6 +11,7 @@ tags:
   - algorithms
   - algorithms/union-find
   - algorithms/graphs
+  - interviews
   - interviews/leetcode
 prerequisites:
   - trees-graphs
@@ -19,19 +20,9 @@ related:
   - bfs
   - topological-sort
   - trees-graphs
-company_signal:
-  - name: Google
-    evidence: Candidate onsite reports mention connected-components / redundant-connection prompts as union-find tells.
-    year: 2026
-    confidence: medium
-  - name: Meta
-    evidence: Tagged-list threads list number-of-provinces and similar "are these accounts the same person" merges.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode union-find tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -48,7 +39,7 @@ status: canonical
 
 Radio towers `0..5` can talk if an engineer strings a cable. Cables arrive as `cables = [[0,1], [1,2], [3,4], [2,0]]`. After each cable, say whether the two towers were already in the same network. At the end, how many separate networks remain (include lonely tower 5)?
 
-This is online connectivity, told as chat rooms that merge, not a textbook graph.
+This is incremental undirected connectivity; edge deletion is outside this structure’s contract.
 
 ## Recognition signals
 
@@ -65,7 +56,15 @@ This is online connectivity, told as chat rooms that merge, not a textbook graph
 
 ### ELI5
 
-Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+Each component chooses one representative root. To connect two towers, find their roots. If the roots match, the cable adds no new connection. Otherwise attach one root under the other and reduce the component count by one. Path compression shortens future walks without changing membership.
+
+### Syntax
+
+```ts
+const parent = [0, 1, 2];
+parent[1] = 0; // join singleton 1 under root 0
+console.log(parent[0] === parent[1]); // true
+```
 
 ### Then the details
 
@@ -109,7 +108,7 @@ for (const [a, b] of [[0, 1], [1, 2], [3, 4], [2, 0]]) {
 | --- | --- | --- | --- |
 | BFS from every query | O(n + e) per query | O(n) | Fine once, fatal in a loop |
 | Union-find, naive | O(n) per find | O(n) | Degenerates to a linked list |
-| Path compression + rank | Almost O(1) per op (inverse Ackermann) | O(n) | Default. Say "nearly O(1)," not O(1) |
+| Path compression + rank | O(α(n)) amortized per operation after initialization | O(n) | Default. Say "nearly O(1)," not O(1) |
 
 ## Walkthrough
 
@@ -121,13 +120,13 @@ Towers 0..5, cables `[0-1], [1-2], [3-4], [2-0]`.
 
 ### Medium
 
-2. 1-2: 1's root is 0, merge 2. Parts 4. Components `{0,1,2}`, `{3,4}`, `{5}`.
+2. 1-2: 1's root is 0, merge 2. Parts 4. Components `{0,1,2}`, `{3}`, `{4}`, `{5}`.
 3. 3-4: merge. Parts 3.
 4. 2-0: both already under 0. Redundant. Parts stay 3.
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+Remove cable 1–2 after processing the stream. Ordinary union-find cannot split the component to reflect that deletion. Explain why its compressed parents do not preserve enough edge history for removal. The sample assumes node IDs are integers in 0..n−1.
 
 ## Pitfalls
 
@@ -143,13 +142,13 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 - Write `find` with compression in one line and say why.
 - Ask whether the graph is directed. Union-find is for undirected membership; directed needs topo or SCC.
 - For islands, offer DFS first. Switch to union-find if they add "and now stream extra land cells."
-- Inverse Ackermann is trivia. "Nearly constant with compression and rank" is the adult sentence.
+- State the amortized bound and the two heuristics that support it; do not promise every individual operation is constant time.
 
 ## Cross-links
 
 - [Land clusters on a map](../../problems/number-of-islands/lesson.md) (id: number-of-islands)
 - [Expand level by level](../bfs/lesson.md) (id: bfs)
 - [Order by prerequisites](../topological-sort/lesson.md) (id: topological-sort)
-- [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)
+- [Trees are graphs with a promise](../../../cs/trees-graphs.md) (id: trees-graphs)
 - [Explore, undo, try the next branch](../dfs-backtracking.md) (id: dfs-backtracking)
 - [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)

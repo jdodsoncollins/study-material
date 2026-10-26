@@ -1,6 +1,6 @@
-title: Hope vs SLO
+title: k
 steps:
-  - caption: "pass@k: one success in k tries. Tools can live here."
-    nodes: [t1, t2, t3, any, hope]
-  - caption: "pass^k: every trial succeeds. That is a product SLO."
-    nodes: [all, slo]
+  - caption: "At least one success and every attempt succeeding are different events."
+    nodes: [trials, any, all]
+  - caption: "Under independent identical attempts with known p, the probabilities are 1 minus the kth power of 1-p, and the kth power of p. Neither alone is a product SLO."
+    nodes: [some, every]

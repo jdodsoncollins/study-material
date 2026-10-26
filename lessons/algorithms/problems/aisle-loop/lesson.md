@@ -20,19 +20,9 @@ related:
   - reverse-chain
   - lru-cache
   - two-pointers
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA reports list linked-list cycle detection as the standard fast-slow easy.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Phone-screen writeups treat tortoise/hare as the follow-up after reverse-list.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - LeetCode Top 100 Liked (Linked List Cycle, 2026)
-  - r/leetcode linked-list tagged threads
-updated: 2026-09-03
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -62,7 +52,7 @@ This is cycle detection. The values are not `1→2→3→2`.
 
 ## Worked approach
 
-Same two runners as [fast-slow-pointers](../../patterns/fast-slow-pointers.md) (id: fast-slow-pointers).
+Same two runners as [Two speeds, one list](../../patterns/fast-slow-pointers.md) (id: fast-slow-pointers).
 
 ### ELI5
 
@@ -107,7 +97,7 @@ console.log(loops(a)); // true
 console.log(loops(e)); // false
 ```
 
-Compare nodes by identity, not by `val`. Duplicate bay numbers are allowed.
+Compare nodes by identity, not by `val`. Duplicate values are allowed.
 
 ## Complexity
 
@@ -135,7 +125,7 @@ Compare nodes by identity, not by `val`. Duplicate bay numbers are allowed.
 
 ### Hard
 
-Compare nodes by identity, not `val`. Duplicate bay numbers are allowed. Meeting node is not always the entrance; a second walk from head finds that.
+Compare nodes by identity, not `val`. Duplicate values are allowed. Meeting node is not always the entrance; a second walk from head finds that.
 
 ## Pitfalls
 
@@ -150,11 +140,11 @@ Compare nodes by identity, not `val`. Duplicate bay numbers are allowed. Meeting
 
 - Draw the four nodes and the back edge. Walk both pointers with your fingers.
 - If they want the entry, say Floyd's second phase. Do not start unless they ask.
-- A visited set is a valid fallback if they forbid mutating your mental model of two speeds.
+- A visited set is a simpler alternative when O(n) extra memory is allowed.
 
 ## Cross-links
 
 - [Two speeds, one list](../../patterns/fast-slow-pointers.md) (id: fast-slow-pointers)
 - [Reverse a next-pointer chain](../reverse-chain/lesson.md) (id: reverse-chain)
-- [Scanner memory with eviction](../lru-cache/lesson.md) (id: lru-cache)
+- [A lookup cache with least-recently-used eviction](../lru-cache/lesson.md) (id: lru-cache)
 - [Squeeze from both ends](../../patterns/two-pointers/lesson.md) (id: two-pointers)

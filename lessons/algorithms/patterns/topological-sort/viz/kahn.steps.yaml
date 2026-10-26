@@ -1,8 +1,8 @@
-title: Kahn's peel
+title: kahn
 steps:
-  - caption: "Start with every node of indegree 0."
-    nodes: [zeros, node]
-  - caption: "Emit it, decrement neighbors, enqueue new zeros."
-    nodes: [out, dec, zeros]
-  - caption: "Anything left is a cycle. No legal order."
-    nodes: [leftover, cycle]
+  - caption: "Indegree zero means all prerequisites have already been emitted or none exist."
+    nodes: [zeros, out]
+  - caption: "A neighbor enters the queue exactly when its indegree reaches zero."
+    nodes: [dec, more]
+  - caption: "Unemitted nodes prove a cycle exists, but not every blocked node is necessarily on that cycle."
+    nodes: [count, cycle, done]

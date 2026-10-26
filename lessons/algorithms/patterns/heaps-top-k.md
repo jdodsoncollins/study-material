@@ -10,6 +10,7 @@ summary: Stream n items through a size-k heap so you never sort the whole input 
 tags:
   - algorithms
   - algorithms/heaps
+  - interviews
   - interviews/leetcode
 prerequisites:
   - big-o
@@ -18,19 +19,9 @@ related:
   - binary-search-on-answer
   - hash-maps
   - merge-intervals
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA reports list top-k frequent / k-th largest as a default heap question.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Phone-screen writeups describe "k closest" and "k frequent" as common twenty-minute prompts.
-    year: 2026
-    confidence: high
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode heap / top-k tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -47,7 +38,7 @@ status: canonical
 
 View counts on today's videos: `cleared = [19, 4, 27, 12, 27, 8]`. Return the k = 2 highest counts (values, not ranks). Ties stay; you are ranking scores, not unique videos.
 
-This is k-th largest / top-k, not a textbook stream of random ints.
+Return the selected values in any order; equal counts belong to separate items.
 
 ## Recognition signals
 
@@ -76,10 +67,12 @@ console.log(heap[0]); // min of a size-k buffer
 
 ```ts
 function topK(cleared: number[], k: number): number[] {
+  if (!Number.isInteger(k) || k < 0 || k > cleared.length) throw new Error("Invalid k");
+  if (k === 0) return [];
   const heap: number[] = [];
   const swim = (i: number) => {
     while (i > 0) {
-      const p = (i - 1) >> 1;
+      const p = Math.floor((i - 1) / 2);
       if (heap[p] <= heap[i]) break;
       [heap[p], heap[i]] = [heap[i], heap[p]];
       i = p;
@@ -118,8 +111,8 @@ Min-heap of size k → k largest. Max-heap of size k → k smallest. Do not mix 
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
 | Sort | O(n log n) | O(n) | Honest default if n is modest |
-| Size-k heap | O(n log k) | O(k) | Default interview answer |
-| Quickselect | O(n) average | O(1) extra | Name it for k-th; worse for full top-k list |
+| Size-k heap | O(n log(k + 1)) | O(k) | Default interview answer |
+| Quickselect | O(n) average | O(1) extra | Can partition a top-k set too; sorting that set adds O(k log k) |
 
 ## Walkthrough
 
@@ -138,7 +131,7 @@ Min-heap of size k → k largest. Max-heap of size k → k smallest. Do not mix 
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+Predict k = 0 and k = 1. This implementation returns [] for zero and keeps the maximum for one; it rejects k outside 0..n. The returned heap is not globally sorted, so sort only if output order is required.
 
 ## Pitfalls
 
@@ -153,7 +146,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 - Ask whether k is tiny relative to n. That chooses heap versus sort.
 - For "k frequent," write the count map first, then the heap. Two patterns, one problem.
-- Mention quickselect if they only want the k-th value, not the whole set.
+- Quickselect can find the k-th value or partition a top-k set; sorting the selected set costs extra.
 - If they add "streaming, n does not fit," the size-k heap is the whole design.
 
 ## Cross-links

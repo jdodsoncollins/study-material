@@ -1,10 +1,8 @@
-title: Publish then read
+title: hybrid
 steps:
-  - caption: "Accept the post in PostStore. Fanout can be async."
+  - caption: "Post and outbox commit together so accepted posts are not lost between storage and fanout."
     nodes: [api, post]
-  - caption: "Ordinary author: WaveFan appends post_id onto each follower inbox."
-    nodes: [wave, fan]
-  - caption: "Stadium author: skip WaveFan, mark LoudSet. Inbox writes do not explode."
-    nodes: [wave, loud]
-  - caption: "Home read: inbox ids ∪ pull LoudSet, RankLite, hydrate bodies."
-    nodes: [home, inbox, pull, merge, body]
+  - caption: "Choose push or pull from measured audience cost; the threshold is a design parameter."
+    nodes: [wave, fan, pullstore]
+  - caption: "Merge bounded candidate streams and enforce current visibility before returning results."
+    nodes: [home, inbox, pull, merge, auth]

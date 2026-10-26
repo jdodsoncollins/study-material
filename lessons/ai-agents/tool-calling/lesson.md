@@ -1,12 +1,12 @@
 ---
 id: tool-calling
-title: Tools that are safe to call twice
+title: Make tool contracts enforceable
 slug: tool-calling
 kind: concept
 track: ai-agents
 difficulty: core
 estimated_minutes: 14
-summary: Tool schemas should be tight, retries should be idempotent, and irreversible actions should require a confirm the eval actually checks.
+summary: Enforce tool authorization, semantic validation, replay behavior, and any required scoped user approval.
 tags:
   - ai-agents
   - ai-agents/tools
@@ -22,81 +22,75 @@ related:
   - outcome-vs-transcript
   - rag-vs-agents
   - desk-bot
-company_signal:
-  - name: Anthropic
-    evidence: Public agent-harness writing treats tool design (schemas, stop conditions, permissions) as the harness, not the model.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Anthropic, Building effective agents
-  - Fowler / Boeckeler, Agent = Model + Harness
-  - Stripe-style idempotency notes as applied to agent tools
-updated: 2026-09-02
+  - https://json-schema.org/understanding-json-schema
+  - https://docs.stripe.com/api/idempotent_requests
+updated: 2026-10-26
 status: canonical
 ---
 
-# Tools that are safe to call twice
+# Make tool contracts enforceable
 
 ## Snapshot
 
-- A tool is an API the model can invoke. The **schema**, the **side effects**, and the **error text** are part of the agent harness.
-- Tight JSON schemas beat a kitchen-sink `run_anything(cmd: str)`.
-- Anything that moves money, sends mail, or deletes state needs **idempotency** and, if it cannot be undone, a **confirm** step the grader enforces.
-- Agents retry. If a retry is a double charge, the bug is the tool, not the model.
+- A tool schema defines inputs; the implementation must enforce authorization and semantics.
+- Distinguish read-only queries from operations with external effects.
+- Idempotency keys identify logical operations, with conflicts detected separately.
+- Confirmation, when required, must come from trusted user interaction scoped to the action.
 
 ## Why it shows up in interviews
 
-"Design the tools" is the agent version of "design the API." Interviewers want idempotency keys, least privilege, and a story for irreversible actions — the same instincts as [queues and delivery](../../system-design/foundations/queues-delivery/lesson.md) (id: queues-delivery) and [job schedulers](../../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler), now sitting under a stochastic caller.
+A well-formed function call can still target the wrong tenant, use the wrong unit, or repeat an uncertain side effect. Explain the contract at the implementation boundary.
 
 ## Core idea
 
 ### ELI5
 
-[call](viz/call.md)
+Treat a model's proposed call as a request to a service. The service validates the shape, the meaning, and the caller's authority before doing anything.
 
-Assume every tool will be called zero times, once, twice with the same args, and once with wrong args. Design for all four.
+[Follow validation and execution](viz/call.md)
 
-- **Schema.** Required fields, enums, descriptions that name units (`cents`, `user_id`, not "the customer"). Extra properties forbidden. One job per tool.
-- **Idempotency.** `refund(order_id, amount_cents, idempotency_key)` stores a ledger keyed by that tuple. Retry = read the same row. This is the same pattern as at-least-once consumers.
-- **Confirm.** `delete_account` and `send_blast` do not mutate on first call. They return a `preview_id`. A second tool, or a typed confirm, spends it. The [outcome/transcript split](../outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript) matters: here the *path* is product policy.
-- **Errors.** Return a structured reason the model can branch on (`INSUFFICIENT_INVENTORY`, not a 500 HTML page).
-- **Surface area.** Twenty sharp tools beat eighty overlapping ones. Overlap is how you get loops. See [agent mistakes](../agent-mistakes.md) (id: agent-mistakes).
+Use explicit units, bounded inputs, and clear result states. Resolve the authenticated user and tenant from trusted context; do not grant access merely because the model supplies a tenant ID. Treat retrieved text and tool results as data, not as authority to change permissions or instructions.
 
-The eval harness must expose the *same* tools as production, including the confirm dance. A cousin tool set measures a cousin agent.
+For a mutation, scope an idempotency key to the authenticated principal and operation. Store a separate canonical payload fingerprint and reject reuse with a different payload. Including the amount in the key itself would allow a changed amount to become a new operation instead of detecting the conflict.
 
-## Comparison
+If product policy requires confirmation, present the exact action and bind the user's trusted approval to that payload, identity, and expiry. A model calling `confirm()` is not user approval. Existing authorization may already cover an action; confirmation rules should reflect the product's real policy.
 
-| Tool | Retry if the client times out | Confirm required | Eval check |
-| --- | --- | --- | --- |
-| `get_order(order_id)` | Safe, read-only | No | Schema + fixture row |
-| `refund(..., idempotency_key)` | Must not double-pay | No, but ledger is the safety | Exactly one ledger row after two identical calls |
-| `adjust_inventory(sku, delta)` | Needs an idempotency key or a desired-absolute | No | Net delta, never negative |
-| `send_email(user_id, body)` | Dedup on `(user_id, thread_id, body_hash)` | Maybe, if blast-sized | Fixture count == 1 |
-| `delete_account(user_id)` | Must not delete on a replay of step 1 | Yes, `preview_id` | No delete unless confirm span exists |
+## Worked example
 
-Harborline learned this when the agent retried `refund` after a 504 and the customer got `$48`. The model did what any at-least-once worker does. The tool was not a worker.
+### Easy
+
+`lookup_order(order_id)` verifies that the authenticated user can read that order. A syntactically valid order ID belonging to another tenant returns no protected data.
+
+### Medium
+
+`create_invoice` accepts amounts in integer cents and an operation ID. A retry with the same payload returns the existing invoice. The same operation ID with a different amount returns a conflict. Two genuinely separate identical invoices use distinct operation IDs; a body hash alone would conflate them.
+
+### Hard
+
+The provider times out after an email submission. Record the uncertain state and use the provider's idempotency or lookup contract. Local deduplication alone cannot determine whether the email was sent. Similarly, an absolute “set inventory to 5” can overwrite another update unless it includes a version/invariant check.
+
+**Practice:** list three checks missing from a schema that accepts `{tenant_id, order_id, amount}`. Check trusted tenant authorization, order ownership/state, and amount units/range before discussing model prompting.
 
 ## Common mistakes
 
-- One `sql_query` / `shell` tool and a prayer. Least privilege is a schema problem.
-- Idempotency key generated inside the tool instead of passed in, so the agent's retry is a new key.
-- Confirm implemented only in the system prompt ("always ask the user") with no second tool and no grader.
-- Error strings that change every call, so the model cannot pattern-match.
-- Silent success on unknown fields (typo `ammount_cents` ignored, refunds 0).
-- Different tool names in eval and prod ("we mocked Stripe as `fake_charge`").
+- Treating JSON-schema validity as authorization.
+- Allowing external content to expand tool permissions.
+- Using a new key after an uncertain result from the previous operation.
+- Letting the agent approve its own proposed action when user approval is required.
+- Returning only “error” when callers need to distinguish rejection, retryable failure, and unknown outcome.
 
 ## How to talk about it
 
-"I treat tools as an API for a caller who retries and hallucinates fields. Tight schemas, idempotency keys on anything with a side effect, confirm-plus-preview for deletes and blasts, structured errors, and the eval uses the production tool surface. If we cannot make a call safe to retry, we do not let the agent call it without a human in the loop."
-
-Tie it to serving limits if they ask about load: tool fan-out is a [serving](../../system-design/foundations/llm-serving/lesson.md) (id: llm-serving) and queueing problem, not a prompt problem.
+“The model proposes an operation; the tool enforces identity, authorization, invariants, and replay behavior. I will make uncertain outcomes explicit and bind any required user approval to the exact action.”
 
 ## Cross-links
 
-- [Mistakes coding agents keep making](../agent-mistakes.md) (id: agent-mistakes)
-- [Eval harness versus agent harness](../eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
-- [Vendor harness versus user harness](../vendor-vs-user-harness.md) (id: vendor-vs-user-harness)
-- [Outcome versus transcript](../outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
-- [Queues and delivery](../../system-design/foundations/queues-delivery/lesson.md) (id: queues-delivery)
-- [Job scheduler](../../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler)
-- [A clerk in the chat that is allowed to wait](../desk-bot/lesson.md) (id: desk-bot)
+- [Diagnose agent failures before changing the prompt](../agent-mistakes.md) (id: agent-mistakes)
+- [Separate the system doing the work from the system measuring it](../eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
+- [Evaluate the configuration you actually deploy](../vendor-vs-user-harness.md) (id: vendor-vs-user-harness)
+- [Grade the result and the constraints that matter](../outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
+- [At-least-once, idempotency, and the dead-letter lane](../../system-design/foundations/queues-delivery/lesson.md) (id: queues-delivery)
+- [Schedule occurrences and recover leased work](../../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler)
+- [Build a chat assistant with durable jobs and authorized tools](../desk-bot/lesson.md) (id: desk-bot)

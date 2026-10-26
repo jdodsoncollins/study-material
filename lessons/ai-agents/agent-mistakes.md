@@ -1,12 +1,12 @@
 ---
 id: agent-mistakes
-title: Mistakes coding agents keep making
+title: Diagnose agent failures before changing the prompt
 slug: agent-mistakes
 kind: strategy
 track: ai-agents
 difficulty: core
 estimated_minutes: 16
-summary: Coding agents fail in a short list of ruts — skipping repro, editing the wrong file, looping tools, hallucinating APIs — and evals plus harness design should hunt those ruts by name.
+summary: Trace failures to observable evidence, repair the responsible component, and add a focused regression case.
 tags:
   - ai-agents
   - ai-agents/failure-modes
@@ -21,81 +21,74 @@ related:
   - traces-trajectories
   - how-to-run-proper-evals
   - interview-ai-round
-company_signal:
-  - name: Meta
-    evidence: Candidate reports of 2026 AI-assisted coding rounds score whether you verify the model's patch instead of pasting it.
-    year: 2026
-    confidence: medium
-  - name: Anthropic
-    evidence: Public coding-agent and eval writeups catalog tool loops, skipped repro, and prompt-only "fixes" as first-class failure modes.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Anthropic, Building effective agents; coding-agent harness notes
-  - SWE-bench Verified failure analyses
-  - Public Meta AI-assisted interview reports (2026)
-updated: 2026-09-02
+  - https://www.anthropic.com/research/demystifying-evals-for-ai-agents
+updated: 2026-10-26
 status: canonical
 ---
 
-# Mistakes coding agents keep making
+# Diagnose agent failures before changing the prompt
 
 ## Snapshot
 
-- Most coding-agent failures are not "the model is bad at algorithms." They are ruts in the loop.
-- The ruts repeat: skip repro, edit the wrong file, invent an API, ignore the compiler, loop a tool, write tests that bless the bug, or "fix" the system prompt instead of the code.
-- Your eval suite should name these clusters. Your user harness (tests, `AGENTS.md`, CI) should make the healthy path cheaper than the rut.
-- In interviews, walking a transcript and pointing at the rut is the senior move.
+- Classify failures from observable evidence rather than guessing the cause.
+- Distinguish task ambiguity, missing evidence, wrong actions, tool failures, and grading errors.
+- Fix the component responsible for the observed failure.
+- Add a targeted regression case without overfitting the entire system to one trace.
 
 ## Why it shows up in interviews
 
-AI-assisted coding rounds and "why did this agent regress" prompts are transcript-reading tests. Interviewers want you to debug the *process*, not rewrite the function from scratch while ignoring the trace. See [how the 2026 AI interview round actually works](./interview-ai-round.md) (id: interview-ai-round).
+A prompt change may hide an environment or authorization bug. A useful debugging explanation traces the failure to evidence and tests whether the proposed repair addresses it.
 
 ## Core idea
 
 ### ELI5
 
-Treat the agent like a junior who types fast and does not like to read. The harness must force the scientific-method order: **reproduce → read the error → change the smallest true cause → re-run the same test.**
+Start at the incorrect outcome and work backward through the observable actions. Ask where the run first departed from the contract and what information or capability was available at that point.
 
-Evals then score two things: the [outcome](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript) (fail-to-pass plus pass-to-pass) and, when you debug, the trajectory for which rut it fell into. Do not grade "used my favorite files." Do grade "did not claim green while tests are red."
+A repeated read is not automatically a loop bug: polling can be legitimate if state changes and a stop policy exists. A missing test call is not automatically a failed task: it matters when verification is necessary or explicitly required. Judge the behavior against the task rather than a universal preferred trace.
 
 ## Worked example
 
-Harborline's checkout service. Hidden test: carts with a stale promo code should return `200` with `promo_applied=false`, not `500`. The agent is given the repo, the failing test name, and a shell.
+### Easy
 
-| Rut | What the transcript shows | What the world becomes | Harness / eval counter |
-| --- | --- | --- | --- |
-| Skipping repro | Edits `pricing.py` before running pytest | Random churn, still red | Agent instructions: run the named test first; eval fails if no test span exists |
-| Wrong file | Patches `legacy_cart.py` that nothing imports | Tests still fail | Repo map in `AGENTS.md`; blame/coverage hints |
-| Hallucinated API | Calls `Cart.applyDiscount()` that does not exist | ImportError | Force read of the module; code grader cannot be talked out of ImportError |
-| Not reading errors | Same patch retried after a clear stack frame | Loop of identical diffs | Stop condition on repeated tool args |
-| Tool loop | `run_tests` × 12 with no file change | Timeout, $$ | Timeout + repeated-call breaker in the agent harness |
-| Wrong tests | Rewrites the test to expect `500` | Green, product still broken | Hidden fail-to-pass tests the agent cannot edit |
-| Over-engineering | New `PromoStrategyFactory` for a one-line nil check | Pass-to-pass fails elsewhere | Diff-size budget; pass-to-pass suite |
-| Prompt-only "fix" | Author changes system prompt, leaves `pricing.py` broken | Demo chat looks wiser, CI red | Eval uses the shipping harness, not a parallel prompt |
+The agent reports a successful update, but the tool returned “permission denied.” The failure is incorrect handling/reporting of the tool result. Repair the result contract or behavior and add a case where rejection must be reported honestly.
 
-The hidden-test row is the one that saves you in production: the agent must not own the grader.
+### Medium
+
+The agent repeatedly searches because the expected document is absent from the fixture. A longer prompt does not create the missing evidence. Correct the fixture if it is defective, or define an appropriate “insufficient information” outcome if absence is part of the task.
+
+### Hard
+
+A patch passes visible tests but changes behavior outside the requested area. Review the task scope and add meaningful preservation tests. Diff size is a review signal, not a correctness proof or a universal release gate.
+
+| Observed problem | Evidence to inspect | Candidate repair |
+| --- | --- | --- |
+| Wrong record updated | Identity, lookup result, authorization | Stronger tool-side checks and disambiguation |
+| Endless retries | Error classes, budgets, state changes | Bounded retry/stop policy |
+| Correct work graded as failure | Rubric and trusted state | Repair the grader and re-evaluate |
+| Confident answer without evidence | Retrieval results and claims | Evidence checks and uncertainty behavior |
+
+**Practice:** choose one failure and write a test that would fail before the repair and pass after it. Keep the expected behavior broad enough to permit a different valid sequence of actions.
 
 ## Common mistakes
 
-- Treating every failure as a model-quality problem. First ask which rut the trajectory is.
-- Letting the agent edit the tests that define the bug.
-- No stop condition on identical tool calls. See [tool calling](./tool-calling/lesson.md) (id: tool-calling).
-- Measuring only fail-to-pass, so a 400-line rewrite that breaks neighbors still "wins."
-- Reading the last assistant message ("all tests pass") instead of the pytest span.
-- Humans "helping" by pasting a stack overflow snippet the agent already tried.
+- Calling every failure a reasoning problem without inspecting the tool/environment.
+- Adding a long special-case instruction for every incident.
+- Treating tool-call order as mandatory when the contract allows alternatives.
+- Ignoring a faulty grader because its result is easy to aggregate.
+- Reporting a list of failure types as their measured prevalence.
 
 ## How to talk about it
 
-"I would open the transcript and tag the rut before I talk about the patch. Did it reproduce. Did it read the error. Did it touch the file the stack names. Did it invent an API. Did it loop. Did it edit tests. Then I would say which harness change makes that rut expensive — hidden tests, repeated-call breaks, AGENTS.md that says run pytest first — versus which eval we add so this incident never leaves the regression suite."
-
-If they hand you a live AI coding round: run the failing test yourself, treat the model as a search engine with a diff, and do not submit until *you* have seen the outcome.
+“The first incorrect step was the update after an ambiguous lookup. I will require the tool to resolve an authorized record unambiguously, then test normal, ambiguous, and denied cases.”
 
 ## Cross-links
 
-- [Tools that are safe to call twice](./tool-calling/lesson.md) (id: tool-calling)
-- [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)
-- [Spans, traces, trajectories, sessions](./traces-trajectories.md) (id: traces-trajectories)
-- [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
-- [Vendor harness versus user harness](./vendor-vs-user-harness.md) (id: vendor-vs-user-harness)
-- [How the 2026 AI interview round actually works](./interview-ai-round.md) (id: interview-ai-round)
+- [Make tool contracts enforceable](./tool-calling/lesson.md) (id: tool-calling)
+- [Evaluate patches against behavior and preserved contracts](./coding-agent-evals.md) (id: coding-agent-evals)
+- [Use observable execution evidence to diagnose failures](./traces-trajectories.md) (id: traces-trajectories)
+- [Build an evaluation from the task contract](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
+- [Evaluate the configuration you actually deploy](./vendor-vs-user-harness.md) (id: vendor-vs-user-harness)
+- [Practice AI-assisted coding and evaluation discussions](./interview-ai-round.md) (id: interview-ai-round)

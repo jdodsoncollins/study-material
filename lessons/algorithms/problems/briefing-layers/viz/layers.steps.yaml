@@ -1,8 +1,6 @@
-title: Drain one depth
+title: layers
 steps:
-  - caption: "Snapshot queue length. That many nodes are today's briefing."
-    nodes: [q, drain]
-  - caption: "While you drain, enqueue children for tomorrow. Do not mix the two depths."
-    nodes: [drain, kids]
-  - caption: "Leaves enqueue nothing. The queue goes empty after [1, 6, 10, 14]."
-    nodes: [more, done]
+  - caption: "This implementation keeps current and next layers separate. A single shared queue is an alternative with a captured layer length."
+    nodes: [q, drain, kids]
+  - caption: "Replace current only after collecting the whole layer, so depths do not mix."
+    nodes: [out, more, done]

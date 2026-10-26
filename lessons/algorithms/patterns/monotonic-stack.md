@@ -11,6 +11,7 @@ tags:
   - algorithms
   - algorithms/stacks
   - algorithms/arrays
+  - interviews
   - interviews/leetcode
 prerequisites:
   - arrays-vs-linked-lists
@@ -20,19 +21,9 @@ related:
   - merge-intervals
   - two-pointers
   - heaps-top-k
-company_signal:
-  - name: Google
-    evidence: Candidate reports list next-greater / daily-temperature style stack prompts as a common medium.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: Tagged-list threads keep histogram-rectangle and next-greater-element in OA circulation.
-    year: 2025
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode monotonic-stack threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -47,7 +38,7 @@ status: canonical
 
 ## Prompt
 
-A dock thermometer records `temps = [14, 13, 16, 15, 19, 12]`. For each hour, how many hours until a strictly warmer reading? If none, put 0.
+An outdoor thermometer records `temps = [14, 13, 16, 15, 19, 12]`. For each hour, how many hours until a strictly warmer reading? If none, put 0.
 
 This is the "next greater to the right" family, told as a temperature strip, not a textbook array.
 
@@ -105,7 +96,7 @@ console.log(hoursUntilWarmer([14, 13, 16, 15, 19, 12])); // [2, 1, 2, 1, 0, 0]
 
 ```
 
-The stack of temps is decreasing (strictly, if you require a strictly warmer hour). Equals stay on the stack.
+The stack’s temperatures are non-increasing: equal temperatures stay on the stack because they do not answer a strictly-warmer query.
 
 ## Complexity
 
@@ -137,6 +128,8 @@ Answer `[2, 1, 2, 1, 0, 0]`.
 
 They want `-1` instead of `0` for "never." Fill that default. Equal temps: match the inequality to the prompt (`>` vs `>=`). Histogram area is the same stack twice (next smaller on each side).
 
+**Try it:** for `[14,14,16]`, both equal readings wait for 16, producing `[2,1,0]`. This is why the comparison is strict while the stack order is non-strict.
+
 ## Pitfalls
 
 | Trap | What happens | Fix |
@@ -148,7 +141,7 @@ They want `-1` instead of `0` for "never." Fill that default. Equal temps: match
 
 ## Interview moves
 
-- State the invariant: "stack indices have decreasing temps, all waiting for a warmer hour."
+- State the invariant: "stack indices have non-increasing temps, all waiting for a warmer hour."
 - Walk one pop on the board so they see amortized O(n).
 - Ask whether equal counts as warmer. One word changes the while-condition.
 - If they pivot to histogram area, say "next smaller to the left and to the right, same stack twice."
@@ -159,5 +152,5 @@ They want `-1` instead of `0` for "never." Fill that default. Equal temps: match
 - [Collapse overlapping ranges](./merge-intervals.md) (id: merge-intervals)
 - [Squeeze from both ends](./two-pointers/lesson.md) (id: two-pointers)
 - [Keep only the interesting k](./heaps-top-k.md) (id: heaps-top-k)
-- [Arrays versus linked lists](../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
+- [Contiguous slots versus pointer chasing](../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)

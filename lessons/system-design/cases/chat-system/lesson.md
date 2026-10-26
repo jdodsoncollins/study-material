@@ -1,12 +1,12 @@
 ---
 id: chat-system
-title: Ordered delivery for a 1:1 and small-group messenger
+title: Order messages and resume delivery
 slug: chat-system
 kind: case-study
 track: system-design
 difficulty: core
 estimated_minutes: 20
-summary: Kettle is a messenger with per-conversation order, presence as a lie budget, and at-least-once delivery with client-generated message ids.
+summary: Persist ordered conversation messages and resume delivery independently for each device.
 tags:
   - system-design
   - system-design/product-cases
@@ -25,124 +25,94 @@ related:
   - notification-system
   - cap-and-consistency
   - http-and-tcp
-company_signal:
-  - name: Meta
-    evidence: Candidate-reported product loops and prep-site frequency lists treat messenger-style chat as a high-frequency Meta prompt, with ordering and presence as the usual deep dives.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Hello Interview question DB (chat / messenger)
-  - Design Gurus 2026 FAANG guides
-  - r/cscareerquestions Meta messenger-style writeups
-updated: 2026-09-02
+  - https://kafka.apache.org/41/design/design/#message-delivery-semantics
+updated: 2026-10-26
 status: canonical
 ---
 
-# Ordered delivery for a 1:1 and small-group messenger
+# Order messages and resume delivery
 
 ## Snapshot
 
-- Product: **Kettle**. v1 is 1:1 and groups of ≤ 50. No channels of 10k, no disappearing mode.
-- Order is **per conversation**, not global. A monotonically increasing `seq` owned by that conversation's shard is enough.
-- Delivery is **at-least-once**. Clients mint `message_id`; relays dedup. Acks move a per-user cursor.
-- Presence is a 30-second lie, not a linearizable census. **PresencePulse** heartbeats, last-writer-wins.
+- Define ordering within a conversation rather than across all conversations.
+- A server acknowledgement should identify the durability promise it represents.
+- Distinguish message delivery to each device from the user's read state.
+- Reconnection resumes from durable cursors and tolerates duplicate delivery.
 
 ## What this round is actually scoring
 
-Realtime product sense: where the websocket terminates, how you do not lose order when two devices send at once, and what "online" means when a phone sleeps. Meta-flavor loops will not let you hide in a generic "chat service" box.
+Whether messages remain correctly ordered and recoverable when acknowledgements, connections, or leaders fail.
 
 ## Company signal
 
-Candidate-reported Meta product loops and prep-site frequency lists keep messenger-style chat at the top of the product-architecture pile. Confidence: **high**. Expect ordering, multi-device, and presence as follow-ups.
+This is an original practice scenario. No traceable company-specific frequency evidence is supplied.
 
 ## Requirements
 
-| Functional | v1 decision |
+| Area | Requirement |
 | --- | --- |
-| Send / receive text | Groups ≤ 50, 1:1 |
-| Multi-device | Same user, three devices, shared cursor per device |
-| Delivery receipts | Sent, delivered, read — per user, not per device |
-| Presence | Online / recently / offline |
-| Media | Pointer in the message, blob store out of band |
-
-| Non-functional | Budget |
-| --- | --- |
-| DAU | 300 million |
-| Send p99 (accept) | 80 ms in-region |
-| Catch-up after reconnect | 500 ms for last 50 messages |
-| Order | Per-conversation total order |
-| Presence accuracy | ~30s |
+| Send | One-to-one and small-group text messages |
+| Order | A stable order within each conversation |
+| Devices | Reconnect each device independently; synchronize user read state |
+| Delivery | Retry retained messages until acknowledged or until a defined retention policy applies |
 
 ## Back-of-envelope
 
-300M DAU × 40 messages/user/day = 12B messages/day ≈ **139k/s** average, ~1.4M/s peak.
+These are illustrative workload assumptions, not production measurements.
 
-200 bytes average body → 2.4 TB/day raw. Keep 30 days hot (≈ 72 TB) on **InboxLog**, colder on object storage.
+Assume 10 million daily users send 20 messages each: 200 million messages/day, about 2,315/s average. A tenfold peak is about 23,150/s. At one kilobyte per stored message, raw growth is about 200 GB/day before indexes and replication.
 
-Presence: 80M concurrent sockets, heartbeat every 30s → ~2.7M/s tiny writes if you treat it as a database. You will not. PresencePulse keeps state in memory per connection box, with a secondary index to find a user's boxes. Heartbeats stay on the socket; they do not hit InboxLog.
-
-Connections: 80M sockets / 50k per **Relay** box ≈ 1,600 Relays. That fleet is the real scale, not the message table.
+Group fanout multiplies delivery work. A message addressed to 50 devices can require 50 deliveries, even though it is stored once. Socket capacity and reconnect behavior require measurement.
 
 ## Design
 
 ### ELI5
 
-Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+A conversation has an authoritative ordered log. Sending appends once to that log; devices keep track of the last messages they have received. Reconnecting asks for the missing part.
 
-### Then the details
+[Trace ordered delivery](viz/delivery.md)
 
-[delivery](viz/delivery.md)
+### State and paths
 
-Client opens a websocket to **Relay** (L7 balancer with sticky *connection*, not sticky user forever). Relay authenticates, then subscribes to the user's mailbox.
+Route a conversation to an authoritative partition. In one atomic operation, check the sender's client operation ID, allocate a conversation sequence, and append the message. Return the sequence only after the chosen durability condition is met. A retry with the same operation ID returns the previous result; a different payload with that ID is rejected.
 
-Send path:
+Fence old leaders after failover so two owners cannot assign conflicting positions. State the replication and recovery policy rather than assuming a sequence counter alone solves failover.
 
-1. Client sends `{conversation_id, message_id, body}`. `message_id` is a UUID from the client.
-2. Relay forwards to the **conversation shard** (hash of `conversation_id`). The shard assigns `seq`, appends to InboxLog, and fans the event to online Relays for members.
-3. Offline members get a push via [Herald](../notification-system/lesson.md) (id: notification-system).
-4. Duplicate `message_id` on retry returns the original `seq`.
+Track delivery cursors by `(conversation, device)` and read cursors by `(conversation, user)` according to the product's multi-device policy. Deliveries may repeat; clients deduplicate by message ID. If a cursor predates retained history, return an explicit resynchronization response.
 
-InboxLog is an append-only log per conversation plus a per-user pointer `last_read_seq`. Catch-up is "give me seq > X." That is [at-least-once](../../foundations/queues-delivery/lesson.md) (id: queues-delivery) with idempotent clients.
-
-Group of 50: fanout 50 is cheap. Do not use Fieldnote's stadium path here; the product forbids stadiums.
+Push notifications are hints to reconnect, not proof that the device received or read a message. Keep the durable log as the recovery source. With end-to-end encryption, server-side plaintext search is unavailable; client-side search remains a separate option.
 
 ## Tradeoffs
 
-| Choice | Gain | Cost |
+| Choice | Benefit | Cost |
 | --- | --- | --- |
-| Seq on the conversation shard | Simple total order | That shard is a bottleneck for a hot group |
-| Client `message_id` | Safe retries, multi-device echoes | Must store a dedup index |
-| Websocket vs long-poll | Low latency, bidirectional | Connection fleet, draining, sticky-until-drain |
-| Presence in memory | Cheap heartbeats | A Relay death looks like a mass logout until reconnect |
-| Per-device vs per-user read cursor | Phones do not steal laptop unread | More state |
+| Per-conversation order | Matches the user's view | A very hot conversation has one ordering bottleneck |
+| Device delivery cursors | Reliable independent reconnects | More state than a single user cursor |
+| Durable acknowledgement | Clear recovery contract | Replication latency |
+| Ephemeral presence | Low overhead | Approximate status during failures |
 
 ## Failure modes
 
-- Relay dies: clients reconnect, catch-up from `last_ack_seq`. Presence flips offline until the new heartbeat. Budget the lie.
-- Conversation shard dies: fail closed on send, serve last cached tail for read. See [CAP as a conversation](../../foundations/cap-and-consistency.md) (id: cap-and-consistency).
-- Two devices send at once: both get seq from the same shard; order is "whatever the shard serialized," which is the product.
-- At-least-once double push: Herald and Relay both deliver; client dedups on `message_id`.
+- A response is lost after append: reuse the client operation ID.
+- Two leaders remain active: reject the stale owner's writes with fencing.
+- A device reconnects repeatedly: deduplicate deliveries and bound catch-up work.
+- A user leaves a group: authorize history and new delivery under the stated membership policy.
 
 ## Follow-ups an interviewer may ask
 
-### Easy
+**Easy:** send a message, lose the acknowledgement, and resend it. How many log entries should exist?
 
-Capacity and the cache: numbers first, then where a miss goes.
+**Medium:** the phone has received sequence 20 while the laptop has received 15. Identify the two delivery cursors and the independent read state.
 
-### Medium
+**Hard:** fail over while a leader has acknowledged data. Explain which replicas may take over without violating that acknowledgement.
 
-- 10k-user rooms: that is a broadcast channel, different fanout, different order rules. Out of v1.
-- E2E encryption: Relay becomes a ciphertext pipe; seq still exists, search dies.
-- Typing indicators: at-most-once, drop freely, never InboxLog.
-
-### Hard
-
-The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [At-least-once, idempotency, and the dead-letter lane](../../foundations/queues-delivery/lesson.md) (id: queues-delivery)
-- [CAP as a conversation, not a religion](../../foundations/cap-and-consistency.md) (id: cap-and-consistency)
-- [Hybrid fanout when some authors are stadiums](../news-feed/lesson.md) (id: news-feed)
-- [Fan-out that survives flaky devices](../notification-system/lesson.md) (id: notification-system)
-- [HTTP and TCP as interview tools](../../../cs/http-and-tcp.md) (id: http-and-tcp)
+- [Consistency promises during failures](../../foundations/cap-and-consistency.md) (id: cap-and-consistency)
+- [Build a feed with bounded fanout](../news-feed/lesson.md) (id: news-feed)
+- [Route notifications without confusing acceptance and delivery](../notification-system/lesson.md) (id: notification-system)
+- [HTTP is a conversation, TCP is the pipe](../../../cs/http-and-tcp.md) (id: http-and-tcp)
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)

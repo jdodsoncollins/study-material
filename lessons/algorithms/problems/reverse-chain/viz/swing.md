@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart LR
-  save[save nxt] --> flip[cur.next = prev]
-  flip --> slide[prev = cur, cur = nxt]
-  slide --> more{cur?}
-  more -->|yes| save
-  more -->|no| head[return prev]
+  more{cur exists?} -->|no| head[Return prev]
+  more -->|yes| save[Save cur.next]
+  save --> flip[Set cur.next to prev]
+  flip --> slide[Advance prev and cur]
+  slide --> more
 ```

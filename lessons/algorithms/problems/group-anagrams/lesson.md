@@ -1,12 +1,12 @@
 ---
 id: group-anagrams
-title: SKUs that share a packing cipher
+title: Group search tokens by their letters
 slug: group-anagrams
 kind: problem
 track: algorithms
 difficulty: intro
 estimated_minutes: 12
-summary: Group tags that are the same letters in a different order by using the sorted letters as the map key.
+summary: Group search tokens by a canonical signature of their letters, preserving duplicates and singletons.
 tags:
   - algorithms
   - algorithms/hash-maps
@@ -20,23 +20,13 @@ related:
   - two-sum
   - hashing-internals
   - longest-unique-window
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA reports list anagram-grouping as a default hash-map medium after two-sum.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Phone-screen writeups treat sorted-key grouping as the follow-up once complement lookup is done.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - LeetCode Top 100 Liked (Group Anagrams, 2026)
-  - r/leetcode hash-map tagged threads
-updated: 2026-09-11
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
-# SKUs that share a packing cipher
+# Group search tokens by their letters
 
 ## Snapshot
 
@@ -62,11 +52,11 @@ This is group-anagrams. The tokens are not a textbook `["eat","tea","tan"]`.
 
 ## Worked approach
 
-Same shoebox as [hash-maps](../../patterns/hash-maps.md) (id: hash-maps). The key is no longer the SKU. It is a *signature* of the letters.
+Same shoebox as [Hash maps as an index](../../patterns/hash-maps.md) (id: hash-maps). The key is no longer the SKU. It is a *signature* of the letters.
 
 ### ELI5
 
-Two tags are the same part if they use the same letters.
+Two tokens belong in the same group if their letter counts match.
 
 1. Take `oak`. Sort the letters. You get `ako`. That is the drawer label.
 2. Drop `oak` in drawer `ako`.
@@ -128,8 +118,8 @@ console.log(packGroups(["solo"]));
 
 1. `oak` → `ako`. New.
 2. `koa` → `ako`. Same.
-3. `bin` → `bin`. New.
-4. `nib` → `bin`. Same.
+3. `tab` → `abt`. New.
+4. `bat` → `abt`. Same.
 5. `crate` → `acert`. Alone.
 
 Three groups. Singletons stay.
@@ -138,13 +128,15 @@ Three groups. Singletons stay.
 
 They forbid sorting letters. Count 26 letters into a tuple and use that string as the key (`a1c1e1r1t1`). Same shoebox, cheaper when `k` is large. Mixed case / Unicode: ask; v1 is lowercase a-z. Empty input → no groups.
 
+**Try it:** group `["", "", "a"]`. Both empty strings share the empty signature, so the result has a two-item empty-string group and a singleton a. This lesson assumes lowercase ASCII tokens.
+
 ## Pitfalls
 
 | Trap | What happens | Fix |
 | --- | --- | --- |
 | Using the tag itself as the key | Every SKU is a singleton | Sort or count |
 | Sorting the list of tags | Groups unrelated words alphabetically | Sort *letters*, not the array |
-| Mutating the input strings | Later reads see scrambled SKUs | Split/sort a copy |
+| Confusing string and array mutation | JavaScript strings are immutable, but arrays are not | Sort the character array returned by split, preserving the original token |
 | Forgetting singletons | `crate` vanishes | Every tag is inserted once |
 
 ## Interview moves
@@ -159,4 +151,4 @@ They forbid sorting letters. Count 26 letters into a tuple and use that string a
 - [Hash maps as an index](../../patterns/hash-maps.md) (id: hash-maps)
 - [Pair lookup instead of nested scanning](../two-sum/lesson.md) (id: two-sum)
 - [Why a map is "O(1)" until it isn't](../../../cs/hashing-internals.md) (id: hashing-internals)
-- [Longest unique radio run](../longest-unique-window/lesson.md) (id: longest-unique-window)
+- [Longest substring without repeated letters](../longest-unique-window/lesson.md) (id: longest-unique-window)

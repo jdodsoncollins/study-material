@@ -1,6 +1,6 @@
-title: Believe the database
+title: grade
 steps:
-  - caption: "The transcript can lie with a confident sentence."
-    nodes: [agent, talk, maybe, wrong]
-  - caption: "The outcome is state in the world. Grade that."
-    nodes: [world, truth, real]
+  - caption: "A success claim is not proof of a changed artifact or external record."
+    nodes: [talk, world, outcome]
+  - caption: "Relevant authorization, privacy, or procedure violations can fail a task even when the final state is correct."
+    nodes: [constraints, result]

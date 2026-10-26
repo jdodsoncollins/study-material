@@ -2,10 +2,11 @@
 
 ```mermaid
 flowchart TB
-  ping[Driver ping] --> geo[Geo index]
-  ride[Ride request] --> zone[Zone]
-  zone --> match[Matcher]
+  ping[Timestamped locations] --> geo[Approximate geographic index]
+  ride[Ride request] --> match[Find candidates]
   geo --> match
-  match --> offer[Offer to driver]
-  offer --> trip[Trip]
+  match --> reserve[Atomically reserve idle driver]
+  reserve --> offer[Deliver identified offer]
+  offer --> accept[Validate current offer and trip state]
+  accept --> trip[Commit coordinated assignment]
 ```

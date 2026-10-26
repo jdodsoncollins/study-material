@@ -11,6 +11,7 @@ tags:
   - algorithms
   - algorithms/arrays
   - algorithms/two-pointers
+  - interviews
   - interviews/leetcode
 prerequisites:
   - two-sum
@@ -20,19 +21,9 @@ related:
   - two-pointers
   - hash-maps
   - big-o
-company_signal:
-  - name: Meta
-    evidence: Candidate phone-screen reports and tagged lists keep listing three-value zero-sum as the follow-up to pair-sum.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: OA writeups treat unique triplets summing to a target as a default medium.
-    year: 2025
-    confidence: high
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode Meta and Amazon tagged-list threads
-updated: 2026-09-11
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -64,7 +55,7 @@ This is the three-sum shape. The stubs are not the textbook `[-1, 0, 1, 2, -1, -
 
 [pin](viz/pin.md)
 
-This is [two-pointers](../../patterns/two-pointers/lesson.md) (id: two-pointers) after you pin one stub.
+This is [Squeeze from both ends](../../patterns/two-pointers/lesson.md) (id: two-pointers) after you pin one stub.
 
 ### ELI5
 
@@ -83,7 +74,7 @@ let i = 0, l = 1, r = a.length - 1;
 console.log(a[i], a[l], a[r], a[i] + a[l] + a[r]); // -5 -4 9 0
 ```
 
-Three indices. Inner loop is the ferry-pair `while (l < r)`.
+Three indices. The inner loop is the pair-search `while (l < r)`.
 
 ### Then the details
 
@@ -122,7 +113,7 @@ If the pinned value is already positive and the array is sorted, later pins cann
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
 | Triple nested loops | O(n³) | O(1) extra | Only for tiny n |
-| Sort + pin + two pointers | O(n²) | O(1) extra besides output | Default |
+| Sort + pin + two pointers | O(n²) | O(n) copy plus sorting workspace and output | Default |
 | Hash pairs, then lookup | O(n²) expected | O(n²) | Heavier, useful if you need indices |
 
 ## Walkthrough
@@ -136,14 +127,16 @@ Three stubs, already sorted: `[-7, 0, 7]`. Pin `-7`, squeeze `0` and `7`. Sum is
 `stubs = [9, -4, 5, -5, 2, 7, -7, 0]` → sorted `[-7, -5, -4, 0, 2, 5, 7, 9]`
 
 1. Pin `-7`. `-7 + 0 + 7 = 0`, `-7 + 2 + 5 = 0`.
-2. Pin `-5`. `-5 + -4 + 9 = 0`.
-3. Later pins cannot finish a zero with two non-negative partners.
+2. Pin `-5`. Find both `[-5,-4,9]` and `[-5,0,5]`.
+3. Pin `-4`: no remaining pair sums to 4. With pin 0, the remaining positive values cannot make zero.
 
-Triples: `[-7, 0, 7]`, `[-7, 2, 5]`, `[-5, -4, 9]`.
+Triples: `[-7,0,7]`, `[-7,2,5]`, `[-5,-4,9]`, and `[-5,0,5]`.
 
 ### Hard
 
 Duplicates in the input: skip a pin when `a[i] === a[i-1]`, and skip inner equals after a hit, or you emit the same triple twice. Need original indices? Do not sort in place without tuples — or hash pairs instead and pay memory.
+
+**Try it:** `[0,0,0,0]` contains four possible index triples but only one unique value triple, `[0,0,0]`. Explain where each duplicate-skipping loop acts.
 
 ## Pitfalls
 

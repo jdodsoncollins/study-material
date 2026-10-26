@@ -2,10 +2,10 @@
 
 ```mermaid
 flowchart TB
-  trial[Trial] --> code[Code grader]
-  trial --> model[LLM judge]
-  trial --> human[Human]
-  code --> score[Score]
-  model --> score
-  human --> score
+  evidence[Task evidence] --> code[Executable property checks]
+  evidence --> model[Calibrated qualitative judge]
+  evidence --> human[Human review and adjudication]
+  code --> results[Separate outcomes, constraints and quality findings]
+  model --> results
+  human --> results
 ```

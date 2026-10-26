@@ -1,12 +1,12 @@
 ---
 id: url-shortener
-title: Minting short keys for a read-heavy lookup
+title: Create and resolve short links safely
 slug: url-shortener
 kind: case-study
 track: system-design
 difficulty: intro
 estimated_minutes: 18
-summary: ClipForge is a 100:1 read lookup; the design fight is how you mint unique short keys without turning hash collisions into a product.
+summary: Create unique short-link mappings safely and resolve them under explicit expiry, replay, and cache policies.
 tags:
   - system-design
   - system-design/product-cases
@@ -24,126 +24,96 @@ related:
   - load-balancing
   - rate-limiter
   - unique-ids
-company_signal:
-  - name: Amazon
-    evidence: Candidate-reported L5 staple; prep-site frequency lists treat URL shorteners as the default junior/mid prompt across Amazon, Google, and Meta.
-    year: 2026
-    confidence: high
-  - name: Google
-    evidence: Candidate-reported loops use the same prompt as a scale/depth probe (key space, cache hit math, uniqueness under retry).
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Hello Interview question DB frequency notes (2026)
-  - Design Gurus 2026 FAANG guides
-  - r/leetcode and r/cscareerquestions Amazon L5 writeups
-updated: 2026-09-02
+  - https://www.rfc-editor.org/rfc/rfc9110.html
+  - https://www.rfc-editor.org/rfc/rfc9111.html
+updated: 2026-10-26
 status: canonical
 ---
 
-# Minting short keys for a read-heavy lookup
+# Create and resolve short links safely
 
 ## Snapshot
 
-- Product: **ClipForge**. Users mint a short key that 302s to a long URL. v1 is public links, no custom aliases, no analytics warehouse.
-- Traffic shape is **100 reads per write**. Caching and a tiny mapping table beat a clever graph.
-- Two mint stories: a **MintPool** of pre-generated keys, or a **hash of the long URL**. Hash sounds simple and then collides, cannot support two users minting the same destination as two keys, and fights retries.
-- The round is won on uniqueness, cache-aside, and what happens when a key is revoked.
+- Create a short code, persist its destination, and resolve it with a redirect.
+- Enforce uniqueness atomically; a large keyspace does not eliminate collisions.
+- Define replay behavior for creation and freshness behavior for edits or takedowns.
+- Estimate read traffic separately from creation traffic.
 
 ## What this round is actually scoring
 
-Can you freeze v1, put 100:1 on the page, and pick a mint strategy you can defend when the interviewer duplicates a request? Amazon-style loops then kill a box. Google-style loops then ask you to size the key space. Do not spend the middle of the round on a UI.
+Whether the read path, key allocation, and cache policy preserve the product promises after retries and failures.
 
 ## Company signal
 
-Candidate-reported Amazon L5 loops treat this as a staple. Prep-site frequency lists put it at the top of junior/mid prompts at Amazon, Google, and Meta. Confidence: **high**. Nobody is leaking an official bank; the signal is how often the same shape shows up in writeups.
+This is an original practice scenario. No traceable company-specific frequency evidence is supplied.
 
 ## Requirements
 
-| Functional | v1 decision |
+| Area | Requirement |
 | --- | --- |
-| Mint a short key from a long URL | 7-char key, alphabet `[a-zA-Z0-9]` |
-| Resolve key → 302 | Hot path, cache-aside |
-| Revoke / expire a clip | Tombstone in ClipStore, delete cache key |
-| Optional custom alias | Non-goal for v1 |
-
-| Non-functional | Budget |
-| --- | --- |
-| Read:write | 100:1 |
-| Resolve p99 | 20 ms inside the DC |
-| Mint p99 | 100 ms |
-| Durability of a minted mapping | Fail closed; no silent drop |
-| Uniqueness | No two live clips share a key |
+| Create | Authenticated users create a link with an optional expiry |
+| Resolve | Public lookup by code; expired or removed codes do not redirect |
+| Retry | The same creation operation returns the same result |
+| Takedown | Agree on a revocation target before selecting cache lifetimes |
 
 ## Back-of-envelope
 
-5 million mints/day, 500 million resolves/day (the 100:1).
+These are illustrative workload assumptions, not production measurements.
 
-- Mint: 5e6 / 86400 ≈ 58/s average, ×10 peak ≈ **580/s**
-- Resolve: 5e8 / 86400 ≈ 5.8k/s average, ×10 peak ≈ **58k/s**
-- Year-5 records: 5e6 × 365 × 5 ≈ 9.1e9 rows. 500 bytes/row ≈ **4.6 TB** plus indexes
-- Key space: 62^7 ≈ 3.5e12. At 9.1e9 keys we have used ~0.3%. 6 chars (56 billion) is tight by year 5; 7 is the honest default
+Assume 5 million creations and 5 billion resolves per day: about 58 writes/s and 57,900 reads/s on average. A tenfold read peak is about 579,000/s. Five years produces roughly 9.1 billion mappings. At 500 bytes each, that is about 4.6 TB before indexes and replicas.
 
-A 95% cache hit rate on resolve leaves ~2.9k/s for ClipStore. That is the database you actually buy.
+Seven base-62 characters provide 62⁷ ≈ 3.52 trillion codes. At 9.1 billion occupied codes, a new uniform random candidate collides with probability about 0.26%. That is low per attempt but many collisions across billions of attempts. Check and retry; do not declare collisions impossible.
 
 ## Design
 
 ### ELI5
 
-Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+Creating a link reserves a unique label for a destination. Resolving reads the label's current mapping. Caches may hold copies, so edits must account for those copies.
 
-### Then the details
+[Trace creation and resolution](viz/path.md)
 
-[path](viz/path.md)
+### Data and request paths
 
-**EdgeSplit** (two L7 balancers) → **Resolve API** and **Mint API** as separate pools.
+Store `code`, destination, owner, expiry, status, and version. Protect `code` with a unique constraint. Scope a creation idempotency key to the authenticated owner and retain the original request fingerprint and result; reject reuse with a different payload.
 
-- **MintPool**: a small service that pre-generates unused 7-char keys into a key table (`free` / `leased` / `assigned`). Mint leases a key, writes `clip_id → long_url` in **ClipStore**, marks assigned. On client retry with the same `request_id`, return the already-assigned key.
-- **ClipStore**: sharded by `clip_id` (see [sharding](../../foundations/sharding/lesson.md) (id: sharding)). Point lookup only.
-- **HotPath**: cache-aside, key `clip:{id}`, TTL 45s + jitter, delete on revoke.
+Generate a random candidate, then atomically insert the mapping and creation result. Retry a unique-key collision with a new candidate. If the response is lost after commit, replay the operation key to retrieve the committed result. A pre-generated pool is an alternative only if ownership and consumption are also crash-safe.
 
-Hash-of-URL alternative: `key = base62(sha256(url)[:n])`. Collisions need a probe. Two users cannot mint distinct keys for one destination. Changing the long URL later is a mess. Mention it, then reject it for v1 unless the interviewer wants "same URL always same key" as a product rule.
+For a resolve, check a cache, then the authoritative mapping on a miss. Cache negative results briefly and carefully: a cached miss must not hide a newly created link from its creator. Apply expiration and takedown rules before redirecting.
 
-Redirect stays a 302, not a 301, so revoke can actually stop traffic.
+A 302 response is not inherently uncacheable. Choose explicit HTTP cache directives and CDN invalidation behavior. A strict revocation target may require short-lived or revalidated responses and an authoritative block check. It cannot retract a destination already visited.
 
 ## Tradeoffs
 
-| Choice | Gain | Cost |
+| Choice | Benefit | Cost |
 | --- | --- | --- |
-| MintPool of pre-generated keys | No collision on the write path; easy to reserve ranges per DC | You operate a key factory and must not leak unused keys |
-| Hash of the long URL | No factory | Collisions, no two keys per URL, ugly retries |
-| 7-char vs 6-char | Year-5 headroom | Slightly longer copy-paste |
-| 302 vs 301 | Revoke works; cache stays yours | Browsers re-hit you (which you wanted at 100:1 anyway) |
-| Cache-aside vs putting Mint through cache | Miss path stays simple | Must delete on revoke |
+| Random code plus unique insert | Simple distributed candidates | Collisions require retries |
+| Sequential allocation | Predictable allocation | Guessable codes; allocator capacity to evaluate |
+| Long redirect cache lifetime | Fewer origin reads | Slower edits and takedowns |
+| Short cache lifetime | Faster refresh | More origin traffic |
 
 ## Failure modes
 
-- Mint API retries without `request_id` → two keys for one user click. Require the id.
-- ClipStore primary dies mid-write → lease expires, key returns to `free` only if the row is absent.
-- HotPath stampede on a viral clip → local LRU on the Resolve API plus single-flight fill. See [caching](../../foundations/caching/lesson.md) (id: caching).
-- Key exhaustion in one DC's range → steal from MintPool global, do not wrap into used space.
+- A lost creation response must not create another link on replay.
+- A stale fill after invalidation can restore an old destination; use a version-aware policy when freshness requires it.
+- A viral code may need replicated cache capacity even if the database is sharded.
+- Validate destinations and operate abuse controls; successful storage does not make a destination safe.
 
 ## Follow-ups an interviewer may ask
 
-### Easy
+**Easy:** two users shorten the same URL. Should they share a code? Decide whether ownership, expiry, and analytics make these distinct mappings.
 
-Capacity and the cache: numbers first, then where a miss goes.
+**Medium:** a candidate code already exists. Trace the atomic rejection and retry.
 
-### Medium
+**Hard:** an abusive link is cached in a disconnected region. Explain what revocation promise remains possible and when that region must stop serving.
 
-- Custom aliases: extra unique index, abuse, and a different rate limit. See [rate-limiter](../rate-limiter/lesson.md) (id: rate-limiter).
-- Analytics: append-only click log, not ClipStore. Do not add a write on the 302 path without a queue.
-- Multi-region mint: uniqueness needs one authority per key range, not two live writers.
-
-### Hard
-
-The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)
 - [Remembering the expensive answer nearby](../../foundations/caching/lesson.md) (id: caching)
 - [Splitting a keyspace so one box is not the product](../../foundations/sharding/lesson.md) (id: sharding)
 - [Spreading work without creating a new bottleneck](../../foundations/load-balancing.md) (id: load-balancing)
-- [Token buckets and sliding windows at the edge](../rate-limiter/lesson.md) (id: rate-limiter)
-- [HTTP and TCP as interview tools](../../../cs/http-and-tcp.md) (id: http-and-tcp)
-- [IDs that sort without a coordinator](../../foundations/unique-ids/lesson.md) (id: unique-ids)
+- [Enforce request budgets across servers](../rate-limiter/lesson.md) (id: rate-limiter)
+- [HTTP is a conversation, TCP is the pipe](../../../cs/http-and-tcp.md) (id: http-and-tcp)
+- [Time-ordered IDs with per-worker sequences](../../foundations/unique-ids/lesson.md) (id: unique-ids)

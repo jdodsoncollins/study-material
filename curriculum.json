@@ -144,7 +144,7 @@
     {
       "id": "wire",
       "label": "Wire",
-      "blurb": "The machine, downloads, and the lie isolation sells.",
+      "blurb": "Memory, downloads, concurrency, and transaction isolation.",
       "units": [
         {
           "id": "machine",
@@ -206,7 +206,7 @@
     {
       "id": "box",
       "label": "Box",
-      "blurb": "One job, one box. Lookup, flags, edge, money.",
+      "blurb": "Request paths, state, and failures in focused design cases.",
       "units": [
         {
           "id": "lookup",
@@ -244,7 +244,7 @@
     {
       "id": "harness",
       "label": "Harness",
-      "blurb": "The loop you rent versus the loop you write.",
+      "blurb": "Models, execution environments, tools, and permissions.",
       "units": [
         {
           "id": "bot",
@@ -269,7 +269,7 @@
     {
       "id": "judge",
       "label": "Judge",
-      "blurb": "Measure the agent, then sit the round.",
+      "blurb": "Measure outcomes and practice explaining the evidence.",
       "units": [
         {
           "id": "run",

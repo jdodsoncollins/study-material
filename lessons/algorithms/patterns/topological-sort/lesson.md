@@ -10,6 +10,7 @@ summary: Linearize a directed acyclic graph so every edge points forward; a left
 tags:
   - algorithms
   - algorithms/graphs
+  - interviews
   - interviews/leetcode
 prerequisites:
   - bfs
@@ -19,19 +20,9 @@ related:
   - bfs
   - dfs-backtracking
   - union-find
-company_signal:
-  - name: Amazon
-    evidence: Candidate reports list course-schedule / build-order prompts as the usual topo-sort tell.
-    year: 2026
-    confidence: high
-  - name: Google
-    evidence: Onsite writeups describe compilation-order and task-graph questions in the same family.
-    year: 2025
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode topological-sort threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -65,7 +56,14 @@ This is course-schedule. The numbers are not a textbook CS-degree planner.
 
 ### ELI5
 
-Build adjacency and indegree. Seed the queue with indegree 0. Peel.
+Count each module’s unfinished prerequisites. Start with every module whose count is zero. Completing one module reduces the counts of the modules it unlocks. Enqueue a module exactly when its count reaches zero.
+
+### Syntax
+
+```ts
+const indegree = [0, 1, 2, 0, 0, 1];
+console.log(indegree.flatMap((count, id) => count === 0 ? [id] : [])); // [0,3,4]
+```
 
 ### Then the details
 
@@ -80,8 +78,8 @@ function studyOrder(n: number, need: [number, number][]): number[] | null {
   const q: number[] = [];
   for (let i = 0; i < n; i++) if (indeg[i] === 0) q.push(i);
   const order: number[] = [];
-  while (q.length) {
-    const cur = q.shift()!;
+  for (let head = 0; head < q.length; head++) {
+    const cur = q[head];
     order.push(cur);
     for (const nxt of adj[cur]) {
       indeg[nxt] -= 1;
@@ -117,7 +115,7 @@ n = 6, `need = [[0,1], [1,2], [3,2], [4,5]]`
 ### Medium
 
 2. Peel 0, 3, 4 (queue order). After 0, node 1 drops to 0 and joins.
-3. Peel 1; node 2 drops to 1 (still waiting on 3, already peeled, so actually 2 may already be 0 depending on order).
+3. Peeling 3 already reduced node 2 from 2 to 1. Now peel 1: node 2 drops from 1 to 0 and joins behind 5.
 4. Peel 5 after 4. Peel 2 once both 1 and 3 are gone.
 5. Six nodes peeled. One valid order: `[0, 3, 4, 1, 5, 2]`.
 
@@ -125,7 +123,7 @@ Add `2 → 0` and the peel stops with `{0,1,2}` still holding indegree. Return n
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+Predict the result for n = 3 with edge 0→1: node 2 must still appear, despite being disconnected. For n = 0, the valid order is []. The sample assumes every endpoint is an integer in 0..n−1. Multiple valid orders are acceptable; validate edges, not one expected ordering.
 
 ## Pitfalls
 
@@ -149,6 +147,6 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 - [Expand level by level](../bfs/lesson.md) (id: bfs)
 - [Explore, undo, try the next branch](../dfs-backtracking.md) (id: dfs-backtracking)
 - [Cluster membership in nearly constant time](../union-find/lesson.md) (id: union-find)
-- [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)
+- [Trees are graphs with a promise](../../../cs/trees-graphs.md) (id: trees-graphs)
 - [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)
 - [How to run a pattern-first loop](../../strategy/pattern-first-prep.md) (id: pattern-first-prep)

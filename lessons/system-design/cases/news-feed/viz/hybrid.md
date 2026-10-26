@@ -1,14 +1,16 @@
-# Hybrid fanout
+# hybrid
 
 ```mermaid
 flowchart TB
-  api[API publish] --> post[PostStore]
-  api --> wave{follower_count ≥ 10k?}
-  wave -->|no ordinary| fan[WaveFan append inbox]
-  wave -->|yes stadium| loud[LoudSet only]
-  home[Home read] --> inbox[inbox ids]
-  home --> pull[pull LoudSet]
-  inbox --> merge[union + RankLite]
+  api[Publish] --> post[Commit post and outbox event]
+  post --> wave{Fanout policy}
+  wave -->|ordinary audience| fan[Idempotent inbox insertion]
+  wave -->|large audience| pullstore[Author stream for read-time merge]
+  home[Home read] --> inbox[Pushed candidates]
+  home --> pull[Bounded pull candidates]
+  fan --> inbox
+  pullstore --> pull
+  inbox --> merge[Merge and rank]
   pull --> merge
-  merge --> body[hydrate PostStore]
+  merge --> auth[Current visibility checks and hydration]
 ```

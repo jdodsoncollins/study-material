@@ -2,9 +2,8 @@
 
 ```mermaid
 flowchart LR
-  mint[Mint on worker] --> pack[time 41b]
-  pack --> worker[worker 10b]
-  worker --> seq[seq 12b]
-  seq --> id[64-bit post id]
-  id --> log[Event log]
+  owner[Exclusive worker ownership and restart state] --> time[41 timestamp bits]
+  time --> worker[10 worker bits]
+  worker --> seq[12 sequence bits]
+  seq --> id[63 used bits; sign bit clear]
 ```

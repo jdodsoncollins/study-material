@@ -10,6 +10,7 @@ summary: Trade linear scans for expected constant lookups by storing the fact yo
 tags:
   - algorithms
   - algorithms/hash-maps
+  - interviews
   - interviews/leetcode
 prerequisites:
   - hashing-internals
@@ -19,19 +20,9 @@ related:
   - lru-cache
   - hashing-internals
   - three-sum
-company_signal:
-  - name: Meta
-    evidence: Candidate reports treat complement-index and frequency-map problems as the default first phone-screen question.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: OA writeups repeatedly mention counting / grouping with maps before any graph question.
-    year: 2025
-    confidence: high
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode hash-map tagged threads
-updated: 2026-09-12
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -42,7 +33,7 @@ status: canonical
 - A map is an index: key is the question you will ask, value is the answer you already computed.
 - Three recurring jobs: complement lookup, frequency count, grouping by a derived key (anagram signature, rounded geo cell).
 - Expected O(1) per op. Say "expected." Interviewers notice if you call it a law.
-- If the key space is tiny and dense, an array beats a hash map.
+- For a small, dense key space, an array can simplify lookup and reduce overhead; compare the actual representation.
 
 ## Prompt
 
@@ -64,7 +55,7 @@ The index half is why the pattern exists. The pair half is the two-sum shape.
 
 ## Worked approach
 
-Decide the key *before* you code. For "last seen" the key is the SKU. For pair-sum the key is the complement you still need.
+Decide the key *before* you code. For "last seen" the key is the SKU. For pair-sum, store each seen price as a key and query the complement you still need.
 
 ### ELI5
 
@@ -173,7 +164,9 @@ Two copies of `6`, target `12`. Look up before you insert.
 
 If you insert first, the first `6` finds itself and you return `[0, 0]`, which is illegal.
 
-Follow-up they actually ask: "group the SKUs that are anagrams." The map key becomes `sorted letters`, the value becomes a list. Walk that in [group-anagrams](../problems/group-anagrams/lesson.md) (id: group-anagrams). Follow-up #2: "why is this O(n)?" → [hashing-internals](../../cs/hashing-internals.md) (id: hashing-internals).
+A useful follow-up is “group search tokens that are anagrams.” The map key becomes `sorted letters`, the value becomes a list. Walk that in [Group search tokens by their letters](../problems/group-anagrams/lesson.md) (id: group-anagrams). Follow-up #2: "why is this O(n)?" → [Why a map is "O(1)" until it isn't](../../cs/hashing-internals.md) (id: hashing-internals).
+
+**Try it:** predict `pairByPrice([6], 12)` and `pairByPrice([6,6], 12)`. They return null and `[0,1]`. Explain why lookup-before-insert distinguishes these cases.
 
 ## Pitfalls
 
@@ -182,22 +175,22 @@ Follow-up they actually ask: "group the SKUs that are anagrams." The map key bec
 | Using an object for numeric keys | `"10"` and `10` collide as strings | `Map`, not `{}` |
 | Insert then lookup | Self-pair on `2 * x = target` | Lookup first |
 | Claiming worst-case O(1) | Adversarial collisions | "Expected O(1); array if key space is dense" |
-| Mutating a map while iterating it | Missed keys / exceptions | Iterate a snapshot of keys |
+| Assuming iteration uses a frozen snapshot | JavaScript Map iteration can observe later additions | Define the mutation behavior or iterate a snapshot |
 
 ## Interview moves
 
 - Name the key and the value in one sentence before writing `new Map`.
-- If they ask "can we do O(1) space?", pivot to sort + two pointers and say what you lose.
+- If they ask "can we do O(1) space?", consider sorting plus two pointers, accounting for sorting workspace, mutation, and original indices.
 - Mention load factor and "I would use an array of size 26 for letters" so they hear that you know hashing internals.
 - For grouping problems, define the signature (`sorted letters`, `count tuple`) as the key.
 
 ## Cross-links
 
 - [Pair lookup instead of nested scanning](../problems/two-sum/lesson.md) (id: two-sum)
-- [SKUs that share a packing cipher](../problems/group-anagrams/lesson.md) (id: group-anagrams)
+- [Group search tokens by their letters](../problems/group-anagrams/lesson.md) (id: group-anagrams)
 - [Three-value search](../problems/three-sum/lesson.md) (id: three-sum)
-- [Scanner memory with eviction](../problems/lru-cache/lesson.md) (id: lru-cache)
-- [Hashing internals](../../cs/hashing-internals.md) (id: hashing-internals)
-- [What an index actually stores](../../cs/indexes.md) (id: indexes)
+- [A lookup cache with least-recently-used eviction](../problems/lru-cache/lesson.md) (id: lru-cache)
+- [Why a map is "O(1)" until it isn't](../../cs/hashing-internals.md) (id: hashing-internals)
+- [Indexes are precomputed answers](../../cs/indexes.md) (id: indexes)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
 - [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)

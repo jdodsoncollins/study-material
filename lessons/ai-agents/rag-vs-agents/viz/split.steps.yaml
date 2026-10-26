@@ -1,6 +1,8 @@
-title: Lookup vs job
+title: split
 steps:
-  - caption: "RAG is fetch-then-speak. Cite the passage."
-    nodes: [q, rag, doc]
-  - caption: "An agent is a loop with tools and a world that changes."
-    nodes: [q, agent, act]
+  - caption: "Retrieval can include multiple queries and reranking inside a fixed workflow."
+    nodes: [workflow, evidence]
+  - caption: "An adaptive loop may use only read tools; external mutation is not required to be an agent."
+    nodes: [agent, tools]
+  - caption: "Both approaches need evidence quality, access control, and a clear stopping condition."
+    nodes: [answer]

@@ -1,12 +1,12 @@
 ---
 id: unique-ids
-title: IDs that sort without a coordinator
+title: Time-ordered IDs with per-worker sequences
 slug: unique-ids
 kind: concept
 track: system-design
 difficulty: core
 estimated_minutes: 14
-summary: A 64-bit ticket can be unique, roughly time-ordered, and minted on many boxes if you partition time, worker, and sequence.
+summary: Understand time-based ID packing and the allocation, restart, and clock rules needed to keep IDs unique.
 tags:
   - system-design
   - system-design/foundations
@@ -21,88 +21,86 @@ related:
   - indexes
   - blob-store
   - job-scheduler
-company_signal:
-  - name: Twitter
-    evidence: Public Snowflake writeup plus candidate-reported ID-generation prompts at Meta/Amazon still treat time-sortable 64-bit IDs as a staple follow-up.
-    year: 2026
-    confidence: high
-  - name: Uber
-    evidence: Candidate-reported geo/dispatch loops ask how event IDs stay unique across regions without a global sequence.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Twitter Snowflake public design notes
-  - UUID vs ULID vs sequence talk in backend interview threads
-  - Clock-drift / leap-second anecdotes in distributed-systems postmortems
-updated: 2026-09-02
+  - https://www.rfc-editor.org/rfc/rfc9562.html
+updated: 2026-10-26
 status: canonical
 ---
 
-# IDs that sort without a coordinator
+# Time-ordered IDs with per-worker sequences
 
 ## Snapshot
 
-- Product need: 64-bit **post IDs** for a news feed, the same job Twitter Snowflake does. They must be unique across machines, roughly sortable by time, and fit in a `BIGINT` column.
-- A central `SELECT nextval` is a [shard](../sharding/lesson.md) (id: sharding) you did not mean to build.
-- UUID v4 is unique and useless for range scans. ULID/KSUID are the string cousins of the same idea.
-- The usual 64-bit layout: **timestamp | worker | sequence**. Uniqueness is "this worker never reuses a sequence in this millisecond."
+- IDs need a stated scope of uniqueness, representation, and ordering requirement.
+- A database sequence can be a good simple choice when its capacity and availability fit.
+- Time-based distributed IDs move coordination into worker allocation and generator state.
+- An ID's approximate time order is not proof of causal or commit order.
 
 ## Why it shows up in interviews
 
-After you draw a log or a message table they ask "who assigns the id." They are checking whether you will put a global counter in the drawing. The follow-up is clock drift.
+Once records need identifiers, compare central allocation, random identifiers, and time-ordered identifiers. The useful follow-up is what happens after a restart or clock rollback.
 
 ## Core idea
 
 ### ELI5
 
-Split the 64 bits so two boxes cannot mint the same post id without sharing a worker id.
+Reserve a part of the ID for time, a part for a worker, and a part for that worker's sequence within the same millisecond. Two generators must never reuse the same combination.
 
-[bits](viz/bits.md)
+[Read the bit layout](viz/bits.md)
 
-One working split (not a standard you must memorize): 1 unused bit, 41 bit milliseconds, 10 bit worker (1024 boxes), 12 bit sequence (4096/ms/box). 41 bits of ms is ~69 years from a custom epoch.
+An illustrative 63-bit layout uses 41 bits of elapsed milliseconds, 10 bits of worker ID, and 12 bits of sequence, leaving a sign bit clear in a signed 64-bit column. It allows 1,024 worker IDs and 4,096 sequences per millisecond per worker for about 69.7 years after the chosen epoch.
 
-Worker ids come from the orchestrator at boot (or from the machine's rack+slot). Sequence resets every millisecond. If a worker mints more than 4096 events in one ms, it waits.
+This still needs coordination: worker IDs must have exclusive owners, including during replacement and network partitions. Restarts must not reuse a previously issued time/sequence pair. Sequence resets are safe only when advancing to a new timestamp that the worker has not already used.
+
+UUIDv4 uses randomness and has probabilistic collision resistance. UUIDv7 includes a leading timestamp and can improve time locality. Neither choice removes the need for database uniqueness constraints when a collision must be detected. See [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562.html).
 
 ## Worked example
 
-### Easy / medium / hard
+### Easy
 
-Walk the small case in the sample, then the miss, then the follow-up they name in Interview moves.
-
-Dock 7, epoch `2024-01-01`. At `ms = 1_700_000_000_000` relative to epoch it mints sequence 0, 1, 2.
+Worker 7 packs elapsed millisecond 50,000 and sequences 0 and 1. This function demonstrates **packing only**; it is not a complete allocator.
 
 ```ts
 function mint(ms: number, worker: number, seq: number): string {
-  const id = (BigInt(ms) << 22n) | (BigInt(worker) << 12n) | BigInt(seq);
-  return id.toString();
+  if (!Number.isInteger(ms) || ms < 0 || ms >= 2 ** 41 ||
+      !Number.isInteger(worker) || worker < 0 || worker >= 1024 ||
+      !Number.isInteger(seq) || seq < 0 || seq >= 4096) {
+    throw new RangeError("ID field out of range");
+  }
+  return ((BigInt(ms) << 22n) | (BigInt(worker) << 12n) | BigInt(seq)).toString();
 }
-console.log(mint(50_000, 7, 0));
-console.log(mint(50_000, 7, 1));
-console.log(mint(50_000, 8, 0) === mint(50_000, 7, 0));
+console.log(mint(50_000, 7, 0), mint(50_000, 7, 1));
+console.log(mint(50_000, 8, 0) === mint(50_000, 7, 0)); // false
 ```
 
-Same millisecond, different workers → different ids. Same worker, sequence bump → different ids. Sort order tracks `ms` then worker then seq, which is good enough for "roughly when."
+### Medium
 
-Clock goes backward 5ms: refuse to mint until `now >= last_ms`, or bump a logical ms and accept a small lie. Do not reuse sequences from the future you already handed out.
+The worker has issued sequence 4,095 at this timestamp. It must wait for a safely new timestamp or use another explicitly designed overflow policy. Silently wrapping to zero duplicates an ID.
+
+### Hard
+
+The clock moves backward five milliseconds, then the process restarts. A guard against the current process's last timestamp is insufficient if that state is lost. Preserve allocation state or use an allocation/lease scheme that prevents reuse across restarts. A paused old owner also must not continue minting after its worker ID is reassigned.
+
+**Try it:** sort IDs from workers 7 and 8 generated in the same millisecond. Their numeric order follows worker bits before sequence bits; it does not prove which event happened first.
 
 ## Common mistakes
 
-| Trap | What happens | Fix |
+| Mistake | Consequence | Better decision |
 | --- | --- | --- |
-| UUID in a B-tree primary key | Random inserts, page splits | Time-ordered id, or a sequential surrogate plus a UUID column |
-| One global SQL sequence | That primary is the product | Per-worker sequence |
-| Worker id from hostname hash | Two boxes can collide | Allocate worker ids |
-| Ignore NTP step-back | Duplicate tickets after a clock jump | Monotonic guard |
-| 32-bit id at 1M/s | Wrap in an afternoon | 64-bit, and say the wrap date |
+| Convert a 63-bit ID to JavaScript `number` | Distinct IDs can lose precision | Use `bigint` internally and strings at JSON boundaries |
+| Hash hostnames into worker IDs | Collisions can duplicate IDs | Allocate and fence ownership |
+| Assume a central sequence is always inadequate | Unnecessary distributed complexity | Measure the actual requirement |
+| Use an unsigned 32-bit counter at one million IDs/s | Exhaust the space in about 72 minutes | Calculate capacity and rollover behavior |
 
 ## How to talk about it
 
-"I will not put a global counter in the drawing. 64 bits: time, worker, sequence. Worker ids are allocated. If the clock jumps back, we stall. If they need ids before the event is durable, we mint at accept and treat the ticket as the idempotency key."
+“I will first check whether the database can allocate IDs. If distributed generation is required, I will define worker ownership, restart state, clock rollback, and overflow. The bit layout is only one part of that protocol.”
 
 ## Cross-links
 
 - [Splitting a keyspace so one box is not the product](../sharding/lesson.md) (id: sharding)
 - [HTTP is a conversation, TCP is the pipe](../../../cs/http-and-tcp.md) (id: http-and-tcp)
 - [Indexes are precomputed answers](../../../cs/indexes.md) (id: indexes)
-- [Camera rolls that never fit on one disk](../../cases/blob-store/lesson.md) (id: blob-store)
-- [Cron, ad-hoc, leases, and retries](../../cases/job-scheduler/lesson.md) (id: job-scheduler)
+- [Upload large objects with resumable parts](../../cases/blob-store/lesson.md) (id: blob-store)
+- [Schedule occurrences and recover leased work](../../cases/job-scheduler/lesson.md) (id: job-scheduler)

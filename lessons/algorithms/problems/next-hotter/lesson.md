@@ -6,7 +6,7 @@ kind: problem
 track: algorithms
 difficulty: core
 estimated_minutes: 12
-summary: Scan left to right and keep a decreasing stack of waiting days so each new high resolves every cooler day still on the stack.
+summary: Scan left to right and keep a non-increasing stack of waiting days so each new high resolves every cooler day still on the stack.
 tags:
   - algorithms
   - algorithms/stacks
@@ -20,19 +20,9 @@ related:
   - valid-brackets
   - merge-intervals
   - two-pointers
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA reports list next-warmer-day / next-greater as the standard monotonic-stack medium.
-    year: 2026
-    confidence: high
-  - name: Google
-    evidence: Phone-screen writeups describe daily-temperatures style next-greater as a common stack follow-up.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - LeetCode Top 100 Liked (Daily Temperatures, 2026)
-  - r/leetcode monotonic-stack tagged threads
-updated: 2026-09-03
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -41,8 +31,8 @@ status: canonical
 ## Snapshot
 
 - For each day, how many days until a strictly hotter reading. None: 0.
-- Nested scans are O(n²). A decreasing stack of *indices* waits for a warmer day.
-- When today is hotter than the top of the stack, pop and write `today - thatIndex`. Repeat until the stack is decreasing again.
+- Nested scans are O(n²). A non-increasing stack of *indices* waits for a warmer day.
+- When today is hotter than the top of the stack, pop and write `today - thatIndex`. Repeat until the stack is non-increasing again.
 - The stack holds unresolved days. It never holds a day that already found its answer.
 
 ## Prompt
@@ -62,7 +52,7 @@ This is next-warmer-day. The tape is not `[73,74,75,71,69,72,76,73]`.
 
 ## Worked approach
 
-Same decreasing stack as [monotonic-stack](../../patterns/monotonic-stack.md) (id: monotonic-stack).
+Same non-increasing stack as [The next greater is waiting on a stack](../../patterns/monotonic-stack.md) (id: monotonic-stack).
 
 ### ELI5
 
@@ -109,7 +99,7 @@ Store indices, not temperatures. You need the distance `i - j`.
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
 | For each day scan right | O(n²) | O(1) extra | Timeout at 10^5 |
-| Decreasing index stack | O(n) | O(n) | Each index push/pop once |
+| Non-increasing index stack | O(n) | O(n) | Each index push/pop once |
 
 ## Walkthrough
 
@@ -145,9 +135,9 @@ Store indices, not temperatures. You need `i - j`. Leftovers stay 0 unless they 
 
 ## Interview moves
 
-- Say "decreasing stack of unresolved days" before the loop.
+- Say "non-increasing stack of unresolved days" before the loop.
 - Draw the pops for 70. That one day resolves two waiters.
-- Histogram rectangle is the same stack with widths. Name it if they look bored.
+- Histogram rectangle is the same stack with widths. Explain the changed invariant before switching problems.
 
 ## Cross-links
 

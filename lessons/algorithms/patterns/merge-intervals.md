@@ -11,6 +11,7 @@ tags:
   - algorithms
   - algorithms/intervals
   - algorithms/greedy
+  - interviews
   - interviews/leetcode
 prerequisites:
   - two-pointers
@@ -19,19 +20,9 @@ related:
   - heaps-top-k
   - monotonic-stack
   - topological-sort
-company_signal:
-  - name: Meta
-    evidence: Candidate reports list meeting-merge and calendar-conflict prompts as a recurring medium.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: OA writeups describe "merge busy windows / insert an interval" as a tagged favorite.
-    year: 2025
-    confidence: high
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode interval tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -40,7 +31,7 @@ status: canonical
 ## Snapshot
 
 - Sort by start. After that, a linear scan is enough because a later interval cannot sneak behind you.
-- Overlap means `next.start <= current.end`. Touching endpoints usually count as overlap; ask.
+- For the half-open ranges here, overlap means `next.start < current.end`. Merging adjacent busy blocks is a separate product choice.
 - Insert-interval is the same walk with one extra range spliced in.
 - "Minimum rooms" is not merge. That is a min-heap of end times.
 
@@ -48,7 +39,7 @@ status: canonical
 
 Calendar holds, half-open hours `[start, end)`: `slots = [[1, 4], [8, 10], [3, 6], [9, 11]]`. Merge any overlapping meetings so the busy blocks show on the calendar, not every raw request.
 
-The numbers are not the textbook `[[1,3],[2,6],[8,10],[15,18]]`.
+Assume start < end for each interval. Keep touching but non-overlapping intervals separate.
 
 ## Recognition signals
 
@@ -68,7 +59,7 @@ Bookings on a number line.
 1. Sort them by when they start.
 2. Hold the block that is still open.
 3. Next booking starts before this one ends → stretch the end.
-4. Next booking starts after this one ends → close the block, open a new one.
+4. Next booking starts at or after this one ends → close the block, open a new one.
 
 Touching endpoints: ask if 4pm-end and 4pm-start are one block or two.
 
@@ -77,7 +68,7 @@ Touching endpoints: ask if 4pm-end and 4pm-start are one block or two.
 ```ts
 const slots: [number, number][] = [[1, 4], [3, 6]];
 const sorted = [...slots].sort((a, b) => a[0] - b[0]);
-console.log(sorted[1][0] <= sorted[0][1]); // 3 <= 4, overlap
+console.log(sorted[1][0] < sorted[0][1]); // 3 < 4, overlap
 ```
 
 ### Then the details
@@ -92,7 +83,7 @@ function mergeSlots(slots: [number, number][]): [number, number][] {
   let [open, close] = sorted[0];
   for (let i = 1; i < sorted.length; i++) {
     const [start, end] = sorted[i];
-    if (start <= close) {
+    if (start < close) {
       close = Math.max(close, end);
     } else {
       out.push([open, close]);
@@ -108,13 +99,13 @@ console.log(mergeSlots([[1, 4], [8, 10], [3, 6], [9, 11]])); // [[1,6],[8,11]]
 
 ```
 
-`start <= close` treats touching ranges as one block. If the prompt uses half-open hours and they say 4pm-end then 4pm-start is free, switch to `start < close`.
+The code follows the half-open overlap rule: `[1,4)` and `[4,6)` remain separate. If the UI should combine adjacent busy blocks, deliberately change the condition to `start <= close`.
 
 ## Complexity
 
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
-| Nested overlap checks | O(n²) | O(n) | Misses transitivity |
+| Pairwise overlap graph + components | O(n²) | O(n²) if storing edges | Correct but more work and storage |
 | Sort + scan | O(n log n) | O(n) | Default |
 | Sweep with a heap | O(n log n) | O(n) | Use for room count |
 
@@ -129,7 +120,7 @@ console.log(mergeSlots([[1, 4], [8, 10], [3, 6], [9, 11]])); // [[1,6],[8,11]]
 `slots = [[1, 4], [8, 10], [3, 6], [9, 11]]`
 
 1. Sort: `[1,4], [3,6], [8,10], [9,11]`.
-2. Open `[1,4]`. Next starts at 3, which is ≤ 4. Extend close to 6. Block `[1,6]`.
+2. Open `[1,4]`. Next starts at 3, which is < 4. Extend close to 6. Block `[1,6]`.
 3. `[8,10]` starts after 6. Push `[1,6]`, open `[8,10]`.
 4. `[9,11]` overlaps. Extend to `[8,11]`.
 5. Result `[[1,6], [8,11]]`.
@@ -150,7 +141,7 @@ How many rooms at once? Merge is the wrong summary. Use a min-heap of end times.
 ## Interview moves
 
 - Ask whether touching endpoints merge, and whether the ranges are closed or half-open.
-- Draw the number line. Interviewers want to see the sort, not a clever tree.
+- Draw the number line and explain why sorting makes the next decision local.
 - If they follow with "how many rooms do we need?", switch to a min-heap of closing times and say why merge is the wrong summary.
 - Insert-interval: merge as usual, but treat the new slot as one more item in the sorted list, or splice during the walk.
 

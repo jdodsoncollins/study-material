@@ -13,7 +13,7 @@
         { "type": "read", "lesson": "big-o" },
         { "type": "read", "lesson": "arrays-vs-linked-lists" },
         { "type": "read", "lesson": "pattern-first-prep" },
-        { "type": "speak", "text": "Say the n≈1e5 sentence out loud." }
+        { "type": "speak", "text": "Compare distinct-pair scanning with a set-based scan at n = 100,000. State time and memory assumptions." }
       ]
     },
     {
@@ -211,7 +211,7 @@
       "id": "day-20",
       "title": "Order",
       "kind": "acquire",
-      "blurb": "Peel sources until the graph is a line — or a cycle.",
+      "blurb": "Emit available prerequisites and check whether every node can be ordered.",
       "blocks": [
         { "type": "read", "lesson": "topological-sort" },
         { "type": "attempt", "lesson": "course-order", "minutes": 25 },
@@ -266,7 +266,7 @@
       "id": "day-25",
       "title": "Coins",
       "kind": "drill",
-      "blurb": "Make the amount. Then skip a bay.",
+      "blurb": "Make the amount. Then choose nonadjacent items.",
       "blocks": [
         { "type": "attempt", "lesson": "coin-change", "minutes": 25 },
         { "type": "read", "lesson": "coin-change", "after": "attempt" },
@@ -512,7 +512,7 @@
       "id": "day-47",
       "title": "Bot",
       "kind": "acquire",
-      "blurb": "A desk bot first, then what is not RAG.",
+      "blurb": "A chat assistant, then retrieval and adaptive workflows.",
       "blocks": [
         { "type": "read", "lesson": "desk-bot" },
         { "type": "read", "lesson": "rag-vs-agents" }
@@ -556,7 +556,7 @@
       "id": "day-51",
       "title": "Run",
       "kind": "acquire",
-      "blurb": "Start from real failures.",
+      "blurb": "Define success; include ordinary tasks, failures, and edge cases.",
       "blocks": [
         { "type": "read", "lesson": "how-to-run-proper-evals" },
         { "type": "read", "lesson": "pass-at-k" },
@@ -578,7 +578,7 @@
       "id": "day-53",
       "title": "Room",
       "kind": "acquire",
-      "blurb": "Named ruts, then the AI round.",
+      "blurb": "Diagnose observed failures, then practice an AI-assisted exercise.",
       "blocks": [
         { "type": "read", "lesson": "agent-mistakes" },
         { "type": "read", "lesson": "interview-ai-round" }

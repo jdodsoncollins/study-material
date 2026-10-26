@@ -1,4 +1,4 @@
-title: One pass on the bins
+title: One pass through the cart
 steps:
   - caption: "4 → need 15. Map empty. Store 4 → 0."
     nodes: [scan, need, miss]

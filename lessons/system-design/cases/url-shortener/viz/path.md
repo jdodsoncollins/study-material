@@ -2,9 +2,12 @@
 
 ```mermaid
 flowchart LR
-  mint[Mint API] --> keys[MintPool]
-  mint --> store[ClipStore]
-  click[Resolve] --> cache[Redirect cache]
+  mint[Create with operation key] --> keys[Generate candidate code]
+  keys --> store[Atomic unique mapping and replay result]
+  store -->|code collision| keys
+  click[Resolve code] --> cache[Version and freshness-aware cache]
   cache -->|miss| store
-  store --> cdn[302 to long URL]
+  store --> check[Check status and expiry]
+  cache -->|acceptable hit| check
+  check --> redirect[Redirect with explicit cache policy]
 ```

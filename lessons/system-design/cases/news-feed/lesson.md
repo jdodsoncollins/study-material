@@ -1,12 +1,12 @@
 ---
 id: news-feed
-title: Hybrid fanout when some authors are stadiums
+title: Build a feed with bounded fanout
 slug: news-feed
 kind: case-study
 track: system-design
 difficulty: core
 estimated_minutes: 20
-summary: Fieldnote's home stream is a fanout problem; naive write-fanout dies on stadium authors, so v1 is hybrid.
+summary: Combine bounded fanout and read-time merging while preserving durable publication and current visibility rules.
 tags:
   - system-design
   - system-design/product-cases
@@ -24,124 +24,94 @@ related:
   - queues-delivery
   - chat-system
   - notification-system
-company_signal:
-  - name: Meta
-    evidence: Candidate-reported product-architecture loops and prep-site frequency (Exponent / Hello Interview) treat news feed as the most reported Meta prompt.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Hello Interview News Feed breakdowns (consulted, not copied)
-  - Design Gurus 2026 FAANG guides
-  - r/cscareerquestions Meta loop writeups
-updated: 2026-09-03
+  - https://kafka.apache.org/41/design/design/#message-delivery-semantics
+updated: 2026-10-26
 status: canonical
 ---
 
-# Hybrid fanout when some authors are stadiums
+# Build a feed with bounded fanout
 
 ## Snapshot
 
-- Product: **Fieldnote**, a professional social network. The round is the **home stream**, not the whole app.
-- Two paths: **WaveFan** pushes a post id into each follower's inbox (write fanout). **QuietLane** leaves stadium authors out of that push; readers pull those posts at read time.
-- Ranking is a separate, bounded rerank of a candidate set. Do not design a full ML platform in v1.
-- The math that matters: average fanout is cheap; p99 fanout is a stadium.
+- Separate durable posts from the candidate lists used to build a home feed.
+- Push ordinary authors' posts to follower inboxes; evaluate pull-based handling for very large audiences.
+- Treat ranking, privacy, and freshness as separate decisions.
+- A queue helps fanout recover, but the post and publication event need a safe commit boundary.
 
 ## What this round is actually scoring
 
-Meta-flavor product judgment. Can you draw *write vs read*, name the celebrity problem without being asked, and keep ranking in a box that does not swallow the round? They are not scoring whether you remember a three-tier "feed service" cartoon.
+Whether one high-fanout author, a delayed worker, or a privacy change breaks the design.
 
 ## Company signal
 
-Candidate-reported Meta loops and prep-site frequency lists (Exponent, Hello Interview) call news feed the most reported product-architecture prompt. Confidence: **high**. Treat it as a fanout and ranking conversation, not as "design Instagram."
+This is an original practice scenario. No traceable company-specific frequency evidence is supplied.
 
 ## Requirements
 
-| Functional | v1 decision |
+| Area | Requirement |
 | --- | --- |
-| Publish a post | Text + media pointer, one author |
-| Home stream | Reverse-chron candidates, light ranker |
-| Follow graph | Directed, stored separately |
-| Likes / comments | Non-goal beyond a count on the post body |
-| Ads | Non-goal |
-
-| Non-functional | Budget |
-| --- | --- |
-| DAU | 200 million |
-| Home p99 | 200 ms to first 20 items |
-| Publish p99 | 300 ms to *accept* (fanout may be async) |
-| Staleness | A few seconds for ordinary authors |
-| Stadium authors | Must not melt WaveFan |
+| Publish | Create a durable post and distribute it to eligible followers |
+| Read | Return a ranked page with a stable pagination cursor |
+| Privacy | Enforce current blocking and visibility rules on reads |
+| Degradation | Permit delayed feed inclusion; define a useful fallback when ranking fails |
 
 ## Back-of-envelope
 
-200M DAU, 4 posts/user/day → 800M posts/day ≈ 9.3k/s average, ~93k/s peak.
+These are illustrative workload assumptions, not production measurements.
 
-Naive write fanout: average 200 followers → 800M × 200 = 160B inbox writes/day ≈ **1.85M/s** average. Peak is worse. That number is why you do not fan out to everyone.
+Assume 200 million users and 2,000 retained candidate IDs per user. At eight bytes per ID, that is 3.2 TB of raw IDs if all users have full inboxes. Ranking metadata, indexes, replication, and runtime overhead add storage.
 
-Split authors:
-
-- Ordinary (follower count < 10k): ~99% of posts. Fanout on write into a per-user inbox of post ids.
-- Stadium (≥ 10k): ~1% of posts, huge follower mass. Store on the author timeline only. Readers merge at read.
-
-Inbox size: keep last 2k post ids per user (~16 KB). 200M × 16 KB ≈ 3.2 TB — cacheable in **StoryCache**.
-
-Read: 200M × 8 home opens/day ≈ 18.5k/s average, ~185k/s peak. This is why inboxes live in cache, not in a join across the follow graph on every scroll.
+A post to 500 followers causes about 500 candidate insertions. A post to 20 million followers cannot be sized from the average alone. A threshold such as 10,000 followers is a tunable starting assumption, not an established universal split.
 
 ## Design
 
 ### ELI5
 
-Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+Store the post once. For most authors, place its ID in followers' candidate lists. For extremely large audiences, retrieve recent posts from those authors when a follower reads, then merge and rank the candidates.
 
-### Then the details
+[Follow hybrid fanout](viz/hybrid.md)
 
-[Hybrid fanout](viz/hybrid.md)
+### Write and read paths
 
-Publish path: API writes the post body to **PostStore** (sharded by `post_id`), then enqueues a fanout job on **WaveFan**.
+Commit a post and an outbox event together. A relay publishes the event; workers insert candidates idempotently using `(recipient, post_id)`. Track fanout progress so a retry resumes without creating duplicate entries.
 
-- WaveFan consumers load the follower list in pages. For each ordinary follower, they *append* `post_id` to `inbox:{user}`. At-least-once, so appends are idempotent on `(user, post_id)`. See [queues-delivery](../../foundations/queues-delivery/lesson.md) (id: queues-delivery).
-- If `follower_count ≥ 10k`, skip WaveFan. Mark the author on a **LoudSet**.
+At read time, merge the pushed inbox with eligible posts from pull-based authors. Bound the amount of work per page: a person following many large authors must not trigger an unbounded scatter. Cache or pre-merge candidate streams where useful. Rank the bounded set and hydrate post details.
 
-Read path: load the user's inbox (cache-aside). Pull the latest K posts from each followed LoudSet author (small list, cached). Union, take a window, send to **RankLite** (heuristic: recency, author affinity, already-seen). Hydrate bodies from PostStore / StoryCache.
+Apply authorization and block/mute policies before returning results. Lazy cleanup can remove old candidates later, but must not be the only enforcement for a privacy change. A ranking outage may fall back to reverse chronological order over **authorized** candidates.
 
-Do not pre-render HTML. Cache post bodies and inboxes, not personalized pages.
+Use a cursor tied to a stable ordering or snapshot policy. Explain whether new posts can appear between pages and how duplicates are prevented.
 
 ## Tradeoffs
 
-| Choice | Gain | Cost |
+| Strategy | Benefit | Cost |
 | --- | --- | --- |
-| Write fanout for ordinary authors | Home reads are a list, not a graph join | Write amplification; mute/unfollow is messy |
-| Pull for stadium authors | WaveFan survives a keynote | Home reads pay a merge; ranking must not starve ordinary posts |
-| Precompute rank vs rank on read | Faster first byte if precomputed | Stale, expensive to rebuild |
-| Inbox of ids vs hydrated posts | Mutations (delete, edit) stay in PostStore | Extra hydrate hop |
+| Push every post | Cheap feed reads | Large audiences create write bursts |
+| Pull every author | Cheap publication | Expensive reads for users following many authors |
+| Hybrid | Limits extreme fanout | Two paths and a merge policy |
+| Precomputed ranking | Faster reads | Stale features and more update work |
 
 ## Failure modes
 
-- WaveFan consumer crashes after 30% of a follower list: resume from a cursor stored with the job, not from zero (duplicates are fenced by `(user, post_id)`).
-- Inbox hot key: a user who follows 8 stadiums plus 400 ordinary authors is fine; a *stadium author's own inbox* is not on the write path.
-- RankLite timeout: return reverse-chron. Empty is worse than unranked.
-- Mute of a stadium author: QuietLane filter at read. Mute of an ordinary author: drop from inbox lazily.
+- A post commits but publication is lost: recover through the transactional outbox.
+- Duplicate fanout events: unique candidate keys make insertion replayable.
+- A blocked author remains in an inbox: filter with current policy before serving.
+- A hot author's burst backs up ordinary work: use separate scheduling budgets and lag metrics.
 
 ## Follow-ups an interviewer may ask
 
-### Easy
+**Easy:** trace a post to three followers and a retry of the fanout event.
 
-Capacity and the cache: numbers first, then where a miss goes.
+**Medium:** one author gains 20 million followers. Explain how existing followers move between push and pull without missing or duplicating candidates.
 
-### Medium
+**Hard:** a block occurs while ranking is unavailable. Show why the chronological fallback still enforces the block.
 
-- Stories / ephemeral: a second inbox with a 24h TTL, same hybrid rule.
-- Notifications for "X posted": that is [Herald](../notification-system/lesson.md) (id: notification-system), not WaveFan.
-- Multi-hop ranking features: offline, not in the 200 ms path.
-
-### Hard
-
-The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)
 - [Remembering the expensive answer nearby](../../foundations/caching/lesson.md) (id: caching)
 - [At-least-once, idempotency, and the dead-letter lane](../../foundations/queues-delivery/lesson.md) (id: queues-delivery)
-- [Ordered delivery for a 1:1 and small-group messenger](../chat-system/lesson.md) (id: chat-system)
-- [Fan-out that survives flaky devices](../notification-system/lesson.md) (id: notification-system)
+- [Order messages and resume delivery](../chat-system/lesson.md) (id: chat-system)
+- [Route notifications without confusing acceptance and delivery](../notification-system/lesson.md) (id: notification-system)
 - [Splitting a keyspace so one box is not the product](../../foundations/sharding/lesson.md) (id: sharding)

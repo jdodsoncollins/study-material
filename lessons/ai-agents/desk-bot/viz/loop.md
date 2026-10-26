@@ -2,16 +2,14 @@
 
 ```mermaid
 flowchart TB
-  job[DeskJob] --> model[ClerkLoop model]
-  model --> tool{tool or final?}
-  tool -->|lookup_order| inv[Orders read]
-  tool -->|post_thread| post[Edit placeholder]
-  tool -->|page_oncall| gate{confirm in this job?}
-  gate -->|no| refuse[Harness refuses]
-  gate -->|yes| page[Pager, key = event_id]
-  inv --> model
-  post --> model
-  page --> model
-  tool -->|final| stop[Trace + stop]
-  refuse --> model
+  job[Durable job and trusted user context] --> model[Bounded model loop]
+  model --> proposal{Tool or final response?}
+  proposal -->|tool| auth[Validate schema and user authority]
+  auth --> gate{Approval required by policy?}
+  gate -->|yes| approve[Verify scoped user approval]
+  gate -->|no| execute[Execute with operation identity]
+  approve --> execute
+  execute --> obs[Structured outcome or uncertainty]
+  obs --> model
+  proposal -->|final| stop[Record outcome and stop]
 ```

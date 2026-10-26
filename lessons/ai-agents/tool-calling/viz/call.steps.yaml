@@ -1,8 +1,8 @@
-title: Schema, execute, observe
+title: call
 steps:
-  - caption: "The model picks a tool and fills the schema."
-    nodes: [model, schema]
-  - caption: "The harness runs it and feeds the observation back."
-    nodes: [exec, obs, model]
-  - caption: "Irreversible tools need a confirm, not a vibe."
-    nodes: [ir, confirm]
+  - caption: "A valid input shape does not establish authorization or correct units."
+    nodes: [model, schema, auth]
+  - caption: "Check required approval before the effect, using trusted user evidence."
+    nodes: [gate, wait, exec]
+  - caption: "Return explicit success, rejection, retryable failure, or unknown outcome as appropriate."
+    nodes: [obs]

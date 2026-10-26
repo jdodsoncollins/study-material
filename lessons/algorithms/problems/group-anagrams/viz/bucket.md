@@ -2,10 +2,10 @@
 
 ```mermaid
 flowchart LR
-  tag[next SKU] --> key[sort letters]
-  key --> hit{key in map?}
-  hit -->|no| fresh[new bucket]
-  hit -->|yes| push[push into bucket]
-  fresh --> tag
+  tag[Next token] --> key[Sort its letters for a key]
+  key --> hit{Bucket exists?}
+  hit -->|no| fresh[Create empty bucket]
+  fresh --> push[Append original token]
+  hit -->|yes| push
   push --> tag
 ```

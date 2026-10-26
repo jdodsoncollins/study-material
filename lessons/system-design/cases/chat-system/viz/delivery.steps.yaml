@@ -1,8 +1,8 @@
-title: Online vs offline
+title: delivery
 steps:
-  - caption: "Persist first. The log is the source of truth."
+  - caption: "Authorization, operation deduplication, sequence allocation, and append protect one logical message."
     nodes: [send, api, log]
-  - caption: "If the recipient has a socket, fan out live."
-    nodes: [fan, ws, recv]
-  - caption: "Otherwise enqueue a push. Do not block the write."
-    nodes: [api, push]
+  - caption: "Acknowledge under the chosen durability policy; each device resumes from its own cursor."
+    nodes: [ack, fan, recv]
+  - caption: "Push is a reconnect hint, not proof of delivery or reading."
+    nodes: [push]

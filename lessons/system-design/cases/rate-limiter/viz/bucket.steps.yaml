@@ -1,8 +1,8 @@
-title: Cheap shed then fair share
+title: bucket
 steps:
-  - caption: "Most traffic dies on a local bucket. No network."
-    nodes: [req, local, pass]
-  - caption: "When the box is dry, ask the shared window."
-    nodes: [local, redis]
-  - caption: "Over quota: 429. Under: allow."
-    nodes: [redis, pass, shed]
+  - caption: "Every request for the key reaches its authority in this strict example."
+    nodes: [req, owner]
+  - caption: "The rolling-window and burst policies are distinct; check and update them atomically when both are required."
+    nodes: [check, consume]
+  - caption: "Local full-sized buckets on every frontend would multiply the global allowance."
+    nodes: [pass, shed]

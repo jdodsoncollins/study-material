@@ -10,6 +10,7 @@ summary: Split a large download into fixed byte ranges so you can fetch several 
 tags:
   - cs
   - cs/networking
+  - interviews
   - interviews/system-design
 prerequisites:
   - file-download
@@ -19,15 +20,10 @@ related:
   - request-budget
   - blob-store
   - http-and-tcp
-company_signal:
-  - name: Amazon
-    evidence: Object-store interviews ask for multipart download and upload: part size, part numbers, and how you assemble an object the client can open.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - HTTP Range requests and multipart object download practice
-  - Public object-store multipart part-size discussions
-updated: 2026-09-25
+  - https://www.rfc-editor.org/rfc/rfc9110.html
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -35,16 +31,16 @@ status: canonical
 
 ## Snapshot
 
-- One TCP stream for an 8 MiB clip is correct and slow to recover. A dropped packet stalls the whole file.
+- One streamed GET may be sufficient even for a large file. Fixed ranges help isolate application retries and can improve throughput when measured conditions justify parallelism.
 - Cut the object into **fixed ranges**. Each range is its own GET with `Range: bytes=start-end`.
 - Part size is a product choice. Too small and you pay a request per 64 KB. Too big and one failure throws away a lot of bytes.
 - You assemble by **byte offset**, not by the order the responses arrived.
-- Parallelism is useless until you also cap it. That cap is [request-budget](./request-budget.md) (id: request-budget).
+- Parallel requests need an explicit concurrency cap. That cap is [A budget for in-flight requests](./request-budget.md) (id: request-budget).
 
 | Plan | Time to first byte | Cost of one failure | Interview line |
 | --- | --- | --- | --- |
-| One GET | After the handshake | Restart or resume one offset | Fine under ~1 MB |
-| Fixed ranges | After the first slice | Redo that slice | The default for multi-megabyte media |
+| One GET | After the handshake | Restart or resume one offset | Choose from latency, throughput, and recovery requirements |
+| Fixed ranges | After the first slice | Redo that slice | Useful when independent range recovery or concurrency helps |
 | Tiny ranges | Request overhead wins | Almost free | You melted the socket pool |
 
 ## Why it shows up in interviews
@@ -65,10 +61,12 @@ status: canonical
 7  [7340032  .. 8388607]
 ```
 
-Eight envelopes. They may arrive 7, 0, 3, 1. You slot each envelope into its offset. The file is playable when every slot is filled, not when the first one lands.
+Eight envelopes. They may arrive 7, 0, 3, 1. You slot each envelope into its offset. The download is complete when every required range is verified. Playback can sometimes begin earlier if the format and player have the needed metadata and initial media bytes.
 
 ```ts
 function planRanges(total: number, part: number): { index: number; start: number; end: number }[] {
+  if (!Number.isSafeInteger(total) || total < 0 || !Number.isSafeInteger(part) || part < 1)
+    throw new Error("Invalid range sizes");
   const out: { index: number; start: number; end: number }[] = [];
   for (let start = 0, index = 0; start < total; start += part, index += 1) {
     out.push({ index, start, end: Math.min(start + part, total) - 1 });
@@ -77,7 +75,9 @@ function planRanges(total: number, part: number): { index: number; start: number
 }
 
 const parts = planRanges(8_388_608, 1_048_576);
-console.log(parts.length, parts[0], parts[7]);
+console.log(parts.length, parts[0], parts[7]); // 8 parts
+console.log(planRanges(8_388_700, 1_048_576).at(-1)); // {index:8,start:8388608,end:8388699}
+console.log(planRanges(0, 1024)); // []
 ```
 
 ## Worked example
@@ -88,11 +88,15 @@ console.log(parts.length, parts[0], parts[7]);
 
 ### Medium
 
-The file is 8,388,700 bytes. Parts 0–6 are full. Part 7 is `bytes=7340032-8388699`, 92 bytes short of a full slice. The loop above already does that with `Math.min`.
+The file is 8,388,700 bytes: eight full parts (0–7), plus part 8 at `bytes=8388608-8388699`, exactly 92 bytes. The loop above already does that with `Math.min`.
 
 ### Hard
 
-They ask for a 200 MB video. Do not pick 8 KB parts (about 25,000 requests). Say 8 MiB parts, then name the cap on how many of those are in flight.
+They ask for a 200 MB video. Compare request count and retry cost: 8 KiB parts need about 25,000 requests, while 8 MiB parts need about 24. Treat those as candidates to measure, not universal defaults.
+
+**Try it:** for total 10 bytes and part size 4, write the ranges before running the planner. They are 0–3, 4–7, and 8–9. Verify that every byte appears exactly once.
+
+All parts must belong to the same immutable object version. Validate Content-Range, body length, and the expected validator; do not combine parts from different versions.
 
 ## Common mistakes
 
@@ -103,12 +107,12 @@ They ask for a 200 MB video. Do not pick 8 KB parts (about 25,000 requests). Say
 
 ## How to talk about it
 
-"I plan inclusive byte ranges up front, store each part by index, and concatenate by index. Part size is 1–8 MiB unless they give me a reason. The last part is short. I do not start the player until the ranges I need for the first seconds are present, but I do not pretend a missing tail is a complete file."
+"I plan inclusive byte ranges up front, store each part by index, and concatenate by index. I choose part size and concurrency from measured overhead, bandwidth, and retry costs. The last part is short. I do not start the player until the ranges I need for the first seconds are present, but I do not pretend a missing tail is a complete file."
 
 ## Cross-links
 
 - [A download is bytes plus a name](./file-download.md) (id: file-download)
 - [One dead chunk is not a dead file](./chunk-retry.md) (id: chunk-retry)
 - [A budget for in-flight requests](./request-budget.md) (id: request-budget)
-- [Camera rolls that never fit on one disk](../system-design/cases/blob-store/lesson.md) (id: blob-store)
+- [Upload large objects with resumable parts](../system-design/cases/blob-store/lesson.md) (id: blob-store)
 - [HTTP is a conversation, TCP is the pipe](./http-and-tcp.md) (id: http-and-tcp)

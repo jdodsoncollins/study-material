@@ -2,10 +2,10 @@
 
 ```mermaid
 flowchart LR
-  start[slow and fast on head] --> step[slow +1, fast +2]
-  step --> end{fast at null?}
-  end -->|yes| no[no loop]
-  end -->|no| same{same node?}
-  same -->|no| step
-  same -->|yes| yes[loop]
+  start[slow and fast at head] --> guard{fast and fast.next exist?}
+  guard -->|no| no[No cycle]
+  guard -->|yes| step[Move slow one and fast two]
+  step --> same{Same node identity?}
+  same -->|yes| yes[Cycle]
+  same -->|no| guard
 ```

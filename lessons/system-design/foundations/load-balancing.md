@@ -6,7 +6,7 @@ kind: concept
 track: system-design
 difficulty: intro
 estimated_minutes: 12
-summary: A load balancer is a traffic policy plus a health story, not a box you sprinkle in front of "the app."
+summary: Route work using useful load signals and account for capacity loss, health checks, and reconnect bursts.
 tags:
   - system-design
   - system-design/foundations
@@ -20,20 +20,10 @@ related:
   - interview-framework
   - http-and-tcp
   - rate-limiter
-company_signal:
-  - name: Amazon
-    evidence: Candidate-reported L4/L5 designs and prep-site frequency notes almost always expect a balancer plus a health-check story, even on junior prompts.
-    year: 2026
-    confidence: high
-  - name: Google
-    evidence: Candidate-reported loops push past "add a load balancer" into connection draining, shard-aware routing, and whether L4 or L7 is the right layer.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Design Gurus 2026 FAANG system-design roundups
-  - Hello Interview community reports on mid-level design skeletons
-  - r/cscareerquestions loop writeups mentioning health checks and draining
-updated: 2026-09-02
+  - https://builder.aws.com/content/3EumjoZascWd1oZiEgL8ORlv3qE/timeouts-retries-and-backoff-with-jitter
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -41,62 +31,64 @@ status: canonical
 
 ## Snapshot
 
-- A balancer answers: which healthy backend should take *this* request, and what happens when that backend starts dying.
-- Layer-4 (TCP) is cheap and blind to URLs. Layer-7 (HTTP) can route `/redirect` to a hot cache pool and `/mint` to a write pool.
-- The balancer is itself a bottleneck. You run two or more, with a virtual IP or DNS, and you drain connections before a deploy.
-- Sticky sessions are a smell. Prefer storing session in [a cache](./caching/lesson.md) (id: caching) so any box can serve the next hop.
+- A load balancer chooses a backend for traffic; the selection unit may be a connection or an individual request.
+- Backend count is not capacity until the workload has been measured.
+- Health checks, draining, timeouts, and retry limits affect correctness during failure.
+- Long-lived connections and multiplexed protocols need more care than simple request counts.
 
 ## Why it shows up in interviews
 
-Every design that has more than one app box needs a policy for spreading work. Interviewers are not grading whether you remember a vendor name. They are grading whether you notice the new single point of failure you just drew, and whether you can pick a policy that matches the workload (stateless QPS vs keyed shard vs long websocket).
+Adding replicas raises a new question: how does traffic reach a healthy replica without exceeding its capacity? Explain what the balancer knows, how quickly it reacts, and what happens to in-flight work.
 
 ## Core idea
 
 ### ELI5
 
-Name the unit of work, then pick a policy.
+Imagine several servers handling the same kind of request. A dispatcher chooses one, but must also notice unavailable servers and avoid sending every retry to the remaining overloaded servers.
 
-- **Stateless HTTP** — any healthy box. Round robin or least-connections.
-- **Keyed work** — the same `clip_id` or `user_id` should hit the same cache shard. That is consistent hashing, which is routing, not "load balancing" in the round-robin sense.
-- **Long-lived streams** — connections are the scarce resource. Least-connections plus draining matters more than QPS math.
+Round-robin spreads selections. Least-connections considers open connections, which can be a poor proxy for work when connections have different request rates or multiplex many streams. Queue depth, latency, and outstanding-request measurements may better match the workload, but each signal is delayed and imperfect.
 
-Health is part of the policy. A box that fails `/healthz` twice leaves the pool. In-flight requests get a deadline, not a hang. New requests skip it. That is how you talk about deploys without inventing a platform team.
+Keep liveness and readiness distinct. A process may be alive but unable to accept more work. Conversely, a shared database failure should not automatically cause every frontend to disappear from service if it can still return useful degraded responses. Design health checks around the behavior the backend can safely provide.
 
-L4 vs L7 is a cost conversation. L4 (TCP/UDP) copies bytes and can handle Kettle websockets without parsing frames. L7 parses HTTP, can attach [QuotaDesk](../cases/rate-limiter/lesson.md) (id: rate-limiter) keys, and can split `/resolve` from `/mint`. You pay CPU and you now have an app-shaped failure domain at the edge. See [HTTP and TCP](../../cs/http-and-tcp.md) (id: http-and-tcp).
+## Worked example
 
-## Comparison
+### Easy
 
-| Policy | What it optimizes | Breaks when | Interview use |
-| --- | --- | --- | --- |
-| Round robin | Even request counts | One request is a 30s export | Default for identical stateless boxes |
-| Least connections | Live concurrency | You forget long polls look "busy" | Mixed request cost, websockets |
-| Consistent hash ring | Key locality | One hot key, few virtual nodes | Cache shards, sticky *data*, not sticky boxes |
-| Power of two random choices | Cheap spread, low coordination | Tiny fleets where random collides | Fast improvement over naive RR |
-| L7 path routing | Different pools per URL | You turn the balancer into an app | Read pool vs write pool, `/mint` vs `/resolve` |
+Suppose a load test finds one instance can sustain 6,000 requests/s for a defined request mix and latency target. Twelve such instances have an ideal aggregate capacity of 72,000/s. At a 58,000/s peak, the arithmetic headroom is 14,000/s, not 72,000/s.
 
-Worked numbers for **ClipForge** at 58k peak resolve QPS: 12 API boxes × 6k comfortable QPS = 72k headroom. Round robin is enough. The moment you add a 2 MB export endpoint, least-connections (or a separate pool) stops one box from melting.
+### Medium
 
-Kettle is the other shape: 80M sockets, ~1,600 Relays. The balancer's job is connection count, draining, and not resetting a region on a config reload. Round-robin QPS math is the wrong zoom.
+Losing one instance leaves 66,000/s of ideal capacity; losing two leaves 60,000/s. That second failure leaves only 2,000/s before the measured limit. Uneven traffic, startup time, and shared bottlenecks can reduce it further. Plan spare capacity and load shedding rather than treating the sum as a guarantee.
+
+### Hard
+
+A deploy stops a server with thousands of chat connections. Stop admitting new connections, allow a bounded drain period, then close remaining connections with a reconnect policy that spreads attempts over time. Clients must resume from durable cursors; routing alone does not preserve missed messages.
+
+| Decision | Useful when | Limitation |
+| --- | --- | --- |
+| Round-robin | Backends and requests are similar | Does not observe work already running |
+| Least-connections | Connection count approximates load | A few busy connections can dominate |
+| Affinity by key | Local state or cache reuse matters | Hot keys and failover need handling |
+| Request-aware routing | Per-request signals are available | More state and control-loop complexity |
+
+**Try it:** traffic stays at 58,000/s but each retrying client immediately sends two copies after a timeout. Explain why adding one server may not stop the overload. Check for bounded retries, backoff, admission control, and whether replay is safe.
 
 ## Common mistakes
 
-- Drawing one balancer box and moving on. Ask how *it* fails over.
-- Sticky sessions to keep in-memory carts. That is how a deploy orphans users.
-- Using the same ring for "spread CPU" and "pin a shard." Those are different jobs.
-- Health-checking the TCP port but not the dependency. A box can accept sockets while its database pool is dead.
-- Putting TLS termination, WAF, rate limits, and routing on one magical box, then being unable to deep-dive any of them.
+- Retrying a side effect merely because another backend is available.
+- Removing all servers because one shared dependency is unhealthy.
+- Equating connection count with request cost.
+- Ignoring the time needed to start and warm new capacity.
 
 ## How to talk about it
 
-"Two EdgeSplit balancers share a virtual IP. They are L7 so `/resolve` can prefer the cache-hot pool. Backends are stateless; session lives in the cache. Health is an app check that also pings the database pool. On deploy we drain: stop new connections, wait 30s, then kill. If one backend is slow, least-connections sheds it without waiting for a hard fail."
-
-If they zoom into Google-style depth, pick *one*: connection draining, consistent-hash virtual nodes, or L4 vs L7 cost. Do not list algorithms.
+“I will choose a routing signal that matches the work, measure capacity under the expected mix, and reserve capacity for a failure. During overload I will bound retries and shed work before queues grow without limit.”
 
 ## Cross-links
 
 - [Forty-five minutes is a navigation problem](./interview-framework.md) (id: interview-framework)
 - [Remembering the expensive answer nearby](./caching/lesson.md) (id: caching)
 - [Splitting a keyspace so one box is not the product](./sharding/lesson.md) (id: sharding)
-- [Token buckets and sliding windows at the edge](../cases/rate-limiter/lesson.md) (id: rate-limiter)
-- [Minting short keys for a read-heavy lookup](../cases/url-shortener/lesson.md) (id: url-shortener)
-- [HTTP and TCP as interview tools](../../cs/http-and-tcp.md) (id: http-and-tcp)
+- [Enforce request budgets across servers](../cases/rate-limiter/lesson.md) (id: rate-limiter)
+- [Create and resolve short links safely](../cases/url-shortener/lesson.md) (id: url-shortener)
+- [HTTP is a conversation, TCP is the pipe](../../cs/http-and-tcp.md) (id: http-and-tcp)

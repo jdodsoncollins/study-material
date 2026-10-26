@@ -6,11 +6,12 @@ kind: concept
 track: cs
 difficulty: core
 estimated_minutes: 15
-summary: A lock serializes a critical section so invariants survive concurrent writers; too much locking is a deadlock, too little is a race.
+summary: A lock serializes a critical section so invariants survive concurrent writers; incorrect lock ordering can deadlock, while unprotected shared state can race.
 tags:
   - cs
   - cs/concurrency
   - cs/os
+  - interviews
   - interviews/system-design
 prerequisites:
   - processes-threads
@@ -19,16 +20,11 @@ related:
   - transactions-isolation
   - os-memory
   - cap-and-consistency
-company_signal:
-  - name: Meta
-    evidence: Backend and infra screens still use "this counter is wrong under load" as a concurrency warmup, then follow into deadlock and lock granularity.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Mutex / RW-lock / atomic notes from OS and Java/Go concurrency courses
-  - Deadlock Coffman conditions as commonly taught
-  - Interview threads on race vs deadlock vs "just use a queue"
-updated: 2026-09-02
+  - https://nodejs.org/api/worker_threads.html
+  - https://pages.cs.wisc.edu/~remzi/OSTEP/
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -36,16 +32,16 @@ status: canonical
 
 ## Snapshot
 
-- A **race** is an outcome that depends on lucky timing. If the invariant can break, it will break in production.
+- A **race condition** makes correctness depend on timing. A data race is the narrower language-memory-model concept of conflicting unsynchronized memory access.
 - A **mutex** lets one thread into a critical section. An **RW-lock** lets many readers or one writer.
-- **Atomics** (compare-and-swap) are single-word locks the CPU provides. They are not a free pass for multi-field invariants.
+- **Atomics** provide indivisible operations, such as compare-and-swap, on supported memory locations. They are not themselves locks. They are not a free pass for multi-field invariants.
 - Deadlock: A waits for B's lock, B waits for A's. Livelock: everyone is polite and nobody progresses.
 
 ## Why it shows up in interviews
 
 Shared-memory services, thread pools, and "increment this counter" follow-ups all land here. They want you to *name the shared state*, *shrink the critical section*, and have a deadlock story. "I'll just add a lock" without saying around *what* is the wrong 90 seconds.
 
-Threads share a heap; see [processes-threads](./processes-threads.md) (id: processes-threads). Databases wrap this in transactions; see [transactions-isolation](./transactions-isolation.md) (id: transactions-isolation).
+Threads share a heap; see [Address spaces versus shared work](./processes-threads.md) (id: processes-threads). Databases wrap this in transactions; see [Isolation defines what concurrent transactions can observe](./transactions-isolation.md) (id: transactions-isolation).
 
 ## Core idea
 
@@ -60,43 +56,43 @@ lock(counter)
 unlock(counter)
 ```
 
-Order locks globally (always `A` then `B`) or you deadlock. Or take one lock. Or do not share: give each thread its own counter and sum at the end. **Message passing** (a queue with one consumer) deletes a family of races.
+A consistent global lock order (always `A` then `B`) prevents circular lock waits. Inconsistent ordering creates a deadlock risk. Or take one lock. Or do not share: give each thread its own counter and sum at the end. **Message passing** (a queue with one consumer) deletes a family of races.
 
-Happens-before: a unlock in thread 1, then lock in thread 2, *also* flushes memory. Atomics without the right ordering can stay in a core-local cache and look like time travel.
+Happens-before describes ordering and visibility guarantees. Releasing a mutex and a subsequent successful acquisition of that same mutex establish synchronization under its language contract. This is more precise than saying a lock “flushes the cache.”
 
 ## Comparison
 
 | Tool | Allows | Fails when |
 | --- | --- | --- |
-| Mutex | One guest | You hold it during I/O |
+| Mutex | One holder per mutex | Long critical sections can serialize unrelated work |
 | RW-lock | Many readers XOR one writer | Writers starve, or you mutate under a read lock |
 | Atomic increment | Counters, flags | Multi-field "check then act" |
-| CAS loop | Lock-free updates of one word | ABA, contention, not wait-free |
-| Queue / actor | No shared mutable | You still needed a snapshot across actors |
+| CAS loop | Conditional atomic update | ABA and contention; progress depends on the whole algorithm |
+| Queue / actor | Serialized access to owned state | Cross-actor invariants need additional coordination |
 
 ```ts
-class SeatLock {
-  private held = false;
-  tryAcquire(): boolean {
-    if (this.held) return false;
-    this.held = true; // still a race in JS workers; atomics/mutex belong here
-    return true;
-  }
+let stock = 1;
+async function reserve(): Promise<boolean> {
+  const observed = stock;
+  await Promise.resolve(); // another reservation can run here
+  if (observed < 1) return false;
+  stock = observed - 1;
+  return true;
 }
-
-const lock = new SeatLock();
-console.log(lock.tryAcquire(), lock.tryAcquire()); // true false
-
+Promise.all([reserve(), reserve()]).then(results => console.log(results, stock));
+// [true, true] 0: two successful reservations for one item
 ```
 
-That snippet is a *teaching* bug: check-then-set is the race. The fix is an atomic CAS or a real mutex. Saying that out loud scores points.
+**Predict first:** both calls read 1 before either resumes. The stale check lets both succeed. This demonstrates an async logical race on one event loop, not a shared-memory data race. In this single-process example, checking and decrementing together without an intervening await would prevent this interleaving. A real multi-process inventory needs a database constraint or other shared coordination.
+
+An ordinary object is not shared automatically between JavaScript workers. SharedArrayBuffer plus Atomics is a separate mechanism; browsers also impose security requirements for shared memory.
 
 ## Common mistakes
 
 - Locking the whole map for a single-key update. Shard the locks (striping) or use per-entry locks.
-- Nested locks in different orders across functions. Deadlock in a week, not in the unit test.
+- Nested locks in different orders across functions. A circular wait may occur under an unlucky interleaving; test contention and verify the lock-order rule.
 - "Lock-free means faster." Under contention, a well-scoped mutex often wins.
-- Thinking single-threaded JS cannot race. It can, across workers, or between an await and the next line that mutates shared state.
+- Thinking single-threaded JS cannot race. An await can split a read-modify-write sequence. Worker data races require an actual shared-memory mechanism.
 
 ## How to talk about it
 
@@ -107,7 +103,7 @@ If they ask lock-free: "CAS on one word, retry on failure. I still have to expla
 ## Cross-links
 
 - [Address spaces versus shared work](./processes-threads.md) (id: processes-threads)
-- [Isolation is which lie you agreed to](./transactions-isolation.md) (id: transactions-isolation)
-- [Virtual memory is a lie the CPU believes](./os-memory.md) (id: os-memory)
-- [CAP as a conversation tool](../system-design/foundations/cap-and-consistency.md) (id: cap-and-consistency)
+- [Isolation defines what concurrent transactions can observe](./transactions-isolation.md) (id: transactions-isolation)
+- [Virtual addresses, physical pages, and locality](./os-memory.md) (id: os-memory)
+- [Consistency promises during failures](../system-design/foundations/cap-and-consistency.md) (id: cap-and-consistency)
 - [HTTP is a conversation, TCP is the pipe](./http-and-tcp.md) (id: http-and-tcp)

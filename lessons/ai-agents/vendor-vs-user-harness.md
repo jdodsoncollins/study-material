@@ -1,12 +1,12 @@
 ---
 id: vendor-vs-user-harness
-title: The harness you rent versus the harness you write
+title: Evaluate the configuration you actually deploy
 slug: vendor-vs-user-harness
 kind: concept
 track: ai-agents
 difficulty: core
 estimated_minutes: 12
-summary: Claude Code and cousins are a rented loop; AGENTS.md, tests, linters, and CI are the harness you actually own. Fair model comparisons hold one of those fixed.
+summary: Evaluate the model with the actual tools, permissions, data, and budgets your product deploys.
 tags:
   - ai-agents
   - ai-agents/harnesses
@@ -20,81 +20,68 @@ related:
   - coding-agent-evals
   - agent-mistakes
   - how-to-run-proper-evals
-company_signal:
-  - name: Thoughtworks / Fowler
-    evidence: Boeckeler's 2026 "Agent = Model + Harness" framing, including vendor versus user harness, is widely cited in platform interviews.
-    year: 2026
-    confidence: high
-  - name: Anthropic
-    evidence: Claude Code is discussed in candidate reports and public posts as a vendor agent harness wrapping a model.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Martin Fowler / Birgitta Boeckeler on Agent = Model + Harness
-  - Anthropic Claude Code / long-running agent harness notes
-  - Position paper: Stop Comparing LLM Agents Without Disclosing the Harness
-updated: 2026-09-02
+  - https://www.anthropic.com/research/building-effective-agents
+updated: 2026-10-26
 status: canonical
 ---
 
-# The harness you rent versus the harness you write
+# Evaluate the configuration you actually deploy
 
 ## Snapshot
 
-- **Vendor harness** — Claude Code, Cursor's agent, Codex, a hosted ReAct runtime. Loop, compaction, built-in tools, permission UI. You pick it; you do not fork it every afternoon.
-- **User harness** — `AGENTS.md`, repo maps, Makefile targets, tests, linters, types, CI gates, review bots, secrets layout. This is yours.
-- The thing that ships is model + vendor harness + user harness. Changing any layer moves the number.
-- Interviews reward "I invest where I have the diff." That is usually the user harness and the eval harness, not a custom loop.
+- A model result depends on prompts, tools, environment, budgets, and permissions.
+- Vendor evaluations may use a different configuration and task distribution from yours.
+- Repository instructions provide context; they do not enforce a security boundary.
+- Compare changes with enough configuration detail to explain the result.
 
 ## Why it shows up in interviews
 
-Teams argue about models while the repo has no `AGENTS.md` and CI is optional. Interviewers want you to split **rented intelligence** from **owned constraints**, the same way you would split a managed queue from your consumer logic. See [eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness).
+A model that performs well in one harness may behave differently with another tool interface or budget. The practical question is how the complete system performs on your tasks.
 
 ## Core idea
 
 ### ELI5
 
-Boeckeler's line, paraphrased: an agent is a model dropped into a harness. For coding, that harness has two landlords.
+Separate the model from the environment that lets it act. Your deployment chooses which tools exist, what data is available, which actions are authorized, and how long work may continue. Those choices can change results without changing the model.
 
-The vendor landlord gives you a loop that already knows how to read files, run a shell, and fold a long context. You will lose an arms race if you reimplement that from a blog post.
+An `AGENTS.md` file can explain repository conventions and workflows. It is still instruction content, not an operating-system permission mechanism, and its priority depends on the host's instruction hierarchy. Enforce file, network, credential, and external-action boundaries outside the model.
 
-The user landlord is the repo as a place a junior could succeed: where the tests live, which commands are legal, what "done" means, which files are radioactive. A strong user harness makes a mediocre vendor look competent. A missing one makes every vendor look drunk.
+When reading a benchmark, record the task version, prompt setup, tool availability, sampling, and resource budget if disclosed. Missing configuration limits comparability. Do not infer that a vendor score will transfer unchanged to a different product.
 
-Eval rule: when you A/B models, freeze both harnesses. When you A/B vendors, freeze the user harness and the eval. When you change `AGENTS.md`, that is a harness change, not a model miracle. Published Terminal-Bench swings from harness swaps have been larger than typical model swaps; if you hide the harness, you are not comparing models.
+## Worked example
 
-## Comparison
+### Easy
 
-Harborline's checkout repo.
+Two systems use the same model. One can run tests; the other can only edit a single file. A different bug-fix rate may reflect the tools as well as the model.
 
-| Layer | Examples | You change it to | Eval must match? |
-| --- | --- | --- | --- |
-| Model | Opus-class, GPT-class, local coder | Raw capability | Name it |
-| Vendor harness | Claude Code, Cursor agent, homegrown loop | Tools, retries, compaction, permissions | Yes — same loop as prod |
-| User harness | `AGENTS.md`, `make test`, ruff, CI, CODEOWNERS | Make the healthy path obvious | Yes — same docs and gates |
-| Eval harness | Container per trial, hidden tests, k trials | Honest scores | This *is* the lab |
+### Medium
 
-`AGENTS.md` is not documentation theater. It is a system prompt you version. "Run `make test-checkout` before you edit. Never touch `alembic/versions`. Promo rules live in `pricing/promos.py`." That paragraph has moved fail-to-pass more than a temperature tweak.
+Add repository instructions and observe an improvement on development cases. Freeze the instructions and test on held-out repositories or tasks before claiming general benefit. A narrowly tuned instruction can overfit familiar examples.
+
+### Hard
+
+A repository document asks the agent to upload credentials. The host's enforced permissions and instruction handling must prevent that action; a competing sentence elsewhere in the repository is not a dependable security control.
+
+**Practice:** list the variables to hold fixed when comparing two models for your app. Include tools, prompt/context, data versions, budget, sampling policy, and grading procedure.
 
 ## Common mistakes
 
-- Rebuilding a vendor loop to "own the stack," then falling behind on compaction and permissions.
-- Comparing two models in two different IDEs and quoting a winner.
-- Empty repo onboarding: the agent greps for 40 minutes and edits the wrong tree. See [agent mistakes](./agent-mistakes.md) (id: agent-mistakes).
-- Putting secrets in the vendor's default sandbox policy and calling it a model hallucination.
-- Eval that injects extra tools (`submit_patch`) the developer agent does not have.
-- Treating CI as unrelated to the agent. CI *is* the user harness's grader.
+- Treating a model name as a complete experimental configuration.
+- Attributing every gain to the model after changing tools or budgets too.
+- Treating repository text as higher-priority authority than the host's rules.
+- Claiming a harness change universally improves performance from a few familiar tasks.
 
 ## How to talk about it
 
-"I rent the vendor loop and I spend engineering time on the user harness: AGENTS.md, one obvious test command, linters, and CI the agent cannot disable. Evals run that same pair. If a score jumps, I ask which layer moved — model, vendor, user, or eval — before I take credit."
-
-If they ask what you would do week one on a greenfield coding agent: write the user harness and twenty real-bug tasks, not a new framework.
+“I will test the model inside our actual tool and permission configuration, report that configuration, and keep important boundaries enforced by the runtime. Vendor results are useful context, not a substitute for that evaluation.”
 
 ## Cross-links
 
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
-- [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)
-- [Tools that are safe to call twice](./tool-calling/lesson.md) (id: tool-calling)
-- [Mistakes coding agents keep making](./agent-mistakes.md) (id: agent-mistakes)
-- [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
-- [Interview framework](../system-design/foundations/interview-framework.md) (id: interview-framework)
+- [Separate the system doing the work from the system measuring it](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
+- [Evaluate patches against behavior and preserved contracts](./coding-agent-evals.md) (id: coding-agent-evals)
+- [Make tool contracts enforceable](./tool-calling/lesson.md) (id: tool-calling)
+- [Diagnose agent failures before changing the prompt](./agent-mistakes.md) (id: agent-mistakes)
+- [Build an evaluation from the task contract](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
+- [Forty-five minutes is a navigation problem](../system-design/foundations/interview-framework.md) (id: interview-framework)

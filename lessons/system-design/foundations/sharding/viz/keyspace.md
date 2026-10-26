@@ -2,8 +2,8 @@
 
 ```mermaid
 flowchart TB
-  key[Partition key] --> hash[Hash / range]
-  hash --> s0[Shard 0]
-  hash --> s1[Shard 1]
-  hash --> s2[Shard 2]
+  key[Partition key] --> bucket[Logical bucket or range]
+  bucket --> directory[Versioned ownership directory]
+  directory --> s0[Physical shard 0]
+  directory --> s1[Physical shard 1]
 ```

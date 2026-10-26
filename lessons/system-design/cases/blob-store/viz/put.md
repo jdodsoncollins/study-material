@@ -2,12 +2,10 @@
 
 ```mermaid
 flowchart LR
-  cam[Camera] --> card[CardAPI]
-  card --> sess[Upload session]
-  sess --> bytes[ClipBytes chunks]
-  bytes --> sha[Whole SHA]
-  sha --> meta[ClipCard row]
-  get[Download] --> meta
-  meta --> sign[Signed GET]
-  sign --> bytes
+  client[Authorized client] --> sess[Versioned upload session]
+  sess --> parts[Store parts with ranges and checksums]
+  parts --> verify[Verify completeness and durability]
+  verify --> meta[Atomically publish manifest]
+  get[Authorized read] --> meta
+  meta --> bytes[Read immutable versioned bytes]
 ```

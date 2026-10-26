@@ -11,6 +11,7 @@ tags:
   - algorithms
   - algorithms/two-pointers
   - algorithms/linked-lists
+  - interviews
   - interviews/leetcode
 prerequisites:
   - arrays-vs-linked-lists
@@ -21,19 +22,9 @@ related:
   - reverse-chain
   - arrays-vs-linked-lists
   - lru-cache
-company_signal:
-  - name: Amazon
-    evidence: Linked-list cycle and "middle of the list" variants show up constantly in candidate OA reports.
-    year: 2026
-    confidence: high
-  - name: Microsoft
-    evidence: Tagged-list threads still treat tortoise-and-hare list questions as a phone-screen staple.
-    year: 2025
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode linked-list cycle threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -42,7 +33,7 @@ status: canonical
 ## Snapshot
 
 - Same list, two pointers, different step sizes. Classic is `slow = slow.next`, `fast = fast.next.next`.
-- You get a cycle check, the midpoint, or a node k from the tail, all in O(1) extra memory.
+- You get a cycle check, the midpoint, or, with a fixed-gap variant, a node k from the tail, all in O(1) extra memory.
 - Arrays can fake this with indices. The interview usually hands you a singly linked list so you cannot jump.
 - Fast-slow is not two-ends. Two-ends needs a reverse direction or a known length.
 
@@ -113,7 +104,7 @@ const D: Ping = { id: 4, next: null };
 const E: Ping = { id: 5, next: null };
 A.next = B; B.next = C; C.next = D; D.next = E; E.next = C;
 console.log(loopStart(A)?.id); // 3  (C)
-console.log(loopStart({ id: 9, next: null })); // undefined
+console.log(loopStart({ id: 9, next: null })); // null
 
 ```
 
@@ -125,7 +116,6 @@ Null-check `fast` and `fast.next` before the double hop. Empty and single-node l
 | --- | --- | --- | --- |
 | Store seen nodes in a set | O(n) | O(n) | Fine if they allow memory |
 | Fast / slow | O(n) | O(1) | Default interview answer |
-| Reverse the list | O(n) | O(1) | Destroys input; does not find the entrance cleanly |
 
 ## Walkthrough
 
@@ -147,6 +137,8 @@ C is the loop start.
 
 Meeting point is usually mid-cycle, not the entrance. Reset one pointer to head. Compare node identity, not ids. Null-check `fast && fast.next` before the double hop.
 
+**Try it:** one node points to itself. After one iteration slow and fast meet; resetting the seeker returns that same node. A one-node list ending in null returns null.
+
 ## Pitfalls
 
 | Trap | What happens | Fix |
@@ -154,7 +146,7 @@ Meeting point is usually mid-cycle, not the entrance. Reset one pointer to head.
 | Advancing fast without checking `.next` | Crash on the last node | `while (fast && fast.next)` |
 | Comparing values instead of identity | Duplicate ids look like a cycle | Compare node references |
 | Returning the meeting point as the start | Meeting point is usually mid-cycle | Reset one pointer to head |
-| Using this on a random-access array | Works, but two-ends or a set is clearer | Pick the pattern that matches access |
+| Treating array positions as next pointers without a contract | Ordinary arrays do not automatically define a traversal | Use this only when each state has a defined next state |
 
 ## Interview moves
 
@@ -166,8 +158,8 @@ Meeting point is usually mid-cycle, not the entrance. Reset one pointer to head.
 ## Cross-links
 
 - [Squeeze from both ends](./two-pointers/lesson.md) (id: two-pointers)
-- [Arrays versus linked lists](../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
-- [Scanner memory with eviction](../problems/lru-cache/lesson.md) (id: lru-cache)
+- [Contiguous slots versus pointer chasing](../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
+- [A lookup cache with least-recently-used eviction](../problems/lru-cache/lesson.md) (id: lru-cache)
 - [Matched brackets in a line of code](../problems/valid-brackets/lesson.md) (id: valid-brackets)
 - [Hash maps as an index](./hash-maps.md) (id: hash-maps)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)

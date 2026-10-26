@@ -11,6 +11,7 @@ tags:
   - algorithms
   - algorithms/graphs
   - algorithms/trees
+  - interviews
   - interviews/leetcode
 prerequisites:
   - trees-graphs
@@ -20,19 +21,9 @@ related:
   - number-of-islands
   - topological-sort
   - trees-graphs
-company_signal:
-  - name: Meta
-    evidence: Candidate reports list grid BFS (islands, nearest gate, word ladder) as a common onsite coding prompt.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: OA and phone-screen writeups keep using shortest-path-in-a-warehouse-grid as a graph warmup.
-    year: 2026
-    confidence: high
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode BFS / graph tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -86,6 +77,7 @@ console.log(r, c, d);
 
 ```ts
 function stepsToDock(floor: string[][]): number {
+  if (floor.length === 0 || floor[0].length === 0) return -1;
   const rows = floor.length;
   const cols = floor[0].length;
   const q: [number, number, number][] = [];
@@ -99,8 +91,8 @@ function stepsToDock(floor: string[][]): number {
     }
   }
   const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-  while (q.length) {
-    const [r, c, d] = q.shift()!;
+  for (let head = 0; head < q.length; head++) {
+    const [r, c, d] = q[head];
     if (floor[r][c] === "D") return d;
     for (const [dr, dc] of dirs) {
       const nr = r + dr, nc = c + dc;
@@ -121,7 +113,7 @@ console.log(stepsToDock([
 
 ```
 
-`shift` is O(n) in JavaScript. In an interview, mention a real deque; they rarely care unless n is huge.
+The full solution uses a head index so removing the next item does not shift the remaining array. The tiny syntax example uses shift only to show FIFO order. Assume a rectangular grid with one S and one D.
 
 ## Complexity
 
@@ -147,13 +139,13 @@ Grid as in the prompt. S is (1,0), D is (0,2).
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+Block cell `(1,2)` in the prompt grid. D is now unreachable and the function returns −1. Explain why exhausting the queue proves that no allowed path reaches D.
 
 ## Pitfalls
 
 | Trap | What happens | Fix |
 | --- | --- | --- |
-| Mark visited on dequeue | Quadratic queue growth | Mark on enqueue |
+| Mark visited on dequeue | Duplicate enqueues and redundant work | Mark on enqueue |
 | Recursion "BFS" | That is DFS | Use a queue |
 | Forgetting bounds checks | Crash on the rim | Check before indexing |
 | Treating 8-connected as 4 | Wrong shortest path | Ask the movement rule |
@@ -161,7 +153,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 ## Interview moves
 
 - Ask: four directions or eight? Walls? Can we step on D?
-- If several pickers start at once, push them all at distance 0. That is multi-source BFS, same code.
+- If several starting positions are allowed, push them all at distance 0. That is multi-source BFS, same code.
 - Say why DFS is illegal here: "first path found is some path, not the short one."
 - Name the weighted cousin so they know you will not force BFS onto Dijkstra.
 
@@ -171,6 +163,6 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 - [Land clusters on a map](../../problems/number-of-islands/lesson.md) (id: number-of-islands)
 - [Order by prerequisites](../topological-sort/lesson.md) (id: topological-sort)
 - [Training modules with prereqs](../../problems/course-order/lesson.md) (id: course-order)
-- [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)
+- [Trees are graphs with a promise](../../../cs/trees-graphs.md) (id: trees-graphs)
 - [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)
 - [Cluster membership in nearly constant time](../union-find/lesson.md) (id: union-find)

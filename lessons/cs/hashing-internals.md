@@ -11,6 +11,7 @@ tags:
   - cs
   - cs/data-structures
   - cs/complexity
+  - interviews
   - interviews/leetcode
 prerequisites:
   - big-o
@@ -21,16 +22,10 @@ related:
   - indexes
   - hash-maps
   - two-sum
-company_signal:
-  - name: Meta
-    evidence: Pair-sum / frequency-map phone screens routinely follow up with "why is this O(n)?" and "what if every key collides?"
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Undergrad hash-table collision notes (chaining vs open addressing)
-  - r/leetcode threads on adversarial string hashes
-  - Language docs on HashMap load factor and resize (Java / V8-style maps)
-updated: 2026-09-11
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map-objects
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -45,9 +40,9 @@ status: canonical
 
 ## Why it shows up in interviews
 
-Almost every "make it faster than nested loops" answer is a hash map. Interviewers then check whether you treat O(1) as a physical law. Say **expected O(1) per op, O(n) space, amortized across resizes, assuming a decent hash.**
+A hash map can replace repeated searches when the question is an equality lookup. Sorting, trees, and other structures can fit different operations. Say **expected O(1) per op, O(n) space, amortized across resizes, assuming a decent hash.**
 
-This is the same machine as [two-sum](../algorithms/problems/two-sum/lesson.md) (id: two-sum) and as a DB hash index.
+This is the same machine as [Pair lookup instead of nested scanning](../algorithms/problems/two-sum/lesson.md) (id: two-sum) and as a DB hash index.
 
 ## Core idea
 
@@ -61,7 +56,7 @@ hash("Omar") % 8 → 3     collision: chain 3 is Nia → Omar
 hash("Pia") % 8 → 6
 ```
 
-Load factor = items / buckets. When it climbs (often past ~0.7), you allocate more buckets and rehash. One insert pays O(n); most inserts pay O(1). That is *amortized*.
+Load factor = items / buckets. When it reaches the implementation’s threshold, the table may allocate more buckets and rehash. Thresholds depend on the collision strategy. One insert pays O(n); most inserts pay O(1). That is *amortized*.
 
 Two collision strategies:
 
@@ -71,6 +66,8 @@ Two collision strategies:
 ## Worked example
 
 ### Syntax
+
+This toy string hash costs O(key length). It illustrates bucket selection, not a secure hash or the implementation of JavaScript Map. ECMAScript requires average sublinear access for Map; it does not mandate hashing or a worst-case O(1) bound. Assume `bucketCount` is a positive integer.
 
 ```ts
 function bucketOf(key: string, bucketCount: number): number {
@@ -92,28 +89,30 @@ console.log(bucketOf("N-4", 8), bucketOf("K-11", 8));
 
 ### Easy
 
-`bucketOf("N-4", 8)` and `bucketOf("K-11", 8)` — two SKUs, maybe two hooks, maybe a collision. Either is fine.
+`bucketOf("N-4", 8)` and `bucketOf("K-11", 8)` — two string keys. Predict their buckets, then run the code: 5 and 2. If different keys do collide, compare the actual keys within the bucket; matching bucket numbers do not make the keys equal.
 
 ### Medium
 
-Load factor climbs past ~0.7. One insert pays O(n) to rehash. You still say amortized O(1) because that bill is spread across later inserts.
+Load factor reaches the chosen resize threshold. One insert pays O(n) to rehash. You still say amortized O(1) because that bill is spread across later inserts.
 
 ### Hard
 
-A hostile interviewer feeds keys that all hash to 0. Worst-case lookup is O(n). Languages mitigate with randomized seeds so you cannot *plan* the pileup from outside. That is why we say **expected** O(1).
+A hostile interviewer feeds keys that all hash to 0. Worst-case lookup is O(n). Some implementations use randomized hashing or tree-shaped buckets to mitigate this; check the language and runtime rather than assuming a defense. That is why we say **expected** O(1).
+
+**Try it:** if two different keys collide, can you overwrite the first entry? No: a correct table retains both and distinguishes them with equality checks.
 
 ## Common mistakes
 
 - Saying "hash maps are O(1)" with no qualifier. Add *expected* and *amortized*.
-- Using a mutable object as a key, then mutating it. The bucket it lives in is the old hash.
+- Confusing identity keys with value keys. JavaScript Map compares object keys by identity: mutating the object does not lose the entry. In a value-hashed collection, changing fields involved in hashing can invalidate lookup assumptions.
 - Forgetting that `hash(key)` itself is O(length) for strings. n huge strings is not "free."
-- Treating a language `Map` as ordered. Some are insertion-ordered; do not rely on sorted order.
+- Confusing insertion order with sorted order. JavaScript Map preserves insertion order. It does not sort keys.
 
 ## How to talk about it
 
 "I'll use a hash map from value to index. Each lookup is expected O(1) because we spread keys across buckets. I am paying O(n) space. If the hash is terrible or someone attacks it, a bucket becomes a list and we degrade to O(n) per op. Resizes are amortized. If they need worst-case O(1), that is a different structure — not this."
 
-If they ask hash vs tree map: "Tree map is O(log n) always and keeps order. Hash map is faster in expectation and unordered."
+If they ask hash vs tree map: "A balanced search-tree map supports O(log n) operations and sorted-key traversal. A hash map supports expected constant-time lookup under the hash-table model; ordering guarantees depend on the API. JavaScript Map iterates in insertion order."
 
 ## Cross-links
 
@@ -121,5 +120,5 @@ If they ask hash vs tree map: "Tree map is O(log n) always and keeps order. Hash
 - [Hash maps as an index](../algorithms/patterns/hash-maps.md) (id: hash-maps)
 - [Pair lookup instead of nested scanning](../algorithms/problems/two-sum/lesson.md) (id: two-sum)
 - [Indexes are precomputed answers](./indexes.md) (id: indexes)
-- [Cache as a second store](../system-design/foundations/caching/lesson.md) (id: caching)
+- [Remembering the expensive answer nearby](../system-design/foundations/caching/lesson.md) (id: caching)
 - [Contiguous slots versus pointer chasing](./arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)

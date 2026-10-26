@@ -12,6 +12,7 @@ tags:
   - algorithms/arrays
   - algorithms/strings
   - algorithms/sliding-window
+  - interviews
   - interviews/leetcode
 prerequisites:
   - two-pointers
@@ -21,19 +22,9 @@ related:
   - two-pointers
   - hash-maps
   - dp-1d
-company_signal:
-  - name: Meta
-    evidence: Candidate phone-screen reports and tagged lists keep putting unique-substring / at-most-k-distinct windows in the first thirty minutes.
-    year: 2026
-    confidence: high
-  - name: Google
-    evidence: Prep threads treat variable windows over strings as a default onsite warmup.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode sliding-window frequency threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -44,21 +35,21 @@ status: canonical
 - The answer lives in a *contiguous* slice. If gaps are allowed, this is the wrong pattern.
 - Right pointer only advances. Left pointer only advances. Each index enters and leaves the window at most once.
 - The window holds an invariant: sum ≤ budget, all unique, at most k distinct, and so on.
-- Fixed-size windows are a warmup. Variable windows are the interview.
+- Fixed-size and variable-size windows have different update rules; identify which the prompt needs.
 
 ## Prompt
 
 A search box logs one-letter keystrokes: `typed = "abcbadef"`. Find the longest stretch of the string where no letter repeats. Return the length.
 
-Same shape as the classic unique-substring problem. The letters are not the textbook `"abcabcbb"`.
+Assume ASCII letters for this example. For general text, decide whether the unit is code points or graphemes before indexing.
 
 ## Recognition signals
 
 | Cue | Why it matters |
 | --- | --- |
-| "longest / shortest subarray / substring" | Contiguous, so a window |
+| "longest / shortest subarray / substring" | A window is a candidate; prove its shrink rule |
 | "at most k distinct" / "no repeats" | Invariant on the bag of contents |
-| "sum at most S" | Running total, shrink when over |
+| "sum at most S" with nonnegative values | Shrinking cannot increase the sum; negative values need another argument |
 | Need a subsequence, not a subarray | Window is wrong; think DP or two pointers on a copy |
 
 ## Worked approach
@@ -115,9 +106,9 @@ Do not rebuild the map each shrink. Amortized O(n) only holds if both pointers t
 
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
-| Nested left/right | O(n²) | O(1) | Rechecks the same slice |
-| Two pointers + map / counts | O(n) | O(alphabet) | Default |
-| Fixed window of size k | O(n) | O(1) extra | Simpler cousin; still name it |
+| Extend each start with a seen set | O(n²) expected | O(min(n, alphabet)) | Repeats work across starts |
+| Two pointers + map / counts | O(n) expected | O(min(n, alphabet)) | Assumes constant-cost key operations |
+| Fixed window of size k | O(n) with constant-cost updates | Depends on maintained state | A running sum differs from a frequency map |
 
 ## Walkthrough
 
@@ -138,15 +129,17 @@ Best is 6. The repeat of `b` does not restart the scan; you only throw away the 
 
 ### Hard
 
-Follow-up: at most k distinct letters. Swap last-index for counts, and shrink while `counts.size > k`. Alphabet tiny (ASCII) → array of 256 instead of a map.
+Follow-up: at most k distinct letters. Swap last-index for counts, and shrink while `counts.size > k`. A specified small alphabet can use a count array. ASCII has 128 codes; a 256-entry array covers bytes, not arbitrary Unicode.
+
+**Try it:** trace `abba`. The final `a` was seen before the current left edge. Moving left backward would incorrectly count `bba`; the correct best length is 2.
 
 ## Pitfalls
 
 | Trap | What happens | Fix |
 | --- | --- | --- |
-| Moving left back | Infinite loop or quadratic | Left only increases |
+| Moving left back | Can include a duplicate and overstate the answer | Left only increases |
 | Counting a letter outside the window | False "duplicate" | Compare last index against `left` |
-| Using a set and scanning to delete | Hidden O(n²) | Store last index or a count |
+| Rebuilding or rescanning the entire window each step | Can add quadratic work | Incremental set deletion is linear overall if each index leaves once |
 | Off-by-one width | `right - left` without `+ 1` | Write the formula once and reuse it |
 
 ## Interview moves
@@ -158,7 +151,7 @@ Follow-up: at most k distinct letters. Swap last-index for counts, and shrink wh
 
 ## Cross-links
 
-- [Longest unique radio run](../../problems/longest-unique-window/lesson.md) (id: longest-unique-window)
+- [Longest substring without repeated letters](../../problems/longest-unique-window/lesson.md) (id: longest-unique-window)
 - [Squeeze from both ends](../two-pointers/lesson.md) (id: two-pointers)
 - [Hash maps as an index](../hash-maps.md) (id: hash-maps)
 - [Reuse the last few answers](../dp-1d.md) (id: dp-1d)

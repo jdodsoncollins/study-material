@@ -4,5 +4,5 @@ steps:
     nodes: [upload, encode, obj]
   - caption: "Player fetches a manifest, then segments from the edge."
     nodes: [play, man, cdn]
-  - caption: "ABR picks a rung from buffer and bandwidth, not from hope."
+  - caption: "Playback selects a rendition using observed bandwidth and buffer state."
     nodes: [play, abr]

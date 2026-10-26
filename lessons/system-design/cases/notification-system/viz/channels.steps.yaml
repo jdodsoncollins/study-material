@@ -1,8 +1,8 @@
-title: Fan-out with taste
+title: channels
 steps:
-  - caption: "Preferences gate the event before any vendor call."
+  - caption: "Separate logical notifications from channel/device attempts."
     nodes: [event, pref, q]
-  - caption: "Each channel is its own queue and retry story."
-    nodes: [q, push, sms, email]
-  - caption: "Poison goes to a DLQ, not an infinite retry."
-    nodes: [push, dlq]
+  - caption: "Recheck relevant policy changes before dispatch."
+    nodes: [check, push, inbox, email]
+  - caption: "Provider acceptance, device delivery, and reading are different states. Bound retries and retain inspectable failures."
+    nodes: [state]

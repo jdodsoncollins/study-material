@@ -1,12 +1,12 @@
 ---
 id: video-streaming
-title: Chunked playback from ingest to CDN
+title: Publish renditions and serve adaptive playback
 slug: video-streaming
 kind: case-study
 track: system-design
 difficulty: core
 estimated_minutes: 18
-summary: Stagecast is a YouTube-shaped pipeline that ingests once, encodes a ladder, ships chunks through a CDN, and keeps the origin off the watch path.
+summary: Publish verified video renditions and manifests, then adapt playback using network and buffer measurements.
 tags:
   - system-design
   - system-design/product-cases
@@ -24,123 +24,97 @@ related:
   - interview-framework
   - job-scheduler
   - blob-store
-company_signal:
-  - name: Google
-    evidence: Candidate-reported loops and prep-site frequency lists treat video streaming as a Google-flavored (YouTube-shaped) prompt with encoding and CDN depth.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Design Gurus 2026 FAANG guides
-  - Hello Interview question DB (video)
-  - r/OfferEngineering Google-style depth writeups
-updated: 2026-09-02
+  - https://www.rfc-editor.org/rfc/rfc8216.html
+updated: 2026-10-26
 status: canonical
 ---
 
-# Chunked playback from ingest to CDN
+# Publish renditions and serve adaptive playback
 
 ## Snapshot
 
-- Product: **Stagecast**. Creators upload; viewers play adaptive chunks. v1 is VOD, not live, not comments.
-- The watch path should hit a **ChunkCDN** edge, not the encoder, not the origin disk.
-- Ingest writes a mezzanine blob, then **LadderEncoder** produces 360p/720p/1080p chunked files plus a manifest.
-- Google-flavor depth is the ladder, cache hierarchy, and what a 2-hour 4K upload does to GPU/CPU encode capacity — not a play button.
+- Upload, transcode, package, publish, and play are distinct stages.
+- Immutable segments are easy to cache; evolving manifests need a different policy.
+- Playback chooses a rendition using observed throughput and buffer state.
+- Fast-start playback before encoding finishes requires a manifest that can grow.
 
 ## What this round is actually scoring
 
-Scale honesty on *bytes*, not QPS of JSON. Can you separate upload, encode, and playback? Can you size egress so you never run watch traffic through the DC? They will ask why the first 4 seconds start before the ladder is finished.
+Whether interrupted processing and changing network conditions still produce coherent, authorized playback.
 
 ## Company signal
 
-Candidate-reported loops and prep-site frequency lists treat video streaming as a Google-flavored (YouTube analog) prompt. Confidence: **high**. Expect encoding, CDN, and storage-tier follow-ups, not a social graph.
+This is an original practice scenario. No traceable company-specific frequency evidence is supplied.
 
 ## Requirements
 
-| Functional | v1 decision |
+| Area | Requirement |
 | --- | --- |
-| Upload a video | Resumable chunked PUT to **IngestMill** |
-| Playback | HLS-like manifest + 4s media chunks |
-| Adaptive bitrate | 360 / 720 / 1080 ladder |
-| Thumbnail + preview | Generated with the ladder |
-| Live, 4K, DRM | Non-goals (mention, defer) |
-
-| Non-functional | Budget |
-| --- | --- |
-| Time-to-first-frame | 2 s after play, using a fast-start 360p |
-| Upload resume | After a phone blip, no full restart |
-| Watch availability | Origin miss is rare; CDN miss is tolerated |
-| Encode SLA | 1× realtime for 720p; 1080p can lag |
+| Upload | Resume large source uploads and verify integrity |
+| Process | Produce several aligned bitrate renditions |
+| Play | Adaptive playback with bounded startup delay and rebuffering targets |
+| Publish | Expose only verified segments and a consistent manifest |
 
 ## Back-of-envelope
 
-50M DAU watching 40 minutes at an average 2.5 Mbps (mix of 360–1080).
+These are illustrative workload assumptions, not production measurements.
 
-Egress: 50e6 × 40 × 60 × 2.5e6 bits / 86400 ≈ **3.5 Tbps** average. Peak evening ×3 ≈ **10 Tbps**. This number *must* leave the building via CDN. Your origin is for misses and new titles.
+Assume fifty million viewers watch forty minutes/day at an average 2.5 Mb/s. Average delivery bandwidth is about 3.47 Tb/s; peaks and regional skew add capacity requirements.
 
-Uploads: 400k hours/day ingested. Average mezzanine 8 Mbps → 400k × 3600 × 8e6 / 8 ≈ 1.4 PB/day inbound before encode. You will not keep mezzanine forever; keep it 30 days, then delete or cold-store.
-
-Chunks: 4-second segments. A 12-minute 720p watch is 180 chunk GETs. Small objects, huge QPS at the edge. Edge cache hit rate on popular titles should be > 95%.
+Assume 400,000 uploaded video-hours/day at 8 Mb/s. Source bytes total about 1.44 PB/day before generated renditions and replicas. These estimates motivate CDN delivery and a measured encoding-capacity plan; they do not determine a specific fleet size.
 
 ## Design
 
 ### ELI5
 
-Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+Store the original, create several versions of each segment, and publish a list the player follows. The player can switch quality at aligned boundaries as network conditions change.
 
-### Then the details
+[Follow adaptive playback](viz/abr.md)
 
-[abr](viz/abr.md)
+### Processing and playback
 
-Upload: client splits into 8 MB blocks, checksums each, PUTs to IngestMill (object store). Completion writes a **Title** row `status=uploaded` and enqueues an encode job on [Clockyard](../job-scheduler/lesson.md) (id: job-scheduler).
+Create a versioned upload and a durable processing job. Workers produce renditions in isolated output namespaces, verify them, and publish references atomically. Retries should reuse the logical job identity while avoiding partially overwritten outputs.
 
-LadderEncoder (workers, CPU or GPU):
+Align segment boundaries and timestamps across renditions. Publish a master playlist describing available variants and media playlists describing verified segments. Use immutable versioned segment URLs with long cache lifetimes, while manifests that change use short freshness or revalidation policies.
 
-1. Fast-start: produce 360p chunks + manifest as soon as the first 30s are encoded. Status becomes `playable`.
-2. Rest of 360p, then 720p, then 1080p. Manifest grows. Players poll or receive a "ladder updated" hint.
-3. Thumbnails, previews, loudness.
+For a completed HLS VOD asset, the playlist is complete. For playback while encoding continues, an EVENT-style playlist can append segments and omit `EXT-X-ENDLIST` until complete; declaring an immutable VOD playlist while continuing to append is inconsistent with that contract. See [RFC 8216](https://www.rfc-editor.org/rfc/rfc8216.html).
 
-Playback: app fetches the manifest from a nearby edge. Chunk URLs are content-addressed and **immutable**, so CDN TTLs can be days. A title update publishes a *new* manifest, not a rewrite of chunk 47.
+The player estimates throughput and maintains a buffer, selecting a lower rendition when necessary. An encoder running at the viewer's playback rate does not guarantee a stall-free stream: variability can consume a small initial head start. Measure sustained encoding progress and reserve enough playable content before starting.
 
-Origin shield: regional mid-tier caches in front of object storage so a global miss storm on a new title does not melt one disk pool. Same stampede idea as [caching](../../foundations/caching/lesson.md) (id: caching).
+Authorize playback and define how signed URL lifetimes interact with takedowns. Content deletion cannot recall bytes already downloaded.
 
 ## Tradeoffs
 
-| Choice | Gain | Cost |
+| Choice | Benefit | Cost |
 | --- | --- | --- |
-| VOD chunks vs one giant MP4 | Adaptive bitrate, seek, CDN-friendly | Lots of small objects, manifest logic |
-| Fast-start 360p | First frame before the ladder is done | Users on good networks still start ugly |
-| Immutable chunks | Long CDN TTL, trivial invalidation | Edits republish the title |
-| Pre-encode all rungs vs just-in-time | Predictable playback | Encode fleet cost on videos nobody watches |
-| Client upload to origin vs browser→edge | Simpler auth | Far-away creators suffer; later add edge ingest |
+| More renditions | Better fit to networks/devices | Encoding and storage cost |
+| Shorter segments | Faster adaptation and lower live delay | More requests and packaging overhead |
+| Complete-before-publish | Simple playback contract | Longer upload-to-play delay |
+| Growing playlist | Earlier playback | Manifest refresh and encoder-progress risk |
 
 ## Failure modes
 
-- Encode worker dies at 80%: lease expires, another worker resumes from last completed rung, not from byte zero. See [job-scheduler](../job-scheduler/lesson.md) (id: job-scheduler).
-- New title goes viral before 720p exists: serve 360p, origin-shield the chunks, do not block play.
-- Bad chunk checksum at the edge: evict, fetch origin, never rewrite in place.
-- Upload of a huge file with a slow phone: block-level resume, expiry of abandoned mezzanine after 24h.
+- Transcoding retries produce mixed versions: publish only one verified output version.
+- A segment appears in a playlist before it is available: order publication after durable segment storage.
+- A CDN serves a stale growing playlist: use the manifest's distinct freshness policy.
+- Bandwidth drops: the player adapts using buffer state rather than persisting with an unsustainable bitrate.
 
 ## Follow-ups an interviewer may ask
 
-### Easy
+**Easy:** a segment is missing from one rendition. Explain why verification must happen before publication.
 
-Capacity and the cache: numbers first, then where a miss goes.
+**Medium:** a playlist grows while clients play. Choose its playlist type, refresh policy, and completion marker.
 
-### Medium
+**Hard:** encoding proceeds at roughly real time but pauses for twenty seconds. Explain how startup buffer and admission policy affect playback stalls.
 
-- Live: different ingest (RTMP/WHIP), sliding manifest, DVR window. Do not pretend VOD is live.
-- Comments / likes: Fieldnote-shaped, out of this round.
-- Cost: cold storage for titles with no watch in 90 days, keep 360p hot.
-
-### Hard
-
-The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Remembering the expensive answer nearby](../../foundations/caching/lesson.md) (id: caching)
 - [Spreading work without creating a new bottleneck](../../foundations/load-balancing.md) (id: load-balancing)
-- [Cron, ad-hoc, leases, and retries](../job-scheduler/lesson.md) (id: job-scheduler)
+- [Schedule occurrences and recover leased work](../job-scheduler/lesson.md) (id: job-scheduler)
 - [Splitting a keyspace so one box is not the product](../../foundations/sharding/lesson.md) (id: sharding)
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)
-- [HTTP and TCP as interview tools](../../../cs/http-and-tcp.md) (id: http-and-tcp)
-- [Camera rolls that never fit on one disk](../blob-store/lesson.md) (id: blob-store)
+- [HTTP is a conversation, TCP is the pipe](../../../cs/http-and-tcp.md) (id: http-and-tcp)
+- [Upload large objects with resumable parts](../blob-store/lesson.md) (id: blob-store)

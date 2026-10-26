@@ -2,11 +2,9 @@
 
 ```mermaid
 flowchart TB
-  i[index i] --> skip[skip parts i]
-  i --> take[push parts i]
-  skip --> next[i + 1]
-  take --> next
-  next --> leaf{i = n?}
-  leaf -->|yes| copy[copy path]
-  leaf -->|no| i
+  enter[Visit index i with current path] --> leaf{i equals n?}
+  leaf -->|yes| copy[Copy path into output and return]
+  leaf -->|no| skip[Recurse without item i]
+  skip --> take[Push item i and recurse]
+  take --> undo[Pop item i and return]
 ```

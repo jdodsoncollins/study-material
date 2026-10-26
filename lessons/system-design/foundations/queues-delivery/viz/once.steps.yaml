@@ -1,6 +1,6 @@
-title: At-least-once
+title: once
 steps:
-  - caption: "The queue keeps the message until ack."
-    nodes: [prod, q, work]
-  - caption: "Crash before ack: it comes back. Design for duplicates."
-    nodes: [work, q, idemp]
+  - caption: "For a local database effect, commit the processed ID and effect together."
+    nodes: [work, tx]
+  - caption: "A crash before acknowledgement may cause redelivery; the committed ID makes replay safe. External effects need a separate cooperating protocol."
+    nodes: [q, tx, result, ack]

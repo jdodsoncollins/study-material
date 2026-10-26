@@ -1,12 +1,12 @@
 ---
 id: traces-trajectories
-title: Spans, traces, trajectories, and sessions
+title: Use observable execution evidence to diagnose failures
 slug: traces-trajectories
 kind: concept
 track: ai-agents
 difficulty: core
 estimated_minutes: 12
-summary: A span is one call, a trace is one trial's DAG, a trajectory is the ordered agent path, and a session is the user's longer story. Eval, debug, and product metrics do not live on the same noun.
+summary: Link observable actions, spans, trials, and outcomes so failures can be diagnosed without unnecessary sensitive logging.
 tags:
   - ai-agents
   - ai-agents/evals
@@ -21,76 +21,70 @@ related:
   - eval-harness-vs-agent-harness
   - how-to-run-proper-evals
   - llm-as-judge-calibration
-company_signal:
-  - name: Arize
-    evidence: Observability writeups in 2026 standardized span/trace language for LLM apps; interviews expect you to add trajectory/session on top.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Arize / Winder.ai tracing and harness posts (2026)
-  - X threads on evaluating trajectories not just final strings
-  - OpenTelemetry-style span/trace vocabulary as used in LLM apps
-updated: 2026-09-02
+  - https://opentelemetry.io/docs/concepts/signals/traces/
+updated: 2026-10-26
 status: canonical
 ---
 
-# Spans, traces, trajectories, and sessions
+# Use observable execution evidence to diagnose failures
 
 ## Snapshot
 
-- **Span** — one timed operation: a model call, a tool call, a retrieval, a grader.
-- **Trace** — the DAG of spans for one request or one eval trial. Parent/child, timings, attributes, errors.
-- **Trajectory** — the *ordered* agent path: (thought, tool, observation)* plus the final act. A view of the trace that humans debug.
-- **Session** — the user's conversation or ticket across many tasks. Product metrics (CSAT, time-to-resolution) live here.
-- Mixing these nouns is how teams "eval the session" with a span-level judge and then cannot reproduce a trial.
+- A trace links operations; spans describe bounded pieces of work.
+- A trajectory records the observable sequence of an agent's interactions and actions.
+- A trial can contain several turns and traces; a trace is not inherently one chat turn.
+- Logs help diagnose and reproduce conditions without guaranteeing identical stochastic output.
 
 ## Why it shows up in interviews
 
-Platform rounds ask how you would instrument an agent. The junior answer is "we log prompts." The senior answer names four grains and assigns jobs: **serve and bill at span, reproduce at trace, debug at trajectory, report the business at session.** Same instinct as request vs job vs workflow in [job schedulers](../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler).
+A final failure score tells you that something went wrong. Structured evidence helps distinguish retrieval, planning, tool, environment, and grading failures.
 
 ## Core idea
 
 ### ELI5
 
-Think of Harborline's refund agent as a distributed system that happens to include a model.
+Give the task and trial stable IDs. Link model calls, tool calls, retries, and external results to the work they belong to. Record enough evidence to explain the result without collecting unnecessary sensitive content.
 
-A customer opens ticket `T-441`. That session may contain three user turns: "where is my mug," "actually refund it," "thanks." Each turn is a trace. Inside the refund trace, spans might be `llm.plan`, `tool.get_order`, `llm.choose`, `tool.refund`, `grader.outcome`. The trajectory is those spans read as a story, including the text the model produced between tools.
+Spans have timing, status, and parent/child relationships; links can connect work across otherwise separate trace structures, such as an asynchronous queue. A chat session may cover several requests and traces. An evaluation trial may intentionally include multiple turns; reset between independent trials or explicitly model the continuation.
 
-Eval trials should be **one trace long** with a frozen start state. You may *sample* sessions to mine new tasks, but you do not let a 40-turn chat be your unit of pass/fail — you cannot isolate it. See [how to run proper evals](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals).
+A trajectory should capture observable messages, tool arguments/results, and relevant state changes. It need not expose or require hidden model reasoning. Store model and prompt versions, environment identifiers, budgets, and grader versions alongside the evidence. Redact secrets and minimize personal data, with appropriate access and retention controls.
 
-Store enough in the trace to rebuild the world: tool args, tool results, env version, model id, harness sha, token counts. The trajectory is a projection. Do not persist only the pretty view.
+## Worked example
 
-## Comparison
+### Easy
 
-| Noun | Grain | You use it to | You do not use it to |
-| --- | --- | --- | --- |
-| Span | One call | Latency, cost, error rate, [serving](../system-design/foundations/llm-serving/lesson.md) (id: llm-serving) SLOs | Declare the job succeeded |
-| Trace | One trial / one turn | Reproduce, bind an outcome grade, compare harness versions | Quote CSAT |
-| Trajectory | Ordered path | Cluster ruts, enforce confirm-before-delete, teach | Be the only grader |
-| Session | Many turns, one user | Product analytics, mine new eval tasks | Be a CI unit (too much shared state) |
+A lookup returns no customer. The evidence should distinguish “no matching record” from “tool timed out” and “permission denied.” Those outcomes require different agent behavior.
 
-Outcome still sits on the trace: after the refund trace, the `refunds` row exists or it does not. See [outcome versus transcript](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript). The trajectory explains a missing row ("never called `refund`, just spoke").
+### Medium
+
+A worker retries a timed-out write. Link both attempts to the same logical operation ID and record the downstream result. Otherwise a viewer may mistake a duplicate side effect for two separate user requests.
+
+### Hard
+
+A task passes once and fails on replay with identical visible inputs. Compare model/runtime versions, environment state, external dependencies, sampling, and timing. Matching recorded conditions improves diagnosis, but does not guarantee bit-for-bit output or identical concurrent scheduling.
+
+**Practice:** design a minimal evidence record for a failed invoice draft: task/trial IDs, authorized tenant, fixture/version, tool outcome, resulting draft ID/state, and grader finding. Omit credentials and unrelated customer data.
 
 ## Common mistakes
 
-- One blob named `messages.json` with no span ids, so you cannot see that `run_tests` took 11 of 12 minutes.
-- Judging the session ("was this customer happy") and using that as a nightly regression number.
-- Calling the whole chat a "prompt" and losing tool observations.
-- Dropping tool results from storage because they were large, then being unable to replay.
-- Treating a trajectory match against a golden path as pass/fail.
-- Different trace schema in prod and in the eval harness, so online/offline joins are fan fiction.
+| Mistake | Consequence | Repair |
+| --- | --- | --- |
+| Treat a trace as always one turn | Multi-turn work is fragmented | Link sessions, tasks, trials, and traces explicitly |
+| Log only text | Tool failures and effects are hidden | Record structured outcomes |
+| Require private reasoning text | Evidence may be unavailable or unnecessary | Use observable actions and results |
+| Log every raw payload forever | Sensitive data exposure grows | Minimize, redact, restrict, and expire |
 
 ## How to talk about it
 
-"I would instrument spans like any RPC, group them into a trace per trial, grade the outcome on that trace, and keep a trajectory view for humans. Sessions are how I find new tasks and how product reports, not how CI passes. If we cannot point at a trace id for a refund, we cannot eval it."
-
-If they ask what to index: `trace_id`, `task_id`, `harness_sha`, `model`, `outcome`, `error_cluster`.
+“I will retain the observable evidence needed to explain the outcome and link retries to logical operations. Reproduction means controlling recorded conditions, with stochastic and external variability stated explicitly.”
 
 ## Cross-links
 
-- [Outcome versus transcript](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
-- [Offline gates and online drift](./online-offline-evals.md) (id: online-offline-evals)
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
-- [LLM serving](../system-design/foundations/llm-serving/lesson.md) (id: llm-serving)
-- [Job scheduler](../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler)
-- [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
+- [Grade the result and the constraints that matter](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
+- [Combine controlled tests with production evidence](./online-offline-evals.md) (id: online-offline-evals)
+- [Separate the system doing the work from the system measuring it](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
+- [Budget model memory and schedule streamed generation](../system-design/cases/llm-serving/lesson.md) (id: llm-serving)
+- [Schedule occurrences and recover leased work](../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler)
+- [Build an evaluation from the task contract](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)

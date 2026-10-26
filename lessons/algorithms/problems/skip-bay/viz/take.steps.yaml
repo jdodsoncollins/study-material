@@ -1,8 +1,8 @@
-title: Take or skip this bay
+title: Take or skip this item
 steps:
-  - caption: "Bay 0 is 6. Nothing to skip yet."
+  - caption: "Item 0 has score 6. Compare taking it with the empty selection."
     nodes: [bay, take, best]
-  - caption: "Bay 2 is 9. Take 6+9=15, or skip and keep 6. 15 wins."
+  - caption: "Item 2 has score 9. Taking nonadjacent items 0 and 2 gives 6+9=15."
     nodes: [take, skip, best]
-  - caption: "Last bay 1 on top of 15 is 16. Adjacent 8 was the skip that made that legal."
+  - caption: "The last score 1 can be added to the best through item 2, giving 16 while skipping adjacent score 8."
     nodes: [best, next]

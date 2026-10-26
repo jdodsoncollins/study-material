@@ -1,12 +1,12 @@
 ---
 id: rate-limiter
-title: Token buckets and sliding windows at the edge
+title: Enforce request budgets across servers
 slug: rate-limiter
 kind: case-study
 track: system-design
 difficulty: core
 estimated_minutes: 16
-summary: QuotaDesk meters ClipForge with local token buckets for cheap shed and a shared sliding window when fairness across boxes matters.
+summary: Enforce explicit rolling-window and burst policies atomically across the servers handling one limiting key.
 tags:
   - system-design
   - system-design/product-cases
@@ -23,123 +23,95 @@ related:
   - interview-framework
   - http-and-tcp
   - payment-idempotency
-company_signal:
-  - name: Amazon
-    evidence: Candidate-reported mid-level loops and prep-site frequency (Hello Interview community reports) treat rate limiting as a high-frequency prompt at Amazon, Meta, and Google.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Prep-site frequency and candidate reports pair rate limiting with feed/chat abuse and API gateway talks.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Hello Interview Rate Limiter community reports (consulted, not copied)
-  - Design Gurus 2026 FAANG guides
-  - r/leetcode system-design threads on token buckets
-updated: 2026-09-02
+  - https://redis.io/docs/latest/commands/eval/
+updated: 2026-10-26
 status: canonical
 ---
 
-# Token buckets and sliding windows at the edge
+# Enforce request budgets across servers
 
 ## Snapshot
 
-- Product: **QuotaDesk**, the meter in front of ClipForge mint/resolve (and later Till). It is a policy engine, not a generic "Redis sidecar" slogan.
-- **Token bucket** answers "smooth bursts." **Sliding window** answers "no more than N in the last T seconds" with fairer boundaries than a fixed clock minute.
-- A purely local limiter is fast and wrong across 12 API boxes. A purely central limiter is correct and becomes the outage.
-- v1: per `api_key` and per IP, two policies, fail-open vs fail-closed chosen *per endpoint*.
+- Define the key, time rule, and permitted burst before choosing an algorithm.
+- A local bucket on every server multiplies a global limit unless budgets are coordinated.
+- Admission checks and state updates must be atomic for the key being limited.
+- Separate overload protection from user-facing quotas and billing limits.
 
 ## What this round is actually scoring
 
-Can you pick an algorithm for a named policy, place it so it does not add 40 ms, and describe what happens when the meter store is down? They will ask you to compare bucket vs window. They will then ask about distribution.
+Whether the implementation enforces the stated limit under concurrency and partial failure.
 
 ## Company signal
 
-Candidate-reported mid-level loops and prep-site frequency (Hello Interview community reports) put rate limiting near the top at Amazon, Meta, and Google. Confidence: **high**. This is not an official bank; it is how often the prompt appears in writeups.
+This is an original practice scenario. No traceable company-specific frequency evidence is supplied.
 
 ## Requirements
 
-| Functional | v1 decision |
+| Area | Requirement |
 | --- | --- |
-| Cap mint per api_key | 30/min sustained, burst 10 |
-| Cap resolve per IP | 600/min |
-| Return standard 429 + `Retry-After` | Yes |
-| Admin changes a quota | Visible within 10s |
-| Per-user vs per-IP vs per-key | Key for partners, IP for anonymous |
-
-| Non-functional | Budget |
-| --- | --- |
-| Extra latency p99 | ≤ 3 ms in-region |
-| Accuracy | ±5% is acceptable for resolve; mint is stricter |
-| Peak decisions | 58k resolve/s + 580 mint/s |
-| Dependency failure | Resolve fail-open, mint fail-closed |
+| Identity | Limit authenticated users; define a separate policy for anonymous traffic |
+| Strict example | At most 30 admissions in any rolling 60 seconds |
+| Burst example | Also cap short bursts with a bucket of capacity 10, refilling at 0.5 tokens/s |
+| Failure | Choose fail-open, fail-closed, or a bounded emergency allowance per endpoint |
 
 ## Back-of-envelope
 
-58k decisions/s. If each central increment is a 1 RTT Redis write (~0.4 ms p50), a 3-node **MeterStore** at 80k simple ops/s/node is enough *if keys are spread*. One viral IP hashes to one hot slot — same hot-key talk as [caching](../../foundations/caching/lesson.md) (id: caching).
+These are illustrative workload assumptions, not production measurements.
 
-Local buckets on 12 Resolve boxes: 58k / 12 ≈ 4.8k/s/box, all in process. Accuracy across boxes for a 600/min IP cap is poor (worst case 12×). That is fine for resolve. It is not fine for mint-by-key at 30/min.
+Assume 80,000 decisions/s across many keys. Size shards using measured decision throughput and replication overhead. Three replicas of one primary do not automatically provide three times the write capacity.
+
+If twelve frontends each independently allow a burst of ten, one user can get 120 admissions. That violates a global burst of ten; describing it as a small percentage error does not repair the requirement.
 
 ## Design
 
 ### ELI5
 
-Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+Every request asks the same authority for its key, “Is there room in this budget?” The authority checks and consumes capacity as one operation. Two requests must not both spend the last token.
 
-### Then the details
+[Follow an admission decision](viz/bucket.md)
 
-[bucket](viz/bucket.md)
+### Strict and approximate choices
 
-Two layers:
+For the rolling-window example, keep accepted event IDs with timestamps. Atomically remove expired entries, count the remaining entries, and insert a uniquely identified new event only if fewer than 30 remain. A timestamp alone is not a unique event ID. Define the window as `(now − 60 seconds, now]` and use a consistent clock source.
 
-1. **Edge bucket** in each API process: token bucket, refill rate = policy / number of boxes as a *hint*, plus a small local burst. Used to shed obvious abuse without a network hop.
-2. **MeterStore** (Redis-style, sharded by key): sliding window for mint, and for any policy marked `strict`.
+If the additional burst rule is required, perform both the rolling-window and token-bucket checks in the same atomic operation, updating both only on admission. A token bucket with refill 0.5/s and capacity ten alone does **not** mean at most 30 in every rolling minute: it can spend an initial burst as well as newly refilled tokens.
 
-Sliding window without a lecture: keep a sorted set of timestamps per key, drop samples older than T, `ZCARD`, reject if ≥ N, else add now. For 30/min this is tiny. For 600/min per IP at 58k QPS you cannot store every sample for every IP — switch to a **window counter** (current window + previous window, weighted by overlap). Mention both; pick window counters for resolve, sorted samples for mint.
+Hash the limiting key to an authority. For very hot keys, allocated local budgets can reduce coordination, but the sum of outstanding allocations and their expiry/recovery rules must bound overshoot. Replicating the same full budget to every server is not such a bound.
 
-Config lives in a 10s snapshot (same idea as [feature flags](../feature-flags.md) (id: feature-flags)). QuotaDesk does not call a database on the 58k/s path.
-
-Placement: in-process library first, MeterStore second. Not a separate hop after the balancer unless you already have an L7 filter fleet.
+Return a retry hint based on the policy, and avoid synchronized client retries. IP-based limits need care because a shared NAT can represent many unrelated users.
 
 ## Tradeoffs
 
-| Algorithm | Burst behavior | Memory | Distributed story |
-| --- | --- | --- | --- |
-| Fixed window | 2N at the boundary | One counter | Trivial INCR |
-| Sliding window log | Smooth, accurate | One timestamp per event | Too fat at resolve QPS |
-| Sliding window counter | Near-smooth | Two counters | Good default |
-| Token bucket | Burst up to bucket, then steady | Two numbers (tokens, time) | Local is natural; central needs Lua/CAS |
-
-Fail-open on resolve: a MeterStore outage should not take ClipForge down. Fail-closed on mint and on Till capture.
+| Algorithm | Benefit | Limitation |
+| --- | --- | --- |
+| Fixed window | Small state | Bursts across a boundary |
+| Sliding event log | Exact rolling-window count | State proportional to retained admissions |
+| Token bucket | Explicit burst and sustained rate | Not a strict rolling-window quota |
+| Allocated local budgets | Lower request-path coordination | Requires bounded allocation and recovery |
 
 ## Failure modes
 
-- Clock skew across boxes: prefer store time, not app time, for strict keys.
-- Hot api_key: replicate that one MeterStore slot or pin it with a local cache of "already 429."
-- Config push of `0` to everyone: two-person rule, versioned snapshots, instant rollback.
-- Retry storms after 429: jittered `Retry-After`. Coordinate with [queues-delivery](../../foundations/queues-delivery/lesson.md) (id: queues-delivery) consumers.
+- Concurrent non-atomic checks overspend the budget.
+- Failover to stale counters can admit extra requests; define whether that is acceptable.
+- A limiter outage needs a deliberate endpoint policy, not an accidental default.
+- Retrying denied traffic without backoff can become the overload itself.
 
 ## Follow-ups an interviewer may ask
 
-### Easy
+**Easy:** two requests arrive when one token remains. Trace the atomic result.
 
-Capacity and the cache: numbers first, then where a miss goes.
+**Medium:** compare 30 requests at second 59 and 30 at second 60 under fixed and rolling windows.
 
-### Medium
+**Hard:** permit no more than 5% overshoot during a partition. Derive a bound from outstanding leased budgets; if you cannot, use an authoritative decision or reject until coordination returns.
 
-- Rate limit by URL path vs by user: different keys, same engine.
-- Distributed consistency of the count: we want *good enough* shed, not a linearizable counter, except on money endpoints.
-- Sliding window vs leaky bucket naming: leaky bucket is constant drain; token bucket is the one you want for APIs.
-
-### Hard
-
-The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Remembering the expensive answer nearby](../../foundations/caching/lesson.md) (id: caching)
 - [Spreading work without creating a new bottleneck](../../foundations/load-balancing.md) (id: load-balancing)
-- [Minting short keys for a read-heavy lookup](../url-shortener/lesson.md) (id: url-shortener)
-- [Making a double-click charge once](../payment-idempotency/lesson.md) (id: payment-idempotency)
-- [Shipping dark, flipping in production](../feature-flags.md) (id: feature-flags)
-- [HTTP and TCP as interview tools](../../../cs/http-and-tcp.md) (id: http-and-tcp)
+- [Create and resolve short links safely](../url-shortener/lesson.md) (id: url-shortener)
+- [Make a payment retry refer to one operation](../payment-idempotency/lesson.md) (id: payment-idempotency)
+- [Distribute versioned feature decisions](../feature-flags.md) (id: feature-flags)
+- [HTTP is a conversation, TCP is the pipe](../../../cs/http-and-tcp.md) (id: http-and-tcp)
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)

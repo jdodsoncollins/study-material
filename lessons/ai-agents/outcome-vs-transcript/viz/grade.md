@@ -2,10 +2,10 @@
 
 ```mermaid
 flowchart TB
-  agent[Agent] --> talk[Transcript]
-  agent --> world[Environment]
-  talk --> maybe[Looks done]
-  world --> truth[Refund row]
-  maybe --> wrong[False pass]
-  truth --> real[Real pass]
+  run[Agent run] --> talk[Observable messages and actions]
+  run --> world[Artifacts and external state]
+  talk --> constraints[Check required path and side-effect constraints]
+  world --> outcome[Check requested outcome]
+  constraints --> result[Combined task result]
+  outcome --> result
 ```

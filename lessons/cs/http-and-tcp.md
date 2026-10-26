@@ -10,6 +10,7 @@ summary: TCP delivers a reliable byte stream; HTTP is a request/response languag
 tags:
   - cs
   - cs/networking
+  - interviews
   - interviews/system-design
 prerequisites: []
 related:
@@ -19,16 +20,14 @@ related:
   - cap-and-consistency
   - dns-resolution
   - file-download
-company_signal:
-  - name: Amazon
-    evidence: API-design and service-design screens still ask what lives on TCP vs HTTP, idempotency of methods, and why a retry doubled a charge.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - TCP handshake / stream reliability as taught in networks courses
-  - HTTP/1.1 vs HTTP/2 multiplexing vs HTTP/3-over-QUIC summaries
-  - Idempotency and status-code talk in backend interview threads
-updated: 2026-09-02
+  - https://www.rfc-editor.org/rfc/rfc9110.html
+  - https://www.rfc-editor.org/rfc/rfc9112.html#section-9.3
+  - https://www.rfc-editor.org/rfc/rfc9000.html
+  - https://www.rfc-editor.org/rfc/rfc8441.html
+  - https://www.rfc-editor.org/rfc/rfc9220.html
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -36,81 +35,80 @@ status: canonical
 
 ## Snapshot
 
-- **TCP** is a 5-tuple connection (src IP/port, dst IP/port, protocol) that offers a reliable, ordered *byte stream*. It does not know what a request is.
-- **HTTP** is the application language: method, path, headers, body, status. It needs a transport.
-- HTTP/1.1 usually rides TCP with optional keepalive. HTTP/2 multiplexes many streams on one TCP connection. HTTP/3 rides **QUIC** (UDP) instead.
-- TLS encrypts the pipe. It is not HTTP, and it is not optional on the public web.
-- Before the handshake, the client needs an IP. That is [DNS](./dns-resolution/lesson.md) (id: dns-resolution): a cached tree walk, not a magic box.
+- TCP transports an ordered byte stream. It does not define HTTP request boundaries or retry application operations.
+- HTTP defines request and response semantics: methods, fields, status codes, and content.
+- HTTP/1.1 normally uses persistent TCP connections. HTTP/2 multiplexes streams over TCP; HTTP/3 uses QUIC over UDP.
+- HTTPS adds transport security. Use it for public APIs; plain HTTP still exists and is not encrypted.
 
 ## Why it shows up in interviews
 
-System design prompts assume you can place a load balancer, explain why a client retried, and not say "we send a packet of HTTP." They also want GET vs POST discipline: retries, caches, and "did we charge twice."
-
-A 90-second pass: TCP handshake and reliability, HTTP as messages, status codes that change retries, where TLS sits.
+An API design needs a transport, a security boundary, and a failure policy. These are separate decisions. In particular, a connection failure cannot tell you whether the server committed an operation before the response disappeared.
 
 ## Core idea
 
 ### ELI5
 
-Mail analogy: TCP is numbered, acknowledged postcards that reconstruct a novel in order. HTTP is the novel's chapter format — "GET /menus/42" is a sentence, not a postcard.
+TCP delivers bytes in order, like assembling numbered pages. HTTP supplies the meaning of those pages. A request can span many TCP segments, and a persistent connection can carry many requests.
 
-```
-client  --SYN-->  server
-        <--SYN-ACK--
-        --ACK-->          TCP up
-        --TLS handshake--
-        --HTTP request-->
-        <--HTTP response--
-```
+For a new HTTPS connection using TCP, the simplified sequence is DNS lookup if needed, TCP handshake, TLS handshake, then HTTP messages. Cached connections and protocol versions change the work involved.
 
-TCP retransmits lost bytes. It does **not** retry your POST. If the response is lost after the server charged the card, a naive client retry is a second charge. That is why idempotency keys live in HTTP, not in TCP.
-
-Head-of-line blocking: HTTP/1.1 pipelines poorly; one lost TCP packet stalls every HTTP/2 stream on that connection. HTTP/3/QUIC avoids that by not being TCP.
+HTTP/2 streams share TCP's ordered delivery, so lost bytes can delay otherwise independent streams. QUIC gives streams independent ordering. It reduces that cross-stream transport blockage, but streams still share connection resources and congestion control.
 
 ## Comparison
 
-| Layer | Job | Interview phrase |
+| Layer or protocol | Provides | Does not establish |
 | --- | --- | --- |
-| UDP | Datagrams, no retry | "I will invent reliability if I need it" |
-| TCP | Reliable ordered bytes | "Connection, handshake, stream" |
-| TLS | Encryption + auth of the pipe | "Terminated at the LB or the app" |
-| HTTP | Methods, headers, status, body | "The API contract" |
-| QUIC / HTTP/3 | Multiplexed, over UDP | "Avoid TCP HOL blocking" |
+| UDP | Datagram delivery interface | Reliable or ordered delivery |
+| TCP | Reliable ordered byte stream while the connection works | Whether an application transaction committed |
+| TLS | Encryption, integrity, and peer authentication | Application authorization |
+| HTTP | Methods, status codes, fields, and content semantics | Automatic exactly-once execution |
+| QUIC | Secure transport with independently ordered streams | Immunity to loss, congestion, or timeouts |
+
+### Easy
+
+A GET receives 400 because its parameters are invalid. Repeating the same request is unlikely to help, even though GET is idempotent. Retry policy needs both operation semantics and a reason to expect a transient failure.
+
+### Medium
+
+A POST creates an order, then its response is lost. Replaying it can create a duplicate. A server-supported idempotency key can associate retries with the same operation. Sending an arbitrary header does not create that guarantee by itself.
 
 ```ts
-type ChargeReq = { orderId: string; cents: number; idempotencyKey: string };
-
-function methodRetryable(method: string, status: number): boolean {
-  if (method === "GET" || method === "HEAD") return true;
-  // 409/200 on a replayed POST should be treated as success by key, not retried blindly
-  return status >= 500 && method !== "POST";
+function shouldRetry(method: string, status: number, replayProtected = false): boolean {
+  const idempotent = new Set(["GET", "HEAD", "PUT", "DELETE", "OPTIONS"]);
+  const transient = new Set([429, 500, 502, 503, 504]);
+  return transient.has(status) && (idempotent.has(method.toUpperCase()) || replayProtected);
 }
-
-console.log(methodRetryable("GET", 500), methodRetryable("POST", 500), methodRetryable("POST", 409));
-
+console.log(shouldRetry("GET", 400), shouldRetry("GET", 503)); // false true
+console.log(shouldRetry("PATCH", 503), shouldRetry("POST", 503, true)); // false true
+console.log(shouldRetry("POST", 409, true)); // false: inspect the conflict
 ```
 
-GET is expected idempotent and cacheable. POST is neither unless you *make* it so with a key.
+This is an illustrative status policy, not a retry loop. A production policy also bounds attempts and total time, honors applicable `Retry-After`, uses backoff with jitter, and ensures the request body can be replayed. Some APIs narrow the transient status list further. Network timeouts have no HTTP status and need their own decision using the same replay-safety rules.
+
+### Hard
+
+Safe methods request no state change. Idempotent methods have the same intended effect when repeated, although their responses can differ. Cacheability is another property: HTTP permits some POST responses to be cached under explicit conditions, though common caches mainly support GET and HEAD.
+
+**Try it:** DELETE succeeds, but the retry returns 404. Has idempotency failed? Not necessarily: the resource is absent after either request. Interpret the response using the endpoint contract rather than requiring identical status codes.
 
 ## Common mistakes
 
-- "HTTP is a TCP packet." HTTP messages may span many TCP segments, or many streams.
-- Retrying POST on timeout. Timeout ≠ the server did not commit.
-- Using 200 for "created" and 500 for "client sent junk." Status is a contract: 4xx your bug, 5xx mine, 429 back off.
-- Forgetting Connection: keep-alive vs one handshake per request. Handshake + TLS dwarf a 200-byte JSON body.
+- Treating a timeout as evidence that nothing happened. Reconcile the operation or use a defined replay mechanism.
+- Retrying every GET response, or treating every non-POST method as safe to replay.
+- Treating 409 as successful replay without checking the API contract.
+- Assuming every HTTP/1.1 request needs a new handshake. Persistent connections are the default unless closed.
+- Describing all WebSockets as an HTTP Upgrade. HTTP/1.1 uses Upgrade; HTTP/2 and HTTP/3 use extended CONNECT mechanisms.
 
 ## How to talk about it
 
-"TCP gives me a reliable byte pipe after a three-way handshake. HTTP is the request/response contract I put on that pipe. I will not retry a POST on timeout without an idempotency key. I terminate TLS at the load balancer unless I have a reason not to. If they ask HTTP/2 vs 3, I mention multiplexing and TCP head-of-line."
-
-If they ask WebSockets: "That's an HTTP upgrade, then a long-lived bidirectional TCP (or QUIC) stream. Different conversation rules, same pipe."
+“I will separate connection recovery from operation recovery. For reads, I can retry transient failures within a budget. For writes, I need idempotent semantics or a server-supported replay key, and a way to resolve an unknown outcome.”
 
 ## Cross-links
 
 - [Address spaces versus shared work](./processes-threads.md) (id: processes-threads)
 - [Bytes are not characters](./encoding-unicode.md) (id: encoding-unicode)
-- [Cache as a second store](../system-design/foundations/caching/lesson.md) (id: caching)
-- [CAP as a conversation tool](../system-design/foundations/cap-and-consistency.md) (id: cap-and-consistency)
+- [Remembering the expensive answer nearby](../system-design/foundations/caching/lesson.md) (id: caching)
+- [Consistency promises during failures](../system-design/foundations/cap-and-consistency.md) (id: cap-and-consistency)
 - [Locks buy correctness, not speed](./locks-and-concurrency.md) (id: locks-and-concurrency)
 - [A name is not an address](./dns-resolution/lesson.md) (id: dns-resolution)
 - [A download is bytes plus a name](./file-download.md) (id: file-download)

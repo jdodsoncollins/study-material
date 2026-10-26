@@ -11,6 +11,7 @@ tags:
   - algorithms
   - algorithms/arrays
   - algorithms/two-pointers
+  - interviews
   - interviews/leetcode
 prerequisites:
   - arrays-vs-linked-lists
@@ -20,19 +21,9 @@ related:
   - tarp-span
   - sliding-window
   - fast-slow-pointers
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA writeups and tagged-list threads keep listing sorted pair / container problems as two-pointer drills.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Phone-screen reports often follow a hash-map pair-sum with a "now the array is sorted" follow-up.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode two-pointer tagged threads
-updated: 2026-09-11
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -49,7 +40,7 @@ status: canonical
 
 A checkout cart's prices, already sorted: `prices = [3, 5, 8, 12, 14, 21]`. A gift card covers exactly `limit = 26` if two items are chosen. Return any pair of values that add to 26. You may not reuse an item.
 
-This is the sorted sibling of pair-sum. If the interviewer wanted indices from an unsorted bag, you would not sort; you would hash.
+This is the sorted-input variant of pair-sum. For original indices in unsorted input, a hash map is convenient; sorting decorated value/index pairs is another option with different cost.
 
 ## Recognition signals
 
@@ -91,7 +82,7 @@ Two integers. No map.
 
 ### Then the details
 
-The move is legal only because the array is sorted. If a sum is short, every partner of the current left is even smaller, so the cheap item is useless.
+The move is legal only because the array is sorted. If the largest remaining partner makes the sum too small, every other remaining partner also fails with the current left value.
 
 ```ts
 function cartPair(prices: number[], limit: number): [number, number] | null {
@@ -115,7 +106,8 @@ console.log(cartPair([3, 5, 8, 12, 14, 21], 22)); // [8, 14]
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
 | Nested loops | O(n²) | O(1) | Correct, dead on large n |
-| Sort + two pointers | O(n log n) | O(1) extra | Default when values, not indices, are required |
+| Already sorted + two pointers | O(n) | O(1) auxiliary | The code shown here |
+| Sort + two pointers | O(n log n) | Depends on sorting/copying | Sorting is a separate preprocessing cost |
 | Hash map of complements | O(n) expected | O(n) | Better when unsorted and indices matter |
 
 ## Walkthrough
@@ -133,7 +125,9 @@ Limit `22` on the same sheet. `3+21=24` shrink right → `3+14=17` grow left →
 
 ### Hard
 
-They want original indices and the bag is unsorted. Do not sort in place. Either keep `(value, index)` tuples, or switch to [hash-maps](../hash-maps.md) (id: hash-maps). Unique pairs with duplicates: after a hit, move one pointer and skip equals. `left < right` so you never pair an item with itself.
+They want original indices and the bag is unsorted. Do not sort in place. Either keep `(value, index)` tuples, or switch to [Hash maps as an index](../hash-maps.md) (id: hash-maps). For unique value pairs with duplicates, moving both pointers after a hit and skipping equal values is valid. Enumerating all index pairs is a different contract. `left < right` so you never pair an item with itself.
+
+**Try it:** on `[3,5,8,12,14,21]` with target 100, why can the left pointer move without losing a solution? Even pairing it with the largest remaining value is too small. The return is null.
 
 ## Pitfalls
 
@@ -141,7 +135,7 @@ They want original indices and the bag is unsorted. Do not sort in place. Either
 | --- | --- | --- |
 | `left <= right` and pairing an item with itself | Odd-length array invents a pair | Require `left < right` |
 | Sorting then returning original indices | Indices lie | Keep tuples, or do not sort |
-| Moving both pointers after a hit | Skips other valid pairs | Move one, then skip duplicates if they want unique pairs |
+| Confusing unique value pairs with all index pairs | Duplicate combinations can be omitted | For unique value pairs, move both and skip equal values; all index pairs need multiplicity handling |
 | Using this on an unsorted list | Wrong answers, confidently | Sort first, or switch patterns |
 
 ## Interview moves
@@ -155,9 +149,9 @@ They want original indices and the bag is unsorted. Do not sort in place. Either
 
 - [Pair lookup instead of nested scanning](../../problems/two-sum/lesson.md) (id: two-sum)
 - [Three-value search](../../problems/three-sum/lesson.md) (id: three-sum)
-- [Two posts and a tarp](../../problems/tarp-span/lesson.md) (id: tarp-span)
+- [Choose two boundaries for the largest area](../../problems/tarp-span/lesson.md) (id: tarp-span)
 - [Grow and shrink a live range](../sliding-window/lesson.md) (id: sliding-window)
 - [Two speeds, one list](../fast-slow-pointers.md) (id: fast-slow-pointers)
 - [Hash maps as an index](../hash-maps.md) (id: hash-maps)
-- [Arrays versus linked lists](../../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
+- [Contiguous slots versus pointer chasing](../../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
 - [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)

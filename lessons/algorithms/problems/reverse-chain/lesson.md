@@ -19,19 +19,9 @@ related:
   - aisle-loop
   - lru-cache
   - fast-slow-pointers
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA reports list reverse-linked-list as a near-universal linked-list easy.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Phone screens still use in-place reversal as the warmup before k-group reverse.
-    year: 2026
-    confidence: high
-sources_consulted:
-  - LeetCode Top 100 Liked (Reverse Linked List, 2026)
-  - r/leetcode linked-list tagged threads
-updated: 2026-09-03
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -63,7 +53,14 @@ This is reverse-linked-list. The values are not `1→2→3→4→5`.
 
 ### ELI5
 
-Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+Keep the already-reversed prefix in prev and the untouched suffix at cur. Save cur’s next node before redirecting its link. Then move cur into the reversed prefix and continue with the saved suffix.
+
+### Syntax
+
+```ts
+const before = [4,9,1,7];
+console.log([...before].reverse()); // [7,1,9,4]: target order, not the pointer algorithm
+```
 
 ### Then the details
 
@@ -101,13 +98,15 @@ console.log(toArr(reverse(fromArr([4, 9, 1, 7])))); // [7, 1, 9, 4]
 console.log(toArr(reverse(fromArr([5]))));          // [5]
 ```
 
-Save `nxt` before you overwrite `cur.next`. ## Complexity
+Save `nxt` before you overwrite `cur.next`. The input must be an acyclic list. The conversion helpers allocate arrays/nodes for the demonstration; the reverse operation itself uses O(1) auxiliary space.
+
+## Complexity
 
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
 | Iterative swing | O(n) | O(1) | Default |
 | Recurse to tail, rewind | O(n) | O(n) stack | Fine if they ask recursion |
-| Copy into an array | O(n) | O(n) | Correct and they will frown |
+| Copy into an array | O(n) | O(n) | Extra storage does not meet the in-place requirement |
 
 ## Walkthrough
 
@@ -129,7 +128,7 @@ Save `nxt` before you overwrite `cur.next`. ## Complexity
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+Reverse an empty list: prev remains null, which is the new head. Reverse one node: save null, point next to null, and return that node. For a sublist reversal, preserve the links immediately before and after the target range.
 
 ## Pitfalls
 
@@ -148,7 +147,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 ## Cross-links
 
-- [Arrays versus linked lists](../../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
+- [Contiguous slots versus pointer chasing](../../../cs/arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
 - [A next-pointer that loops](../aisle-loop/lesson.md) (id: aisle-loop)
-- [Scanner memory with eviction](../lru-cache/lesson.md) (id: lru-cache)
+- [A lookup cache with least-recently-used eviction](../lru-cache/lesson.md) (id: lru-cache)
 - [Two speeds, one list](../../patterns/fast-slow-pointers.md) (id: fast-slow-pointers)

@@ -116,20 +116,16 @@ summary: Find two values that add to a target by remembering what you still need
 tags:
   - algorithms
   - algorithms/hash-maps
+  - interviews
   - interviews/leetcode
 prerequisites:
   - hash-maps
 related:
   - three-sum
   - two-pointers
-company_signal:
-  - name: Meta
-    evidence: Candidate reports and LeetCode company tags consistently list pair-sum / hash-index problems in phone screens.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode company-tagged prep threads
+  - https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
 updated: 2026-09-02
 status: canonical
 ---

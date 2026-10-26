@@ -6,7 +6,7 @@ kind: concept
 track: system-design
 difficulty: intro
 estimated_minutes: 14
-summary: A cache is a correctness and stampede problem first, and a latency trick second.
+summary: Choose cache keys, freshness rules, and recovery behavior from the workload rather than adding a cache by default.
 tags:
   - system-design
   - system-design/foundations
@@ -21,20 +21,10 @@ related:
   - url-shortener
   - news-feed
   - search-autocomplete
-company_signal:
-  - name: Meta
-    evidence: Candidate-reported feed and messenger loops and prep-site frequency lists treat cache placement (timeline, session, presence) as a default mid-round probe.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: Candidate-reported L5 URL-shortener and rate-limiter prompts almost always ask what is cached, the TTL, and what happens on a miss storm.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Hello Interview News Feed and Rate Limiter breakdowns (consulted, not copied)
-  - Design Gurus 2026 FAANG guides
-  - r/leetcode system-design threads on cache stampede
-updated: 2026-09-02
+  - https://www.rfc-editor.org/rfc/rfc9111.html
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -42,64 +32,65 @@ status: canonical
 
 ## Snapshot
 
-- Cache the result of an expensive read that is reused. Do not cache a write you cannot rebuild.
-- The default pattern is **cache-aside**: app reads cache, on miss reads store, then fills. The app owns invalidation.
-- Hits only help if the key is stable, the TTL matches staleness, and a miss storm cannot crush the store.
-- A 95% hit rate on a 58k QPS read path leaves ~2.9k QPS for the database. That is the math interviewers want, not "we add Redis."
+- A cache stores a reusable result nearer to its consumer or in a cheaper representation.
+- A useful key identifies every input that changes the answer, including tenant and authorization scope when relevant.
+- Hit rate, miss cost, memory usage, and acceptable staleness determine whether caching helps.
+- Invalidation, concurrent fills, and failure recovery are part of the design.
 
 ## Why it shows up in interviews
 
-Almost every product case in this track is read-heavy: short-link resolve, feed home, autocomplete, flag evaluation. Caching is how you turn a storage problem into a memory problem. Interviewers listen for three words: **invalidation**, **stampede**, **hot key**. Missing those is a junior tell.
+A cache can reduce repeated work, but it also adds another copy of data. Explain which workload reuses entries and what happens when copies disagree. Per-user entries can be useful if that user reads them repeatedly; their value depends on reuse, not whether the key is shared publicly.
 
 ## Core idea
 
 ### ELI5
 
-[aside](viz/aside.md)
+Keep a copy of an answer you are likely to need again. Label it precisely. Decide when it stops being acceptable and where to obtain a fresh answer.
 
-A cache is a second copy with a lie budget. You must say how stale is acceptable.
+In cache-aside, the application checks the cache, loads the source on a miss, and stores the result for later readers.
 
-- ClipForge resolve: a mapping can be 30s stale. TTL plus random 0–5s jitter is enough.
-- Till capture of a payment: do not cache "success" as the source of truth. The ledger is.
-- Fieldnote home: a precomputed inbox can be seconds stale; a "loud voice" post may need a pull path instead of a bigger cache.
+[Read and fill a cache](viz/aside.md)
 
-Key design is the real API: `clip:{id}`, `feed:{user}:{page}`, `flag:{env}:snapshot`. Bad keys (caching a whole HTML page for a logged-in user) create a unique entry per person and the cache never warms.
+A TTL limits how long a particular cache entry lives. It does not guarantee the source was fresh when the entry was created. Invalidation removes a known stale entry, but a concurrent reader may put an older value back after the removal. Versioned entries, conditional fills, or a protocol that orders writes and fills can address that race. Choose the simplest mechanism that satisfies the stated freshness requirement.
 
-Placement matters. An in-process cache is fastest and shards by box (inconsistent). A remote cache is shared and a network hop. Many designs use both: local for the hottest keys, remote for the rest.
+## Worked example
 
-## Comparison
+### Easy
 
-| Pattern | Write behavior | Failure if you pick it wrong | Use |
-| --- | --- | --- | --- |
-| Cache-aside | Write store, delete or overwrite cache | Stale reads if delete is lost | Default read-heavy path |
-| Write-through | Write cache, cache writes store | Write latency includes cache | Simple objects, low write QPS |
-| Write-behind | Write cache, flush store later | Cache crash loses data | Counters, not money |
-| Refresh-ahead | Near-TTL miss fills in background | Synchronized TTLs stampede | Predictable hot keys with jitter |
+Assume a product page receives 1,000 reads/s. At a 90% hit rate, about 100 reads/s reach the source. At 50%, it receives 500. These are illustrative steady-state estimates; a cold start may send nearly all reads through.
 
-Stampede control: on miss, only one worker fills a key (lock or single-flight). Everyone else waits a few tens of milliseconds or serves the stale copy. Jitter the TTL so 10 million keys do not expire on the same second.
+### Medium
 
-Hot key: one celebrity `clip_id` or one flag snapshot. Replicate that key to many cache boxes, or add a tiny local cache in the app, or split the key (`clip:{id}:{replica}`).
+A popular entry expires. A hundred readers miss together and each starts the same expensive query. Coalesce concurrent fills for that key, add expiry jitter across different keys, and bound source concurrency. Jitter alone does not stop simultaneous misses on one hot key.
+
+### Hard
+
+Predict this order: reader loads version 4; writer commits version 5 and invalidates; reader caches version 4. The final cache is stale. A five-second TTL limits that newly filled entry's remaining life, but does not eliminate the race. If an authorization revocation must take effect sooner, enforce a current authorization check or an invalidation/version protocol that meets that requirement.
+
+| Policy | Main benefit | Question to settle |
+| --- | --- | --- |
+| Cache-aside | Load only requested data | How are concurrent fills and invalidations ordered? |
+| Write-through | Update cache as part of the write path | Which store is authoritative after a partial failure? |
+| Write-behind | Buffer writes before persistence | What acknowledged data may be lost, and how is it recovered? |
+| Stale-while-refresh | Keep reads responsive during refresh | Is this operation allowed to receive stale data? |
 
 ## Common mistakes
 
-- Caching writes you cannot rebuild (the only copy of a payment intent).
-- Infinite TTL "because the mapping never changes" — then you cannot tombstone an abuse clip.
-- Measuring hit rate and ignoring miss *cost*. A 99% hit rate still kills you if misses are table scans.
-- One global cache cluster for every product. Failure domains should match blast radius.
-- Forgetting the cache is sharded. A bad hash turns one hot key into one hot shard. See [sharding](../sharding/lesson.md) (id: sharding).
+- Caching private results under a key shared across tenants.
+- Treating a cache outage as permission to overload the database.
+- Using stale balances, permissions, or inventory without an explicit product contract.
+- Assuming a TTL is a complete consistency protocol.
 
 ## How to talk about it
 
-"Reads are 100:1 so cache-aside sits in front of ClipStore. Key is `clip:{id}`, TTL 45s plus 5s jitter, fill lock on miss. Writes mint then *delete* the key so the next read is authoritative. If a clip is a celebrity destination, we replicate that one key onto every cache box and keep a 64 MB in-process LRU on the API. I will not put the mint path through the cache."
-
-If they ask "what is the consistency," answer with the lie budget, not with CAP slogans.
+“I expect reuse by product and locale, so those inputs belong in the key. I will measure the hit rate and test a cold cache. For ordinary descriptions, stale reads are acceptable for a stated interval; authorization is checked separately.”
 
 ## Cross-links
 
 - [Forty-five minutes is a navigation problem](../interview-framework.md) (id: interview-framework)
 - [Spreading work without creating a new bottleneck](../load-balancing.md) (id: load-balancing)
 - [Splitting a keyspace so one box is not the product](../sharding/lesson.md) (id: sharding)
-- [Minting short keys for a read-heavy lookup](../../cases/url-shortener/lesson.md) (id: url-shortener)
-- [Hybrid fanout when some authors are stadiums](../../cases/news-feed/lesson.md) (id: news-feed)
-- [Prefix ranking under a tight latency budget](../../cases/search-autocomplete/lesson.md) (id: search-autocomplete)
-- [Indexes as the real storage API](../../../cs/indexes.md) (id: indexes)
+- [Create and resolve short links safely](../../cases/url-shortener/lesson.md) (id: url-shortener)
+- [Build a feed with bounded fanout](../../cases/news-feed/lesson.md) (id: news-feed)
+- [Serve useful suggestions within a latency budget](../../cases/search-autocomplete/lesson.md) (id: search-autocomplete)
+- [Indexes are precomputed answers](../../../cs/indexes.md) (id: indexes)

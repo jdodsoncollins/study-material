@@ -1,6 +1,6 @@
-title: Mint then resolve
+title: path
 steps:
-  - caption: "Writes hit MintPool + ClipStore. Uniqueness lives here."
+  - caption: "The unique insert detects collisions; creation replay returns the committed mapping."
     nodes: [mint, keys, store]
-  - caption: "Reads are 100:1. Cache then ClipStore then 302."
-    nodes: [click, cache, store, cdn]
+  - caption: "The example assumes 1000 resolves per creation. Cache freshness and takedown behavior still need an explicit contract."
+    nodes: [click, cache, check, redirect]

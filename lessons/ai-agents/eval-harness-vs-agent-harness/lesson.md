@@ -1,16 +1,17 @@
 ---
 id: eval-harness-vs-agent-harness
-title: Eval harness versus agent harness
+title: Separate the system doing the work from the system measuring it
 slug: eval-harness-vs-agent-harness
 kind: concept
 track: ai-agents
 difficulty: core
 estimated_minutes: 14
-summary: The agent harness is how a model acts; the eval harness is how you score those actions. Mixing them up makes interview answers and production metrics lie.
+summary: Separate the configured system performing a task from the fixtures, evidence, and graders measuring it.
 tags:
   - ai-agents
   - ai-agents/harnesses
   - ai-agents/evals
+  - interviews
   - interviews/ai
 prerequisites: []
 related:
@@ -19,84 +20,72 @@ related:
   - vendor-vs-user-harness
   - coding-agent-evals
   - outcome-vs-transcript
-company_signal:
-  - name: Anthropic
-    evidence: Public engineering essay "Demystifying evals for AI agents" (Jan 2026) defines both terms and is now a common citation in AI-platform interviews.
-    year: 2026
-    confidence: high
-  - name: OpenAI / coding-agent vendors
-    evidence: Candidate reports and harness-benchmark writeups treat Claude Code, Codex, etc. as agent harnesses wrapping a model.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Anthropic, Demystifying evals for AI agents (2026-01-09)
-  - Arize and Winder.ai harness comparison posts (2026)
-  - Position paper on disclosing the harness when comparing agents
-  - X threads on "Agent = Model + Harness"
-updated: 2026-09-03
+  - https://www.anthropic.com/research/demystifying-evals-for-ai-agents
+updated: 2026-10-26
 status: canonical
 ---
 
-# Eval harness versus agent harness
+# Separate the system doing the work from the system measuring it
 
 ## Snapshot
 
-- An **agent harness** (scaffold) is the loop that turns a model into something that can read tools, call them, and keep going.
-- An **eval harness** is the lab: reset the world, run trials, record transcripts, grade, aggregate.
-- When someone says "the agent scored 81%," they scored *model + agent harness* inside *an eval harness*. Change either harness and the number moves.
-- Interviews in 2026 increasingly ask you to separate those layers. Saying "we eval the LLM" is a junior answer.
+- The agent harness runs the model, tools, state, and stopping policy.
+- The evaluation harness prepares tasks, runs trials, collects evidence, and grades results.
+- A score describes a configured system on a specified task distribution.
+- Keep the evaluator's trusted evidence and rules outside the agent's control.
 
 ## Why it shows up in interviews
 
-Product teams shipped demos that looked brilliant and then melted in production. Interviewers want to know whether you can measure an agent without fooling yourself. Anthropic's public writeup made the vocabulary standard: task, trial, grader, transcript, outcome, eval harness, agent harness, suite.
-
-A useful one-liner: **LLM evals grade an answer. Agent evals grade a job.**
+A comparison is difficult to interpret if a model change also changes tools, prompts, permissions, or time budgets. Naming the two harnesses makes those variables visible.
 
 ## Core idea
 
 ### ELI5
 
-Think of three nested machines:
+One system lets the agent do a job. Another sets up a fair test of that job and checks what happened. They interact, but they have different authority.
 
-1. **Model** — next-token brain.
-2. **Agent harness** — system prompt, tool schemas, permission sandbox, memory/context folding, retry policy, stop conditions. Claude Code, Cursor's agent, Codex, a homegrown ReAct loop: these are harnesses, not models.
-3. **Eval harness** — dataset of tasks, isolated environments, concurrency, graders, dashboards. Harbor, Braintrust, a pytest suite that boots a container per trial: these are eval harnesses.
+[Follow the evaluation loop](viz/loop.md)
 
-[Eval loop](viz/loop.md)
+The agent harness might load repository instructions, expose file tools, call a model repeatedly, and stop at a cost limit. The evaluation harness might reset a repository fixture, request a bug fix, run independent tests, inspect the diff, and record cost and latency.
 
-A **framework** (LangGraph, Crew) is a library for writing orchestration. A harness is the running body. Frameworks can include a harness; they are not the same noun.
+A task is the scenario and success contract. A trial is one execution under a particular configuration. A grader converts evidence into a score or finding. Version all three so a later comparison has a reproducible meaning. This vocabulary is useful, but implementations may use different names.
 
-Boeckeler's framing (widely cited in 2026): Agent = Model + Harness. For coding agents there is a **vendor harness** you barely control and a **user harness** you do: `AGENTS.md`, tests, linters, CI gates, review bots.
+## Worked example
 
-## Comparison
+### Easy
 
-| Question | Agent harness | Eval harness |
-| --- | --- | --- |
-| Job | Let the model act | Measure whether acting worked |
-| Owns | Tools, loop, context, sandbox | Tasks, isolation, graders, aggregation |
-| You change it to | Make the agent more capable or safer | Make the score more honest |
-| Failure if confused | You "upgrade the model" when the loop was the bug | You grade the demo path, not the production path |
-| Interview tell | "We added a retry + smaller tool surface" | "We run 5 trials, grade DB state, not the chat string" |
+A coding agent is asked to fix pagination. The agent harness gives it a checkout and a shell. The evaluation harness supplies a known starting commit and later tests that page boundaries neither duplicate nor omit records.
 
-Holding the model fixed and swapping only the agent harness has moved Terminal-Bench / SWE-bench numbers by several points in published comparisons. If you do not disclose the harness, you are not comparing models.
+### Medium
+
+The new model performs better, but it also receives twice the token budget. The result is a valid comparison of two configurations, not an isolated estimate of the model change. Run a controlled comparison if the model effect is the question.
+
+### Hard
+
+The agent edits a test file to make its own checks pass. Keep trusted evaluation tests outside the writable task environment, then test the submitted artifact in a fresh environment. Legitimate task-directed changes to project tests can still be reviewed; they do not replace independent evidence.
+
+**Practice:** classify repository reset, tool authorization, output grading, and stopping after a token budget. Reset and grading belong to evaluation; authorization and stopping belong to execution, with evaluation recording their configuration.
 
 ## Common mistakes
 
-- Grading the final assistant sentence ("Refund issued!") instead of the **outcome** (row in `refunds` table).
-- Sharing filesystem or git history across trials so later trials cheat.
-- Checking an exact tool-call sequence. Agents find other valid paths; you punish creativity and reward memorizing your sketch.
-- Running the eval agent with different tools than production. You are then measuring a cousin.
-- Quoting pass@1 from one trial as a product SLO. See [pass@k versus pass^k](../pass-at-k/lesson.md) (id: pass-at-k).
+| Mistake | Consequence | Better practice |
+| --- | --- | --- |
+| Compare model names only | Tool and budget changes are hidden | Record the full configuration |
+| Grade the agent's own success claim | Incorrect reports can pass | Inspect tests or external state |
+| Reuse a dirty environment | Trials influence one another | Reset or explicitly model continuation |
+| Keep only a score | Failures cannot be diagnosed | Retain bounded, appropriately protected evidence |
 
 ## How to talk about it
 
-"We treat the shipping loop as the agent harness and keep it identical in CI. The eval harness resets a container, runs k trials, grades environment state with code, and uses an LLM rubric only for tone. If a score jumps after a prompt tweak, I first ask whether the eval harness still matches prod."
+“I will freeze the task fixtures and grading rules, record the agent configuration, and compare both success and resource use. A changed tool policy is a changed system, even if the model name stays the same.”
 
 ## Cross-links
 
-- [How to run proper evals](../how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
-- [Graders: code, model, human](../graders/lesson.md) (id: graders)
-- [Outcome versus transcript](../outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
-- [Vendor harness versus user harness](../vendor-vs-user-harness.md) (id: vendor-vs-user-harness)
-- [Coding-agent evals](../coding-agent-evals.md) (id: coding-agent-evals)
-- [Pass@k versus pass^k](../pass-at-k/lesson.md) (id: pass-at-k)
+- [Build an evaluation from the task contract](../how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
+- [Choose a grader for the evidence available](../graders/lesson.md) (id: graders)
+- [Grade the result and the constraints that matter](../outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
+- [Evaluate the configuration you actually deploy](../vendor-vs-user-harness.md) (id: vendor-vs-user-harness)
+- [Evaluate patches against behavior and preserved contracts](../coding-agent-evals.md) (id: coding-agent-evals)
+- [Success across one attempt, retries, and repeated runs](../pass-at-k/lesson.md) (id: pass-at-k)

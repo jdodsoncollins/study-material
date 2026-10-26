@@ -1,12 +1,12 @@
 ---
 id: notification-system
-title: Fan-out that survives flaky devices
+title: Route notifications without confusing acceptance and delivery
 slug: notification-system
 kind: case-study
 track: system-design
 difficulty: core
 estimated_minutes: 16
-summary: Herald accepts an event once, fans it into per-device attempts, and treats every channel as at-least-once with a dead-letter lane.
+summary: Route durable events through authorized channel attempts and distinguish provider acceptance from observed delivery.
 tags:
   - system-design
   - system-design/product-cases
@@ -22,126 +22,94 @@ related:
   - job-scheduler
   - rate-limiter
   - news-feed
-company_signal:
-  - name: Amazon
-    evidence: Candidate-reported L5 loops and prep-site frequency lists treat notification/fan-out systems as a standard operations-heavy prompt (retries, channels, DLQ).
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Candidate-reported messenger and feed follow-ups often pivot into "how does the push get to the phone."
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Hello Interview notification / job writeups (consulted, not copied)
-  - Design Gurus 2026 FAANG guides
-  - X threads on idempotency and at-least-once delivery
-updated: 2026-09-02
+  - https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
+updated: 2026-10-26
 status: canonical
 ---
 
-# Fan-out that survives flaky devices
+# Route notifications without confusing acceptance and delivery
 
 ## Snapshot
 
-- Product: **Herald**. Apps (Kettle, Fieldnote, ClipForge, Till) publish an event; Herald decides who gets it, on which channel, and how it is retried.
-- Channels: push (APNs/FCM), email, SMS, in-app inbox. v1 is transactional, not marketing blasts.
-- Every channel is **at-least-once**. Devices double-tap; providers retry. Dedup on `event_id + user_id + channel`.
-- Preference, quiet hours, and rate limits live in Herald, not in every product.
+- Separate the business event, recipient decision, channel attempt, and delivery receipt.
+- Queue redelivery is different from a provider or device receiving a notification.
+- Preferences, authorization, and quiet hours can change while work waits.
+- Dedupe keys must identify the intended effect, including device identity where needed.
 
 ## What this round is actually scoring
 
-Can you separate *accept the event* from *talk to a flaky vendor*, and can you stop a poison payload from stalling a user? Amazon-flavor loops will kill the SMS vendor and watch whether you DLQ. Do not design a new Kafka.
+Whether the service handles bursts and retries without violating recipient preferences or claiming delivery it cannot observe.
 
 ## Company signal
 
-Candidate-reported L5 loops and prep-site frequency lists treat notification systems as a standard operations-heavy prompt. Meta writeups often reach the same design as a follow-up to chat or feed. Confidence: **high** at Amazon-shaped loops, **medium** as a Meta pivot.
+This is an original practice scenario. No traceable company-specific frequency evidence is supplied.
 
 ## Requirements
 
-| Functional | v1 decision |
+| Area | Requirement |
 | --- | --- |
-| Publish event | `{event_id, user_id, template, payload}` |
-| Per-user preferences | Channel allow-list, quiet hours |
-| Push, email, SMS, in-app | Push + in-app first; SMS for auth only |
-| Unsubscribe / revoke device | Immediate on next attempt |
-| Read inbox | Last 50 in-app notifications |
-
-| Non-functional | Budget |
-| --- | --- |
-| Accept p99 | 50 ms |
-| Push attempt p99 | 2 s including vendor |
-| At-least-once | Yes, with dedup |
-| Drop on preference miss | Silent, counted |
-| Peak ingest | 200k events/s (Fieldnote publish spikes) |
+| Channels | Email, push, and an in-app inbox |
+| Preferences | Honor opt-outs, priority, and quiet hours by message category |
+| State | Distinguish queued, provider-accepted, delivered when observable, and failed |
+| Recovery | Bound retries and preserve inspectable failed work |
 
 ## Back-of-envelope
 
-Fieldnote: 800M posts/day but we do **not** notify every follower. Notifications are for DMs, mentions, and "you were followed." Estimate 20 notifications/user/day × 200M = 4B/day ≈ 46k/s average, **~460k/s** peak if we ever did naive post-notify — which is why product forbids it.
+These are illustrative workload assumptions, not production measurements.
 
-Kettle offline push: a fraction of 139k messages/s. Budget **80k push attempts/s** peak.
+Assume 200 million users receive twenty notifications/day. That is four billion notifications/day, about 46,300/s average. A tenfold peak is about 463,000/s. The channel mix determines actual provider requests; multi-device push can exceed the logical notification count.
 
-Each attempt: a 200-byte ticket in **DeliveryLog**. 80k/s × 200 B ≈ 16 MB/s. Easy. The scarce resource is vendor QPS and device tokens, not disk.
+Measure payload sizes, vendor quotas, and retry rates. Capacity for 80,000 push attempts/s would cover only that channel's assumed share, not the whole peak by itself.
 
 ## Design
 
 ### ELI5
 
-Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+A business event produces recipient work. The router checks whether each person should receive it, chooses channels, and records each attempt. A provider saying “accepted” is a different fact from a person receiving or reading it.
 
-### Then the details
+[Route channel work](viz/channels.md)
 
-[channels](viz/channels.md)
+### State and dispatch
 
-**TopicRouter** accepts events (idempotent on `event_id`). It loads preferences from a cached snapshot, expands to `N` **delivery tickets** `{event_id, user_id, channel, device_token}`, and enqueues them.
+Create a durable event ID at the source and publish through an outbox where the event accompanies a database change. Expand recipients in bounded batches. Store a logical notification key such as `(event, recipient, category)`; use a separate channel-attempt key, and include the target device for device-specific push.
 
-**ChannelAdapters** consume tickets:
+Apply authorization and preferences before enqueueing and recheck relevant changes at dispatch time. Delay eligible work for quiet hours using an explicit time-zone policy. Urgent categories need their own user-visible rules, not a hidden bypass.
 
-- Push adapter talks to APNs/FCM with vendor-specific batching.
-- Email adapter talks to the mail provider; 429s back off.
-- In-app adapter appends to `inbox:{user}` (same shape as Fieldnote's id inbox).
+Separate channel queues and budgets so a slow email provider does not block push or the in-app inbox. Retry transient errors with backoff and provider guidance; remove invalid device tokens and stop permanent failures.
 
-Tickets use a 30s lease. Success writes `delivered` to DeliveryLog. Crash before ack → retry. Dedup table keyed by `(event_id, user_id, channel)` makes the side effect effectively-once *to the vendor*, which still may deliver twice — the client de-dupes by `event_id`. See [queues-delivery](../../foundations/queues-delivery/lesson.md) (id: queues-delivery).
-
-**Quiet hours** are applied at ticket-creation time, with a delayed queue (or [Clockyard](../job-scheduler/lesson.md) (id: job-scheduler)) to release in the morning.
-
-**QuotaDesk** caps per-user push at 10/hour for social events so a mention storm cannot wake a phone all night. Auth SMS bypasses that cap and fail-closes if the meter is down. See [rate-limiter](../rate-limiter/lesson.md) (id: rate-limiter).
+Use provider idempotency where available. If a provider accepts a request but its response is lost, local deduplication cannot prove whether a repeat would send twice. Reconcile when possible and document residual duplicate risk. Push transport is best-effort and may expire or collapse messages; use a durable in-app inbox for information users must later recover.
 
 ## Tradeoffs
 
-| Choice | Gain | Cost |
+| Choice | Benefit | Cost |
 | --- | --- | --- |
-| Fan-out tickets vs one queue per event | Adapters scale independently | More messages |
-| Delayed quiet-hours queue | Simple product rule | Clock skew; "08:00" is per user TZ |
-| Fail-open social vs fail-closed auth | Availability where it is safe | Two code paths, must not mix |
-| In-app + push for the same event | Users see it somewhere | Double noise if not deduped in UI |
+| Separate channel queues | Isolates vendor slowdowns | More scheduling and observability |
+| Delivery receipts | Better outcome evidence | Provider/channel coverage varies |
+| Collapse repeated updates | Less device noise | Inappropriate for independently important events |
+| Durable inbox | Recoverable history | Storage, retention, and read-state management |
 
 ## Failure modes
 
-- Vendor 5xx: exponential backoff, then DLQ the ticket, not the original event (other channels may have succeeded).
-- Bad device token: adapter marks token dead; do not retry five times.
-- TopicRouter duplicate publish: `event_id` unique index, return the original expansion.
-- Preference change after tickets were created: adapters re-check a version number; stale tickets drop.
+- Preferences change while queued: re-evaluate before dispatch.
+- A provider response times out: record an unknown attempt, not an assumed failure.
+- Poison payloads repeatedly fail: bound retries and expose diagnostics with sensitive fields minimized.
+- A recipient has three devices: dedupe per intended device effect rather than dropping two deliveries.
 
 ## Follow-ups an interviewer may ask
 
-### Easy
+**Easy:** a provider returns success. Which state can the service truthfully record?
 
-Capacity and the cache: numbers first, then where a miss goes.
+**Medium:** a user opts out after enqueueing but before dispatch. Identify the second preference check.
 
-### Medium
+**Hard:** a provider offers neither idempotency nor delivery lookup. Explain the unavoidable uncertainty after a lost response and choose a product policy for duplicates versus missed attempts.
 
-- Marketing blasts: different fleet, different opt-in, never share the transactional queue.
-- Digest email: Clockyard cron, not per-event email.
-- Cross-region: tickets are user-sharded; vendors are global.
-
-### Hard
-
-The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [At-least-once, idempotency, and the dead-letter lane](../../foundations/queues-delivery/lesson.md) (id: queues-delivery)
-- [Cron, ad-hoc, leases, and retries](../job-scheduler/lesson.md) (id: job-scheduler)
-- [Ordered delivery for a 1:1 and small-group messenger](../chat-system/lesson.md) (id: chat-system)
-- [Hybrid fanout when some authors are stadiums](../news-feed/lesson.md) (id: news-feed)
-- [Token buckets and sliding windows at the edge](../rate-limiter/lesson.md) (id: rate-limiter)
+- [Schedule occurrences and recover leased work](../job-scheduler/lesson.md) (id: job-scheduler)
+- [Order messages and resume delivery](../chat-system/lesson.md) (id: chat-system)
+- [Build a feed with bounded fanout](../news-feed/lesson.md) (id: news-feed)
+- [Enforce request budgets across servers](../rate-limiter/lesson.md) (id: rate-limiter)
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)

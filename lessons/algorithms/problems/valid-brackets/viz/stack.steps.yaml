@@ -1,8 +1,6 @@
-title: Push and pop straps
+title: stack
 steps:
-  - caption: "Openers [ { ( go on the stack. Closers only look at the top."
-    nodes: [ch, kind, push]
-  - caption: ") matches (. Pop. { is still on top."
-    nodes: [kind, pop, ch]
-  - caption: "A mismatch, or a closer on an empty stack, is illegal. Leftover opens at the end are too."
-    nodes: [pop, bad]
+  - caption: "Each closer must match the most recently unmatched opener."
+    nodes: [kind, push, match, pop]
+  - caption: "An empty stack at the end is required; a mismatch or premature closer fails immediately."
+    nodes: [more, empty, good, bad]

@@ -21,19 +21,9 @@ related:
   - two-pointers
   - skip-bay
   - hash-maps
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA reports list single-buy single-sell profit as a default easy after two-sum.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Phone-screen writeups use one-trade profit as the warmup before cooldown / two-trade variants.
-    year: 2026
-    confidence: high
-sources_consulted:
-  - LeetCode Top 100 Liked (Best Time to Buy and Sell Stock, 2026)
-  - r/leetcode greedy / DP tagged threads
-updated: 2026-09-03
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -48,7 +38,7 @@ status: canonical
 
 ## Prompt
 
-Pallet-spot quotes for the shift, dollars: `tape = [9, 3, 8, 1, 6, 4]`. You may buy one lot and sell one lot later. Return the best profit. If the tape only falls, return 0.
+Historical daily prices in whole currency units: `tape = [9, 3, 8, 1, 6, 4]`. You may buy one lot and sell one lot later. Return the best profit. If the tape only falls, return 0.
 
 This is the one-buy one-sell profit question. The tape is not `[7,1,5,3,6,4]`.
 
@@ -65,7 +55,14 @@ This is the one-buy one-sell profit question. The tape is not `[7,1,5,3,6,4]`.
 
 ### ELI5
 
-Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+Before each possible selling day, remember the lowest earlier price. Compare selling today with the best profit so far, then allow today’s price to become the cheapest buy for later days.
+
+### Syntax
+
+```ts
+const earlierLow = 3, today = 8;
+console.log(today - earlierLow); // 5
+```
 
 ### Then the details
 
@@ -85,13 +82,13 @@ console.log(oneLot([9, 3, 8, 1, 6, 4])); // 5
 console.log(oneLot([9, 7, 4]));          // 0
 ```
 
-Update profit before you update `low`, or a same-day buy/sell of 0 slips in. Same-day is allowed and worth 0, so the order only matters for clarity.
+Update profit before low to make the “buy on an earlier day” invariant explicit. The return value 0 represents choosing no trade; the prompt does not require a same-day transaction.
 
 ## Complexity
 
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
-| Nested buy/sell days | O(n²) | O(1) | Easy to write, dies at 10^5 |
+| Nested buy/sell days | O(n²) | O(1) | About five billion ordered buy/sell pairs at n = 100,000 |
 | Running min | O(n) | O(1) | Default |
 | Kadane on diffs | O(n) | O(1) | Same math, heavier to explain |
 
@@ -116,7 +113,7 @@ Best is 5: buy at 3, sell at 8, or buy at 1, sell at 6.
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+An empty price list or one day permits no completed trade, so return 0. To return buy and sell indices too, save the day of the current minimum and copy both indices when best improves. Decide how to break ties.
 
 ## Pitfalls
 
@@ -130,12 +127,12 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 ## Interview moves
 
 - Say "I will not short, and I will not trade twice" before the loop.
-- If they add a second trade, you need two states, not a second min. Sketch `hold1/sold1/hold2/sold2`.
+- If they add a second trade, you need additional transaction states, not merely another minimum. Sketch `hold1/sold1/hold2/sold2`.
 - Binary search does not help. The tape is not sorted.
 
 ## Cross-links
 
 - [Reuse the last few answers](../../patterns/dp-1d.md) (id: dp-1d)
 - [Squeeze from both ends](../../patterns/two-pointers/lesson.md) (id: two-pointers)
-- [Skip a neighboring bay](../skip-bay/lesson.md) (id: skip-bay)
+- [Choose a maximum sum without adjacent items](../skip-bay/lesson.md) (id: skip-bay)
 - [Hash maps as an index](../../patterns/hash-maps.md) (id: hash-maps)

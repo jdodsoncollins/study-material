@@ -10,6 +10,7 @@ summary: Flood-fill each unvisited land cell and count how many times you start 
 tags:
   - algorithms
   - algorithms/graphs
+  - interviews
   - interviews/leetcode
 prerequisites:
   - bfs
@@ -19,19 +20,9 @@ related:
   - dfs-backtracking
   - union-find
   - trees-graphs
-company_signal:
-  - name: Amazon
-    evidence: Candidate OA and phone-screen reports list grid island-count as a default graph easy/medium.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Onsite writeups describe island / flood-fill grids as a common first graph question.
-    year: 2026
-    confidence: high
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode graph / island tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -72,7 +63,15 @@ This is number-of-islands. The grid is not the textbook 3×3 of `'1'`/`'0'`.
 
 ### ELI5
 
-Scan. On a `1`, increment the answer and sink the whole cluster.
+Scan each cell. When unvisited land appears, count one new island and visit every land cell connected to it. Mark cells before following neighbors, so this island cannot be counted again.
+
+### Syntax
+
+```ts
+const grid = [[1,1],[0,1]];
+grid[0][0] = 0; // mark this cell before exploring neighbors
+console.log(grid[0][0]); // 0
+```
 
 ### Then the details
 
@@ -116,8 +115,8 @@ If they forbid mutating the grid, keep a `seen` matrix. If the grid is huge and 
 | Approach | Time | Space | Notes |
 | --- | --- | --- | --- |
 | DFS flood | O(rows · cols) | O(rows · cols) stack worst case | Default |
-| BFS flood | O(rows · cols) | O(min(rows, cols)) typical queue | Safer depth |
-| Union-find on land cells | O(rows · cols) | O(rows · cols) | Better when land is streamed |
+| BFS flood | O(rows · cols) | O(rows · cols) worst-case queue | Safer depth |
+| Union-find on land cells | O(rows · cols · α(rows · cols)) amortized | O(rows · cols) | Better when land is streamed |
 
 ## Walkthrough
 
@@ -140,7 +139,7 @@ Answer 4. Diagonal land does not touch; (1,3) never ate (3,2).
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+Empty input and an all-water rectangular grid return 0. For one very large island, recursive calls may exceed the runtime stack. Use iterative DFS or BFS with a head-index queue; changing the traversal must preserve marking on discovery.
 
 ## Pitfalls
 
@@ -163,6 +162,6 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 - [Expand level by level](../../patterns/bfs/lesson.md) (id: bfs)
 - [Explore, undo, try the next branch](../../patterns/dfs-backtracking.md) (id: dfs-backtracking)
 - [Cluster membership in nearly constant time](../../patterns/union-find/lesson.md) (id: union-find)
-- [Trees and graphs](../../../cs/trees-graphs.md) (id: trees-graphs)
+- [Trees are graphs with a promise](../../../cs/trees-graphs.md) (id: trees-graphs)
 - [Fill a grid of overlapping subproblems](../../patterns/dp-2d.md) (id: dp-2d)
 - [Big-O as a conversation](../../../cs/big-o.md) (id: big-o)

@@ -1,8 +1,8 @@
-title: Double-tap must not double-charge
+title: keys
 steps:
-  - caption: "Client sends a key. The second tap reuses it."
-    nodes: [tap, key]
-  - caption: "If we already finished this key, replay. Do not charge."
-    nodes: [seen, replay]
-  - caption: "Otherwise append the ledger, call the PSP, remember the result."
-    nodes: [seen, ledger, psp, store]
+  - caption: "Validate request fingerprints and enforce one capture operation per intent, even when callers use different keys."
+    nodes: [req, claim]
+  - caption: "Persist pending work and use a stable downstream operation ID."
+    nodes: [pending, psp]
+  - caption: "A timeout may follow a successful capture. Reconcile it; do not submit a new charge under a new key."
+    nodes: [reconcile, commit, replay]

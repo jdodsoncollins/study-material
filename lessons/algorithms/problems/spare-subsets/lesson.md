@@ -1,12 +1,12 @@
 ---
 id: spare-subsets
-title: Every subset of spare parts
+title: Every subset of selected items
 slug: spare-subsets
 kind: problem
 track: algorithms
 difficulty: core
 estimated_minutes: 12
-summary: Walk the parts left to right, branching on include-or-skip, and push a copy of the path when the decision string ends.
+summary: Explore include-or-skip decisions and copy the current selection at each completed path.
 tags:
   - algorithms
   - algorithms/backtracking
@@ -20,33 +20,24 @@ related:
   - valid-brackets
   - hash-maps
   - number-of-islands
-company_signal:
-  - name: Meta
-    evidence: Candidate onsite reports list subsets / permutations as the default backtracking warmup.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: OA writeups treat power-set generation as the first include-or-skip DFS.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - LeetCode Top 100 Liked (Subsets, 2026)
-  - r/leetcode backtracking tagged threads
-updated: 2026-09-03
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
-# Every subset of spare parts
+# Every subset of selected items
 
 ## Snapshot
 
 - Distinct parts. Return every subset, including empty and the full set. Order of subsets does not matter.
-- At index `i`: skip `parts[i]`, or push it, recurse, pop. - Iterative doubling (start `[[]]`, for each part append a copy-plus-part) is the same tree flattened. Either is fine.
+- At index `i`: skip `parts[i]`, or push it, recurse, pop.
+- Iterative doubling (start `[[]]`, for each part append a copy-plus-part) is the same tree flattened. Either is fine.
 - Duplicates in the input is a different prompt: sort and skip equal neighbors.
 
 ## Prompt
 
-Spare bin, part numbers `parts = [7, 2, 9]`. List every subset of parts you could throw on a truck. Empty is legal. Each part at most once.
+A shopping-list UI offers item IDs `parts = [7,2,9]`. List every possible selection, including choosing nothing. IDs are distinct and each item may be selected at most once.
 
 This is the power set. The parts are not `[1,2,3]`.
 
@@ -63,7 +54,14 @@ This is the power set. The parts are not `[1,2,3]`.
 
 ### ELI5
 
-Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+For each item, explore two choices: leave it out, then include it. Once every item has a choice, copy the current selection into the results. Undo the inclusion before exploring a sibling branch.
+
+### Syntax
+
+```ts
+const selected = [7];
+console.log([...selected], [...selected,2]); // skip 2, take 2
+```
 
 ### Then the details
 
@@ -119,13 +117,13 @@ Eight rows. `2^3`.
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+Empty input has one subset, the empty selection: `[[]]`. With n distinct items there are 2^n subsets, so large outputs are unavoidable. If duplicate values are added, decide whether selections distinguish item identity or should collapse equal value subsets.
 
 ## Pitfalls
 
 | Trap | What happens | Fix |
 | --- | --- | --- |
-| `out.push(path)` | All rows become the last path | `path.slice()` |
+| `out.push(path)` | All rows alias the same mutable path | `path.slice()` |
 | Forgetting empty | Off-by-one vs `2^n` | Push when `i === n`, even if path is empty |
 | Permuting instead of subsetting | Extra rows, duplicates | Index moves forward, no swaps |
 | Mutating `parts` | Later branches see a scramble | Leave the input alone |
@@ -133,7 +131,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 ## Interview moves
 
 - Draw the binary tree of skip/take for three items. Count leaves: 8.
-- If they add duplicates, sort first and `if (i>start && a[i]===a[i-1]) continue` on the skip side.
+- For unique subsets with duplicate values, a loop-based DFS can sort and skip equal siblings using `i > start && a[i] === a[i-1]`. In this binary include/skip version, the skip branch must advance past the whole run of equal values; do not paste a loop condition into a different recursion structure.
 - Permutations is the next sentence. Do not start it.
 
 ## Cross-links

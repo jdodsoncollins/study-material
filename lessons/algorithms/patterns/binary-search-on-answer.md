@@ -10,6 +10,7 @@ summary: Search the numeric answer, not the array index, by testing a monotonic 
 tags:
   - algorithms
   - algorithms/binary-search
+  - interviews
   - interviews/leetcode
 prerequisites:
   - big-o
@@ -19,19 +20,9 @@ related:
   - heaps-top-k
   - kth-largest
   - dp-1d
-company_signal:
-  - name: Google
-    evidence: Candidate onsite reports keep describing "minimum speed / capacity to finish by deadline" prompts as binary-search-on-answer.
-    year: 2026
-    confidence: high
-  - name: Meta
-    evidence: Tagged-list threads list koko-style eating / split-array variants as medium follow-ups after vanilla binary search.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode binary-search-on-answer threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -42,11 +33,11 @@ status: canonical
 - The array is not what you bisect. You bisect the *answer space*: speed, capacity, deadline, cut count.
 - You need a predicate `can(x)` that is monotonic: if `x` works, every larger (or every smaller) also works.
 - Each test is usually O(n). Total time is O(n log range).
-- If `can(x)` is not monotonic, this pattern is a lie. Fall back to DP or a heap.
+- If `can(x)` is not monotonic, this binary search is invalid. Reconsider the state and constraints before choosing another technique.
 
 ## Prompt
 
-n video files of sizes `files = [7, 3, 11, 5]`. You have `hours = 8` to transcode them. Speed is "units per hour." Find the minimum integer speed that finishes on time. A file cannot split across two hours, but a slow hour can sit idle after a small file.
+n video files of sizes `files = [7, 3, 11, 5]`. You have `hours = 8` to transcode them. Speed is "units per hour." Find the minimum integer speed that finishes on time. A file may span several hours, but each hour works on at most one file; leftover capacity in its final hour is unused. Sizes are positive integers, and there must be at least one hour per file.
 
 This is the "minimum feasible rate" family (Koko / split-array), restated as a transcode deadline.
 
@@ -63,17 +54,30 @@ This is the "minimum feasible rate" family (Koko / split-array), restated as a t
 
 ### ELI5
 
-Lower bound is 1 (or max file if you cannot split a file across hours). Upper bound is max file (one file per hour) or sum. Bisect. `can(speed)` walks files and counts hours needed.
+Start with speeds from 1 through the largest file size. At the upper bound every file takes one hour, so it is feasible under our hours constraint. Test a middle speed by adding each file’s rounded-up hour count. A faster speed cannot increase that count.
+
+### Syntax
+
+```ts
+const files = [7, 3, 11, 5];
+console.log(files.map(size => Math.ceil(size / 4))); // [2,1,3,2]
+console.log(files.reduce((hours, size) => hours + Math.ceil(size / 4), 0)); // 8
+```
 
 ### Then the details
 
 ```ts
 function minSpeed(files: number[], hours: number): number {
+  if (files.length === 0) return 0;
+  if (!Number.isSafeInteger(hours) || hours < files.length) return -1;
   let lo = 1;
-  let hi = Math.max(...files);
+  let hi = files.reduce((max, size) => Math.max(max, size), 0);
   const can = (speed: number) => {
     let used = 0;
-    for (const mass of files) used += Math.ceil(mass / speed);
+    for (const size of files) {
+      used += Math.ceil(size / speed);
+      if (used > hours) return false;
+    }
     return used <= hours;
   };
   while (lo < hi) {
@@ -86,6 +90,7 @@ function minSpeed(files: number[], hours: number): number {
 
 console.log(minSpeed([7, 3, 11, 5], 8)); // 4
 console.log(minSpeed([7, 3, 11, 5], 4)); // 11
+console.log(minSpeed([7, 3, 11, 5], 3)); // -1: too few hours
 
 ```
 
@@ -97,7 +102,6 @@ When `can(mid)` is true you still try smaller, so `hi = mid`, not `mid - 1`, if 
 | --- | --- | --- | --- |
 | Try every speed from 1 to max | O(n · max) | O(1) | Impossible at 10^9 |
 | Binary search + O(n) predicate | O(n log max) | O(1) | Default |
-| DP over splits | O(n² k) typical | O(nk) | Use when `can` is not monotonic |
 
 ## Walkthrough
 
@@ -110,14 +114,14 @@ When `can(mid)` is true you still try smaller, so `hi = mid`, not `mid - 1`, if 
 ### Medium
 
 2. Mid 3: 3+1+4+2 = 10 > 8. Need faster.
-3. Mid 4: 2+1+3+2 = 8. Works. Try slower.
-4. Mid 3 already failed. Answer 4.
+3. The range is now `[4,6]`. Mid 5 uses 2+1+3+1 = 7 hours, so set hi to 5.
+4. Mid 4 uses 2+1+3+2 = 8 hours, so set hi to 4. The bounds meet: answer 4.
 
 Check: 4 units/hour clears 7 in two hours, 3 in one, 11 in three, 5 in two. Total 8.
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+With only three hours and four positive files, no speed works under the one-file-per-hour rule. Return −1. Empty input needs zero work and returns 0. Explain why the feasibility of the initial upper bound matters.
 
 ## Pitfalls
 
@@ -126,7 +130,7 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 | Integer overflow on `(lo+hi)/2` | Infinite loop in some languages | `lo + Math.floor((hi-lo)/2)` |
 | `hi = mid - 1` on a "minimum true" search | Skips the answer | Keep `hi = mid` when `can` is true |
 | Predicate that is not monotonic | Binary search returns garbage | Prove the yes-region is a suffix or prefix |
-| Using float ceil carelessly | `Math.ceil` on integers is fine; on money it is not | Integer math: `Math.floor((mass + speed - 1) / speed)` |
+| Ignoring numeric range | Large sums or midpoint arithmetic can lose integer precision | Keep sizes and bounds within the safe integer contract, or use bigint arithmetic |
 
 ## Interview moves
 

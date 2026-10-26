@@ -2,10 +2,14 @@
 
 ```mermaid
 flowchart LR
-  ch[next mark] --> kind{opener?}
-  kind -->|yes| push[push]
-  push --> ch
-  kind -->|no| pop{top matches?}
-  pop -->|yes| ch
-  pop -->|no| bad[illegal]
+  more{More marks?} -->|no| empty{Stack empty?}
+  empty -->|yes| good[Valid]
+  empty -->|no| bad[Invalid]
+  more -->|yes| kind{Opener?}
+  kind -->|yes| push[Push opener]
+  push --> more
+  kind -->|no| match{Top matches closer?}
+  match -->|no| bad
+  match -->|yes| pop[Pop opener]
+  pop --> more
 ```

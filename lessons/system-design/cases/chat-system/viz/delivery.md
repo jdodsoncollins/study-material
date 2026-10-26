@@ -2,10 +2,10 @@
 
 ```mermaid
 flowchart LR
-  send[Sender] --> api[Chat API]
-  api --> log[Message log]
-  api --> fan[Online fanout]
-  fan --> ws[WebSocket]
-  ws --> recv[Recipient device]
-  api --> push[Push if offline]
+  send[Send with operation ID] --> api[Authorize and deduplicate]
+  api --> log[Atomically allocate sequence and append]
+  log --> ack[Durable acknowledgement]
+  log --> fan[Deliver or replay to devices]
+  fan --> recv[Device deduplicates and advances cursor]
+  log --> push[Optional push hint]
 ```

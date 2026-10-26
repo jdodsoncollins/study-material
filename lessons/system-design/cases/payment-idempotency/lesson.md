@@ -1,12 +1,12 @@
 ---
 id: payment-idempotency
-title: Making a double-click charge once
+title: Make a payment retry refer to one operation
 slug: payment-idempotency
 kind: case-study
 track: system-design
 difficulty: core
 estimated_minutes: 16
-summary: Till treats a charge as a ledger append fenced by an idempotency key so a double-click, a retry, and a webhook replay all collapse to one effect.
+summary: Preserve one logical capture across retries, different request keys, and uncertain provider responses.
 tags:
   - system-design
   - system-design/product-cases
@@ -24,126 +24,95 @@ related:
   - transactions-isolation
   - rate-limiter
   - job-scheduler
-company_signal:
-  - name: Stripe
-    evidence: Candidate-reported loops and public X threads on idempotency keys treat double-charge / ledger design as a recurring payments prompt.
-    year: 2026
-    confidence: medium
-  - name: Amazon
-    evidence: Prep-site frequency and candidate reports on order/payment adjacent L5 designs probe "what if the client retries."
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - X threads on idempotency keys and double-charge
-  - Hello Interview / Design Gurus payments notes (consulted, not copied)
-  - Standard interview CS on isolation and exactly-once effects
-updated: 2026-09-02
+  - https://docs.stripe.com/api/idempotent_requests
+updated: 2026-10-26
 status: canonical
 ---
 
-# Making a double-click charge once
+# Make a payment retry refer to one operation
 
 ## Snapshot
 
-- Product: **Till**, a Stripe-flavored charge API used by Driftway, ClipForge premium, and Stagecast tips.
-- The villain is not "the bank." It is the **double-click**, the mobile retry, and the webhook the partner replays.
-- v1 primitive: `POST /intents` with header `Idempotency-Key`. Same key + same body → same intent. Same key + different body → `409`.
-- Money is a **ledger**, not an updatable `balance` cell. Effects are append-only entries, fenced by the key.
+- Identify a logical payment operation independently of transport attempts.
+- Scope idempotency keys and reject reuse with a different request.
+- Protect the business invariant even when callers supply different keys.
+- Treat a timeout after provider submission as an unknown outcome until resolved.
 
 ## What this round is actually scoring
 
-Whether you fail closed, whether retries are safe, and whether you know the difference between "we sent the card network a capture" and "we recorded that we did." Interviewers will press on crash-between-network-and-disk.
+Whether concurrent retries and uncertain provider responses can create duplicate business effects.
 
 ## Company signal
 
-Candidate-reported Stripe-shaped loops and X threads on idempotency, plus prep-site frequency on double-charge / ledger prompts. Confidence: **medium**. Label it candidate-reported; do not claim an official bank.
+This is an original practice scenario. No traceable company-specific frequency evidence is supplied.
 
 ## Requirements
 
-| Functional | v1 decision |
+| Area | Requirement |
 | --- | --- |
-| Create a payment intent | Amount, currency, customer, destination |
-| Capture / cancel | Explicit, not implicit on create |
-| Idempotency key | Required on create and capture, TTL 24h |
-| Webhooks to the merchant | At-least-once, signed, with `event_id` |
-| Refunds, disputes, multi-capture | Non-goals (name them) |
-
-| Non-functional | Budget |
-| --- | --- |
-| Peak intents | 20k/s (a drop plus a concert) |
-| Create p99 | 150 ms not including the network |
-| Durability | No ack until the intent row is on disk |
-| Double charge | Never, even if we time out the client |
-| Ledger audit | Every cent has an entry |
+| Capture | For this scenario, capture each payment intent at most once |
+| Replay | Return the original operation state/result for a matching retry |
+| Conflict | Reject key reuse with different amount, currency, or intent |
+| Recovery | Reconcile unknown provider outcomes and publish durable status events |
 
 ## Back-of-envelope
 
-20k/s intents, 1 KB rows → 20 MB/s writes. A single primary can take this; you still shard by `merchant_id` so one marketplace cannot stall everyone. Idempotency index: 20k/s × 24h × 1 KB ≈ 1.7 TB of keys if you keep them all — so TTL 24h and hash the key.
+These are illustrative workload assumptions, not production measurements.
 
-The card network is the slow neighbor (200–800 ms). Till must not hold a row lock that long. Pattern: persist `status=pending` under the idempotency key, call the network, then append `captured` or `failed`.
+Assume a peak of 20,000 requests/s. If that rate lasted all day, there would be 1.728 billion requests. At one kilobyte per retained record, the upper-bound raw growth is about 1.73 TB/day. Actual daily traffic depends on the peak's duration.
+
+Hashing an idempotency key reduces the key's stored size; it does not eliminate the operation records. Capacity planning should account for retention, indexes, payloads, and replicas, then benchmark the write path.
 
 ## Design
 
 ### ELI5
 
-Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+A retry carries the same operation ticket. The service either continues that operation or returns its known result. A new ticket must not bypass the rule that this particular intent can only be captured once.
 
-### Then the details
+[Trace operation identity and replay](viz/keys.md)
 
-[keys](viz/keys.md)
+### State and provider boundary
 
-**IdempotencyVault**: unique `(merchant_id, key)` → `intent_id` + hash of canonical body. Insert-first. If the row exists and the hash matches, return the stored response (even if still `pending`). If the hash differs, `409`.
+Store `(tenant, operation type, idempotency key)`, a canonical request fingerprint, intent ID, state, and result. Atomically claim the key and the intent's capture operation. A uniqueness constraint on the business operation protects against two callers using different request keys for the same capture.
 
-**IntentLedger**: append-only. Entries like `intent_created`, `capture_requested`, `capture_ok`, `capture_failed`. Current status is a fold of the log (or a projection table updated in the same transaction). See [transactions-isolation](../../../cs/transactions-isolation.md) (id: transactions-isolation): the insert of the vault row and the first ledger line commit together.
+Persist the intent to perform work before sending it. Use the stable **capture operation ID** as the downstream provider key, within that provider's documented scope and retention. A network timeout does not mean the capture failed. Query or retry that same provider operation according to its contract; do not create a fresh charge while the outcome is unknown.
 
-Capture path, crash-safe:
+When a provider result is established, atomically update local state, ledger entries as required, and an outbox event. The outbox relay may deliver more than once, so consumers deduplicate. Acknowledgement durability must name the replication/commit policy; “written to disk” alone leaves failures unspecified.
 
-1. Client `POST /capture` with a *new* idempotency key (or a derived one `intent_id:capture`).
-2. Till records `capture_requested`.
-3. Call the network. If the client retries, Till sees `capture_requested` and **reconciles** with the network (not a second capture).
-4. Network says ok → `capture_ok`. Webhook `payment.captured` enqueued with `event_id`.
-
-Webhooks are [at-least-once](../../foundations/queues-delivery/lesson.md) (id: queues-delivery). Partners must be idempotent on `event_id`. Till will retry for 24h, then DLQ.
-
-[QuotaDesk](../rate-limiter/lesson.md) (id: rate-limiter) fail-closed on capture.
+If response-cache entries expire after 24 hours, retain the longer-lived business invariant. An old request must not become a new capture merely because a cache entry disappeared. Partial captures or multiple captures would require a different explicitly modeled invariant.
 
 ## Tradeoffs
 
-| Choice | Gain | Cost |
+| Choice | Benefit | Cost |
 | --- | --- | --- |
-| Client-supplied idempotency key | Natural double-click fence | Clients forget; you must reject missing keys |
-| Derived key from `(user, cart, amount)` | No header | Cart edits collide or sneak a second charge |
-| Ledger + projection | Audit, replay | Two writes, more moving parts |
-| Sync capture vs async | Simpler client | Holds the request open on the network |
+| Cached replay response | Fast matching retries | Does not enforce the underlying business invariant |
+| Unique capture operation | Blocks different-key duplicates | Requires a clear intent lifecycle |
+| Provider idempotency | Handles uncertain submission responses | Scope and retention are provider-specific |
+| Reconciliation | Resolves unknown outcomes | Delayed final status and operational work |
 
 ## Failure modes
 
-- Crash after network capture, before `capture_ok`: a **reconciler** (Clockyard job) looks up pending captures older than 30s and asks the network. Never "just capture again."
-- Two different bodies, one key: `409`, do not guess.
-- Partner webhook handler not idempotent: their bug; you still deliver at-least-once and show them `event_id`.
-- Ledger primary lag: fail closed. Serving a cached "paid" is how you double-ship goods. See [CAP](../../foundations/cap-and-consistency.md) (id: cap-and-consistency).
+- Crash before submission: resume the durable pending operation.
+- Timeout after submission: retain “unknown” and reconcile; do not assume failure.
+- Different payload under the same key: return a conflict.
+- Duplicate or out-of-order webhook: validate the source and apply allowed state transitions idempotently.
 
 ## Follow-ups an interviewer may ask
 
-### Easy
+**Easy:** replay the same intent, key, amount, and currency. Which result is returned?
 
-Capacity and the cache: numbers first, then where a miss goes.
+**Medium:** two different keys attempt the same intent concurrently. Identify the business constraint that decides the winner.
 
-### Medium
+**Hard:** the provider's key retention expires while the local outcome is unknown. Explain why automatic submission under a new key is unsafe and how reconciliation resolves it.
 
-- Exactly-once to the card network: you cannot promise it; you promise *one logical capture* via reconcile.
-- Multi-region active-active: uniqueness of the vault row needs a single authority per merchant (or CRDT-free fail-closed).
-- Tips / splits: more ledger lines, same key story.
-
-### Hard
-
-The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [At-least-once, idempotency, and the dead-letter lane](../../foundations/queues-delivery/lesson.md) (id: queues-delivery)
-- [CAP as a conversation, not a religion](../../foundations/cap-and-consistency.md) (id: cap-and-consistency)
-- [Isolation levels as a conversation](../../../cs/transactions-isolation.md) (id: transactions-isolation)
-- [Token buckets and sliding windows at the edge](../rate-limiter/lesson.md) (id: rate-limiter)
-- [Cron, ad-hoc, leases, and retries](../job-scheduler/lesson.md) (id: job-scheduler)
-- [Matching and surge, not a map with cars on it](../ride-hailing/lesson.md) (id: ride-hailing)
+- [Consistency promises during failures](../../foundations/cap-and-consistency.md) (id: cap-and-consistency)
+- [Isolation defines what concurrent transactions can observe](../../../cs/transactions-isolation.md) (id: transactions-isolation)
+- [Enforce request budgets across servers](../rate-limiter/lesson.md) (id: rate-limiter)
+- [Schedule occurrences and recover leased work](../job-scheduler/lesson.md) (id: job-scheduler)
+- [Reserve drivers before confirming a match](../ride-hailing/lesson.md) (id: ride-hailing)
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)

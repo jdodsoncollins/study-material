@@ -1,16 +1,17 @@
 ---
 id: os-memory
-title: Virtual memory is a lie the CPU believes
+title: Virtual addresses, physical pages, and locality
 slug: os-memory
 kind: concept
 track: cs
 difficulty: core
 estimated_minutes: 14
-summary: Each process sees a private virtual address space; the OS maps pages to RAM or disk, and cache lines make layout matter more than Big-O admits.
+summary: Understand virtual address mappings, page faults, and how locality can affect measured performance.
 tags:
   - cs
   - cs/os
   - cs/data-structures
+  - interviews
   - interviews/system-design
 prerequisites:
   - arrays-vs-linked-lists
@@ -19,27 +20,21 @@ related:
   - arrays-vs-linked-lists
   - recursion-call-stack
   - caching
-company_signal:
-  - name: Google
-    evidence: Systems-flavored screens still ask virtual vs physical, page faults, and why a linked-list scan thrashes cache compared to an array.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Undergrad virtual memory / TLB / page-fault notes
-  - Cache-line locality discussions in systems interview prep
-  - OS copy-on-write fork behavior as commonly taught
-updated: 2026-09-02
+  - https://pages.cs.wisc.edu/~remzi/OSTEP/
+updated: 2026-10-26
 status: canonical
 ---
 
-# Virtual memory is a lie the CPU believes
+# Virtual addresses, physical pages, and locality
 
 ## Snapshot
 
 - Your pointer is a **virtual** address. The MMU translates it to a **physical** frame via page tables, cached in the TLB.
-- Memory is handed out in **pages** (often 4 KiB). Touch a missing page → page fault → OS finds a frame or pulls from disk.
-- A process's layout: text (code), globals, heap growing up, stack growing down. They do not share this map with other processes.
-- CPU caches move **cache lines** (~64 bytes), not single ints. Sequential arrays ride for free; pointer chasing does not.
+- Memory is handed out in **pages** (often 4 KiB). An access can fault because a page is absent or access is disallowed. Some faults allocate or map memory without disk I/O; others read backing storage or terminate the process.
+- A process typically has mappings for code, data, heaps, and thread stacks. Exact placement and growth depend on the platform. Separate processes can explicitly share mappings.
+- CPU caches transfer **cache lines** (commonly 64 bytes, architecture dependent). Contiguous access can reuse those lines; scattered nodes can need more loads.
 
 ## Why it shows up in interviews
 
@@ -59,48 +54,56 @@ virtual page  →  page table  →  physical frame
                   no mapping → fault
 ```
 
-**Stack** frames vanish when the function returns. **Heap** allocations live until you free them (or the GC says so). A deep recursion is a stack of pages, not a heap problem; see [recursion-call-stack](./recursion-call-stack.md) (id: recursion-call-stack).
+**Stack** frames vanish when the function returns. **Heap** allocations live until you free them (or the GC says so). A deep recursion is a stack of pages, not a heap problem; see [Recursion is a stack you didn't allocate](./recursion-call-stack.md) (id: recursion-call-stack).
 
 Copy-on-write: `fork` clones the page *map*, not the bytes. The child writes a page → OS copies that page only. Cheap until someone mutates everything.
 
 ## Worked example
 
-### Easy / medium / hard
+### Easy
 
-Walk the small case in the sample, then the miss, then the follow-up they name in Interview moves.
+Predict the sum in the example before running it: 41. Every element is read once.
 
-Sum 1 million integers two ways: packed `number[]` versus a linked list of nodes.
+### Medium
+
+Now compare two layouts with the same O(n) traversal. Which one makes adjacent values more likely to share a cache line?
+
+### Hard
+
+Suppose the hot working set exceeds available RAM. Explain why more virtual address space does not supply more physical memory.
+
+Sum 1 million integers two ways: a contiguous `Float64Array` versus a linked list of nodes.
 
 | Access pattern | What the hardware does | Feel |
 | --- | --- | --- |
-| Walk `weights[i]` in order | One cache line feeds ~8 floats; prefetcher guesses ahead | Fast |
+| Walk `weights[i]` in order | A 64-byte line can hold eight aligned 8-byte elements; prefetch may help | Fast |
 | Walk `node.next` | Each node may sit on its own line / page | Slow, same Big-O |
 | Random index into a huge array | TLB misses, then cache misses | Fine until it isn't |
 | Touch 50 GB working set on a 16 GB box | Page faults, disk (or kill) | Thrash |
 
 ```ts
-function sumPacked(weights: number[]): number {
+function sumPacked(weights: Float64Array): number {
   let s = 0;
   for (let i = 0; i < weights.length; i++) s += weights[i];
   return s;
 }
 
-console.log(sumPacked([4, 11, 8, 3, 15])); // 41
+console.log(sumPacked(new Float64Array([4, 11, 8, 3, 15]))); // 41
 
 ```
 
-That loop is O(n) *and* friendly. The list version is O(n) *and* hostile. In a systems interview, say both.
+Both traversals are O(n). Layout can change cache behavior and constants; benchmark the actual runtime rather than promising a universal speed ratio.
 
 ## Common mistakes
 
 - Equating "virtual memory" with "swap file." Virtual memory is the map; swap is one backing store.
-- Thinking threads have separate heaps. They share the process map; only stacks are per-thread.
+- Thinking threads have separate heaps. They share the process map; stacks and thread-local state are distinct, although they remain in the process address space.
 - Ignoring alignment / cache lines when two cores write adjacent fields (false sharing).
 - Claiming malloc is O(1) in the OS sense. User-space allocators are fast *until* they need a new page.
 
 ## How to talk about it
 
-"Each process has its own virtual address space. Pages map to RAM through the TLB. If I care about speed I pack data so a cache line does useful work — arrays over node graphs. If the working set outgrows RAM, we page-fault; that's a latency cliff, not a gentle slope. Threads share that map; processes do not."
+"Each process has its own virtual address space. Page tables describe mappings; the TLB caches translations. If I care about speed I pack data so a cache line does useful work — arrays over node graphs. If the working set outgrows RAM, paging, reclaim, or allocation failure can dominate latency. Threads share the address space; processes have separate spaces and may explicitly share pages."
 
 If they ask about mmap: "It's asking the OS to map a file into that virtual space so loads and stores *are* the I/O, still in page-sized chunks."
 
@@ -109,5 +112,5 @@ If they ask about mmap: "It's asking the OS to map a file into that virtual spac
 - [Address spaces versus shared work](./processes-threads.md) (id: processes-threads)
 - [Contiguous slots versus pointer chasing](./arrays-vs-linked-lists.md) (id: arrays-vs-linked-lists)
 - [Recursion is a stack you didn't allocate](./recursion-call-stack.md) (id: recursion-call-stack)
-- [Cache as a second store](../system-design/foundations/caching/lesson.md) (id: caching)
+- [Remembering the expensive answer nearby](../system-design/foundations/caching/lesson.md) (id: caching)
 - [Why a map is "O(1)" until it isn't](./hashing-internals.md) (id: hashing-internals)

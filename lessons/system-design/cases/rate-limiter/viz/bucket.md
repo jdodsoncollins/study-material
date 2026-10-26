@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart TB
-  req[Request] --> local[Local token bucket]
-  local -->|tokens left| pass[Allow]
-  local -->|empty| redis[Shared sliding window]
-  redis -->|under quota| pass
-  redis -->|over| shed[429]
+  req[Request and limiting key] --> owner[Authoritative owner for key]
+  owner --> check[Atomically check rolling count and burst tokens]
+  check -->|both permit| consume[Update both budgets]
+  consume --> pass[Allow]
+  check -->|either denies| shed[Reject with retry guidance]
 ```

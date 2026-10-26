@@ -1,8 +1,6 @@
-title: Include or skip
+title: branch
 steps:
-  - caption: "At each part, two calls: leave it, or push it and pop on the way back."
-    nodes: [i, skip, take]
-  - caption: "When i hits n, copy the path. Empty path is a legal subset."
-    nodes: [leaf, copy]
-  - caption: "Three parts, eight leaves. 2^n. Forgetting the copy means every row shares one array."
-    nodes: [copy, next]
+  - caption: "The base case happens before reading an item, so an empty input produces one empty subset."
+    nodes: [enter, leaf, copy]
+  - caption: "Explore skip and take branches, then undo the pushed choice. Each leaf stores a copy."
+    nodes: [skip, take, undo]

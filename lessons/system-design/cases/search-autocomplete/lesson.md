@@ -1,12 +1,12 @@
 ---
 id: search-autocomplete
-title: Prefix ranking under a tight latency budget
+title: Serve useful suggestions within a latency budget
 slug: search-autocomplete
 kind: case-study
 track: system-design
 difficulty: intro
 estimated_minutes: 14
-summary: Lexicon ranks the next few characters as the user types; the serving path is an in-memory prefix index plus a cache, not a full search engine.
+summary: Serve versioned prefix candidates within explicit latency, memory, freshness, and removal budgets.
 tags:
   - system-design
   - system-design/product-cases
@@ -22,121 +22,94 @@ related:
   - rate-limiter
   - indexes
   - interview-framework
-company_signal:
-  - name: Google
-    evidence: Candidate-reported loops and prep-site frequency lists treat typeahead / autocomplete as a Google search-product analog with a hard latency budget.
-    year: 2026
-    confidence: high
+company_signal: []
 sources_consulted:
-  - Design Gurus 2026 FAANG guides
-  - Hello Interview question DB (autocomplete)
-  - r/leetcode system-design threads on tries vs inverted indexes
-updated: 2026-09-02
+  - https://www.unicode.org/reports/tr29/
+updated: 2026-10-26
 status: canonical
 ---
 
-# Prefix ranking under a tight latency budget
+# Serve useful suggestions within a latency budget
 
 ## Snapshot
 
-- Product: **Lexicon**, the typeahead bar in front of a search corpus (Stagecast titles, Fieldnote posts, or a web index). v1 suggests queries, not full result pages.
-- Budget is **p99 ≤ 50 ms** from keystroke to 8 suggestions. That number forbids a disk hop on the happy path.
-- The index is a **prefix tree or prefix-partitioned map** of query strings with a precomputed top-K. Rebuild offline; serve read-only snapshots.
-- Personalization is a rerank of those K, not a per-user index on the keystroke path.
+- Define normalization, ranking, and privacy before selecting a prefix structure.
+- Separate client debounce, network delay, and server latency budgets.
+- Precomputed candidates make reads cheap but delay updates and removals.
+- Memory estimates must include candidates, strings, and indexing overhead.
 
 ## What this round is actually scoring
 
-Latency discipline and index shape. Google-flavor interviewers will ask what happens at 100k QPS, how you update a trending query, and why you did not call the main searcher. They are not scoring a frontend debounce essay, though you should mention it.
+Whether the design returns relevant suggestions quickly while handling skew, stale ranking, and urgent removals.
 
 ## Company signal
 
-Candidate-reported loops and prep-site frequency lists treat autocomplete as a Google search-product analog. Confidence: **high**. Expect prefix indexes, cache, and "how does a new trending query appear."
+This is an original practice scenario. No traceable company-specific frequency evidence is supplied.
 
 ## Requirements
 
-| Functional | v1 decision |
+| Area | Requirement |
 | --- | --- |
-| Suggest as the user types | After 2 characters, 8 rows |
-| Rank | Frequency × recency, then a light personal rerank |
-| Empty / typo | Return popular fallback, do not 500 |
-| Adult / abuse filter | Applied in the snapshot, not at query time |
-| Click logs → better rank | Offline, hourly |
-
-| Non-functional | Budget |
-| --- | --- |
-| p99 | 50 ms in-region |
-| Peak QPS | 100k (every keystroke, even with debounce) |
-| Staleness of trends | ≤ 1 hour, except a manual inject |
-| Availability | Fail-open to a static popular list |
+| Query | Return up to eight suggestions for prefixes of at least two normalized characters |
+| Ranking | Use a documented popularity/relevance signal and locale |
+| Latency | Target a 50 ms service-plus-network response; budget debounce separately |
+| Safety | Support prompt removal of disallowed or private suggestions |
 
 ## Back-of-envelope
 
-100k QPS × 200 bytes request/response ≈ 20 MB/s. Trivial bandwidth. The constraint is **fan-in to memory**.
+These are illustrative workload assumptions, not production measurements.
 
-Corpus: 20 million distinct queries worth suggesting. A compact trie with top-8 pointers per node, or a hash of prefixes of length 2–12, fits in tens of GB — one box can hold it, but you still run many boxes for QPS and failure.
+Assume twenty million distinct query strings averaging twelve characters. An upper bound of eleven eligible prefixes per string gives 220 million prefix associations. Eight eight-byte candidate IDs per distinct prefix could alone require up to 14.08 GB before strings, scores, and structure overhead; shared prefixes lower that count.
 
-If each keystroke hit a disk-backed searcher at 5 ms p50, p99 would blow 50 ms under load. So **SuggestCache** (prefix → 8 strings) plus in-process snapshot.
-
-Debounce 30 ms on the client still leaves several QPS per typer. Design for 100k, not for "users."
+A claimed 12 GB snapshot needs measurement and compression assumptions. Do not infer it from the query count alone. A 30 ms debounce also cannot be hidden inside an independently claimed 50 ms end-to-end keystroke budget.
 
 ## Design
 
 ### ELI5
 
-Sketch the request path and the store it hits. Name the bottleneck before you draw a second box.
+As the user types, look up a short list of likely completions for the current prefix. Build those lists outside the request path, then rank or filter a small candidate set at read time.
 
-### Then the details
+[Follow prefix lookup](viz/prefix.md)
 
-[prefix](viz/prefix.md)
+### Build and serve
 
-Offline: **LogMill** aggregates yesterday's queries + clicks. **Builder** produces an immutable snapshot: for each prefix, the top 8 queries after filtering. Snapshot is a file, versioned, ~12 GB.
+Normalize queries under an explicit Unicode and locale policy. Aggregate allowed query events into a rolling ranking window, filter private or abusive terms, and build a versioned trie, finite-state structure, or prefix map. Validate a new snapshot before atomically switching readers to it.
 
-Online: API boxes mmap the latest snapshot. Lookup is `prefix → [queries]`. A tiny **SuggestCache** in front (cache-aside, TTL 30s) catches the hottest prefixes (`"yo"`, `"how t"`).
+Keep hot portions in memory if measurements justify it; a disk access is not automatically too slow, but its tail latency under load must fit the budget. Popular prefixes such as `an` can dominate traffic. Partitioning by the first two characters does not guarantee balanced shards; use measured prefix frequency and replicated serving capacity.
 
-Shard only if the snapshot no longer fits in one box: shard by **first two characters** (`ha*`, `hb*`, …). The API knows the map. See [sharding](../../foundations/sharding/lesson.md) (id: sharding) and [indexes](../../../cs/indexes.md) (id: indexes).
+The client cancels or ignores obsolete responses using request sequence IDs. The service returns a snapshot/version indicator where useful. Emergency suppression is checked on the read path so an hourly snapshot does not delay an urgent removal for an hour.
 
-Personalization: take the 8, maybe fetch a 32-entry user affinity list from cache, rerank. If affinity is late, return the 8 anyway.
-
-Trending inject: a side map merged at read for prefixes that match a "hot this hour" list, capped so it cannot drown the organic 8.
-
-[QuotaDesk](../rate-limiter/lesson.md) (id: rate-limiter) per IP so a scraper cannot walk the trie.
+Personalization must respect data access boundaries. Do not expose another user's private queries through a globally shared cache.
 
 ## Tradeoffs
 
-| Choice | Gain | Cost |
+| Choice | Benefit | Cost |
 | --- | --- | --- |
-| In-memory snapshot vs live DB | 50 ms is possible | Updates are a publish, not a write |
-| Trie vs prefix hash table | Trie shares space, range of prefixes | Harder to shard; hash is dull and fast |
-| Top-K precomputed vs search-on-read | Keystroke path is a lookup | Stale; cannot phrase-match arbitrary documents |
-| Client debounce vs server load-shed | Fewer QPS | Feels laggy if you over-debounce |
+| Precomputed top candidates | Fast bounded reads | Stale ranking and larger snapshots |
+| Online ranking | Fresher context | More request-path work |
+| Prefix trie | Natural prefix traversal | Pointer/structure overhead |
+| Compressed immutable index | Compact serving snapshot | Rebuild and update complexity |
 
 ## Failure modes
 
-- Snapshot publish mid-request: keep two generations, switch with a version flag (same idea as [feature flags](../feature-flags.md) (id: feature-flags)).
-- Hot prefix `"a"`: cache locally on every box; do not pin one shard.
-- Builder poison (bad filter dump): canary a box, compare suggestion lists, roll back the file.
-- Personalization store down: skip rerank. Empty typeahead is the outage; generic 8 is not.
+- Old responses arrive after new ones: client sequence checks prevent stale display.
+- Snapshot deployment is incomplete: retain the last validated version.
+- One prefix becomes hot: replicate its serving capacity or cache its result.
+- A term must disappear now: enforce a current suppression list before responding.
 
 ## Follow-ups an interviewer may ask
 
-### Easy
+**Easy:** the user types `an`, then `and`; responses arrive in reverse order. Which should display?
 
-Capacity and the cache: numbers first, then where a miss goes.
+**Medium:** ranking updates hourly but a private term appears. Explain the removal path independent of snapshot rebuild.
 
-### Medium
+**Hard:** one locale's popular prefix consumes half the requests. Show why alphabetic partitioning needs an additional skew strategy.
 
-- Full document search: different system, different SLA, do not reuse the trie as a search engine.
-- Multi-language: snapshot per locale, detect from the query, do not mix alphabets in one top-8.
-- Privacy: queries in LogMill are aggregated; no raw per-user string in the snapshot.
-
-### Hard
-
-The failure mode they named in the section above: what you shed, what you queue, what you refuse.
 ## Cross-links
 
 - [Remembering the expensive answer nearby](../../foundations/caching/lesson.md) (id: caching)
 - [Spreading work without creating a new bottleneck](../../foundations/load-balancing.md) (id: load-balancing)
-- [Token buckets and sliding windows at the edge](../rate-limiter/lesson.md) (id: rate-limiter)
-- [Indexes as the real storage API](../../../cs/indexes.md) (id: indexes)
-- [Shipping dark, flipping in production](../feature-flags.md) (id: feature-flags)
+- [Enforce request budgets across servers](../rate-limiter/lesson.md) (id: rate-limiter)
+- [Indexes are precomputed answers](../../../cs/indexes.md) (id: indexes)
+- [Distribute versioned feature decisions](../feature-flags.md) (id: feature-flags)
 - [Forty-five minutes is a navigation problem](../../foundations/interview-framework.md) (id: interview-framework)

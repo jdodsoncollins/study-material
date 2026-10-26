@@ -2,10 +2,11 @@
 
 ```mermaid
 flowchart LR
-  model[Model] --> schema[Tool schema]
-  schema --> exec[Harness executes]
-  exec --> obs[Observation]
+  model[Model proposes call] --> schema[Validate schema and semantics]
+  schema --> auth[Check trusted identity and authorization]
+  auth --> gate{Required approval present?}
+  gate -->|yes or not required| exec[Execute under operation contract]
+  gate -->|missing| wait[Request scoped approval]
+  exec --> obs[Structured result]
   obs --> model
-  exec --> ir[Irreversible?]
-  ir -->|yes| confirm[Confirm]
 ```

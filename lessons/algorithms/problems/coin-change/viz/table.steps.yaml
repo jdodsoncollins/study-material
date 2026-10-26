@@ -1,8 +1,6 @@
-title: Fill the fare table
+title: table
 steps:
-  - caption: "dp[0] = 0. Every other cell starts impossible."
-    nodes: [x]
-  - caption: "For fare 13, try 2, 5, and 9. Keep the fewest tokens among those that fit."
-    nodes: [tok, fit, take]
-  - caption: "9+2+2 wins. Greedy biggest-first is not a proof."
-    nodes: [take]
+  - caption: "Each amount considers all usable tokens, not just the first token that fits."
+    nodes: [seed, x, tok, take]
+  - caption: "For amount 10 and tokens 2, 5, 9, greedy 9 gets stuck while 5 plus 5 uses two tokens."
+    nodes: [take, next]

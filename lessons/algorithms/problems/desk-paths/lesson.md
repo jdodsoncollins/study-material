@@ -1,6 +1,6 @@
 ---
 id: desk-paths
-title: Only right and down to the desk
+title: Count routes using only right and down
 slug: desk-paths
 kind: problem
 track: algorithms
@@ -19,23 +19,13 @@ related:
   - dp-1d
   - number-of-islands
   - bfs
-company_signal:
-  - name: Google
-    evidence: Candidate reports list unique-paths / grid-route counts as a common first 2D DP.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: OA writeups treat robot-on-grid path counts as the default DP-on-a-grid easy/medium.
-    year: 2026
-    confidence: medium
-sources_consulted:
-  - LeetCode Top 100 Liked (Unique Paths, 2026)
-  - r/leetcode 2D DP tagged threads
-updated: 2026-09-03
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
-# Only right and down to the desk
+# Count routes using only right and down
 
 ## Snapshot
 
@@ -46,7 +36,7 @@ status: canonical
 
 ## Prompt
 
-A picker walks a `rows = 3` by `cols = 4` floor. Only right or down. How many walks reach the packing desk at the far corner?
+A grid-based puzzle has `rows = 3` and `cols = 4`. Starting at the top-left cell, move only right or down. How many routes reach the bottom-right cell?
 
 This is unique-paths. The floor is 3×4, not the textbook 3×7.
 
@@ -63,12 +53,22 @@ This is unique-paths. The floor is 3×4, not the textbook 3×7.
 
 ### ELI5
 
-Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+Every path into an interior cell arrives from above or from the left. Add those two counts. The first row and column each have one route because only one direction reaches them.
+
+### Syntax
+
+```ts
+const above = 3, left = 3;
+console.log(above + left); // 6 paths into row 2, column 2
+```
 
 ### Then the details
 
 ```ts
 function walksToDesk(rows: number, cols: number): number {
+  if (!Number.isInteger(rows) || !Number.isInteger(cols) || rows < 0 || cols < 0)
+    throw new Error("Invalid dimensions");
+  if (rows === 0 || cols === 0) return 0;
   const dp = Array.from({ length: cols }, () => 1);
   for (let r = 1; r < rows; r++) {
     for (let c = 1; c < cols; c++) dp[c] += dp[c - 1];
@@ -109,7 +109,7 @@ Row 2: `1, 1+2=3, 3+3=6, 6+4=10`.
 
 ### Hard
 
-10 paths. Check: you must take 2 down and 3 right, in some order. `C(5,2)=10`.
+10 paths. Check independently: choose the positions of two down moves among five moves, `C(5,2)=10`. For zero rows or columns there is no start-to-finish route, so return 0. The numeric example assumes counts fit safely in number.
 
 ## Pitfalls
 
@@ -117,7 +117,7 @@ Row 2: `1, 1+2=3, 3+3=6, 6+4=10`.
 | --- | --- | --- |
 | Starting the interior at 0 and never seeding the first row | All zeros | First row/col = 1 |
 | Allowing left/up | You count walks with cycles | Two directions only |
-| Combinatorics then overflow | Silent wrap | Table, or bigints if they insist |
+| Counts exceed number precision | A DP table can lose precision just like a formula | Use bigint or a specified modulus for large exact counts |
 | 1×n treated as 0 | Off-by-one | `walksToDesk(1,1)` is 1 |
 
 ## Interview moves

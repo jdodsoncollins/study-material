@@ -1,12 +1,12 @@
 ---
 id: how-to-run-proper-evals
-title: Start evals from real failures, not a synthetic pile
+title: Build an evaluation from the task contract
 slug: how-to-run-proper-evals
 kind: strategy
 track: ai-agents
 difficulty: core
 estimated_minutes: 16
-summary: A useful agent eval is a small set of fully specified, already-solved failures run in clean rooms and graded on world state, then read by a human.
+summary: Build representative and targeted tasks from an observable success contract, then compare configurations with protected evaluation cases.
 tags:
   - ai-agents
   - ai-agents/evals
@@ -21,90 +21,75 @@ related:
   - capability-vs-regression
   - coding-agent-evals
   - interview-ai-round
-company_signal:
-  - name: Anthropic
-    evidence: Public 2026 eval essay argues for starting with a few dozen real tasks, isolated trials, and outcome graders rather than huge synthetic banks.
-    year: 2026
-    confidence: high
-  - name: OpenAI
-    evidence: Candidate reports of "design an eval" follow-ups in AI-platform loops track this same recipe.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Anthropic, Demystifying evals for AI agents (2026-01-09)
-  - SWE-bench Verified / Terminal-Bench outcome-grader practice
-  - Arize eval-harness writeups (2026)
-updated: 2026-09-02
+  - https://www.anthropic.com/research/demystifying-evals-for-ai-agents
+updated: 2026-10-26
 status: canonical
 ---
 
-# Start evals from real failures, not a synthetic pile
+# Build an evaluation from the task contract
 
 ## Snapshot
 
-- Begin with **20–50 tasks** taken from incidents the current agent already botched, not a generated thousand-item bank.
-- Every task needs an **unambiguous spec** and a **reference solution** that a competent human (or the old script) can execute. If nobody can solve it, you are measuring the puzzle, not the agent.
-- Run each trial in an **isolated environment**. Leftover files, cookies, and git history are cheats.
-- **Grade the outcome** in the world. Then **read the transcripts** so you know *why* the score moved.
+- Define observable success before collecting a score.
+- Include ordinary work, difficult cases, and consequential failure scenarios.
+- Keep development examples separate from a protected final evaluation set.
+- Inspect failures and improve the task, grader, or system based on evidence.
 
 ## Why it shows up in interviews
 
-Demos pass; production does not. Interviewers in 2026 ask you to "stand up an eval" the way they used to ask you to "stand up a test suite." They want the sequence: real failures → tight specs → isolation → outcome grade → transcript review. Reciting "we use LLM-as-judge on 10k prompts" is the junior answer.
+A useful evaluation explains which decision its results can support. A small convenience sample can guide debugging without establishing broad production reliability.
 
 ## Core idea
 
 ### ELI5
 
-An eval task is a job, not a chat prompt. Write it so two engineers would agree on pass/fail without a meeting.
+Start with a job people need done. Write down the initial state, allowed actions, required result, and constraints. Then create repeatable examples that expose whether the system can do that job.
 
-The loop:
+1. Define the task population and the release question.
+2. Build fixtures from representative work, incidents, edge cases, and purposeful synthetic variations.
+3. Establish expected outcomes or a reviewable rubric, including when abstention is correct.
+4. Run baseline trials with recorded configuration and budgets.
+5. Inspect failures by category and verify that graders detect them correctly.
+6. Make one interpretable change, compare, and use protected cases for the final decision.
 
-1. Mine last month's tickets, pager, and "the agent did what?" Slack.
-2. Turn each into a spec with start state, allowed tools, and a checkable end state.
-3. Prove solvability with a reference path (script, fixture, or recorded human trial).
-4. Boot a clean env per trial. Run *k* trials. See [pass@k versus pass^k](./pass-at-k/lesson.md) (id: pass-at-k).
-5. Grade world state with code whenever you can. See [graders](./graders/lesson.md) (id: graders).
-6. Sample transcripts every time the score jumps or a new failure cluster appears.
-
-Twenty good tasks beat two hundred vague ones because you can actually read them.
+A starting set of twenty to fifty carefully reviewed tasks may be manageable for development. That is a workflow suggestion, not a statistically sufficient sample size for rare failures or a universal target.
 
 ## Worked example
 
-A returns-desk agent in a shop called **Harborline**. Last month it double-refunded, emailed the wrong customer, and stalled on gift-card orders. You pull 32 of those threads.
+### Easy
 
-| Field | Harborline task `R-17` |
-| --- | --- |
-| Start state | Order `HL-9041`, paid, delivered, 14 days ago; customer asks for a partial refund on SKU `mug-blue` only |
-| Spec | Refund $24.00 to the original card; restock 1 unit; leave the matching saucer as fulfilled; write one confirmation email |
-| Reference | A 12-line script hitting the same tools the agent has; it passes the grader |
-| Isolation | Fresh Postgres + fake Stripe per trial; no shared `/tmp` |
-| Outcome grader | `refunds` row amount/target, inventory delta, email fixture to the right `user_id` |
-| Not graded | Exact tool order, apology wording (separate tone rubric, sampled) |
+Evaluate an agent that edits an address. A fixture contains an authorized customer and an unrelated customer. The expected result changes only the requested fields on the authorized record. A read-only request expects no mutation.
 
-You do not add "be helpful" to the spec. You do not grade the sentence `Refund issued.` See [outcome versus transcript](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript).
+### Medium
 
-After the first run you sit with ten failing transcripts. Half are one bug (gift-card refunds hit the card tool). That is the whole point of a small suite: you can read.
+Add ambiguous customer names, missing permission, duplicate submission, and a timeout after an update. Some tasks should end by asking for clarification or reporting uncertainty. A dataset containing only successful happy paths cannot measure those behaviors.
+
+### Hard
+
+Production incidents dominate the available examples. Keep them as a targeted stress suite, but do not present their raw pass rate as ordinary traffic performance. Build a representative sample or declare explicit weights, and report stress results separately.
+
+**Practice:** draft three cases before changing a prompt: a normal case, an ambiguity case, and a prohibited-action case. For each, name the evidence that distinguishes a true pass from a convincing explanation.
 
 ## Common mistakes
 
-- Starting from a public benchmark and calling it your product eval. Public benches measure a cousin of your job.
-- Specs that a second engineer would argue with ("handle the refund reasonably").
-- No reference solution, so impossible and underspecified tasks hide in the average.
-- Shared state across trials: trial 3 "passes" because trial 2 already restocked the mug.
-- Shipping a dashboard of pass@1 from a single trial and calling it an SLO.
-- Never reading transcripts, so you "improve" the prompt while the tool schema is the bug.
+- Repeatedly editing the final holdout after seeing results.
+- Treating incident-only data as representative traffic.
+- Adding synthetic examples without checking realism or expected behavior.
+- Removing difficult cases merely to make the score stable.
+- Reporting a rate without sample size, task definition, or configuration.
+- Counting infrastructure failures as model failures without recording their cause; product-impacting failures still matter end to end.
 
 ## How to talk about it
 
-"I would not start with a thousand synthetic prompts. I would freeze 20–50 incidents, write pass/fail so two of us would agree, prove each task is solvable, reset a container per trial, grade database and side effects, and read a sample of transcripts every time the number moves. Capability and regression stay in separate buckets."
-
-If they ask what you do next week: add tasks only from new failure clusters, not from imagination.
+“I will begin with a small reviewed development set, then expand coverage and uncertainty analysis for the release decision. We will retain a protected evaluation set and report important failure categories separately from the mean.”
 
 ## Cross-links
 
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
-- [Graders: code, model, human](./graders/lesson.md) (id: graders)
-- [Outcome versus transcript](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
-- [Capability versus regression](./capability-vs-regression.md) (id: capability-vs-regression)
-- [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)
-- [How the 2026 AI interview round actually works](./interview-ai-round.md) (id: interview-ai-round)
+- [Separate the system doing the work from the system measuring it](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
+- [Choose a grader for the evidence available](./graders/lesson.md) (id: graders)
+- [Grade the result and the constraints that matter](./outcome-vs-transcript/lesson.md) (id: outcome-vs-transcript)
+- [Measure new capabilities and protect established behavior](./capability-vs-regression.md) (id: capability-vs-regression)
+- [Evaluate patches against behavior and preserved contracts](./coding-agent-evals.md) (id: coding-agent-evals)
+- [Practice AI-assisted coding and evaluation discussions](./interview-ai-round.md) (id: interview-ai-round)

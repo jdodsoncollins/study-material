@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
+import { validateLesson, validateLinksAndSteps } from "./validate-content.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const LESSONS = path.join(ROOT, "lessons");
@@ -147,6 +148,7 @@ for (const file of files) {
   try {
     const text = fs.readFileSync(file, "utf8");
     const { data, body } = parseFrontmatter(text, rel);
+    errors.push(...validateLesson(data, body, rel));
     const want = expectedId(file);
     if (data.id !== want) errors.push(`${rel}: id ${data.id} != ${want}`);
     if (ids.has(data.id)) errors.push(`${rel}: duplicate id ${data.id}`);
@@ -193,6 +195,8 @@ for (const file of files) {
     errors.push(`${rel}: ${err.message}`);
   }
 }
+
+errors.push(...validateLinksAndSteps(lessons, ROOT));
 
 lessons.sort((a, b) => a.id.localeCompare(b.id));
 const allTags = [...new Set(lessons.flatMap((l) => l.tags))].sort();
@@ -318,11 +322,11 @@ const catalog = {
   lessons,
 };
 
-fs.writeFileSync(path.join(ROOT, "catalog.json"), JSON.stringify(catalog, null, 2) + "\n");
 if (errors.length) {
-  console.error(`catalog.json wrote ${lessons.length} lessons with ${errors.length} issues:`);
+  console.error(`catalog.json unchanged: ${errors.length} issues in ${lessons.length} lessons:`);
   for (const e of errors) console.error(" -", e);
   process.exitCode = 1;
 } else {
+  fs.writeFileSync(path.join(ROOT, "catalog.json"), JSON.stringify(catalog, null, 2) + "\n");
   console.log(`catalog.json wrote ${lessons.length} lessons, 0 issues`);
 }

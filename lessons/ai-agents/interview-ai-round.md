@@ -1,12 +1,12 @@
 ---
 id: interview-ai-round
-title: How the 2026 AI interview round actually works
+title: Practice AI-assisted coding and evaluation discussions
 slug: interview-ai-round
 kind: strategy
 track: ai-agents
 difficulty: core
 estimated_minutes: 16
-summary: 2026 loops mix AI-assisted coding, "design an eval," and "why did the agent regress." They score whether you can use a model without surrendering correctness or measurement.
+summary: Practice reviewing AI-assisted work, designing authorized tool workflows, and explaining evaluation evidence.
 tags:
   - ai-agents
   - ai-agents/evals
@@ -20,85 +20,69 @@ related:
   - agent-mistakes
   - capability-vs-regression
   - coding-agent-evals
-company_signal:
-  - name: Meta
-    evidence: Candidate reports (2025–2026) describe an AI-assisted coding round where a model is available in the editor and the grader is still your tests and explanation.
-    year: 2026
-    confidence: medium
-  - name: OpenAI / Anthropic / AI-platform teams
-    evidence: Repeated prep-site and Blind-style reports of "design an eval for this agent" and "debug this regression from a trace," not trivia about a vendor API.
-    year: 2026
-    confidence: medium
+company_signal: []
 sources_consulted:
-  - Public Meta AI-assisted coding interview reports (2025–2026)
-  - Anthropic, Demystifying evals for AI agents (2026-01-09)
-  - meta/RESEARCH.md AI-and-agentic-coding notes
-  - Hello Interview / Exponent-style roundup threads on new AI rounds
-updated: 2026-09-02
+  - https://www.swebench.com/SWE-bench/
+updated: 2026-10-26
 status: canonical
 ---
 
-# How the 2026 AI interview round actually works
+# Practice AI-assisted coding and evaluation discussions
 
 ## Snapshot
 
-- The round is not "have you used Cursor." It is **can you keep a contract with a stochastic intern in the loop**.
-- Three shapes show up: **AI-assisted coding**, **design an eval**, **debug an agent regression** from a trace.
-- They still want tests, isolation, tradeoffs, and a spoken plan. The model is a tool you must not outsource judgment to.
-- Vocabulary that scores: agent harness vs eval harness, outcome vs transcript, pass@k vs pass^k, capability vs regression.
+- Clarify what tools and assistance the exercise permits.
+- Explain the task contract, proposed workflow, and evidence of completion.
+- Review generated work as code you are responsible for understanding.
+- Use precise evaluation terms only when they help explain a measurement.
 
 ## Why it shows up in interviews
 
-Product orgs shipped agents, then shipped incidents. Interviewers added a round that checks the new literacy the way they once added system design. Meta-style AI-assisted coding (candidate-reported) puts a model in the pad and watches whether you paste, or whether you reproduce and grade. Platform teams ask you to measure an agent the way this track teaches. Pair with a general [interview framework](../system-design/foundations/interview-framework.md) (id: interview-framework): requirements, plan, tradeoffs, failure modes — now with graders.
+AI-related exercises can ask about implementation, system behavior, or evaluation. The formats below are practice scenarios, not claims about any company’s current interview process.
 
 ## Core idea
 
 ### ELI5
 
-You are being scored on **control**, not on prompt cleverness.
+Practice making decisions while an AI system contributes uncertain work. You should be able to explain what it produced, identify what remains unverified, and choose the next useful check.
 
-**AI-assisted coding.** Use the model to search, draft, and explain. You still: restate the spec, write or run a failing test, read errors, reject invented APIs, and submit only what you have seen go green. Treat the model's "tests pass" line as speech. See [agent mistakes](./agent-mistakes.md) (id: agent-mistakes).
-
-**Design an eval.** Pick 20–50 real failures, unambiguous specs, reference solutions, isolated envs, outcome graders, k trials, transcript review. Split capability and regression. Name what is code vs judge vs human. Do not start with a public bench as the product metric.
-
-**Why did the agent regress.** They hand you a score drop and a few traces. Walk the layers: did the eval harness change, did the vendor or user harness change, did the tool schema change, did the task mix change, or did the model get worse. Look at outcomes first, then cluster ruts in the trajectory.
-
-Speak in systems: the same brain that designs a [job scheduler](../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler) can design retries and isolation for trials.
+For coding, keep the requested change and important invariants visible. For system design, identify tools, permissions, state, retries, and stopping conditions. For evaluation, define tasks, outcomes, graders, and the sample that supports the conclusion.
 
 ## Worked example
 
-Three boards, one Harborline day.
+### Easy
 
-| Round shape | Prompt you might hear (paraphrased) | What a strong 10 minutes looks like | Fail tell |
-| --- | --- | --- | --- |
-| AI-assisted coding | Pad has a model; fix stale-promo 500s in checkout | You run the test, ask the model for a diff, verify `pricing/promos.py`, refuse a new factory, re-run | Paste a 80-line rewrite you never executed |
-| Design an eval | "We want a refunds agent. How do you know it works?" | 32 incidents, table of spec/isolation/grader, pass@1 as SLO because charges are not a lottery, judge only on email tone and calibrated | "We'll LLM-judge 10k chats" |
-| Debug a regression | pass@1 on refunds fell 0.99 → 0.71 after a 'prompt cleanup' | You ask which suite, check grader sha, notice `refund` lost its idempotency_key, match double-charge traces | "The new model is worse" with no layer analysis |
+A practice exercise permits an assistant to draft a parser fix. Before accepting it, state the input contract, inspect the change, and test a valid input, a malformed input, and a prior behavior that must remain supported. Explain why those checks matter.
 
-Notice the coding row still looks like a normal interview if you mute the model. That is the point. The model is optional compute. The contract is yours.
+### Medium
+
+Design a support assistant that can read orders and prepare draft replies. Separate read permissions from send authority, identify how user approval is represented if sending requires it, and show what happens after an uncertain tool response.
+
+### Hard
+
+A proposed release improves pass@1 on a small task set but worsens one authorization scenario. Explain the sample's limits, the critical constraint, and the next evidence needed. Do not convert a benchmark percentage directly into a service-level reliability promise.
+
+**Practice:** give a three-minute review of a deliberately flawed generated solution. Name one correct part, one unsupported assumption, one concrete defect, and a check that would reveal it. Then implement the smallest justified repair.
 
 ## Common mistakes
 
-- Treating the AI coding round as a race to accept autocomplete.
-- Designing an eval with no isolation, no reference solution, and a vibe judge.
-- Quoting SWE-bench as the company SLO.
-- Debugging a regression by tweaking the system prompt first.
-- Never saying "outcome" or "harness," then drowning in model names.
-- Skipping tradeoffs: judge cost, trial budget, irreversible tools, online shadow.
+- Describing all interviews as following one current format without evidence.
+- Using evaluation vocabulary without defining the task and denominator.
+- Accepting a plausible explanation without checking the artifact.
+- Spending the exercise polishing a prompt while ignoring the observed failure.
+- Hiding uncertainty instead of naming the next useful verification step.
 
 ## How to talk about it
 
-"I would keep the same skeleton I use for system design. Goal and non-goals. Unit of work. What we measure. What we refuse to measure with a judge. Then I would walk one concrete task — Harborline refund R-17 — from spec to isolated trial to code grader to a sampled transcript. If this is a coding pad with a model, I narrate reproduce-then-patch and I do not trust speech."
-
-Close with a ship rule: regression fence in CI, capability hill on a dashboard, online sensors after the tools are idempotent.
+“The assistant produced a candidate solution. I will verify the requested behavior and preserved constraints, explain the result, and state any remaining uncertainty. For evaluation questions, I will define the measurement before quoting a score.”
 
 ## Cross-links
 
-- [Start evals from real failures](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
-- [Eval harness versus agent harness](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
-- [Mistakes coding agents keep making](./agent-mistakes.md) (id: agent-mistakes)
-- [Capability versus regression](./capability-vs-regression.md) (id: capability-vs-regression)
-- [Coding-agent evals](./coding-agent-evals.md) (id: coding-agent-evals)
-- [Interview framework](../system-design/foundations/interview-framework.md) (id: interview-framework)
-- [Job scheduler](../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler)
-- [Pass@k versus pass^k](./pass-at-k/lesson.md) (id: pass-at-k)
+- [Build an evaluation from the task contract](./how-to-run-proper-evals.md) (id: how-to-run-proper-evals)
+- [Separate the system doing the work from the system measuring it](./eval-harness-vs-agent-harness/lesson.md) (id: eval-harness-vs-agent-harness)
+- [Diagnose agent failures before changing the prompt](./agent-mistakes.md) (id: agent-mistakes)
+- [Measure new capabilities and protect established behavior](./capability-vs-regression.md) (id: capability-vs-regression)
+- [Evaluate patches against behavior and preserved contracts](./coding-agent-evals.md) (id: coding-agent-evals)
+- [Forty-five minutes is a navigation problem](../system-design/foundations/interview-framework.md) (id: interview-framework)
+- [Schedule occurrences and recover leased work](../system-design/cases/job-scheduler/lesson.md) (id: job-scheduler)
+- [Success across one attempt, retries, and repeated runs](./pass-at-k/lesson.md) (id: pass-at-k)

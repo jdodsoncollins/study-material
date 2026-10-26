@@ -11,6 +11,7 @@ tags:
   - algorithms
   - algorithms/tries
   - algorithms/strings
+  - interviews
   - interviews/leetcode
 prerequisites:
   - hash-maps
@@ -19,19 +20,9 @@ related:
   - dfs-backtracking
   - indexes
   - hashing-internals
-company_signal:
-  - name: Google
-    evidence: Candidate reports treat autocomplete / add-and-search-word as the usual trie prompt.
-    year: 2026
-    confidence: high
-  - name: Amazon
-    evidence: Tagged-list threads keep prefix-tree implementation questions in OA and phone screens.
-    year: 2025
-    confidence: medium
-sources_consulted:
-  - Blind 75 / NeetCode pattern lists (2026)
-  - r/leetcode trie tagged threads
-updated: 2026-09-02
+company_signal: []
+sources_consulted: []
+updated: 2026-10-26
 status: canonical
 ---
 
@@ -46,7 +37,7 @@ status: canonical
 
 ## Prompt
 
-A parts desk stores SKUs `["BOLT", "BOLT-M8", "BIN", "CRANE"]`. Support `insert(sku)`, `has(sku)` for a full match, and `hasPrefix(p)` for "any SKU starts with p." Then, given a typed prefix `"BOL"`, list the SKUs under it.
+An autocomplete service stores catalog keys `["BOLT", "BOLT-M8", "BIN", "CRANE"]`. Support `insert(sku)`, `has(sku)` for a full match, and `hasPrefix(p)` for "any SKU starts with p." Listing matching keys is an extension discussed after the basic membership operations.
 
 This is a trie, told as search autocomplete, not a dictionary handout.
 
@@ -56,14 +47,22 @@ This is a trie, told as search autocomplete, not a dictionary handout.
 | --- | --- |
 | "starts with" / autocomplete | Trie, not a hash set |
 | "add and search word with dots" | Trie + DFS on children |
-| Many strings, shared prefixes | Memory win from sharing |
-| Exact lookup only, no prefixes | Hash set is simpler and faster |
+| Many strings, shared prefixes | Edges can be shared, but node and map overhead may dominate |
+| Exact lookup only, no prefixes | A hash set is often simpler; benchmark performance |
 
 ## Worked approach
 
 ### ELI5
 
-Walk the structure the prompt names. Name the invariant, then the one move that keeps it true.
+Start at the root and follow one edge for each character. Insert creates a missing edge. Full-key lookup must also check the end flag; prefix lookup only needs the path to exist.
+
+### Syntax
+
+```ts
+const children = new Map<string, { end: boolean }>();
+children.set("B", { end: false });
+console.log(children.has("B"), children.get("B")?.end); // true false
+```
 
 ### Then the details
 
@@ -134,7 +133,7 @@ Insert `BOLT`, `BOLT-M8`, `BIN`, `CRANE`.
 
 ### Hard
 
-Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
+To list completions for BOL, walk to that prefix node, then DFS through its descendants, collecting a key whenever end is true. Output includes BOLT and BOLT-M8. Cost includes the visited subtree and output characters, not merely O(prefix length). This sample’s empty prefix exists even in an empty trie; empty-key membership is true only after inserting it.
 
 ## Pitfalls
 
@@ -156,8 +155,8 @@ Ask empty input, duplicates, and whether they want a sentinel (-1) or a throw.
 
 - [Hash maps as an index](./hash-maps.md) (id: hash-maps)
 - [Explore, undo, try the next branch](./dfs-backtracking.md) (id: dfs-backtracking)
-- [What an index actually stores](../../cs/indexes.md) (id: indexes)
-- [Hashing internals](../../cs/hashing-internals.md) (id: hashing-internals)
+- [Indexes are precomputed answers](../../cs/indexes.md) (id: indexes)
+- [Why a map is "O(1)" until it isn't](../../cs/hashing-internals.md) (id: hashing-internals)
 - [Grow and shrink a live range](./sliding-window/lesson.md) (id: sliding-window)
 - [Big-O as a conversation](../../cs/big-o.md) (id: big-o)
 - [How to run a pattern-first loop](../strategy/pattern-first-prep.md) (id: pattern-first-prep)
