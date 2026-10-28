@@ -1,0 +1,139 @@
+{
+  "id": "three-sum",
+  "entry": "balanceTriples",
+  "starter": "function balanceTriples(stubs: number[]): number[][] {\n  // Return every unique triple of values that sums to 0.\n  return [];\n}\n\nconsole.log(balanceTriples([9, -4, 5, -5, 2, 7, -7, 0]));\n",
+  "solution": "function balanceTriples(stubs: number[]): number[][] {\n  const a = [...stubs].sort((x, y) => x - y);\n  const out: number[][] = [];\n  for (let i = 0; i < a.length - 2; i++) {\n    if (i > 0 && a[i] === a[i - 1]) continue;\n    let lo = i + 1, hi = a.length - 1;\n    while (lo < hi) {\n      const s = a[i] + a[lo] + a[hi];\n      if (s === 0) {\n        out.push([a[i], a[lo], a[hi]]);\n        while (lo < hi && a[lo] === a[lo + 1]) lo++;\n        while (lo < hi && a[hi] === a[hi - 1]) hi--;\n        lo++; hi--;\n      } else if (s < 0) lo++;\n      else hi--;\n    }\n  }\n  return out;\n}\n",
+  "compare": "nested-unordered",
+  "cases": [
+    {
+      "name": "box office stubs",
+      "args": [
+        [
+          9,
+          -4,
+          5,
+          -5,
+          2,
+          7,
+          -7,
+          0
+        ]
+      ],
+      "expected": [
+        [
+          -7,
+          0,
+          7
+        ],
+        [
+          -7,
+          2,
+          5
+        ],
+        [
+          -5,
+          -4,
+          9
+        ],
+        [
+          -5,
+          0,
+          5
+        ]
+      ]
+    },
+    {
+      "name": "repeated values, one triple",
+      "args": [
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected": [
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "name": "duplicates must not repeat triples",
+      "args": [
+        [
+          -2,
+          0,
+          1,
+          1,
+          2,
+          -1,
+          -1
+        ]
+      ],
+      "expected": [
+        [
+          -2,
+          0,
+          2
+        ],
+        [
+          -2,
+          1,
+          1
+        ],
+        [
+          -1,
+          -1,
+          2
+        ],
+        [
+          -1,
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "nothing balances",
+      "args": [
+        [
+          1,
+          2,
+          3
+        ]
+      ],
+      "expected": []
+    },
+    {
+      "name": "too short",
+      "args": [
+        [
+          0,
+          0
+        ]
+      ],
+      "expected": []
+    }
+  ],
+  "hints": [
+    "Fix one value. What problem is left for the other two?",
+    "Sort first, then two pointers squeeze from both ends for the remaining pair.",
+    "Skip a fixed value equal to the previous one, and after a hit move both pointers past their duplicates."
+  ],
+  "rubric": {
+    "signals": [
+      "Reduces to two-sum per fixed element",
+      "Sorts and uses two pointers instead of a hash set per element",
+      "Explains duplicate skipping on both the fixed index and the pointers",
+      "Gives O(n²) time and the sort’s extra space"
+    ],
+    "followups": [
+      "Generalize to k-sum. What is the recurrence?",
+      "Find the triple whose sum is closest to a target instead.",
+      "Can you beat O(n²)? What is known about this problem?"
+    ]
+  }
+}

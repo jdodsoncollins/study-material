@@ -67,13 +67,43 @@ Every lesson is one Markdown file. The Codeatrophy app parses this schema. Do no
 | --- | --- |
 | `days[].id` | unique, stable (`day-01`). Display ordinal is the array index, not the id. |
 | `kind` | `acquire` `drill` `review` |
-| `blocks[].type` | `read` `attempt` `speak` `mixed` `redraw` |
+| `blocks[].type` | `read` `attempt` `speak` `mixed` `redraw` `mock` |
 | `read` / `attempt` / `redraw` | `lesson` is a catalog `id`. Optional `minutes`. Optional `after: "attempt"` (read after a closed-book try). |
 | `speak` | `text` only. No new markdown. |
 | `mixed` | `lessons` array, at least 2 ids. Unlabeled review. |
+| `mock` | `lessons` array, at least 1 id, each a problem or case study with a practice companion. Optional `minutes`. The app runs these as a timed mock interview. Mock repeats do not count toward coverage. |
 | coverage | Every lesson `id` appears at least once as `read`, `attempt`, or `redraw`. Mixed repeats do not count. `build-catalog.mjs` fails otherwise. |
 
 `catalog.json` embeds this object as `schedule`. Reorder or split days here; do not clone a public study-plan calendar.
+
+## Practice companions
+
+Every `problem` and `case-study` lesson has `practice/<id>.json` at the repository root. The lesson stays flat or directory-shaped as before; the companion does not force a directory. `build-catalog.mjs` sets `practice` on the lesson's catalog entry and fails when a problem or case study has none. `scripts/check-practice.mjs` runs each reference solution against its own cases and fails if the starter already passes.
+
+```json
+{
+  "id": "two-sum",
+  "entry": "pairIndices",
+  "starter": "function pairIndices(prices: number[], target: number): [number, number] | null {\n  return null;\n}\n",
+  "solution": "function pairIndices(…) { … }\n",
+  "compare": "validator",
+  "validator": "(args, out, expected) => true | \"why it failed\"",
+  "cases": [{ "name": "gift card covers 19", "args": [[4, 11, 8, 3, 15], 19] }],
+  "hints": ["nudge", "pattern name", "next move"],
+  "rubric": { "signals": ["what a strong answer shows"], "followups": ["what an interviewer asks next"] }
+}
+```
+
+| Field | Rules |
+| --- | --- |
+| `entry` | Problems only. The function the tests call. For linked lists, trees, and classes, the starter includes a small adapter (`hasLoop(values, loopTo)`, `simulate(capacity, ops)`) so cases stay plain JSON. |
+| `starter` / `solution` | Problems only. TypeScript that Node's type stripping accepts (no parameter properties or enums). Both define `function <entry>`. |
+| `cases` | Problems only, at least 4. Reuse the prompt's numbers for the first case. Include empty and edge inputs. |
+| `compare` | `exact` (default), `unordered` (outer array order ignored), `nested-unordered` (inner and outer order ignored), or `validator`. Use a validator when several answers are correct. |
+| `hints` | Exactly three, in order: a nudge, the pattern's name, the next concrete move. The app reveals them one at a time. |
+| `rubric` | At least 3 `signals` (what a strong answer demonstrates) and 2 `followups`. The AI interviewer grades and probes from these. |
+
+Case studies have `hints` and `rubric` only.
 
 ## File location
 
@@ -139,7 +169,7 @@ status: canonical
 | `title` | string | Original teaching title, not a LeetCode title dump |
 | `slug` | string | equals `id` |
 | `kind` | enum | `pattern` `problem` `concept` `case-study` `strategy` `glossary` |
-| `track` | enum | `algorithms` `system-design` `ai-agents` `cs` |
+| `track` | enum | `algorithms` `system-design` `ai-agents` `cs` `behavioral` |
 | `difficulty` | enum | `intro` `core` `deep` |
 | `estimated_minutes` | int | 8–25 |
 | `summary` | string | one sentence, no trailing period required but preferred |

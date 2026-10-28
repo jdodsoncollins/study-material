@@ -1,0 +1,111 @@
+{
+  "id": "course-order",
+  "entry": "moduleOrder",
+  "starter": "function moduleOrder(n: number, need: [number, number][]): number[] {\n  // Any order of all n modules that respects every [before, after] pair, or [] on a cycle.\n  return [];\n}\n\nconsole.log(moduleOrder(5, [[0,1],[1,3],[2,3],[0,2]]));\n",
+  "solution": "function moduleOrder(n: number, need: [number, number][]): number[] {\n  const indeg = new Array(n).fill(0);\n  const out: number[][] = Array.from({ length: n }, () => []);\n  for (const [a, b] of need) { out[a].push(b); indeg[b]++; }\n  const q: number[] = [];\n  for (let i = 0; i < n; i++) if (indeg[i] === 0) q.push(i);\n  const order: number[] = [];\n  for (let i = 0; i < q.length; i++) {\n    const u = q[i];\n    order.push(u);\n    for (const v of out[u]) if (--indeg[v] === 0) q.push(v);\n  }\n  return order.length === n ? order : [];\n}\n",
+  "compare": "validator",
+  "validator": "(args, out) => { const [n, need] = args; let possible = true; { const indeg = new Array(n).fill(0); const adj = Array.from({ length: n }, () => []); for (const [a, b] of need) { adj[a].push(b); indeg[b]++; } const q = []; for (let i = 0; i < n; i++) if (!indeg[i]) q.push(i); let seen = 0; while (q.length) { const u = q.pop(); seen++; for (const v of adj[u]) if (!--indeg[v]) q.push(v); } possible = seen === n; } if (!possible) return (Array.isArray(out) && out.length === 0) || \"there is a cycle, so return []\"; if (!Array.isArray(out) || out.length !== n || new Set(out).size !== n || out.some((x) => !(x >= 0 && x < n))) return \"return each module exactly once\"; const pos = new Map(out.map((m, i) => [m, i])); for (const [a, b] of need) if (pos.get(a) > pos.get(b)) return `module ${a} must come before ${b}`; return true; }",
+  "cases": [
+    {
+      "name": "five modules",
+      "args": [
+        5,
+        [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "cycle",
+      "args": [
+        3,
+        [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "no prerequisites",
+      "args": [
+        3,
+        []
+      ]
+    },
+    {
+      "name": "chain",
+      "args": [
+        4,
+        [
+          [
+            3,
+            2
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "self prerequisite",
+      "args": [
+        2,
+        [
+          [
+            1,
+            1
+          ]
+        ]
+      ]
+    }
+  ],
+  "hints": [
+    "Which modules can you take right now?",
+    "Topological sort by repeatedly taking modules with no remaining prerequisites (Kahn’s algorithm).",
+    "Count incoming edges, queue every zero, and decrement neighbors as you take each one. If you take fewer than n, there is a cycle."
+  ],
+  "rubric": {
+    "signals": [
+      "Models modules as a directed graph",
+      "Uses indegrees with a queue, or DFS with three colors",
+      "Detects a cycle by counting output",
+      "O(n + edges) time and space"
+    ],
+    "followups": [
+      "Return whether an order exists without building it.",
+      "Group modules into the fewest semesters.",
+      "List every valid order."
+    ]
+  }
+}

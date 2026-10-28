@@ -1,0 +1,207 @@
+{
+  "id": "lru-cache",
+  "entry": "simulate",
+  "starter": "class LruCache {\n  constructor(capacity: number) {\n    // Set up whatever you need.\n  }\n  get(key: string): number {\n    return -1;\n  }\n  put(key: string, value: number): void {}\n}\n\n// The tests replay operations: [\"put\", key, value] or [\"get\", key]. Each get's result is collected.\nfunction simulate(capacity: number, ops: [string, string, number?][]): number[] {\n  const cache = new LruCache(capacity);\n  const out: number[] = [];\n  for (const [op, key, value] of ops) {\n    if (op === \"get\") out.push(cache.get(key));\n    else cache.put(key, value!);\n  }\n  return out;\n}\n\nconsole.log(simulate(2, [[\"put\", \"N-4\", 17], [\"put\", \"K-11\", 8], [\"get\", \"N-4\"], [\"put\", \"CRANE\", 3], [\"get\", \"K-11\"]]));\n",
+  "solution": "class LruCache {\n  private map = new Map<string, number>();\n  private capacity: number;\n  constructor(capacity: number) {\n    this.capacity = capacity;\n  }\n  get(key: string): number {\n    if (!this.map.has(key)) return -1;\n    const v = this.map.get(key)!;\n    this.map.delete(key);\n    this.map.set(key, v);\n    return v;\n  }\n  put(key: string, value: number): void {\n    if (this.capacity <= 0) return;\n    this.map.delete(key);\n    this.map.set(key, value);\n    if (this.map.size > this.capacity) this.map.delete(this.map.keys().next().value!);\n  }\n}\n\nfunction simulate(capacity: number, ops: [string, string, number?][]): number[] {\n  const cache = new LruCache(capacity);\n  const out: number[] = [];\n  for (const [op, key, value] of ops) {\n    if (op === \"get\") out.push(cache.get(key));\n    else cache.put(key, value!);\n  }\n  return out;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "lesson example",
+      "args": [
+        2,
+        [
+          [
+            "put",
+            "N-4",
+            17
+          ],
+          [
+            "put",
+            "K-11",
+            8
+          ],
+          [
+            "get",
+            "N-4"
+          ],
+          [
+            "put",
+            "CRANE",
+            3
+          ],
+          [
+            "get",
+            "K-11"
+          ]
+        ]
+      ],
+      "expected": [
+        17,
+        -1
+      ]
+    },
+    {
+      "name": "update refreshes recency",
+      "args": [
+        2,
+        [
+          [
+            "put",
+            "a",
+            1
+          ],
+          [
+            "put",
+            "b",
+            2
+          ],
+          [
+            "put",
+            "a",
+            10
+          ],
+          [
+            "put",
+            "c",
+            3
+          ],
+          [
+            "get",
+            "a"
+          ],
+          [
+            "get",
+            "b"
+          ],
+          [
+            "get",
+            "c"
+          ]
+        ]
+      ],
+      "expected": [
+        10,
+        -1,
+        3
+      ]
+    },
+    {
+      "name": "a miss does not insert",
+      "args": [
+        1,
+        [
+          [
+            "get",
+            "x"
+          ],
+          [
+            "put",
+            "y",
+            4
+          ],
+          [
+            "get",
+            "x"
+          ],
+          [
+            "get",
+            "y"
+          ]
+        ]
+      ],
+      "expected": [
+        -1,
+        -1,
+        4
+      ]
+    },
+    {
+      "name": "capacity one",
+      "args": [
+        1,
+        [
+          [
+            "put",
+            "a",
+            1
+          ],
+          [
+            "put",
+            "b",
+            2
+          ],
+          [
+            "get",
+            "a"
+          ],
+          [
+            "get",
+            "b"
+          ]
+        ]
+      ],
+      "expected": [
+        -1,
+        2
+      ]
+    },
+    {
+      "name": "gets keep a key alive",
+      "args": [
+        2,
+        [
+          [
+            "put",
+            "a",
+            1
+          ],
+          [
+            "put",
+            "b",
+            2
+          ],
+          [
+            "get",
+            "a"
+          ],
+          [
+            "put",
+            "c",
+            3
+          ],
+          [
+            "get",
+            "a"
+          ],
+          [
+            "get",
+            "b"
+          ]
+        ]
+      ],
+      "expected": [
+        1,
+        1,
+        -1
+      ]
+    }
+  ],
+  "hints": [
+    "You need O(1) lookup and O(1) “who is oldest?”. Can one structure do both?",
+    "Pair a hash map with a doubly linked list ordered by recency.",
+    "On every get or put, move the node to the front; when over capacity, remove the node at the back and delete its key from the map."
+  ],
+  "rubric": {
+    "signals": [
+      "Names both requirements: O(1) lookup and O(1) eviction",
+      "Combines a map with a doubly linked list, or explains insertion-ordered Map",
+      "Updates recency on get and on overwrite, not on a miss",
+      "Walks through an eviction example"
+    ],
+    "followups": [
+      "Make it safe for concurrent callers.",
+      "Switch to least-frequently-used eviction.",
+      "Add per-entry expiry times."
+    ]
+  }
+}

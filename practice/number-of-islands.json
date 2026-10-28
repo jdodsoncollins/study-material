@@ -1,0 +1,118 @@
+{
+  "id": "number-of-islands",
+  "entry": "islandCount",
+  "starter": "function islandCount(floor: number[][]): number {\n  // Count 4-connected groups of 1s.\n  return 0;\n}\n\nconsole.log(islandCount([[1,1,0,0,1],[1,0,0,1,1],[0,0,0,0,0],[1,0,1,1,0]]));\n",
+  "solution": "function islandCount(floor: number[][]): number {\n  const g = floor.map((r) => [...r]);\n  let count = 0;\n  for (let r = 0; r < g.length; r++) for (let c = 0; c < g[r].length; c++) {\n    if (g[r][c] !== 1) continue;\n    count++;\n    const stack = [[r, c]];\n    g[r][c] = 0;\n    while (stack.length) {\n      const [y, x] = stack.pop()!;\n      for (const [dy, dx] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {\n        const ny = y + dy, nx = x + dx;\n        if (g[ny]?.[nx] === 1) { g[ny][nx] = 0; stack.push([ny, nx]); }\n      }\n    }\n  }\n  return count;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "status map",
+      "args": [
+        [
+          [
+            1,
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            0
+          ]
+        ]
+      ],
+      "expected": 4
+    },
+    {
+      "name": "empty map",
+      "args": [
+        []
+      ],
+      "expected": 0
+    },
+    {
+      "name": "all water",
+      "args": [
+        [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ]
+      ],
+      "expected": 0
+    },
+    {
+      "name": "diagonals do not connect",
+      "args": [
+        [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      ],
+      "expected": 2
+    },
+    {
+      "name": "one big island",
+      "args": [
+        [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      ],
+      "expected": 1
+    }
+  ],
+  "hints": [
+    "Every time you find unvisited land, how much of the map belongs to that island?",
+    "Flood fill with DFS or BFS from each new land cell.",
+    "Scan the grid; on a 1, count an island and sink every connected 1 so it is never counted again."
+  ],
+  "rubric": {
+    "signals": [
+      "Treats the grid as an implicit graph",
+      "Marks visited cells (or sinks them) and says whether mutation is allowed",
+      "Uses four neighbors and bounds checks",
+      "O(rows × cols) time; mentions recursion depth"
+    ],
+    "followups": [
+      "Count islands as land is added one cell at a time.",
+      "Return the area of the largest island.",
+      "Islands connect diagonally too."
+    ]
+  }
+}

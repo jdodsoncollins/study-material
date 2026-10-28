@@ -1,0 +1,80 @@
+{
+  "id": "tarp-span",
+  "entry": "tarpRain",
+  "starter": "function tarpRain(posts: number[]): number {\n  // Max of min(height i, height j) × (j − i).\n  return 0;\n}\n\nconsole.log(tarpRain([3,1,7,2,6,4,5]));\n",
+  "solution": "function tarpRain(posts: number[]): number {\n  let i = 0, j = posts.length - 1, best = 0;\n  while (i < j) {\n    best = Math.max(best, Math.min(posts[i], posts[j]) * (j - i));\n    if (posts[i] < posts[j]) i++; else j--;\n  }\n  return best;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "chart boundaries",
+      "args": [
+        [
+          3,
+          1,
+          7,
+          2,
+          6,
+          4,
+          5
+        ]
+      ],
+      "expected": 20
+    },
+    {
+      "name": "too few",
+      "args": [
+        [
+          5
+        ]
+      ],
+      "expected": 0
+    },
+    {
+      "name": "empty",
+      "args": [
+        []
+      ],
+      "expected": 0
+    },
+    {
+      "name": "two posts",
+      "args": [
+        [
+          2,
+          9
+        ]
+      ],
+      "expected": 2
+    },
+    {
+      "name": "flat",
+      "args": [
+        [
+          4,
+          4,
+          4,
+          4
+        ]
+      ],
+      "expected": 12
+    }
+  ],
+  "hints": [
+    "Start with the widest pair. Which side is limiting the area?",
+    "Two pointers moving inward from both ends.",
+    "Record the area, then move the shorter side inward; moving the taller side can never help."
+  ],
+  "rubric": {
+    "signals": [
+      "Starts at maximum width",
+      "Explains why moving the shorter side is safe",
+      "Handles fewer than two posts",
+      "O(n) time, O(1) space"
+    ],
+    "followups": [
+      "Trapping rain between all bars instead.",
+      "Return the pair of indices.",
+      "Heights change over time; answer queries."
+    ]
+  }
+}

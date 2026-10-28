@@ -1,0 +1,112 @@
+{
+  "id": "group-anagrams",
+  "entry": "packGroups",
+  "starter": "function packGroups(tags: string[]): string[][] {\n  // Group tokens that use the same letters. Order does not matter.\n  return [];\n}\n\nconsole.log(packGroups([\"oak\",\"koa\",\"tab\",\"bat\",\"crate\"]));\n",
+  "solution": "function packGroups(tags: string[]): string[][] {\n  const groups = new Map<string, string[]>();\n  for (const t of tags) {\n    const key = [...t].sort().join(\"\");\n    if (!groups.has(key)) groups.set(key, []);\n    groups.get(key)!.push(t);\n  }\n  return [...groups.values()];\n}\n",
+  "compare": "nested-unordered",
+  "cases": [
+    {
+      "name": "search tokens",
+      "args": [
+        [
+          "oak",
+          "koa",
+          "tab",
+          "bat",
+          "crate"
+        ]
+      ],
+      "expected": [
+        [
+          "oak",
+          "koa"
+        ],
+        [
+          "tab",
+          "bat"
+        ],
+        [
+          "crate"
+        ]
+      ]
+    },
+    {
+      "name": "empty list",
+      "args": [
+        []
+      ],
+      "expected": []
+    },
+    {
+      "name": "empty strings group together",
+      "args": [
+        [
+          "",
+          ""
+        ]
+      ],
+      "expected": [
+        [
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "name": "repeated token",
+      "args": [
+        [
+          "ab",
+          "ba",
+          "ab"
+        ]
+      ],
+      "expected": [
+        [
+          "ab",
+          "ba",
+          "ab"
+        ]
+      ]
+    },
+    {
+      "name": "all different",
+      "args": [
+        [
+          "a",
+          "b",
+          "c"
+        ]
+      ],
+      "expected": [
+        [
+          "a"
+        ],
+        [
+          "b"
+        ],
+        [
+          "c"
+        ]
+      ]
+    }
+  ],
+  "hints": [
+    "What do two anagrams have in common that you can use as a key?",
+    "Hash map from a canonical key to a list of tokens.",
+    "Sort each token’s letters (or count them) to make the key, and append the token to that key’s list."
+  ],
+  "rubric": {
+    "signals": [
+      "Picks a canonical key that anagrams share",
+      "Uses a map from key to group",
+      "Compares sorted-key cost with a letter-count key",
+      "O(n · k log k) or O(n · k) time"
+    ],
+    "followups": [
+      "Tokens may contain any Unicode text.",
+      "Stream tokens in and report each new group.",
+      "Find the largest group only, with less memory."
+    ]
+  }
+}

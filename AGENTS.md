@@ -6,9 +6,11 @@ Read [SCHEMA.md](./SCHEMA.md) before adding or editing a lesson. Tags: [TAGS.md]
 
 ```bash
 node scripts/build-catalog.mjs
+node scripts/check-examples.mjs
+node scripts/check-practice.mjs
 ```
 
-That script must exit 0. It is the parser the app trusts.
+All three must exit 0. The catalog builder is the parser the app trusts.
 
 ## Lessons
 
@@ -20,6 +22,8 @@ That script must exit 0. It is the parser the app trusts.
 - Nested tags include parents (`algorithms` and `algorithms/hash-maps`).
 - Cross-links: relative `.md` path plus `(id: foo)`. Incoming links to a directory lesson use `…/<id>/lesson.md`.
 - New lessons must be placed on the path in `curriculum.json` (exactly once) **and** in `schedule.json` as a `read`, `attempt`, or `redraw` (mixed repeats do not count). Do not clone a public leetcode roadmap; this order is for *this* corpus.
+- Every `problem` and `case-study` needs `practice/<id>.json` (tests, starter, solution, three hints, rubric). See SCHEMA.md.
+- Behavioral lessons use `track: behavioral` and end with a prompt the reader answers in their own notes. Never invent a real person's story.
 - Company names only in `company_signal` (or the case-study “Company signal” section), labeled candidate-reported, with `confidence`.
 
 ## Viz (on demand)
