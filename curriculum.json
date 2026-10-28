@@ -381,25 +381,6 @@
       ]
     },
     {
-      "id": "model",
-      "label": "Model",
-      "blurb": "Tokens, vectors, prompts, and budgets before any loop.",
-      "units": [
-        {
-          "id": "tokens",
-          "title": "Tokens",
-          "track": "ai-agents",
-          "lessons": ["llm-basics", "prompting-structured-output", "cost-latency-budgets"]
-        },
-        {
-          "id": "recall",
-          "title": "Recall",
-          "track": "ai-agents",
-          "lessons": ["embeddings-vector-search", "rag-pipeline", "fine-tune-vs-prompt-vs-retrieve", "docs-assistant"]
-        }
-      ]
-    },
-    {
       "id": "scale",
       "label": "Scale",
       "blurb": "Replicas, logs, and shared state when one box is not enough.",
@@ -419,39 +400,21 @@
       ]
     },
     {
-      "id": "story",
-      "label": "Story",
-      "blurb": "True work stories, told so the listener can score them.",
+      "id": "model",
+      "label": "Model",
+      "blurb": "Tokens, vectors, prompts, and budgets before any loop.",
       "units": [
         {
-          "id": "bank",
-          "title": "Bank",
-          "track": "behavioral",
-          "lessons": ["story-bank", "behavioral-scoring"]
+          "id": "tokens",
+          "title": "Tokens",
+          "track": "ai-agents",
+          "lessons": ["llm-basics", "prompting-structured-output", "cost-latency-budgets"]
         },
         {
-          "id": "friction",
-          "title": "Friction",
-          "track": "behavioral",
-          "lessons": ["conflict-stories", "failure-stories"]
-        },
-        {
-          "id": "reach",
-          "title": "Reach",
-          "track": "behavioral",
-          "lessons": ["ownership-ambiguity", "influence-without-authority", "prioritization-deadlines"]
-        },
-        {
-          "id": "depth",
-          "title": "Depth",
-          "track": "behavioral",
-          "lessons": ["project-deep-dive"]
-        },
-        {
-          "id": "close",
-          "title": "Close",
-          "track": "behavioral",
-          "lessons": ["closing-questions"]
+          "id": "recall",
+          "title": "Recall",
+          "track": "ai-agents",
+          "lessons": ["embeddings-vector-search", "rag-pipeline", "fine-tune-vs-prompt-vs-retrieve", "docs-assistant"]
         }
       ]
     },
@@ -520,6 +483,43 @@
           "title": "Pair",
           "track": "ai-agents",
           "lessons": ["ai-pairing-interview"]
+        }
+      ]
+    },
+    {
+      "id": "story",
+      "label": "Story",
+      "blurb": "True work stories, told so the listener can score them.",
+      "units": [
+        {
+          "id": "bank",
+          "title": "Bank",
+          "track": "behavioral",
+          "lessons": ["story-bank", "behavioral-scoring"]
+        },
+        {
+          "id": "friction",
+          "title": "Friction",
+          "track": "behavioral",
+          "lessons": ["conflict-stories", "failure-stories"]
+        },
+        {
+          "id": "reach",
+          "title": "Reach",
+          "track": "behavioral",
+          "lessons": ["ownership-ambiguity", "influence-without-authority", "prioritization-deadlines"]
+        },
+        {
+          "id": "depth",
+          "title": "Depth",
+          "track": "behavioral",
+          "lessons": ["project-deep-dive"]
+        },
+        {
+          "id": "close",
+          "title": "Close",
+          "track": "behavioral",
+          "lessons": ["closing-questions"]
         }
       ]
     }
