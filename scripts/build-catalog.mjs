@@ -216,7 +216,10 @@ for (const name of practiceFiles) {
 }
 for (const lesson of lessons) {
   if ((lesson.kind === "problem" || lesson.kind === "case-study") && !lesson.practice) {
-    errors.push(`${lesson.path}: ${lesson.kind} needs practice/${lesson.id}.json`);
+    const message = `${lesson.path}: ${lesson.kind} needs practice/${lesson.id}.json`;
+    // Drafting escape hatch only; CI never sets it.
+    if (process.env.ALLOW_MISSING_PRACTICE) console.warn("warning:", message);
+    else errors.push(message);
   }
 }
 
