@@ -1,0 +1,116 @@
+{
+  "id": "in-order-messages",
+  "entry": "longestRising",
+  "starter": "function longestRising(ids: number[]): number {\n  // Length of the longest strictly increasing subsequence (items may be skipped, order kept).\n  return 0;\n}\n\nconsole.log(longestRising([12, 3, 9, 4, 15, 10, 18, 6]));\n",
+  "solution": "function longestRising(ids: number[]): number {\n  // tops[k] = smallest last id of any rising chain of length k + 1 seen so far.\n  const tops: number[] = [];\n  for (const id of ids) {\n    let lo = 0, hi = tops.length;\n    while (lo < hi) {\n      const mid = (lo + hi) >> 1;\n      if (tops[mid] < id) lo = mid + 1;\n      else hi = mid;\n    }\n    tops[lo] = id;\n  }\n  return tops.length;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "reconnect burst",
+      "args": [
+        [
+          12,
+          3,
+          9,
+          4,
+          15,
+          10,
+          18,
+          6
+        ]
+      ],
+      "expected": 4
+    },
+    {
+      "name": "empty burst",
+      "args": [
+        []
+      ],
+      "expected": 0
+    },
+    {
+      "name": "already in order",
+      "args": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      ],
+      "expected": 5
+    },
+    {
+      "name": "fully reversed",
+      "args": [
+        [
+          9,
+          7,
+          5,
+          3
+        ]
+      ],
+      "expected": 1
+    },
+    {
+      "name": "equal ids are not rising",
+      "args": [
+        [
+          7,
+          7,
+          7
+        ]
+      ],
+      "expected": 1
+    },
+    {
+      "name": "interleaved",
+      "args": [
+        [
+          5,
+          1,
+          6,
+          2,
+          7,
+          3,
+          8
+        ]
+      ],
+      "expected": 4
+    },
+    {
+      "name": "negative ids",
+      "args": [
+        [
+          -4,
+          10,
+          -2,
+          3,
+          0,
+          1
+        ]
+      ],
+      "expected": 4
+    }
+  ],
+  "hints": [
+    "For each id, what is the longest rising chain that ends exactly there?",
+    "Dynamic programming over \"longest chain ending at i\", then patience piles with binary search.",
+    "Keep tops[k] = smallest last id of any chain of length k + 1; for each id, binary-search the first top ≥ id and replace it, or append if none. The answer is tops.length."
+  ],
+  "rubric": {
+    "signals": [
+      "Distinguishes subsequence from contiguous subarray",
+      "Defines best[i] as the longest chain ending at i and takes the max over all i",
+      "Explains the tops invariant and why it is sorted",
+      "Uses lower bound (first ≥) for strictly increasing",
+      "Notes that tops is not itself a valid subsequence"
+    ],
+    "followups": [
+      "Return one actual longest chain, not just its length.",
+      "Nest image frames by [width, height]. How do you reduce it to this problem?",
+      "Allow equal ids to count as rising. What changes?"
+    ]
+  }
+}

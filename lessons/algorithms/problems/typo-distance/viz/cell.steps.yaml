@@ -1,0 +1,10 @@
+title: Fill one cell
+steps:
+  - caption: "Row f, column f: the letters match, so the cell copies the diagonal, 0."
+    nodes: [diag, same, copy]
+  - caption: "Row c, column t: the letters differ. Neighbors are diagonal 0, up 1, left 1."
+    nodes: [same, diag, up, left]
+  - caption: "Take one plus the smallest, 0, so the cell is 1. That edit is a replace."
+    nodes: [pick, cell]
+  - caption: "The bottom-right cell is the answer: fecth to fetch costs 2."
+    nodes: [cell]

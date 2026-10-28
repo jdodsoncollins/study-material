@@ -1,0 +1,199 @@
+{
+  "id": "spiral-read",
+  "entry": "spiralOrder",
+  "starter": "function spiralOrder(grid: number[][]): number[] {\n  // Clockwise spiral from the top-left, ring by ring.\n  return [];\n}\n\nconsole.log(spiralOrder([[7, 1, 4, 9], [2, 8, 6, 3], [5, 0, 11, 10]]));\n",
+  "solution": "function spiralOrder(grid: number[][]): number[] {\n  const out: number[] = [];\n  if (grid.length === 0 || grid[0].length === 0) return out;\n  let top = 0, bottom = grid.length - 1, left = 0, right = grid[0].length - 1;\n  while (top <= bottom && left <= right) {\n    for (let c = left; c <= right; c++) out.push(grid[top][c]);\n    top++;\n    for (let r = top; r <= bottom; r++) out.push(grid[r][right]);\n    right--;\n    if (top <= bottom) {\n      for (let c = right; c >= left; c--) out.push(grid[bottom][c]);\n      bottom--;\n    }\n    if (left <= right) {\n      for (let r = bottom; r >= top; r--) out.push(grid[r][left]);\n      left++;\n    }\n  }\n  return out;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "contact sheet",
+      "args": [
+        [
+          [
+            7,
+            1,
+            4,
+            9
+          ],
+          [
+            2,
+            8,
+            6,
+            3
+          ],
+          [
+            5,
+            0,
+            11,
+            10
+          ]
+        ]
+      ],
+      "expected": [
+        7,
+        1,
+        4,
+        9,
+        3,
+        10,
+        11,
+        0,
+        5,
+        2,
+        8,
+        6
+      ]
+    },
+    {
+      "name": "single column",
+      "args": [
+        [
+          [
+            4
+          ],
+          [
+            8
+          ],
+          [
+            15
+          ]
+        ]
+      ],
+      "expected": [
+        4,
+        8,
+        15
+      ]
+    },
+    {
+      "name": "single row",
+      "args": [
+        [
+          [
+            1,
+            2,
+            3
+          ]
+        ]
+      ],
+      "expected": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "empty grid",
+      "args": [
+        []
+      ],
+      "expected": []
+    },
+    {
+      "name": "grid of empty rows",
+      "args": [
+        [
+          []
+        ]
+      ],
+      "expected": []
+    },
+    {
+      "name": "square",
+      "args": [
+        [
+          [
+            1,
+            2,
+            3
+          ],
+          [
+            4,
+            5,
+            6
+          ],
+          [
+            7,
+            8,
+            9
+          ]
+        ]
+      ],
+      "expected": [
+        1,
+        2,
+        3,
+        6,
+        9,
+        8,
+        7,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "tall",
+      "args": [
+        [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            7,
+            8
+          ]
+        ]
+      ],
+      "expected": [
+        1,
+        2,
+        4,
+        6,
+        8,
+        7,
+        5,
+        3
+      ]
+    },
+    {
+      "name": "one cell",
+      "args": [
+        [
+          [
+            42
+          ]
+        ]
+      ],
+      "expected": [
+        42
+      ]
+    }
+  ],
+  "hints": [
+    "After you read the whole top row, what rectangle is left unread?",
+    "Layer walk with four shrinking bounds.",
+    "Keep top, bottom, left, right; read top row, right column, then the bottom row only if top <= bottom and the left column only if left <= right, moving each bound inward after its edge."
+  ],
+  "rubric": {
+    "signals": [
+      "Maintains four bounds that enclose exactly the unread cells",
+      "Guards the bottom and left edges so a single row or column is not read twice",
+      "Handles empty grids without indexing grid[0]",
+      "Tests a non-square grid and a single column"
+    ],
+    "followups": [
+      "Fill an empty grid with 1..r·c in spiral order.",
+      "Spiral counter-clockwise instead.",
+      "Do it with a direction table and turn when blocked."
+    ]
+  }
+}

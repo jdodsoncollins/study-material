@@ -69,6 +69,12 @@
           "title": "Chain",
           "track": "algorithms",
           "lessons": ["reverse-chain", "fast-slow-pointers", "aisle-loop"]
+        },
+        {
+          "id": "cover",
+          "title": "Cover",
+          "track": "algorithms",
+          "lessons": ["shortest-cover"]
         }
       ]
     },
@@ -82,6 +88,12 @@
           "title": "Keep k",
           "track": "algorithms",
           "lessons": ["heaps-top-k", "kth-largest", "lru-cache"]
+        },
+        {
+          "id": "merge",
+          "title": "Merge",
+          "track": "algorithms",
+          "lessons": ["merge-sorted-feeds", "running-median"]
         }
       ]
     },
@@ -138,6 +150,43 @@
           "title": "2-D",
           "track": "algorithms",
           "lessons": ["dp-2d", "desk-paths"]
+        },
+        {
+          "id": "sequence",
+          "title": "Sequence",
+          "track": "algorithms",
+          "lessons": ["others-product", "in-order-messages", "typo-distance"]
+        }
+      ]
+    },
+    {
+      "id": "choose",
+      "label": "Choose",
+      "blurb": "Commit to one move, flip a bit, branch and undo, or walk the grid.",
+      "units": [
+        {
+          "id": "commit",
+          "title": "Commit",
+          "track": "algorithms",
+          "lessons": ["greedy", "reach-last-page"]
+        },
+        {
+          "id": "bits",
+          "title": "Bits",
+          "track": "algorithms",
+          "lessons": ["bit-manipulation", "unpaired-id"]
+        },
+        {
+          "id": "branch",
+          "title": "Branch",
+          "track": "algorithms",
+          "lessons": ["playlist-orders", "exact-baskets"]
+        },
+        {
+          "id": "grid",
+          "title": "Grid",
+          "track": "algorithms",
+          "lessons": ["matrix-traversal", "spiral-read"]
         }
       ]
     },

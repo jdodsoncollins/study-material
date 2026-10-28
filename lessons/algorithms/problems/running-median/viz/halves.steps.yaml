@@ -1,0 +1,10 @@
+title: Balance the halves
+steps:
+  - caption: "Route by comparing with the low half's top: 12 is at most 40, so it joins low."
+    nodes: [sample, route, low]
+  - caption: "Low is now two ahead, so 40 moves across. Sizes are 1 and 1."
+    nodes: [balance, tohigh]
+  - caption: "31 is above 12 and joins high, which is now ahead, so 31 moves back to low."
+    nodes: [high, balance, tolow]
+  - caption: "Odd count reads low's top (31). Even count averages both tops (31 and 40 give 35.5)."
+    nodes: [read]

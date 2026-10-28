@@ -1,0 +1,267 @@
+{
+  "id": "playlist-orders",
+  "entry": "allOrders",
+  "starter": "function allOrders(tracks: string[]): string[][] {\n  // Every ordering of the distinct tracks. Any order of orderings is fine.\n  return [];\n}\n\nconsole.log(allOrders([\"lofi\", \"jazz\", \"punk\"]));\n",
+  "solution": "function allOrders(tracks: string[]): string[][] {\n  const out: string[][] = [];\n  const path: string[] = [];\n  const used = tracks.map(() => false);\n  const walk = () => {\n    if (path.length === tracks.length) { out.push([...path]); return; }\n    for (let i = 0; i < tracks.length; i++) {\n      if (used[i]) continue;\n      used[i] = true;\n      path.push(tracks[i]);\n      walk();\n      path.pop();\n      used[i] = false;\n    }\n  };\n  walk();\n  return out;\n}\n",
+  "compare": "unordered",
+  "cases": [
+    {
+      "name": "three-track queue",
+      "args": [
+        [
+          "lofi",
+          "jazz",
+          "punk"
+        ]
+      ],
+      "expected": [
+        [
+          "lofi",
+          "jazz",
+          "punk"
+        ],
+        [
+          "lofi",
+          "punk",
+          "jazz"
+        ],
+        [
+          "jazz",
+          "lofi",
+          "punk"
+        ],
+        [
+          "jazz",
+          "punk",
+          "lofi"
+        ],
+        [
+          "punk",
+          "lofi",
+          "jazz"
+        ],
+        [
+          "punk",
+          "jazz",
+          "lofi"
+        ]
+      ]
+    },
+    {
+      "name": "two tracks",
+      "args": [
+        [
+          "ads",
+          "news"
+        ]
+      ],
+      "expected": [
+        [
+          "ads",
+          "news"
+        ],
+        [
+          "news",
+          "ads"
+        ]
+      ]
+    },
+    {
+      "name": "one track",
+      "args": [
+        [
+          "solo"
+        ]
+      ],
+      "expected": [
+        [
+          "solo"
+        ]
+      ]
+    },
+    {
+      "name": "empty queue has one empty order",
+      "args": [
+        []
+      ],
+      "expected": [
+        []
+      ]
+    },
+    {
+      "name": "four tracks",
+      "args": [
+        [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      ],
+      "expected": [
+        [
+          "a",
+          "b",
+          "c",
+          "d"
+        ],
+        [
+          "a",
+          "b",
+          "d",
+          "c"
+        ],
+        [
+          "a",
+          "c",
+          "b",
+          "d"
+        ],
+        [
+          "a",
+          "c",
+          "d",
+          "b"
+        ],
+        [
+          "a",
+          "d",
+          "b",
+          "c"
+        ],
+        [
+          "a",
+          "d",
+          "c",
+          "b"
+        ],
+        [
+          "b",
+          "a",
+          "c",
+          "d"
+        ],
+        [
+          "b",
+          "a",
+          "d",
+          "c"
+        ],
+        [
+          "b",
+          "c",
+          "a",
+          "d"
+        ],
+        [
+          "b",
+          "c",
+          "d",
+          "a"
+        ],
+        [
+          "b",
+          "d",
+          "a",
+          "c"
+        ],
+        [
+          "b",
+          "d",
+          "c",
+          "a"
+        ],
+        [
+          "c",
+          "a",
+          "b",
+          "d"
+        ],
+        [
+          "c",
+          "a",
+          "d",
+          "b"
+        ],
+        [
+          "c",
+          "b",
+          "a",
+          "d"
+        ],
+        [
+          "c",
+          "b",
+          "d",
+          "a"
+        ],
+        [
+          "c",
+          "d",
+          "a",
+          "b"
+        ],
+        [
+          "c",
+          "d",
+          "b",
+          "a"
+        ],
+        [
+          "d",
+          "a",
+          "b",
+          "c"
+        ],
+        [
+          "d",
+          "a",
+          "c",
+          "b"
+        ],
+        [
+          "d",
+          "b",
+          "a",
+          "c"
+        ],
+        [
+          "d",
+          "b",
+          "c",
+          "a"
+        ],
+        [
+          "d",
+          "c",
+          "a",
+          "b"
+        ],
+        [
+          "d",
+          "c",
+          "b",
+          "a"
+        ]
+      ]
+    }
+  ],
+  "hints": [
+    "Fill the queue one slot at a time. What are your choices for the first slot, and what changes for the second?",
+    "This is backtracking: choose, recurse, un-choose.",
+    "Keep a used[] flag per track; at each depth loop over every unused track, mark it, push it, recurse, then pop it and unmark it. Copy the path when it is full."
+  ],
+  "rubric": {
+    "signals": [
+      "States there are n! orders and the output alone is O(n · n!)",
+      "Uses choose / recurse / un-choose with a used flag or swaps",
+      "Copies the path at the leaf instead of pushing the shared array",
+      "Handles the empty input as one empty ordering, or asks about it"
+    ],
+    "followups": [
+      "The queue has repeated tracks. List distinct orders only.",
+      "Return only the k-th order without listing all of them.",
+      "How large can n be before this is unreasonable?"
+    ]
+  }
+}

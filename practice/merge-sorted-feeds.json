@@ -1,0 +1,142 @@
+{
+  "id": "merge-sorted-feeds",
+  "entry": "mergeFeeds",
+  "starter": "function mergeFeeds(feeds: number[][]): number[] {\n  // Each feed is sorted ascending. Return every timestamp, merged in ascending order.\n  return [];\n}\n\nconsole.log(mergeFeeds([[3, 11, 20], [5, 9], [1, 14, 15, 22]]));\n",
+  "solution": "function mergeFeeds(feeds: number[][]): number[] {\n  // Min-heap of [time, feed, position]. Ties break on feed index so output is stable.\n  const heap: [number, number, number][] = [];\n  const less = (a: number, b: number) =>\n    heap[a][0] < heap[b][0] || (heap[a][0] === heap[b][0] && heap[a][1] < heap[b][1]);\n  const swap = (a: number, b: number) => { [heap[a], heap[b]] = [heap[b], heap[a]]; };\n  const push = (item: [number, number, number]) => {\n    heap.push(item);\n    let i = heap.length - 1;\n    while (i > 0 && less(i, (i - 1) >> 1)) { swap(i, (i - 1) >> 1); i = (i - 1) >> 1; }\n  };\n  const pop = (): [number, number, number] => {\n    const top = heap[0];\n    const last = heap.pop()!;\n    if (heap.length) {\n      heap[0] = last;\n      let i = 0;\n      for (;;) {\n        const l = 2 * i + 1, r = l + 1;\n        let m = i;\n        if (l < heap.length && less(l, m)) m = l;\n        if (r < heap.length && less(r, m)) m = r;\n        if (m === i) break;\n        swap(i, m);\n        i = m;\n      }\n    }\n    return top;\n  };\n  feeds.forEach((feed, f) => { if (feed.length) push([feed[0], f, 0]); });\n  const out: number[] = [];\n  while (heap.length) {\n    const [time, f, p] = pop();\n    out.push(time);\n    if (p + 1 < feeds[f].length) push([feeds[f][p + 1], f, p + 1]);\n  }\n  return out;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "three notification shards",
+      "args": [
+        [
+          [
+            3,
+            11,
+            20
+          ],
+          [
+            5,
+            9
+          ],
+          [
+            1,
+            14,
+            15,
+            22
+          ]
+        ]
+      ],
+      "expected": [
+        1,
+        3,
+        5,
+        9,
+        11,
+        14,
+        15,
+        20,
+        22
+      ]
+    },
+    {
+      "name": "duplicates and an empty shard",
+      "args": [
+        [
+          [
+            2,
+            7
+          ],
+          [],
+          [
+            2,
+            2,
+            9
+          ]
+        ]
+      ],
+      "expected": [
+        2,
+        2,
+        2,
+        7,
+        9
+      ]
+    },
+    {
+      "name": "no shards at all",
+      "args": [
+        []
+      ],
+      "expected": []
+    },
+    {
+      "name": "every shard empty",
+      "args": [
+        [
+          [],
+          []
+        ]
+      ],
+      "expected": []
+    },
+    {
+      "name": "one shard passes through",
+      "args": [
+        [
+          [
+            4,
+            8,
+            15
+          ]
+        ]
+      ],
+      "expected": [
+        4,
+        8,
+        15
+      ]
+    },
+    {
+      "name": "negative offsets",
+      "args": [
+        [
+          [
+            -6,
+            0
+          ],
+          [
+            -3,
+            -3,
+            5
+          ]
+        ]
+      ],
+      "expected": [
+        -6,
+        -3,
+        -3,
+        0,
+        5
+      ]
+    }
+  ],
+  "hints": [
+    "The next item in the output must be the smallest of something small. Of what?",
+    "Use a min-heap (priority queue) that holds one front item per feed.",
+    "Seed the heap with each non-empty feed's first item as [time, feed, position]; pop the smallest, output it, and push that feed's next item if it has one."
+  ],
+  "rubric": {
+    "signals": [
+      "States the concatenate-and-sort baseline and its O(N log N) cost",
+      "Explains that only each feed's front can be the next output",
+      "Stores the feed index and position in heap entries, not just the value",
+      "Gives O(N log k) time and O(k) heap space",
+      "Skips empty feeds when seeding"
+    ],
+    "followups": [
+      "The shards are remote and return pages of 100. What changes?",
+      "Only the first 20 merged items are needed. What is the cost now?",
+      "How would you do this without a heap?"
+    ]
+  }
+}

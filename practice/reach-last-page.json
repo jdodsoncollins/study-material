@@ -1,0 +1,98 @@
+{
+  "id": "reach-last-page",
+  "entry": "canReachEnd",
+  "starter": "function canReachEnd(jumps: number[]): boolean {\n  // Page i links to each of the next jumps[i] pages. Can page 0 reach the last page?\n  return false;\n}\n\nconsole.log(canReachEnd([2, 4, 1, 0, 0, 3]));\n",
+  "solution": "function canReachEnd(jumps: number[]): boolean {\n  let farthest = 0;\n  for (let i = 0; i < jumps.length; i++) {\n    if (i > farthest) return false;\n    farthest = Math.max(farthest, i + jumps[i]);\n  }\n  return true;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "onboarding guide",
+      "args": [
+        [
+          2,
+          4,
+          1,
+          0,
+          0,
+          3
+        ]
+      ],
+      "expected": true
+    },
+    {
+      "name": "stranded on a dead end",
+      "args": [
+        [
+          2,
+          1,
+          1,
+          0,
+          3
+        ]
+      ],
+      "expected": false
+    },
+    {
+      "name": "one page is already the end",
+      "args": [
+        [
+          0
+        ]
+      ],
+      "expected": true
+    },
+    {
+      "name": "zero at the start",
+      "args": [
+        [
+          0,
+          1
+        ]
+      ],
+      "expected": false
+    },
+    {
+      "name": "exactly enough",
+      "args": [
+        [
+          1,
+          1,
+          1,
+          0
+        ]
+      ],
+      "expected": true
+    },
+    {
+      "name": "big first jump",
+      "args": [
+        [
+          9,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected": true
+    }
+  ],
+  "hints": [
+    "If you can reach page 6, can you reach page 4?",
+    "Greedy: track the farthest reachable page.",
+    "Scan left to right; if i is past the farthest reachable page, return false; otherwise extend farthest to max(farthest, i + jumps[i])."
+  ],
+  "rubric": {
+    "signals": [
+      "States that the reachable pages always form a prefix",
+      "Checks i > farthest before extending",
+      "Gives O(n) time and O(1) space",
+      "Handles the single-page case"
+    ],
+    "followups": [
+      "Return the fewest clicks to reach the last page.",
+      "Links may also go backward. Does the greedy still work?",
+      "Why is \"always take the biggest jump\" wrong for fewest clicks?"
+    ]
+  }
+}
