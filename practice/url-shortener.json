@@ -1,0 +1,24 @@
+{
+  "id": "url-shortener",
+  "hints": [
+    "Reads outnumber writes a thousand to one here. Which path do you design first, and what can go stale on it?",
+    "A unique-constrained code-to-destination mapping created by random candidate plus atomic insert, an owner-scoped idempotency key for creation, and a cache-then-store resolve path.",
+    "Compute 62^7 and the collision probability at 9.1 billion codes, then write the insert-or-retry step and the cache directives that match your takedown target."
+  ],
+  "rubric": {
+    "signals": [
+      "Estimates read and write traffic separately (about 58 writes/s versus 57,900 reads/s average) and the storage for five years",
+      "Enforces code uniqueness atomically and retries collisions instead of claiming a big keyspace prevents them",
+      "Scopes creation idempotency to the authenticated owner with a request fingerprint, so a lost response replays the committed result",
+      "Caches resolves with explicit HTTP directives and a short, careful negative cache",
+      "Ties cache lifetimes to an agreed takedown or edit target and uses a version-aware fill to avoid restoring stale destinations",
+      "Treats destination validation and abuse controls as separate from successful storage"
+    ],
+    "followups": [
+      "Two users shorten the same URL. Should they share a code?",
+      "A candidate code already exists. Trace the atomic rejection and retry.",
+      "An abusive link is cached in a disconnected region. What revocation promise is still possible?",
+      "Would sequential codes be better? What do you trade?"
+    ]
+  }
+}

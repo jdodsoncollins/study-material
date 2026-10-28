@@ -595,6 +595,166 @@
           "lessons": ["desk-bot", "how-to-run-proper-evals", "agent-mistakes", "interview-framework"]
         }
       ]
+    },
+    {
+      "id": "day-found-01",
+      "title": "Sort and lines",
+      "kind": "acquire",
+      "blurb": "Stability and worst case, then why access order matters.",
+      "blocks": [
+        { "type": "read", "lesson": "sorting-tradeoffs", "minutes": 16 },
+        { "type": "read", "lesson": "cpu-caches-locality", "minutes": 15 },
+        { "type": "speak", "text": "Say why quicksort is not stable and when counting sort wins." }
+      ]
+    },
+    {
+      "id": "day-found-02",
+      "title": "Heap and query",
+      "kind": "acquire",
+      "blurb": "Reachability, then joins and windows.",
+      "blocks": [
+        { "type": "read", "lesson": "garbage-collection", "minutes": 15 },
+        { "type": "read", "lesson": "sql-for-interviews", "minutes": 18 },
+        { "type": "speak", "text": "Explain why COUNT(*) after a LEFT JOIN counts a user with no orders as 1." }
+      ]
+    },
+    {
+      "id": "day-found-03",
+      "title": "Secure pipe",
+      "kind": "acquire",
+      "blurb": "What TLS covers, then what the browser enforces.",
+      "blocks": [
+        { "type": "read", "lesson": "tls-https", "minutes": 16 },
+        { "type": "read", "lesson": "web-security-basics", "minutes": 18 },
+        { "type": "speak", "text": "Say which rule stops CSRF and which rule controls reading a response." }
+      ]
+    },
+    {
+      "id": "day-found-04",
+      "title": "Size and contract",
+      "kind": "acquire",
+      "blurb": "Numbers that pick the design, then the API that holds it.",
+      "blocks": [
+        { "type": "read", "lesson": "capacity-estimation", "minutes": 14 },
+        { "type": "read", "lesson": "api-design-pagination", "minutes": 16 },
+        { "type": "speak", "text": "Turn 30 million users and 12 actions each into a peak rate out loud." }
+      ]
+    },
+    {
+      "id": "day-found-05",
+      "title": "Retries on paper",
+      "kind": "drill",
+      "blurb": "Blank page first. Idempotency and budgets.",
+      "blocks": [
+        { "type": "redraw", "lesson": "payment-idempotency", "minutes": 22 },
+        { "type": "redraw", "lesson": "rate-limiter", "minutes": 22 },
+        { "type": "speak", "text": "Name the atomic step in each design." }
+      ]
+    },
+    {
+      "id": "day-found-06",
+      "title": "Copies and stores",
+      "kind": "acquire",
+      "blurb": "Pick a store, then decide who may write.",
+      "blocks": [
+        { "type": "read", "lesson": "choosing-a-datastore", "minutes": 18 },
+        { "type": "read", "lesson": "replication-and-failover", "minutes": 18 },
+        { "type": "speak", "text": "Say what an acknowledgement waits for and what survives a failover." }
+      ]
+    },
+    {
+      "id": "day-found-07",
+      "title": "Order and leases",
+      "kind": "drill",
+      "blurb": "Sequences, cursors, and stale workers.",
+      "blocks": [
+        { "type": "redraw", "lesson": "chat-system", "minutes": 22 },
+        { "type": "redraw", "lesson": "job-scheduler", "minutes": 22 },
+        { "type": "speak", "text": "Say where fencing is enforced in each design." }
+      ]
+    },
+    {
+      "id": "day-found-08",
+      "title": "Guard and edge",
+      "kind": "acquire",
+      "blurb": "Identity and access, then caches near users.",
+      "blocks": [
+        { "type": "read", "lesson": "authn-authz", "minutes": 18 },
+        { "type": "read", "lesson": "cdn-edge-caching", "minutes": 16 },
+        { "type": "speak", "text": "Say why an API should not accept an ID token." }
+      ]
+    },
+    {
+      "id": "day-found-09",
+      "title": "Lookup redraw",
+      "kind": "drill",
+      "blurb": "Flags and suggestions, closed book.",
+      "blocks": [
+        { "type": "redraw", "lesson": "feature-flags", "minutes": 22 },
+        { "type": "redraw", "lesson": "search-autocomplete", "minutes": 22 },
+        { "type": "speak", "text": "State the staleness policy you chose for each." }
+      ]
+    },
+    {
+      "id": "day-found-10",
+      "title": "Stream and watch",
+      "kind": "acquire",
+      "blurb": "Partitioned logs, then how you know it works.",
+      "blocks": [
+        { "type": "read", "lesson": "event-streams-cdc", "minutes": 18 },
+        { "type": "read", "lesson": "observability-slos", "minutes": 16 },
+        { "type": "speak", "text": "Compute the error budget for 99.9% over 30 days out loud." }
+      ]
+    },
+    {
+      "id": "day-found-11",
+      "title": "Fan out",
+      "kind": "drill",
+      "blurb": "Channels and renditions, closed book.",
+      "blocks": [
+        { "type": "redraw", "lesson": "notification-system", "minutes": 22 },
+        { "type": "redraw", "lesson": "video-streaming", "minutes": 22 },
+        { "type": "speak", "text": "Separate accepted from delivered, and segment from manifest." }
+      ]
+    },
+    {
+      "id": "day-found-12",
+      "title": "Bytes and hosts",
+      "kind": "drill",
+      "blurb": "Multipart objects and a polite crawl.",
+      "blocks": [
+        { "type": "redraw", "lesson": "blob-store", "minutes": 22 },
+        { "type": "redraw", "lesson": "catalog-crawler", "minutes": 22 },
+        { "type": "speak", "text": "Say what makes an object complete and what limits the crawl's finish time." }
+      ]
+    },
+    {
+      "id": "day-found-13",
+      "title": "Scarce and slow",
+      "kind": "drill",
+      "blurb": "GPU memory and a slow chat agent.",
+      "blocks": [
+        { "type": "redraw", "lesson": "llm-serving", "minutes": 22 },
+        { "type": "redraw", "lesson": "desk-bot", "minutes": 22 },
+        { "type": "speak", "text": "Say what admission counts in each design." }
+      ]
+    },
+    {
+      "id": "day-found-14",
+      "title": "Foundations mock",
+      "kind": "review",
+      "blurb": "One timed case, then the blocks unlabeled.",
+      "blocks": [
+        {
+          "type": "mock",
+          "lessons": ["url-shortener", "news-feed"],
+          "minutes": 40
+        },
+        {
+          "type": "mixed",
+          "lessons": ["capacity-estimation", "replication-and-failover", "event-streams-cdc", "authn-authz"]
+        }
+      ]
     }
   ]
 }

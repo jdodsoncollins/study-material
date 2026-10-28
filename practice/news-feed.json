@@ -1,0 +1,24 @@
+{
+  "id": "news-feed",
+  "hints": [
+    "Average follower count will not size this. What happens when one author has twenty million followers?",
+    "Hybrid fanout: push post IDs into follower inboxes for ordinary authors, pull recent posts from very large authors at read time, then merge and rank a bounded set.",
+    "Commit the post and an outbox event together, insert candidates idempotently keyed by (recipient, post_id), and then show the read-time merge with privacy filtering before ranking."
+  ],
+  "rubric": {
+    "signals": [
+      "Stores the post once and treats inbox entries as candidate IDs, not copies of the post",
+      "Explains push for ordinary authors and pull for very large audiences, with the threshold presented as a tunable assumption",
+      "Uses a transactional outbox so a committed post cannot lose its publication event, and idempotent (recipient, post_id) inserts for replays",
+      "Bounds read-time work so a user following many large authors cannot trigger an unbounded scatter",
+      "Enforces blocks and visibility on read, including when ranking falls back to reverse chronological order",
+      "Defines a pagination cursor tied to a stable ordering and explains duplicates or gaps between pages"
+    ],
+    "followups": [
+      "Trace a post to three followers and a retry of the fanout event.",
+      "One author gains 20 million followers. How do existing followers move from push to pull without missing or duplicating candidates?",
+      "A block happens while ranking is down. Show why the chronological fallback still enforces it.",
+      "A hot author's burst delays everyone else's fanout. What do you isolate and which lag metric do you alert on?"
+    ]
+  }
+}

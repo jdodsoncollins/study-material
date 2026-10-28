@@ -1,0 +1,24 @@
+{
+  "id": "job-scheduler",
+  "hints": [
+    "'Run every hour' is a rule, not a thing a worker can pick up. What is the unit of work?",
+    "Materialize durable occurrences with unique (schedule, occurrence time) IDs, then hand them out under leases with a generation number.",
+    "Walk the ticker crash-and-retry case, then worker A's lease expiring mid-request: show which updates the generation check rejects and what still needs downstream idempotency or fencing."
+  ],
+  "rubric": {
+    "signals": [
+      "Separates a schedule from its runs and gives each occurrence a durable unique ID so ticker retries neither lose nor duplicate it",
+      "Claims runs atomically with a lease expiry and generation; heartbeats and completion compare the generation",
+      "Explains that a lease expiry does not stop the old worker, so external effects need a stable operation ID or a fencing token the downstream enforces",
+      "Chooses an explicit missed-run policy (catch up all, latest only, or none) and an overlap policy enforced across retry states",
+      "Handles daylight-saving gaps and repeated hours by storing the time-zone rule and the resolved instant",
+      "Sizes the top-of-hour burst rather than only the 56 starts/s average, and measures an indexed due-time scan before adding coordination services"
+    ],
+    "followups": [
+      "The ticker creates the 10:00 run, crashes, and retries. Why does exactly one occurrence exist?",
+      "Worker A's lease expires while its external request is in flight. What does the generation check prevent, and what does it not?",
+      "A 01:30 local schedule hits a repeated clock hour. Pick a policy and keep it stable across retries.",
+      "Two hundred thousand schedules fire at :00. What do you change if the timing contract allows spreading?"
+    ]
+  }
+}

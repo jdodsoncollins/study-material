@@ -1,0 +1,10 @@
+title: Outbox to consumers
+steps:
+  - caption: "The business change and the event commit together."
+    nodes: [tx]
+  - caption: "A relay or CDC publishes committed outbox rows, keyed by cart."
+    nodes: [tx, relay, part]
+  - caption: "Each consumer group reads every event at its own pace."
+    nodes: [part, groupA, groupB]
+  - caption: "Replays after a crash are expected; the event ID makes them harmless."
+    nodes: [groupA, dedupe, apply, skip]

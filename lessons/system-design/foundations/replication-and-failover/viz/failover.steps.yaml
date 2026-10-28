@@ -1,0 +1,10 @@
+title: Failover
+steps:
+  - caption: "Heartbeats stop. Followers cannot tell a crash from a partition."
+    nodes: [lead, miss]
+  - caption: "A candidate bumps the term and asks for votes."
+    nodes: [miss, cand, vote]
+  - caption: "A majority with a log at least as current elects one leader for term 7."
+    nodes: [vote, newl]
+  - caption: "The paused old leader returns; its term-6 writes are refused."
+    nodes: [stale, reject, newl]

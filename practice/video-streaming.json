@@ -1,0 +1,24 @@
+{
+  "id": "video-streaming",
+  "hints": [
+    "Segments and manifests change at very different rates. What does that suggest about caching each?",
+    "Separate upload, transcode, package, publish, and play; publish only verified, aligned renditions, with immutable segments and a short-lived or revalidated manifest.",
+    "Walk one job: versioned output namespace, verify all renditions, atomically publish the playlist, then show how the player picks a rendition from throughput and buffer."
+  ],
+  "rubric": {
+    "signals": [
+      "Treats upload, transcode, package, publish, and play as distinct stages with a durable, retryable processing job",
+      "Publishes only verified segments and a consistent manifest; never lists a segment before it is durably stored",
+      "Caches immutable versioned segments for a long time and gives changing manifests a short freshness or revalidation policy",
+      "Aligns segment boundaries across renditions so the player can switch quality",
+      "Uses an EVENT-style growing playlist without EXT-X-ENDLIST for play-while-encoding, consistent with RFC 8216",
+      "Explains that real-time encoding does not guarantee no stalls and reserves playable content before starting"
+    ],
+    "followups": [
+      "A segment is missing from one rendition. Why must verification happen before publication?",
+      "The playlist grows while clients play. Choose its type, refresh policy, and completion marker.",
+      "Encoding runs at roughly real time but pauses for twenty seconds. How do the startup buffer and admission policy affect stalls?",
+      "A takedown arrives. What can signed URL lifetimes and CDN invalidation achieve, and what cannot be recalled?"
+    ]
+  }
+}
