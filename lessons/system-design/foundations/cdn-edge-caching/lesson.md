@@ -51,7 +51,7 @@ Static assets, video segments, images, and even some API responses go through a 
 
 ### ELI5
 
-Put copies of popular files in many cities so people download from nearby. Each copy has a label (the key) and an expiry. When a city does not have a copy, it asks a regional warehouse cache first, and only that cache asks your server. When you change a file, give it a new name, or tell every city to throw the old copy away.
+Put copies of popular files in many cities so people download from nearby. Each copy has a label (the key) and an expiry. When a city does not have a copy, it asks a bigger regional cache first, and only that cache asks your server. When you change a file, give it a new name, or tell every city to throw the old copy away.
 
 [Follow an edge miss through the shield](viz/shield.md)
 
