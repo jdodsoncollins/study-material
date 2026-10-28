@@ -1,0 +1,22 @@
+{
+  "id": "nearby-places",
+  "hints": [
+    "A shopper stands at the edge of a grid square. Where might the closest pharmacy be?",
+    "This is a geospatial cell index: geohash or hierarchical cells, a covering of neighbor cells, then an exact distance filter.",
+    "Pick a precision from the radius, list the cells overlapping the bounding box, filter by haversine distance and open-now, then deal with dense cells."
+  ],
+  "rubric": {
+    "signals": [
+      "Sizes the index and notices it fits in memory, so replicates instead of sharding",
+      "Explains why a single-prefix lookup misses results at cell edges and reads a covering",
+      "Accounts for cell width shrinking with latitude when sizing the covering",
+      "Splits dense cells adaptively and caches hot query cells with a short TTL",
+      "Keeps the place store authoritative and applies versioned changes to the derived index"
+    ],
+    "followups": [
+      "Add moving delivery drivers updating every 4 seconds. What changes?",
+      "The radius is 25 km in a rural area. How do you avoid reading hundreds of cells?",
+      "How do you make sure a permanently closed place disappears quickly?"
+    ]
+  }
+}

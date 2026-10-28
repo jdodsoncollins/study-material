@@ -1,0 +1,12 @@
+title: hold
+steps:
+  - caption: "The waiting room admits 50 shoppers a second. The seat map they see is a snapshot; it can be a second or two behind."
+    nodes: [wait, map]
+  - caption: "The hold is one conditional write across all requested seats. If any seat is no longer open, nothing changes and the shopper sees a fresh map."
+    nodes: [hold]
+  - caption: "Pressing Pay extends the hold and charges with the order ID as the idempotency key, so retries cannot charge twice."
+    nodes: [pay, charge]
+  - caption: "Seats become sold only if they still carry this hold's ID. Tickets go out from the committed order, not from the webhook."
+    nodes: [confirm, ticket]
+  - caption: "Abandoned holds expire back to open. A charge that lands after its hold is gone is refunded automatically."
+    nodes: [release, refund]

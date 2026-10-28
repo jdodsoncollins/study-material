@@ -1,0 +1,22 @@
+{
+  "id": "doc-collab",
+  "hints": [
+    "Every edit is made against some version of the doc. Which version, and who decides the final order?",
+    "This is operational transform with a per-document sequencer, or a sequence CRDT that makes edits commute.",
+    "Route each doc to one owner, give ops (client_id, client_seq, base_revision), and ack only after the durable append."
+  ],
+  "rubric": {
+    "signals": [
+      "Names one sequencing owner per document and fences a stale owner with an epoch or lease",
+      "Shows a concrete transform of two concurrent inserts converging, including the tie-break",
+      "Compares OT and CRDTs honestly: metadata and tombstones versus a central hot path",
+      "Keeps presence on a lossy, unlogged path and sizes it separately",
+      "Makes resends idempotent and explains offline replay on reconnect"
+    ],
+    "followups": [
+      "Two regions must both accept edits during a split. What changes?",
+      "A doc has 200 viewers and 3 editors. How do you keep presence fanout bounded?",
+      "How do you restore the doc to how it looked at 14:05 last Tuesday?"
+    ]
+  }
+}
