@@ -1,0 +1,12 @@
+title: ask
+steps:
+  - caption: "Identity first. Group membership decides which chunks may be searched at all."
+    nodes: [agent, authz]
+  - caption: "Turn the ticket and question into a search, retrieve wide, then rerank to a handful."
+    nodes: [rewrite, search, rerank]
+  - caption: "Weak evidence ends in an honest no-answer path before any generation."
+    nodes: [enough, none]
+  - caption: "Code checks that every cited chunk was supplied and its document version is still live."
+    nodes: [draft, verify, show]
+  - caption: "Feedback buttons feed the evaluation set and the stale-doc queue."
+    nodes: [feedback]

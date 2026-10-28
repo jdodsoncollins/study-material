@@ -1,0 +1,24 @@
+{
+  "id": "summarizer-evals",
+  "hints": [
+    "Do not start with a score. Start with what a good meeting summary must get right, and which of those mistakes would hurt a user most.",
+    "This is property-based evaluation with layered graders: annotated references, deterministic code checks, a calibrated judge for narrow questions, and human calibration, run over slices with repeated trials.",
+    "List the properties (faithfulness, owner accuracy, action-item recall and precision, decisions, no invented dates, empty handling), then design the dataset slices and splits, pick a grader per property, and define the ship gate with counts and denominators."
+  ],
+  "rubric": {
+    "signals": [
+      "Breaks quality into named, severity-ranked properties instead of one holistic rating",
+      "Builds a versioned dataset with hard slices (no-decision meetings, reversed decisions, reassigned items, same-name attendees, transcription errors) and a held-out split",
+      "Uses code checks where possible (attendee names, date phrases, format) and narrow judge questions elsewhere, with judge evidence verified against the transcript",
+      "Calibrates the judge against human labels and names biases to watch, such as preferring longer text",
+      "Runs repeated trials per transcript and reports per-slice counts with denominators against the current production baseline",
+      "Closes the loop with online signals such as user edits and deleted action items feeding new cases"
+    ],
+    "followups": [
+      "Recall rises from 81% to 88% but unsupported claims rise from 0.5% to 0.9% of claims. Do you ship?",
+      "How do you keep the suite affordable if judging every claim separately costs ten times more than generation?",
+      "The judge model is upgraded. What must you rerun before trusting new results?",
+      "The product adds live summaries that update during the meeting. What new properties and cases do you need?"
+    ]
+  }
+}

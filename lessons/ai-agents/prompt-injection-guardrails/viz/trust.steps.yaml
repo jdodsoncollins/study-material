@@ -1,0 +1,10 @@
+title: trust
+steps:
+  - caption: "Instructions, the user's request, and untrusted text all arrive as tokens. The model cannot reliably tell them apart."
+    nodes: [sys, user, ext, model]
+  - caption: "Authority comes from the verified user and task scope, which the model cannot edit."
+    nodes: [scope, policy]
+  - caption: "The gate allows, asks, or refuses based on the tool and the data flow, not on how convincing the request sounds."
+    nodes: [proposal, policy, tool, confirm, deny]
+  - caption: "Check what leaves the system: links that could carry data, secrets, and malformed output."
+    nodes: [out, show]

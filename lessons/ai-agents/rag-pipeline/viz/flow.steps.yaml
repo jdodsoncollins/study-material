@@ -1,0 +1,10 @@
+title: flow
+steps:
+  - caption: "Chunking decides what can ever be retrieved. Keep headings, ACLs, and versions on each chunk."
+    nodes: [src, split, embed, store]
+  - caption: "Retrieval quality is its own metric: did the right chunk reach the top k for this user?"
+    nodes: [ask, fetch, rerank]
+  - caption: "Generation quality is separate: are the claims supported by the chunks that were supplied?"
+    nodes: [gen, cite]
+  - caption: "Weak or missing evidence ends in an explicit not-found path, not a fluent guess."
+    nodes: [answer, abstain]

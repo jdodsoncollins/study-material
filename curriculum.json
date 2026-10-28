@@ -242,6 +242,25 @@
       ]
     },
     {
+      "id": "model",
+      "label": "Model",
+      "blurb": "Tokens, vectors, prompts, and budgets before any loop.",
+      "units": [
+        {
+          "id": "tokens",
+          "title": "Tokens",
+          "track": "ai-agents",
+          "lessons": ["llm-basics", "prompting-structured-output", "cost-latency-budgets"]
+        },
+        {
+          "id": "recall",
+          "title": "Recall",
+          "track": "ai-agents",
+          "lessons": ["embeddings-vector-search", "rag-pipeline", "fine-tune-vs-prompt-vs-retrieve", "docs-assistant"]
+        }
+      ]
+    },
+    {
       "id": "harness",
       "label": "Harness",
       "blurb": "Models, execution environments, tools, and permissions.",
@@ -263,6 +282,12 @@
           "title": "Call",
           "track": "ai-agents",
           "lessons": ["tool-calling", "traces-trajectories", "outcome-vs-transcript", "graders"]
+        },
+        {
+          "id": "guard",
+          "title": "Guard",
+          "track": "ai-agents",
+          "lessons": ["prompt-injection-guardrails", "agent-memory-context", "tool-protocols", "review-agent"]
         }
       ]
     },
@@ -288,6 +313,18 @@
           "title": "Room",
           "track": "ai-agents",
           "lessons": ["agent-mistakes", "interview-ai-round"]
+        },
+        {
+          "id": "suite",
+          "title": "Suite",
+          "track": "ai-agents",
+          "lessons": ["summarizer-evals"]
+        },
+        {
+          "id": "pair",
+          "title": "Pair",
+          "track": "ai-agents",
+          "lessons": ["ai-pairing-interview"]
         }
       ]
     }
