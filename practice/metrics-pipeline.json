@@ -1,0 +1,22 @@
+{
+  "id": "metrics-pipeline",
+  "hints": [
+    "Hosts are not the unit of load here. What is?",
+    "This is a buffered ingest pipeline: edge agents, a durable partitioned log, time-series writers, rollup tiers, and cardinality limits.",
+    "Compute active series and samples per second, place the ack at the replicated ingest log, then decide what happens when someone adds a cart_id label."
+  ],
+  "rubric": {
+    "signals": [
+      "Sizes metrics from active series and scrape interval, and logs from bytes",
+      "Places durability at the replicated ingest log and frees agent buffers only after that ack",
+      "Stores rollups as count, sum, min, max and histogram buckets rather than averaged percentiles",
+      "Enforces per-tenant series limits that reject new series while keeping existing ones",
+      "Keeps alerting off the long-term storage path and monitors the pipeline independently"
+    ],
+    "followups": [
+      "The ingest log is down for 30 minutes. What do agents do and what do dashboards show?",
+      "A team needs per-customer latency for 50 large customers. How, without per-customer labels?",
+      "Logs are 80% of cost. What do you cut first?"
+    ]
+  }
+}

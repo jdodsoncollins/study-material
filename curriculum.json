@@ -15,6 +15,12 @@
           "lessons": ["big-o", "arrays-vs-linked-lists"]
         },
         {
+          "id": "sort-cost",
+          "title": "Sort",
+          "track": "cs",
+          "lessons": ["sorting-tradeoffs"]
+        },
+        {
           "id": "drill",
           "title": "Drill",
           "track": "algorithms",
@@ -38,6 +44,12 @@
           "title": "Squeeze",
           "track": "algorithms",
           "lessons": ["two-pointers", "three-sum", "tarp-span"]
+        },
+        {
+          "id": "bisect",
+          "title": "Bisect",
+          "track": "algorithms",
+          "lessons": ["binary-search"]
         }
       ]
     },
@@ -53,6 +65,12 @@
           "lessons": ["sliding-window", "longest-unique-window"]
         },
         {
+          "id": "running",
+          "title": "Running",
+          "track": "algorithms",
+          "lessons": ["prefix-sums"]
+        },
+        {
           "id": "stack",
           "title": "Stack",
           "track": "algorithms",
@@ -65,10 +83,22 @@
           "lessons": ["merge-intervals"]
         },
         {
+          "id": "book",
+          "title": "Book",
+          "track": "algorithms",
+          "lessons": ["insert-booking", "room-count"]
+        },
+        {
           "id": "chain",
           "title": "Chain",
           "track": "algorithms",
           "lessons": ["reverse-chain", "fast-slow-pointers", "aisle-loop"]
+        },
+        {
+          "id": "cover",
+          "title": "Cover",
+          "track": "algorithms",
+          "lessons": ["shortest-cover"]
         }
       ]
     },
@@ -82,6 +112,12 @@
           "title": "Keep k",
           "track": "algorithms",
           "lessons": ["heaps-top-k", "kth-largest", "lru-cache"]
+        },
+        {
+          "id": "merge",
+          "title": "Merge",
+          "track": "algorithms",
+          "lessons": ["merge-sorted-feeds", "running-median"]
         }
       ]
     },
@@ -103,10 +139,28 @@
           "lessons": ["recursion-call-stack"]
         },
         {
+          "id": "tree",
+          "title": "Tree",
+          "track": "algorithms",
+          "lessons": ["tree-dfs", "support-flow-depth", "ticket-bst-check", "split-point", "kth-latency", "tree-codec"]
+        },
+        {
           "id": "walk",
           "title": "Walk",
           "track": "algorithms",
           "lessons": ["bfs", "briefing-layers", "dfs-backtracking", "spare-subsets", "number-of-islands"]
+        },
+        {
+          "id": "trace",
+          "title": "Trace",
+          "track": "algorithms",
+          "lessons": ["clone-contacts", "grid-word"]
+        },
+        {
+          "id": "route",
+          "title": "Route",
+          "track": "algorithms",
+          "lessons": ["shortest-paths", "fanout-delay"]
         },
         {
           "id": "order",
@@ -138,6 +192,43 @@
           "title": "2-D",
           "track": "algorithms",
           "lessons": ["dp-2d", "desk-paths"]
+        },
+        {
+          "id": "sequence",
+          "title": "Sequence",
+          "track": "algorithms",
+          "lessons": ["others-product", "in-order-messages", "typo-distance"]
+        }
+      ]
+    },
+    {
+      "id": "choose",
+      "label": "Choose",
+      "blurb": "Commit to one move, flip a bit, branch and undo, or walk the grid.",
+      "units": [
+        {
+          "id": "commit",
+          "title": "Commit",
+          "track": "algorithms",
+          "lessons": ["greedy", "reach-last-page"]
+        },
+        {
+          "id": "bits",
+          "title": "Bits",
+          "track": "algorithms",
+          "lessons": ["bit-manipulation", "unpaired-id"]
+        },
+        {
+          "id": "branch",
+          "title": "Branch",
+          "track": "algorithms",
+          "lessons": ["playlist-orders", "exact-baskets"]
+        },
+        {
+          "id": "grid",
+          "title": "Grid",
+          "track": "algorithms",
+          "lessons": ["matrix-traversal", "spiral-read"]
         }
       ]
     },
@@ -153,16 +244,34 @@
           "lessons": ["os-memory", "processes-threads"]
         },
         {
+          "id": "heap-lines",
+          "title": "Lines",
+          "track": "cs",
+          "lessons": ["cpu-caches-locality", "garbage-collection"]
+        },
+        {
           "id": "pipe",
           "title": "Pipe",
           "track": "cs",
           "lessons": ["http-and-tcp", "dns-resolution"]
         },
         {
+          "id": "secure-pipe",
+          "title": "Secure",
+          "track": "cs",
+          "lessons": ["tls-https", "web-security-basics"]
+        },
+        {
           "id": "fetch",
           "title": "Fetch",
           "track": "cs",
           "lessons": ["file-download", "ranged-download", "chunk-retry", "request-budget"]
+        },
+        {
+          "id": "sql-query",
+          "title": "Query",
+          "track": "cs",
+          "lessons": ["sql-for-interviews"]
         },
         {
           "id": "lock",
@@ -190,6 +299,12 @@
           "lessons": ["interview-framework"]
         },
         {
+          "id": "size-it",
+          "title": "Size",
+          "track": "system-design",
+          "lessons": ["capacity-estimation", "api-design-pagination"]
+        },
+        {
           "id": "nearby",
           "title": "Nearby",
           "track": "system-design",
@@ -200,6 +315,12 @@
           "title": "Split",
           "track": "system-design",
           "lessons": ["queues-delivery", "cap-and-consistency", "sharding", "unique-ids"]
+        },
+        {
+          "id": "store-copy",
+          "title": "Store",
+          "track": "system-design",
+          "lessons": ["choosing-a-datastore", "replication-and-failover"]
         }
       ]
     },
@@ -208,6 +329,12 @@
       "label": "Box",
       "blurb": "Request paths, state, and failures in focused design cases.",
       "units": [
+        {
+          "id": "guard-edge",
+          "title": "Guard",
+          "track": "system-design",
+          "lessons": ["authn-authz", "cdn-edge-caching"]
+        },
         {
           "id": "lookup",
           "title": "Lookup",
@@ -219,6 +346,12 @@
           "title": "Edge",
           "track": "system-design",
           "lessons": ["rate-limiter", "notification-system", "job-scheduler", "payment-idempotency"]
+        },
+        {
+          "id": "hold",
+          "title": "Hold",
+          "track": "system-design",
+          "lessons": ["seat-holds", "leaderboard", "nearby-places"]
         }
       ]
     },
@@ -227,6 +360,12 @@
       "label": "Load",
       "blurb": "Fan-out, matching, scarce GPUs.",
       "units": [
+        {
+          "id": "stream-watch",
+          "title": "Stream",
+          "track": "system-design",
+          "lessons": ["event-streams-cdc", "observability-slos"]
+        },
         {
           "id": "fanout",
           "title": "Fan-out",
@@ -238,6 +377,44 @@
           "title": "Match",
           "track": "system-design",
           "lessons": ["ride-hailing", "llm-serving"]
+        }
+      ]
+    },
+    {
+      "id": "scale",
+      "label": "Scale",
+      "blurb": "Replicas, logs, and shared state when one box is not enough.",
+      "units": [
+        {
+          "id": "replicate",
+          "title": "Replicate",
+          "track": "system-design",
+          "lessons": ["kv-store", "message-queue", "metrics-pipeline"]
+        },
+        {
+          "id": "merge",
+          "title": "Merge",
+          "track": "system-design",
+          "lessons": ["doc-collab", "file-sync"]
+        }
+      ]
+    },
+    {
+      "id": "model",
+      "label": "Model",
+      "blurb": "Tokens, vectors, prompts, and budgets before any loop.",
+      "units": [
+        {
+          "id": "tokens",
+          "title": "Tokens",
+          "track": "ai-agents",
+          "lessons": ["llm-basics", "prompting-structured-output", "cost-latency-budgets"]
+        },
+        {
+          "id": "recall",
+          "title": "Recall",
+          "track": "ai-agents",
+          "lessons": ["embeddings-vector-search", "rag-pipeline", "fine-tune-vs-prompt-vs-retrieve", "docs-assistant"]
         }
       ]
     },
@@ -263,6 +440,12 @@
           "title": "Call",
           "track": "ai-agents",
           "lessons": ["tool-calling", "traces-trajectories", "outcome-vs-transcript", "graders"]
+        },
+        {
+          "id": "guard",
+          "title": "Guard",
+          "track": "ai-agents",
+          "lessons": ["prompt-injection-guardrails", "agent-memory-context", "tool-protocols", "review-agent"]
         }
       ]
     },
@@ -288,6 +471,55 @@
           "title": "Room",
           "track": "ai-agents",
           "lessons": ["agent-mistakes", "interview-ai-round"]
+        },
+        {
+          "id": "suite",
+          "title": "Suite",
+          "track": "ai-agents",
+          "lessons": ["summarizer-evals"]
+        },
+        {
+          "id": "pair",
+          "title": "Pair",
+          "track": "ai-agents",
+          "lessons": ["ai-pairing-interview"]
+        }
+      ]
+    },
+    {
+      "id": "story",
+      "label": "Story",
+      "blurb": "True work stories, told so the listener can score them.",
+      "units": [
+        {
+          "id": "bank",
+          "title": "Bank",
+          "track": "behavioral",
+          "lessons": ["story-bank", "behavioral-scoring"]
+        },
+        {
+          "id": "friction",
+          "title": "Friction",
+          "track": "behavioral",
+          "lessons": ["conflict-stories", "failure-stories"]
+        },
+        {
+          "id": "reach",
+          "title": "Reach",
+          "track": "behavioral",
+          "lessons": ["ownership-ambiguity", "influence-without-authority", "prioritization-deadlines"]
+        },
+        {
+          "id": "depth",
+          "title": "Depth",
+          "track": "behavioral",
+          "lessons": ["project-deep-dive"]
+        },
+        {
+          "id": "close",
+          "title": "Close",
+          "track": "behavioral",
+          "lessons": ["closing-questions"]
         }
       ]
     }

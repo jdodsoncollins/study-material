@@ -1,0 +1,24 @@
+{
+  "id": "llm-serving",
+  "hints": [
+    "Counting requests will not keep the GPU from running out of memory. What should admission count instead?",
+    "Budget memory as weights plus KV cache plus runtime headroom, admit by tokens, and schedule with continuous batching while watching prefill and decode separately.",
+    "Compute KV bytes per sequence with 2 x layers x KV heads x head dim x tokens x bytes, subtract weights and reserved memory from the device, and derive the sequence ceiling before discussing batching."
+  ],
+  "rubric": {
+    "signals": [
+      "Lists weights, KV cache, activations, workspaces, and fragmentation as separate memory consumers",
+      "Computes the KV formula correctly (4 GiB per 32k-token sequence in the example) and derives a concurrency ceiling",
+      "Admits by prompt and maximum output tokens with per-tenant token and concurrency budgets, and rejects promptly instead of queueing forever",
+      "Separates time to first token, inter-token latency, and queue delay, and explains prefill/decode interference",
+      "Labels throughput numbers as assumptions to benchmark, not demonstrated capability",
+      "Distinguishes reconnecting to a persisted response stream from starting a new stochastic generation"
+    ],
+    "followups": [
+      "Double the cached tokens in the example. What happens to KV memory per sequence?",
+      "Short requests slow down during large prefills. Which measurements separate queue delay, prefill, and decode?",
+      "A client reconnects after token event 120. What is the difference between replaying events and regenerating?",
+      "A cancellation arrives mid-decode. When can its KV memory be reclaimed?"
+    ]
+  }
+}

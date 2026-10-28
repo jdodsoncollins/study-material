@@ -1,0 +1,96 @@
+{
+  "id": "coin-change",
+  "entry": "fewestTokens",
+  "starter": "function fewestTokens(tokens: number[], amount: number): number {\n  // Fewest tokens that total amount, or -1 if impossible.\n  return 0;\n}\n\nconsole.log(fewestTokens([2,5,9], 13));\n",
+  "solution": "function fewestTokens(tokens: number[], amount: number): number {\n  const best = new Array(amount + 1).fill(Infinity);\n  best[0] = 0;\n  for (let a = 1; a <= amount; a++) {\n    for (const t of tokens) if (t <= a && best[a - t] + 1 < best[a]) best[a] = best[a - t] + 1;\n  }\n  return best[amount] === Infinity ? -1 : best[amount];\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "tram fare 13",
+      "args": [
+        [
+          2,
+          5,
+          9
+        ],
+        13
+      ],
+      "expected": 3
+    },
+    {
+      "name": "zero owed",
+      "args": [
+        [
+          2,
+          5,
+          9
+        ],
+        0
+      ],
+      "expected": 0
+    },
+    {
+      "name": "impossible",
+      "args": [
+        [
+          4,
+          6
+        ],
+        7
+      ],
+      "expected": -1
+    },
+    {
+      "name": "greedy fails",
+      "args": [
+        [
+          1,
+          3,
+          4
+        ],
+        6
+      ],
+      "expected": 2
+    },
+    {
+      "name": "single token",
+      "args": [
+        [
+          7
+        ],
+        21
+      ],
+      "expected": 3
+    },
+    {
+      "name": "bigger fare",
+      "args": [
+        [
+          2,
+          5,
+          9
+        ],
+        100
+      ],
+      "expected": 12
+    }
+  ],
+  "hints": [
+    "Taking the biggest token first can go wrong. Try tokens 1, 3, 4 for a fare of 6.",
+    "One-dimensional DP: the best answer for each smaller amount.",
+    "best[a] = 1 + min over tokens t ≤ a of best[a − t]; best[0] = 0, and Infinity means unreachable."
+  ],
+  "rubric": {
+    "signals": [
+      "Shows a counterexample to greedy",
+      "Defines the subproblem as fewest tokens for each amount",
+      "Handles unreachable amounts and amount 0",
+      "O(amount × tokens) time, O(amount) space"
+    ],
+    "followups": [
+      "Count the number of ways instead of the fewest tokens.",
+      "Each token may be used at most once.",
+      "Return which tokens to use, not just the count."
+    ]
+  }
+}

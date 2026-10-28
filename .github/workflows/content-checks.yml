@@ -12,3 +12,4 @@ jobs:
           node-version: '24'
       - run: node scripts/build-catalog.mjs
       - run: node scripts/check-examples.mjs
+      - run: node scripts/check-practice.mjs

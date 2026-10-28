@@ -1,0 +1,92 @@
+{
+  "id": "typo-distance",
+  "entry": "editDistance",
+  "starter": "function editDistance(typed: string, word: string): number {\n  // Fewest single-character inserts, deletes, and replacements to turn typed into word.\n  return 0;\n}\n\nconsole.log(editDistance(\"fecth\", \"fetch\"));\n",
+  "solution": "function editDistance(typed: string, word: string): number {\n  const m = typed.length, n = word.length;\n  let prev = Array.from({ length: n + 1 }, (_, j) => j);\n  for (let i = 1; i <= m; i++) {\n    const cur = [i];\n    for (let j = 1; j <= n; j++) {\n      if (typed[i - 1] === word[j - 1]) cur[j] = prev[j - 1];\n      else cur[j] = 1 + Math.min(prev[j - 1], prev[j], cur[j - 1]);\n    }\n    prev = cur;\n  }\n  return prev[n];\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "transposed letters",
+      "args": [
+        "fecth",
+        "fetch"
+      ],
+      "expected": 2
+    },
+    {
+      "name": "shared prefix",
+      "args": [
+        "stash",
+        "status"
+      ],
+      "expected": 3
+    },
+    {
+      "name": "build from nothing",
+      "args": [
+        "",
+        "push"
+      ],
+      "expected": 4
+    },
+    {
+      "name": "erase to nothing",
+      "args": [
+        "merge",
+        ""
+      ],
+      "expected": 5
+    },
+    {
+      "name": "both empty",
+      "args": [
+        "",
+        ""
+      ],
+      "expected": 0
+    },
+    {
+      "name": "identical",
+      "args": [
+        "rebase",
+        "rebase"
+      ],
+      "expected": 0
+    },
+    {
+      "name": "one insert",
+      "args": [
+        "pul",
+        "pull"
+      ],
+      "expected": 1
+    },
+    {
+      "name": "nothing in common",
+      "args": [
+        "abc",
+        "xyz"
+      ],
+      "expected": 3
+    }
+  ],
+  "hints": [
+    "Look only at the last letter of each string. If they differ, what are the three ways to make the ends agree?",
+    "Two-dimensional DP over prefix lengths: edit distance.",
+    "d[i][j] = d[i−1][j−1] if the letters match, else 1 + min(d[i−1][j−1], d[i−1][j], d[i][j−1]); seed d[0][j] = j and d[i][0] = i, answer d[m][n]."
+  ],
+  "rubric": {
+    "signals": [
+      "Defines the state as the cost between two prefixes",
+      "Names the three neighbors as replace, delete, and insert",
+      "Seeds the empty-prefix row and column correctly",
+      "Gives O(m · n) time and offers the two-row space optimization",
+      "Asks whether a swap of adjacent letters counts as one edit"
+    ],
+    "followups": [
+      "Count a swap of neighbors as one edit.",
+      "Suggest the closest command from a list of 200.",
+      "Print the actual edits, not just the count."
+    ]
+  }
+}

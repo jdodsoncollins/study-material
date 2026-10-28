@@ -1,0 +1,164 @@
+{
+  "id": "split-point",
+  "entry": "splitPointFrom",
+  "starter": "type TreeNode = { v: number; L: TreeNode | null; R: TreeNode | null };\n// Level-order array, null for a missing child.\nfunction buildTree(values: (number | null)[]): TreeNode | null {\n  if (!values.length || values[0] == null) return null;\n  const root: TreeNode = { v: values[0], L: null, R: null };\n  const q = [root];\n  let i = 1;\n  while (q.length && i < values.length) {\n    const cur = q.shift()!;\n    const l = values[i++];\n    if (l != null) { cur.L = { v: l, L: null, R: null }; q.push(cur.L); }\n    const r = values[i++];\n    if (r != null) { cur.R = { v: r, L: null, R: null }; q.push(cur.R); }\n  }\n  return root;\n}\n\nfunction splitPoint(root: TreeNode | null, a: number, b: number): number | null {\n  // Return the id of the deepest node whose subtree contains both a and b.\n  // Both ids are in the tree. A node counts as its own ancestor.\n  return null;\n}\n\nfunction splitPointFrom(values: (number | null)[], a: number, b: number): number | null {\n  return splitPoint(buildTree(values), a, b);\n}\n\nconsole.log(splitPointFrom([40, 18, 66, 9, 27, 51, 80, null, null, 22, 33], 22, 33));\n",
+  "solution": "type TreeNode = { v: number; L: TreeNode | null; R: TreeNode | null };\n// Level-order array, null for a missing child.\nfunction buildTree(values: (number | null)[]): TreeNode | null {\n  if (!values.length || values[0] == null) return null;\n  const root: TreeNode = { v: values[0], L: null, R: null };\n  const q = [root];\n  let i = 1;\n  while (q.length && i < values.length) {\n    const cur = q.shift()!;\n    const l = values[i++];\n    if (l != null) { cur.L = { v: l, L: null, R: null }; q.push(cur.L); }\n    const r = values[i++];\n    if (r != null) { cur.R = { v: r, L: null, R: null }; q.push(cur.R); }\n  }\n  return root;\n}\n\nfunction splitPoint(root: TreeNode | null, a: number, b: number): number | null {\n  const lo = Math.min(a, b), hi = Math.max(a, b);\n  let cur = root;\n  while (cur) {\n    if (hi < cur.v) cur = cur.L;\n    else if (lo > cur.v) cur = cur.R;\n    else return cur.v;\n  }\n  return null;\n}\n\nfunction splitPointFrom(values: (number | null)[], a: number, b: number): number | null {\n  return splitPoint(buildTree(values), a, b);\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "22 and 33 split at 27",
+      "args": [
+        [
+          40,
+          18,
+          66,
+          9,
+          27,
+          51,
+          80,
+          null,
+          null,
+          22,
+          33
+        ],
+        22,
+        33
+      ],
+      "expected": 27
+    },
+    {
+      "name": "9 and 33 split at 18",
+      "args": [
+        [
+          40,
+          18,
+          66,
+          9,
+          27,
+          51,
+          80,
+          null,
+          null,
+          22,
+          33
+        ],
+        9,
+        33
+      ],
+      "expected": 18
+    },
+    {
+      "name": "opposite sides of the root",
+      "args": [
+        [
+          40,
+          18,
+          66,
+          9,
+          27,
+          51,
+          80,
+          null,
+          null,
+          22,
+          33
+        ],
+        22,
+        80
+      ],
+      "expected": 40
+    },
+    {
+      "name": "one id is the ancestor",
+      "args": [
+        [
+          40,
+          18,
+          66,
+          9,
+          27,
+          51,
+          80,
+          null,
+          null,
+          22,
+          33
+        ],
+        27,
+        33
+      ],
+      "expected": 27
+    },
+    {
+      "name": "ids given in reverse order",
+      "args": [
+        [
+          40,
+          18,
+          66,
+          9,
+          27,
+          51,
+          80,
+          null,
+          null,
+          22,
+          33
+        ],
+        33,
+        22
+      ],
+      "expected": 27
+    },
+    {
+      "name": "same id twice",
+      "args": [
+        [
+          40,
+          18,
+          66,
+          9,
+          27,
+          51,
+          80,
+          null,
+          null,
+          22,
+          33
+        ],
+        51,
+        51
+      ],
+      "expected": 51
+    },
+    {
+      "name": "single node",
+      "args": [
+        [
+          5
+        ],
+        5,
+        5
+      ],
+      "expected": 5
+    }
+  ],
+  "hints": [
+    "At each node, compare it with both ids. When do the two lookups still agree on a direction?",
+    "Lowest common ancestor in a binary search tree: walk down using the ordering.",
+    "Let lo = min, hi = max. If hi < node go left; if lo > node go right; otherwise this node is the answer."
+  ],
+  "rubric": {
+    "signals": [
+      "Uses the BST ordering to walk one path instead of searching both subtrees",
+      "Handles the case where one id is the ancestor of the other",
+      "Normalizes the two ids so argument order does not matter",
+      "Gives O(h) time and O(1) space for the iterative walk"
+    ],
+    "followups": [
+      "The tree is no longer a search tree. How do you find the split point now, and what does it cost?",
+      "One of the ids might be missing. How do you detect that?",
+      "You will answer a million split-point queries on a fixed tree. What would you precompute?"
+    ]
+  }
+}

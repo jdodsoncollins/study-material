@@ -1,0 +1,10 @@
+title: Lookups for 22 and 33
+steps:
+  - caption: "At 40 both ids are smaller. Both lookups go left together."
+    nodes: [o40, o18]
+  - caption: "At 18 both ids are larger. Both go right together."
+    nodes: [o18, o27]
+  - caption: "At 27, 22 goes left and 33 goes right. 27 is the split point."
+    nodes: [o27, o22, o33]
+  - caption: "For 9 and 33 the split comes earlier: at 18, 9 goes left and 33 goes right."
+    nodes: [o18, o9, o27, o33]

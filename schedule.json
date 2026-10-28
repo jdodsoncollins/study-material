@@ -10,10 +10,22 @@
       "kind": "acquire",
       "blurb": "Name growth before you type.",
       "blocks": [
-        { "type": "read", "lesson": "big-o" },
-        { "type": "read", "lesson": "arrays-vs-linked-lists" },
-        { "type": "read", "lesson": "pattern-first-prep" },
-        { "type": "speak", "text": "Compare distinct-pair scanning with a set-based scan at n = 100,000. State time and memory assumptions." }
+        {
+          "type": "read",
+          "lesson": "big-o"
+        },
+        {
+          "type": "read",
+          "lesson": "arrays-vs-linked-lists"
+        },
+        {
+          "type": "read",
+          "lesson": "pattern-first-prep"
+        },
+        {
+          "type": "speak",
+          "text": "Compare distinct-pair scanning with a set-based scan at n = 100,000. State time and memory assumptions."
+        }
       ]
     },
     {
@@ -22,8 +34,14 @@
       "kind": "acquire",
       "blurb": "An index is a question you will ask later.",
       "blocks": [
-        { "type": "read", "lesson": "hashing-internals" },
-        { "type": "read", "lesson": "hash-maps" }
+        {
+          "type": "read",
+          "lesson": "hashing-internals"
+        },
+        {
+          "type": "read",
+          "lesson": "hash-maps"
+        }
       ]
     },
     {
@@ -32,9 +50,26 @@
       "kind": "drill",
       "blurb": "Close the solution. Walk the cart once.",
       "blocks": [
-        { "type": "attempt", "lesson": "two-sum", "minutes": 25 },
-        { "type": "read", "lesson": "two-sum", "after": "attempt" },
-        { "type": "read", "lesson": "group-anagrams" }
+        {
+          "type": "attempt",
+          "lesson": "two-sum",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "two-sum",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "group-anagrams",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "group-anagrams",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -43,8 +78,20 @@
       "kind": "acquire",
       "blurb": "Two indices, one invariant.",
       "blocks": [
-        { "type": "read", "lesson": "two-pointers" },
-        { "type": "read", "lesson": "three-sum" }
+        {
+          "type": "read",
+          "lesson": "two-pointers"
+        },
+        {
+          "type": "attempt",
+          "lesson": "three-sum",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "three-sum",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -53,8 +100,16 @@
       "kind": "drill",
       "blurb": "The water is between the pointers, not outside them.",
       "blocks": [
-        { "type": "attempt", "lesson": "tarp-span", "minutes": 25 },
-        { "type": "read", "lesson": "tarp-span", "after": "attempt" }
+        {
+          "type": "attempt",
+          "lesson": "tarp-span",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "tarp-span",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -70,13 +125,42 @@
       ]
     },
     {
+      "id": "day-mock-index",
+      "title": "Mock: Index",
+      "kind": "review",
+      "blurb": "A timed round on Index material. Talk first, then code or draw.",
+      "blocks": [
+        {
+          "type": "mock",
+          "lessons": ["three-sum", "tarp-span"],
+          "minutes": 45
+        },
+        {
+          "type": "speak",
+          "text": "Read the scorecard. Name the one rubric signal you missed and say how you would show it next time."
+        }
+      ]
+    },
+    {
       "id": "day-07",
       "title": "Stack",
       "kind": "acquire",
       "blurb": "What you still owe sits on top.",
       "blocks": [
-        { "type": "read", "lesson": "valid-brackets" },
-        { "type": "read", "lesson": "monotonic-stack" }
+        {
+          "type": "attempt",
+          "lesson": "valid-brackets",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "valid-brackets",
+          "after": "attempt"
+        },
+        {
+          "type": "read",
+          "lesson": "monotonic-stack"
+        }
       ]
     },
     {
@@ -85,9 +169,20 @@
       "kind": "drill",
       "blurb": "Waiters in a line. Then a different family: intervals.",
       "blocks": [
-        { "type": "attempt", "lesson": "next-hotter", "minutes": 25 },
-        { "type": "read", "lesson": "next-hotter", "after": "attempt" },
-        { "type": "read", "lesson": "merge-intervals" }
+        {
+          "type": "attempt",
+          "lesson": "next-hotter",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "next-hotter",
+          "after": "attempt"
+        },
+        {
+          "type": "read",
+          "lesson": "merge-intervals"
+        }
       ]
     },
     {
@@ -96,9 +191,40 @@
       "kind": "acquire",
       "blurb": "A live range. Grow, then shrink.",
       "blocks": [
-        { "type": "read", "lesson": "sliding-window" },
-        { "type": "attempt", "lesson": "longest-unique-window", "minutes": 25 },
-        { "type": "read", "lesson": "longest-unique-window", "after": "attempt" }
+        {
+          "type": "read",
+          "lesson": "sliding-window"
+        },
+        {
+          "type": "attempt",
+          "lesson": "longest-unique-window",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "longest-unique-window",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-01",
+      "title": "Bisect and tally",
+      "kind": "acquire",
+      "blurb": "Halve a sorted list. Then subtract two running totals.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "binary-search"
+        },
+        {
+          "type": "read",
+          "lesson": "prefix-sums"
+        },
+        {
+          "type": "speak",
+          "text": "Say the lower-bound invariant, then why negative values rule out a window."
+        }
       ]
     },
     {
@@ -107,8 +233,20 @@
       "kind": "acquire",
       "blurb": "Swing next. Then two speeds.",
       "blocks": [
-        { "type": "read", "lesson": "reverse-chain" },
-        { "type": "read", "lesson": "fast-slow-pointers" }
+        {
+          "type": "attempt",
+          "lesson": "reverse-chain",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "reverse-chain",
+          "after": "attempt"
+        },
+        {
+          "type": "read",
+          "lesson": "fast-slow-pointers"
+        }
       ]
     },
     {
@@ -117,9 +255,26 @@
       "kind": "drill",
       "blurb": "A cycle, then hash plus list.",
       "blocks": [
-        { "type": "attempt", "lesson": "aisle-loop", "minutes": 20 },
-        { "type": "read", "lesson": "aisle-loop", "after": "attempt" },
-        { "type": "read", "lesson": "lru-cache" }
+        {
+          "type": "attempt",
+          "lesson": "aisle-loop",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "aisle-loop",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "lru-cache",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "lru-cache",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -135,14 +290,141 @@
       ]
     },
     {
+      "id": "day-trees-02",
+      "title": "Calendar",
+      "kind": "drill",
+      "blurb": "Insert into sorted blocks. Then count the peak.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "insert-booking",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "insert-booking",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "room-count",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "room-count",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
       "id": "day-13",
       "title": "Keep k",
       "kind": "acquire",
       "blurb": "A tiny heap of the hottest.",
       "blocks": [
-        { "type": "read", "lesson": "heaps-top-k" },
-        { "type": "attempt", "lesson": "kth-largest", "minutes": 20 },
-        { "type": "read", "lesson": "kth-largest", "after": "attempt" }
+        {
+          "type": "read",
+          "lesson": "heaps-top-k"
+        },
+        {
+          "type": "attempt",
+          "lesson": "kth-largest",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "kth-largest",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-dp-01",
+      "title": "Merge feeds",
+      "kind": "drill",
+      "blurb": "One front per shard in a heap, then two heaps around the middle.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "merge-sorted-feeds",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "merge-sorted-feeds",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "running-median",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "running-median",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-mock-runtime",
+      "title": "Mock: Runtime",
+      "kind": "review",
+      "blurb": "A timed round on Runtime material. Talk first, then code or draw.",
+      "blocks": [
+        {
+          "type": "mock",
+          "lessons": ["merge-sorted-feeds", "running-median"],
+          "minutes": 45
+        },
+        {
+          "type": "speak",
+          "text": "Read the scorecard. Name the one rubric signal you missed and say how you would show it next time."
+        }
+      ]
+    },
+    {
+      "id": "day-dp-02",
+      "title": "Cover",
+      "kind": "drill",
+      "blurb": "Grow until valid, shrink while valid.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "shortest-cover",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "shortest-cover",
+          "after": "attempt"
+        },
+        {
+          "type": "read",
+          "lesson": "sliding-window"
+        },
+        {
+          "type": "speak",
+          "text": "Say how this window differs from the longest-unique window: when do you record, and which edge moves?"
+        }
+      ]
+    },
+    {
+      "id": "day-mock-window",
+      "title": "Mock: Window",
+      "kind": "review",
+      "blurb": "A timed round on Window material. Talk first, then code or draw.",
+      "blocks": [
+        {
+          "type": "mock",
+          "lessons": ["aisle-loop", "shortest-cover"],
+          "minutes": 45
+        },
+        {
+          "type": "speak",
+          "text": "Read the scorecard. Name the one rubric signal you missed and say how you would show it next time."
+        }
       ]
     },
     {
@@ -151,8 +433,92 @@
       "kind": "acquire",
       "blurb": "The call stack is a data structure. Then trees.",
       "blocks": [
-        { "type": "read", "lesson": "recursion-call-stack" },
-        { "type": "read", "lesson": "trees-graphs" }
+        {
+          "type": "read",
+          "lesson": "recursion-call-stack"
+        },
+        {
+          "type": "read",
+          "lesson": "trees-graphs"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-03",
+      "title": "Tree walks",
+      "kind": "acquire",
+      "blurb": "Pre, in, post. Then the deepest chain.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "tree-dfs"
+        },
+        {
+          "type": "attempt",
+          "lesson": "support-flow-depth",
+          "minutes": 15
+        },
+        {
+          "type": "read",
+          "lesson": "support-flow-depth",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-04",
+      "title": "Search tree",
+      "kind": "drill",
+      "blurb": "Fences from every ancestor. Then where two lookups part.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "ticket-bst-check",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "ticket-bst-check",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "split-point",
+          "minutes": 15
+        },
+        {
+          "type": "read",
+          "lesson": "split-point",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-05",
+      "title": "Rank and save",
+      "kind": "drill",
+      "blurb": "Stop inorder at k. Then write a tree down and read it back.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "kth-latency",
+          "minutes": 15
+        },
+        {
+          "type": "read",
+          "lesson": "kth-latency",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "tree-codec",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "tree-codec",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -161,8 +527,14 @@
       "kind": "acquire",
       "blurb": "Indexes, then breadth.",
       "blocks": [
-        { "type": "read", "lesson": "indexes" },
-        { "type": "read", "lesson": "bfs" }
+        {
+          "type": "read",
+          "lesson": "indexes"
+        },
+        {
+          "type": "read",
+          "lesson": "bfs"
+        }
       ]
     },
     {
@@ -171,8 +543,16 @@
       "kind": "drill",
       "blurb": "One layer at a time.",
       "blocks": [
-        { "type": "attempt", "lesson": "briefing-layers", "minutes": 25 },
-        { "type": "read", "lesson": "briefing-layers", "after": "attempt" }
+        {
+          "type": "attempt",
+          "lesson": "briefing-layers",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "briefing-layers",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -181,8 +561,20 @@
       "kind": "acquire",
       "blurb": "Go in, undo, try the other branch.",
       "blocks": [
-        { "type": "read", "lesson": "dfs-backtracking" },
-        { "type": "read", "lesson": "spare-subsets" }
+        {
+          "type": "read",
+          "lesson": "dfs-backtracking"
+        },
+        {
+          "type": "attempt",
+          "lesson": "spare-subsets",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "spare-subsets",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -203,8 +595,82 @@
       "kind": "drill",
       "blurb": "Flood a component. Count how many you started.",
       "blocks": [
-        { "type": "attempt", "lesson": "number-of-islands", "minutes": 25 },
-        { "type": "read", "lesson": "number-of-islands", "after": "attempt" }
+        {
+          "type": "attempt",
+          "lesson": "number-of-islands",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "number-of-islands",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-06",
+      "title": "Copy and trace",
+      "kind": "drill",
+      "blurb": "A map stops cycles. Unmark on the way out.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "clone-contacts",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "clone-contacts",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "grid-word",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "grid-word",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-07",
+      "title": "Weighted",
+      "kind": "acquire",
+      "blurb": "Settle the closest node next. Then take the max.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "shortest-paths"
+        },
+        {
+          "type": "attempt",
+          "lesson": "fanout-delay",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "fanout-delay",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-08",
+      "title": "Branch mix",
+      "kind": "review",
+      "blurb": "No labels. Trees, routes, calendars, and a sorted lookup.",
+      "blocks": [
+        {
+          "type": "mixed",
+          "lessons": ["ticket-bst-check", "fanout-delay", "room-count", "grid-word", "binary-search"]
+        },
+        {
+          "type": "speak",
+          "text": "For each prompt, name the traversal or sweep before you write a line."
+        }
       ]
     },
     {
@@ -213,9 +679,20 @@
       "kind": "acquire",
       "blurb": "Emit available prerequisites and check whether every node can be ordered.",
       "blocks": [
-        { "type": "read", "lesson": "topological-sort" },
-        { "type": "attempt", "lesson": "course-order", "minutes": 25 },
-        { "type": "read", "lesson": "course-order", "after": "attempt" }
+        {
+          "type": "read",
+          "lesson": "topological-sort"
+        },
+        {
+          "type": "attempt",
+          "lesson": "course-order",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "course-order",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -224,8 +701,14 @@
       "kind": "acquire",
       "blurb": "Union-find, then a prefix tree.",
       "blocks": [
-        { "type": "read", "lesson": "union-find" },
-        { "type": "read", "lesson": "trie" }
+        {
+          "type": "read",
+          "lesson": "union-find"
+        },
+        {
+          "type": "read",
+          "lesson": "trie"
+        }
       ]
     },
     {
@@ -234,9 +717,37 @@
       "kind": "acquire",
       "blurb": "Binary search on the answer, then a rotated index.",
       "blocks": [
-        { "type": "read", "lesson": "binary-search-on-answer" },
-        { "type": "attempt", "lesson": "rotated-index", "minutes": 25 },
-        { "type": "read", "lesson": "rotated-index", "after": "attempt" }
+        {
+          "type": "read",
+          "lesson": "binary-search-on-answer"
+        },
+        {
+          "type": "attempt",
+          "lesson": "rotated-index",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "rotated-index",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-mock-graph",
+      "title": "Mock: Graph",
+      "kind": "review",
+      "blurb": "A timed round on Graph material. Talk first, then code or draw.",
+      "blocks": [
+        {
+          "type": "mock",
+          "lessons": ["course-order", "rotated-index"],
+          "minutes": 45
+        },
+        {
+          "type": "speak",
+          "text": "Read the scorecard. Name the one rubric signal you missed and say how you would show it next time."
+        }
       ]
     },
     {
@@ -245,9 +756,20 @@
       "kind": "acquire",
       "blurb": "Yesterday's best is today's input.",
       "blocks": [
-        { "type": "read", "lesson": "dp-1d" },
-        { "type": "attempt", "lesson": "one-trade", "minutes": 20 },
-        { "type": "read", "lesson": "one-trade", "after": "attempt" }
+        {
+          "type": "read",
+          "lesson": "dp-1d"
+        },
+        {
+          "type": "attempt",
+          "lesson": "one-trade",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "one-trade",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -268,9 +790,26 @@
       "kind": "drill",
       "blurb": "Make the amount. Then choose nonadjacent items.",
       "blocks": [
-        { "type": "attempt", "lesson": "coin-change", "minutes": 25 },
-        { "type": "read", "lesson": "coin-change", "after": "attempt" },
-        { "type": "read", "lesson": "skip-bay" }
+        {
+          "type": "attempt",
+          "lesson": "coin-change",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "coin-change",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "skip-bay",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "skip-bay",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -279,9 +818,230 @@
       "kind": "acquire",
       "blurb": "A cell is two answers glued together.",
       "blocks": [
-        { "type": "read", "lesson": "dp-2d" },
-        { "type": "attempt", "lesson": "desk-paths", "minutes": 20 },
-        { "type": "read", "lesson": "desk-paths", "after": "attempt" }
+        {
+          "type": "read",
+          "lesson": "dp-2d"
+        },
+        {
+          "type": "attempt",
+          "lesson": "desk-paths",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "desk-paths",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-dp-03",
+      "title": "Prefix and piles",
+      "kind": "drill",
+      "blurb": "Left times right, then the longest rising chain.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "others-product",
+          "minutes": 15
+        },
+        {
+          "type": "read",
+          "lesson": "others-product",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "in-order-messages",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "in-order-messages",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-dp-04",
+      "title": "Edit table",
+      "kind": "drill",
+      "blurb": "Three arrows into one cell.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "dp-2d"
+        },
+        {
+          "type": "attempt",
+          "lesson": "typo-distance",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "typo-distance",
+          "after": "attempt"
+        },
+        {
+          "type": "speak",
+          "text": "Fill the first three rows of the fecth/fetch table out loud, naming replace, delete, or insert for each cell."
+        }
+      ]
+    },
+    {
+      "id": "day-mock-reuse",
+      "title": "Mock: Reuse",
+      "kind": "review",
+      "blurb": "A timed round on Reuse material. Talk first, then code or draw.",
+      "blocks": [
+        {
+          "type": "mock",
+          "lessons": ["in-order-messages", "typo-distance"],
+          "minutes": 45
+        },
+        {
+          "type": "speak",
+          "text": "Read the scorecard. Name the one rubric signal you missed and say how you would show it next time."
+        }
+      ]
+    },
+    {
+      "id": "day-dp-05",
+      "title": "Commit",
+      "kind": "acquire",
+      "blurb": "Greedy needs a proof; the frontier scan has one.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "greedy"
+        },
+        {
+          "type": "attempt",
+          "lesson": "reach-last-page",
+          "minutes": 15
+        },
+        {
+          "type": "read",
+          "lesson": "reach-last-page",
+          "after": "attempt"
+        },
+        {
+          "type": "speak",
+          "text": "Give a three-meeting counterexample to shortest-meeting-first, then the exchange argument for earliest end."
+        }
+      ]
+    },
+    {
+      "id": "day-dp-06",
+      "title": "Bits",
+      "kind": "acquire",
+      "blurb": "Masks, xor, and the 32-bit edge.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "bit-manipulation"
+        },
+        {
+          "type": "attempt",
+          "lesson": "unpaired-id",
+          "minutes": 10
+        },
+        {
+          "type": "read",
+          "lesson": "unpaired-id",
+          "after": "attempt"
+        },
+        {
+          "type": "speak",
+          "text": "Explain why 1 << 32 is 1 in JavaScript and what you would use for a 40-flag mask."
+        }
+      ]
+    },
+    {
+      "id": "day-dp-07",
+      "title": "Branch",
+      "kind": "drill",
+      "blurb": "Which item goes in this slot; then which items, with reuse.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "playlist-orders",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "playlist-orders",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "exact-baskets",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "exact-baskets",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-dp-08",
+      "title": "Grid",
+      "kind": "acquire",
+      "blurb": "Bounds, directions, layers.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "matrix-traversal"
+        },
+        {
+          "type": "attempt",
+          "lesson": "spiral-read",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "spiral-read",
+          "after": "attempt"
+        },
+        {
+          "type": "speak",
+          "text": "Rotate a 4 by 4 grid of 1 to 16 on paper, one four-cycle at a time."
+        }
+      ]
+    },
+    {
+      "id": "day-dp-09",
+      "title": "Choose mix",
+      "kind": "review",
+      "blurb": "Four unlabeled prompts. Name the pattern before you code.",
+      "blocks": [
+        {
+          "type": "mixed",
+          "lessons": ["running-median", "typo-distance", "reach-last-page", "exact-baskets"]
+        },
+        {
+          "type": "speak",
+          "text": "For each prompt, say in one sentence why greedy does or does not work."
+        }
+      ]
+    },
+    {
+      "id": "day-mock-choose",
+      "title": "Mock: Choose",
+      "kind": "review",
+      "blurb": "A timed round on Choose material. Talk first, then code or draw.",
+      "blocks": [
+        {
+          "type": "mock",
+          "lessons": ["exact-baskets", "spiral-read"],
+          "minutes": 45
+        },
+        {
+          "type": "speak",
+          "text": "Read the scorecard. Name the one rubric signal you missed and say how you would show it next time."
+        }
       ]
     },
     {
@@ -290,8 +1050,14 @@
       "kind": "acquire",
       "blurb": "TCP, then the phone book of the internet.",
       "blocks": [
-        { "type": "read", "lesson": "http-and-tcp" },
-        { "type": "read", "lesson": "dns-resolution" }
+        {
+          "type": "read",
+          "lesson": "http-and-tcp"
+        },
+        {
+          "type": "read",
+          "lesson": "dns-resolution"
+        }
       ]
     },
     {
@@ -300,8 +1066,14 @@
       "kind": "acquire",
       "blurb": "One file, then the same file as ranges.",
       "blocks": [
-        { "type": "read", "lesson": "file-download" },
-        { "type": "read", "lesson": "ranged-download" }
+        {
+          "type": "read",
+          "lesson": "file-download"
+        },
+        {
+          "type": "read",
+          "lesson": "ranged-download"
+        }
       ]
     },
     {
@@ -310,8 +1082,14 @@
       "kind": "drill",
       "blurb": "Retry the dead slice. Cap how many slices run.",
       "blocks": [
-        { "type": "read", "lesson": "chunk-retry" },
-        { "type": "read", "lesson": "request-budget" }
+        {
+          "type": "read",
+          "lesson": "chunk-retry"
+        },
+        {
+          "type": "read",
+          "lesson": "request-budget"
+        }
       ]
     },
     {
@@ -320,8 +1098,36 @@
       "kind": "acquire",
       "blurb": "What the OS is doing while your loop runs.",
       "blocks": [
-        { "type": "read", "lesson": "os-memory" },
-        { "type": "read", "lesson": "processes-threads" }
+        {
+          "type": "read",
+          "lesson": "os-memory"
+        },
+        {
+          "type": "read",
+          "lesson": "processes-threads"
+        }
+      ]
+    },
+    {
+      "id": "day-found-01",
+      "title": "Sort and lines",
+      "kind": "acquire",
+      "blurb": "Stability and worst case, then why access order matters.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "sorting-tradeoffs",
+          "minutes": 16
+        },
+        {
+          "type": "read",
+          "lesson": "cpu-caches-locality",
+          "minutes": 15
+        },
+        {
+          "type": "speak",
+          "text": "Say why quicksort is not stable and when counting sort wins."
+        }
       ]
     },
     {
@@ -330,8 +1136,14 @@
       "kind": "acquire",
       "blurb": "Locks, then the isolation story.",
       "blocks": [
-        { "type": "read", "lesson": "locks-and-concurrency" },
-        { "type": "read", "lesson": "transactions-isolation" }
+        {
+          "type": "read",
+          "lesson": "locks-and-concurrency"
+        },
+        {
+          "type": "read",
+          "lesson": "transactions-isolation"
+        }
       ]
     },
     {
@@ -340,8 +1152,14 @@
       "kind": "acquire",
       "blurb": "Optional kernel: floats and unicode.",
       "blocks": [
-        { "type": "read", "lesson": "floating-point" },
-        { "type": "read", "lesson": "encoding-unicode" }
+        {
+          "type": "read",
+          "lesson": "floating-point"
+        },
+        {
+          "type": "read",
+          "lesson": "encoding-unicode"
+        }
       ]
     },
     {
@@ -357,12 +1175,81 @@
       ]
     },
     {
+      "id": "day-found-02",
+      "title": "Heap and query",
+      "kind": "acquire",
+      "blurb": "Reachability, then joins and windows.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "garbage-collection",
+          "minutes": 15
+        },
+        {
+          "type": "read",
+          "lesson": "sql-for-interviews",
+          "minutes": 18
+        },
+        {
+          "type": "speak",
+          "text": "Explain why COUNT(*) after a LEFT JOIN counts a user with no orders as 1."
+        }
+      ]
+    },
+    {
+      "id": "day-found-03",
+      "title": "Secure pipe",
+      "kind": "acquire",
+      "blurb": "What TLS covers, then what the browser enforces.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "tls-https",
+          "minutes": 16
+        },
+        {
+          "type": "read",
+          "lesson": "web-security-basics",
+          "minutes": 18
+        },
+        {
+          "type": "speak",
+          "text": "Say which rule stops CSRF and which rule controls reading a response."
+        }
+      ]
+    },
+    {
       "id": "day-32",
       "title": "Round",
       "kind": "acquire",
       "blurb": "Forty-five minutes is a navigation problem.",
       "blocks": [
-        { "type": "read", "lesson": "interview-framework" }
+        {
+          "type": "read",
+          "lesson": "interview-framework"
+        }
+      ]
+    },
+    {
+      "id": "day-found-04",
+      "title": "Size and contract",
+      "kind": "acquire",
+      "blurb": "Numbers that pick the design, then the API that holds it.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "capacity-estimation",
+          "minutes": 14
+        },
+        {
+          "type": "read",
+          "lesson": "api-design-pagination",
+          "minutes": 16
+        },
+        {
+          "type": "speak",
+          "text": "Turn 30 million users and 12 actions each into a peak rate out loud."
+        }
       ]
     },
     {
@@ -371,8 +1258,14 @@
       "kind": "acquire",
       "blurb": "Cache and the box that spreads load.",
       "blocks": [
-        { "type": "read", "lesson": "caching" },
-        { "type": "read", "lesson": "load-balancing" }
+        {
+          "type": "read",
+          "lesson": "caching"
+        },
+        {
+          "type": "read",
+          "lesson": "load-balancing"
+        }
       ]
     },
     {
@@ -381,8 +1274,14 @@
       "kind": "acquire",
       "blurb": "Queues and the consistency you actually bought.",
       "blocks": [
-        { "type": "read", "lesson": "queues-delivery" },
-        { "type": "read", "lesson": "cap-and-consistency" }
+        {
+          "type": "read",
+          "lesson": "queues-delivery"
+        },
+        {
+          "type": "read",
+          "lesson": "cap-and-consistency"
+        }
       ]
     },
     {
@@ -391,8 +1290,14 @@
       "kind": "acquire",
       "blurb": "Shard the keyspace. Mint unique ids.",
       "blocks": [
-        { "type": "read", "lesson": "sharding" },
-        { "type": "read", "lesson": "unique-ids" }
+        {
+          "type": "read",
+          "lesson": "sharding"
+        },
+        {
+          "type": "read",
+          "lesson": "unique-ids"
+        }
       ]
     },
     {
@@ -401,8 +1306,16 @@
       "kind": "drill",
       "blurb": "Blank page first. Then open the case.",
       "blocks": [
-        { "type": "redraw", "lesson": "url-shortener", "minutes": 20 },
-        { "type": "read", "lesson": "url-shortener", "after": "attempt" }
+        {
+          "type": "redraw",
+          "lesson": "url-shortener",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "url-shortener",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -423,8 +1336,14 @@
       "kind": "acquire",
       "blurb": "Autocomplete and flags.",
       "blocks": [
-        { "type": "read", "lesson": "search-autocomplete" },
-        { "type": "read", "lesson": "feature-flags" }
+        {
+          "type": "read",
+          "lesson": "search-autocomplete"
+        },
+        {
+          "type": "read",
+          "lesson": "feature-flags"
+        }
       ]
     },
     {
@@ -433,8 +1352,14 @@
       "kind": "acquire",
       "blurb": "Rate limits and notifications.",
       "blocks": [
-        { "type": "read", "lesson": "rate-limiter" },
-        { "type": "read", "lesson": "notification-system" }
+        {
+          "type": "read",
+          "lesson": "rate-limiter"
+        },
+        {
+          "type": "read",
+          "lesson": "notification-system"
+        }
       ]
     },
     {
@@ -443,8 +1368,127 @@
       "kind": "acquire",
       "blurb": "Leases, then idempotent pay.",
       "blocks": [
-        { "type": "read", "lesson": "job-scheduler" },
-        { "type": "read", "lesson": "payment-idempotency" }
+        {
+          "type": "read",
+          "lesson": "job-scheduler"
+        },
+        {
+          "type": "read",
+          "lesson": "payment-idempotency"
+        }
+      ]
+    },
+    {
+      "id": "day-found-05",
+      "title": "Retries on paper",
+      "kind": "drill",
+      "blurb": "Blank page first. Idempotency and budgets.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "payment-idempotency",
+          "minutes": 22
+        },
+        {
+          "type": "redraw",
+          "lesson": "rate-limiter",
+          "minutes": 22
+        },
+        {
+          "type": "speak",
+          "text": "Name the atomic step in each design."
+        }
+      ]
+    },
+    {
+      "id": "day-found-06",
+      "title": "Copies and stores",
+      "kind": "acquire",
+      "blurb": "Pick a store, then decide who may write.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "choosing-a-datastore",
+          "minutes": 18
+        },
+        {
+          "type": "read",
+          "lesson": "replication-and-failover",
+          "minutes": 18
+        },
+        {
+          "type": "speak",
+          "text": "Say what an acknowledgement waits for and what survives a failover."
+        }
+      ]
+    },
+    {
+      "id": "day-cases-01",
+      "title": "Seat holds",
+      "kind": "drill",
+      "blurb": "Blank page: two shoppers, one seat, one late payment.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "seat-holds",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "seat-holds",
+          "after": "attempt",
+          "minutes": 20
+        },
+        {
+          "type": "speak",
+          "text": "Say what happens when the charge succeeds after the hold expired."
+        }
+      ]
+    },
+    {
+      "id": "day-cases-02",
+      "title": "Leaderboard",
+      "kind": "drill",
+      "blurb": "Do the memory math before you shard.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "leaderboard",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "leaderboard",
+          "after": "attempt",
+          "minutes": 20
+        },
+        {
+          "type": "speak",
+          "text": "Say why the sorted set is not the source of truth."
+        }
+      ]
+    },
+    {
+      "id": "day-cases-03",
+      "title": "Nearby",
+      "kind": "drill",
+      "blurb": "Grid the map, then find the edge case.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "nearby-places",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "nearby-places",
+          "after": "attempt",
+          "minutes": 20
+        },
+        {
+          "type": "speak",
+          "text": "Say how many cells a 1 km query reads at the equator, and why more at 60 degrees north."
+        }
       ]
     },
     {
@@ -453,8 +1497,16 @@
       "kind": "drill",
       "blurb": "Draw fan-out before you read it.",
       "blocks": [
-        { "type": "redraw", "lesson": "news-feed", "minutes": 25 },
-        { "type": "read", "lesson": "news-feed", "after": "attempt" }
+        {
+          "type": "redraw",
+          "lesson": "news-feed",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "news-feed",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -463,8 +1515,14 @@
       "kind": "acquire",
       "blurb": "Delivery, then immutable bytes.",
       "blocks": [
-        { "type": "read", "lesson": "chat-system" },
-        { "type": "read", "lesson": "blob-store" }
+        {
+          "type": "read",
+          "lesson": "chat-system"
+        },
+        {
+          "type": "read",
+          "lesson": "blob-store"
+        }
       ]
     },
     {
@@ -485,8 +1543,146 @@
       "kind": "acquire",
       "blurb": "ABR, then a crawler.",
       "blocks": [
-        { "type": "read", "lesson": "video-streaming" },
-        { "type": "read", "lesson": "catalog-crawler" }
+        {
+          "type": "read",
+          "lesson": "video-streaming"
+        },
+        {
+          "type": "read",
+          "lesson": "catalog-crawler"
+        }
+      ]
+    },
+    {
+      "id": "day-found-07",
+      "title": "Order and leases",
+      "kind": "drill",
+      "blurb": "Sequences, cursors, and stale workers.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "chat-system",
+          "minutes": 22
+        },
+        {
+          "type": "redraw",
+          "lesson": "job-scheduler",
+          "minutes": 22
+        },
+        {
+          "type": "speak",
+          "text": "Say where fencing is enforced in each design."
+        }
+      ]
+    },
+    {
+      "id": "day-found-08",
+      "title": "Guard and edge",
+      "kind": "acquire",
+      "blurb": "Identity and access, then caches near users.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "authn-authz",
+          "minutes": 18
+        },
+        {
+          "type": "read",
+          "lesson": "cdn-edge-caching",
+          "minutes": 16
+        },
+        {
+          "type": "speak",
+          "text": "Say why an API should not accept an ID token."
+        }
+      ]
+    },
+    {
+      "id": "day-found-09",
+      "title": "Lookup redraw",
+      "kind": "drill",
+      "blurb": "Flags and suggestions, closed book.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "feature-flags",
+          "minutes": 22
+        },
+        {
+          "type": "redraw",
+          "lesson": "search-autocomplete",
+          "minutes": 22
+        },
+        {
+          "type": "speak",
+          "text": "State the staleness policy you chose for each."
+        }
+      ]
+    },
+    {
+      "id": "day-found-10",
+      "title": "Stream and watch",
+      "kind": "acquire",
+      "blurb": "Partitioned logs, then how you know it works.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "event-streams-cdc",
+          "minutes": 18
+        },
+        {
+          "type": "read",
+          "lesson": "observability-slos",
+          "minutes": 16
+        },
+        {
+          "type": "speak",
+          "text": "Compute the error budget for 99.9% over 30 days out loud."
+        }
+      ]
+    },
+    {
+      "id": "day-found-11",
+      "title": "Fan out",
+      "kind": "drill",
+      "blurb": "Channels and renditions, closed book.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "notification-system",
+          "minutes": 22
+        },
+        {
+          "type": "redraw",
+          "lesson": "video-streaming",
+          "minutes": 22
+        },
+        {
+          "type": "speak",
+          "text": "Separate accepted from delivered, and segment from manifest."
+        }
+      ]
+    },
+    {
+      "id": "day-found-12",
+      "title": "Bytes and hosts",
+      "kind": "drill",
+      "blurb": "Multipart objects and a polite crawl.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "blob-store",
+          "minutes": 22
+        },
+        {
+          "type": "redraw",
+          "lesson": "catalog-crawler",
+          "minutes": 22
+        },
+        {
+          "type": "speak",
+          "text": "Say what makes an object complete and what limits the crawl's finish time."
+        }
       ]
     },
     {
@@ -495,8 +1691,16 @@
       "kind": "drill",
       "blurb": "Blank page: riders and cars.",
       "blocks": [
-        { "type": "redraw", "lesson": "ride-hailing", "minutes": 25 },
-        { "type": "read", "lesson": "ride-hailing", "after": "attempt" }
+        {
+          "type": "redraw",
+          "lesson": "ride-hailing",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "ride-hailing",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -505,7 +1709,216 @@
       "kind": "acquire",
       "blurb": "Batch the scarce thing.",
       "blocks": [
-        { "type": "read", "lesson": "llm-serving" }
+        {
+          "type": "read",
+          "lesson": "llm-serving"
+        }
+      ]
+    },
+    {
+      "id": "day-cases-04",
+      "title": "Quorums",
+      "kind": "drill",
+      "blurb": "Three replicas, two acks, one node down.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "kv-store",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "kv-store",
+          "after": "attempt",
+          "minutes": 20
+        },
+        {
+          "type": "speak",
+          "text": "Say which failure makes R + W > N stop meaning overlap."
+        }
+      ]
+    },
+    {
+      "id": "day-cases-05",
+      "title": "Offsets",
+      "kind": "drill",
+      "blurb": "Two commits: the message and the bookmark.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "message-queue",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "message-queue",
+          "after": "attempt",
+          "minutes": 20
+        },
+        {
+          "type": "speak",
+          "text": "Say what a crash between processing and committing the offset causes."
+        }
+      ]
+    },
+    {
+      "id": "day-cases-06",
+      "title": "Telemetry",
+      "kind": "drill",
+      "blurb": "Count series, not hosts.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "metrics-pipeline",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "metrics-pipeline",
+          "after": "attempt",
+          "minutes": 20
+        },
+        {
+          "type": "speak",
+          "text": "Say how many series one cart_id label adds to a 12-bucket histogram."
+        }
+      ]
+    },
+    {
+      "id": "day-cases-07",
+      "title": "Co-editing",
+      "kind": "drill",
+      "blurb": "Two cursors, one sentence, a laptop on a plane.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "doc-collab",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "doc-collab",
+          "after": "attempt",
+          "minutes": 20
+        },
+        {
+          "type": "speak",
+          "text": "Say where an edit becomes durable and why presence never reaches the log."
+        }
+      ]
+    },
+    {
+      "id": "day-cases-08",
+      "title": "File sync",
+      "kind": "drill",
+      "blurb": "Chunks, a journal, and a conflict copy.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "file-sync",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "file-sync",
+          "after": "attempt",
+          "minutes": 20
+        },
+        {
+          "type": "speak",
+          "text": "Say what the parent-version check prevents."
+        }
+      ]
+    },
+    {
+      "id": "day-cases-09",
+      "title": "Scale mix",
+      "kind": "review",
+      "blurb": "One sitting. Four unlabeled cases from this stretch.",
+      "blocks": [
+        {
+          "type": "mixed",
+          "lessons": ["seat-holds", "kv-store", "message-queue", "file-sync"]
+        }
+      ]
+    },
+    {
+      "id": "day-mock-scale",
+      "title": "Mock: Scale",
+      "kind": "review",
+      "blurb": "A timed round on Scale material. Talk first, then code or draw.",
+      "blocks": [
+        {
+          "type": "mock",
+          "lessons": ["doc-collab", "file-sync"],
+          "minutes": 45
+        },
+        {
+          "type": "speak",
+          "text": "Read the scorecard. Name the one rubric signal you missed and say how you would show it next time."
+        }
+      ]
+    },
+    {
+      "id": "day-ai-01",
+      "title": "Tokens",
+      "kind": "acquire",
+      "blurb": "One model call, structure out of it, then the token math.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "llm-basics"
+        },
+        {
+          "type": "read",
+          "lesson": "prompting-structured-output"
+        },
+        {
+          "type": "read",
+          "lesson": "cost-latency-budgets"
+        },
+        {
+          "type": "speak",
+          "text": "Explain why temperature 0 still does not promise the same answer twice."
+        }
+      ]
+    },
+    {
+      "id": "day-ai-02",
+      "title": "Vectors",
+      "kind": "acquire",
+      "blurb": "Similarity and filters, a pipeline you can evaluate, then when to tune instead.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "embeddings-vector-search"
+        },
+        {
+          "type": "read",
+          "lesson": "rag-pipeline"
+        },
+        {
+          "type": "read",
+          "lesson": "fine-tune-vs-prompt-vs-retrieve"
+        }
+      ]
+    },
+    {
+      "id": "day-ai-03",
+      "title": "Docs desk",
+      "kind": "drill",
+      "blurb": "Blank page: a cited assistant over permissioned docs.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "docs-assistant",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "docs-assistant",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -514,8 +1927,14 @@
       "kind": "acquire",
       "blurb": "A chat assistant, then retrieval and adaptive workflows.",
       "blocks": [
-        { "type": "read", "lesson": "desk-bot" },
-        { "type": "read", "lesson": "rag-vs-agents" }
+        {
+          "type": "read",
+          "lesson": "desk-bot"
+        },
+        {
+          "type": "read",
+          "lesson": "rag-vs-agents"
+        }
       ]
     },
     {
@@ -524,9 +1943,18 @@
       "kind": "acquire",
       "blurb": "The loop you write versus the loop you rent.",
       "blocks": [
-        { "type": "read", "lesson": "eval-harness-vs-agent-harness" },
-        { "type": "read", "lesson": "vendor-vs-user-harness" },
-        { "type": "read", "lesson": "tool-calling" }
+        {
+          "type": "read",
+          "lesson": "eval-harness-vs-agent-harness"
+        },
+        {
+          "type": "read",
+          "lesson": "vendor-vs-user-harness"
+        },
+        {
+          "type": "read",
+          "lesson": "tool-calling"
+        }
       ]
     },
     {
@@ -542,14 +1970,100 @@
       ]
     },
     {
+      "id": "day-found-13",
+      "title": "Scarce and slow",
+      "kind": "drill",
+      "blurb": "GPU memory and a slow chat agent.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "llm-serving",
+          "minutes": 22
+        },
+        {
+          "type": "redraw",
+          "lesson": "desk-bot",
+          "minutes": 22
+        },
+        {
+          "type": "speak",
+          "text": "Say what admission counts in each design."
+        }
+      ]
+    },
+    {
+      "id": "day-found-14",
+      "title": "Foundations mock",
+      "kind": "review",
+      "blurb": "One timed case, then the blocks unlabeled.",
+      "blocks": [
+        {
+          "type": "mock",
+          "lessons": ["url-shortener", "news-feed"],
+          "minutes": 40
+        },
+        {
+          "type": "mixed",
+          "lessons": ["capacity-estimation", "replication-and-failover", "event-streams-cdc", "authn-authz"]
+        }
+      ]
+    },
+    {
       "id": "day-50",
       "title": "Grade",
       "kind": "acquire",
       "blurb": "Traces, outcomes, graders.",
       "blocks": [
-        { "type": "read", "lesson": "traces-trajectories" },
-        { "type": "read", "lesson": "outcome-vs-transcript" },
-        { "type": "read", "lesson": "graders" }
+        {
+          "type": "read",
+          "lesson": "traces-trajectories"
+        },
+        {
+          "type": "read",
+          "lesson": "outcome-vs-transcript"
+        },
+        {
+          "type": "read",
+          "lesson": "graders"
+        }
+      ]
+    },
+    {
+      "id": "day-ai-04",
+      "title": "Guard",
+      "kind": "acquire",
+      "blurb": "Untrusted text, what the model sees, and the protocol boundary.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "prompt-injection-guardrails"
+        },
+        {
+          "type": "read",
+          "lesson": "agent-memory-context"
+        },
+        {
+          "type": "read",
+          "lesson": "tool-protocols"
+        }
+      ]
+    },
+    {
+      "id": "day-ai-05",
+      "title": "Review bot",
+      "kind": "drill",
+      "blurb": "Blank page: a comment-only agent on every push.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "review-agent",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "review-agent",
+          "after": "attempt"
+        }
       ]
     },
     {
@@ -558,10 +2072,22 @@
       "kind": "acquire",
       "blurb": "Define success; include ordinary tasks, failures, and edge cases.",
       "blocks": [
-        { "type": "read", "lesson": "how-to-run-proper-evals" },
-        { "type": "read", "lesson": "pass-at-k" },
-        { "type": "read", "lesson": "capability-vs-regression" },
-        { "type": "read", "lesson": "coding-agent-evals" }
+        {
+          "type": "read",
+          "lesson": "how-to-run-proper-evals"
+        },
+        {
+          "type": "read",
+          "lesson": "pass-at-k"
+        },
+        {
+          "type": "read",
+          "lesson": "capability-vs-regression"
+        },
+        {
+          "type": "read",
+          "lesson": "coding-agent-evals"
+        }
       ]
     },
     {
@@ -570,8 +2096,14 @@
       "kind": "acquire",
       "blurb": "Online versus offline, then the judge.",
       "blocks": [
-        { "type": "read", "lesson": "online-offline-evals" },
-        { "type": "read", "lesson": "llm-as-judge-calibration" }
+        {
+          "type": "read",
+          "lesson": "online-offline-evals"
+        },
+        {
+          "type": "read",
+          "lesson": "llm-as-judge-calibration"
+        }
       ]
     },
     {
@@ -580,8 +2112,14 @@
       "kind": "acquire",
       "blurb": "Diagnose observed failures, then practice an AI-assisted exercise.",
       "blocks": [
-        { "type": "read", "lesson": "agent-mistakes" },
-        { "type": "read", "lesson": "interview-ai-round" }
+        {
+          "type": "read",
+          "lesson": "agent-mistakes"
+        },
+        {
+          "type": "read",
+          "lesson": "interview-ai-round"
+        }
       ]
     },
     {
@@ -593,6 +2131,215 @@
         {
           "type": "mixed",
           "lessons": ["desk-bot", "how-to-run-proper-evals", "agent-mistakes", "interview-framework"]
+        }
+      ]
+    },
+    {
+      "id": "day-ai-06",
+      "title": "Summary suite",
+      "kind": "drill",
+      "blurb": "Blank page: the evals that gate a summarizer change.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "summarizer-evals",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "summarizer-evals",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-ai-07",
+      "title": "Pair",
+      "kind": "acquire",
+      "blurb": "Run the assistant routine on a problem you already know.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "ai-pairing-interview"
+        },
+        {
+          "type": "attempt",
+          "lesson": "two-sum",
+          "minutes": 25
+        },
+        {
+          "type": "speak",
+          "text": "Narrate every line you accepted from the assistant and why."
+        }
+      ]
+    },
+    {
+      "id": "day-ai-08",
+      "title": "AI mix",
+      "kind": "review",
+      "blurb": "Unlabeled prompts, then one timed design.",
+      "blocks": [
+        {
+          "type": "mixed",
+          "lessons": ["rag-pipeline", "prompt-injection-guardrails", "cost-latency-budgets", "agent-memory-context"]
+        },
+        {
+          "type": "mock",
+          "lessons": ["docs-assistant", "review-agent"],
+          "minutes": 30
+        }
+      ]
+    },
+    {
+      "id": "day-story-01",
+      "title": "Bank",
+      "kind": "acquire",
+      "blurb": "Write the slots, then learn what the listener writes down.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "story-bank",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "behavioral-scoring",
+          "minutes": 15
+        },
+        {
+          "type": "speak",
+          "text": "Say your strongest story out loud in five beats with a timer. Aim for about two minutes, then note where you ran long."
+        },
+        {
+          "type": "speak",
+          "text": "Tell the same story again, adding one sentence each for scope, ownership, judgment, collaboration, and growth."
+        }
+      ]
+    },
+    {
+      "id": "day-story-02",
+      "title": "Friction",
+      "kind": "acquire",
+      "blurb": "A disagreement, then a mistake. Both told with you as the subject.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "conflict-stories",
+          "minutes": 18
+        },
+        {
+          "type": "read",
+          "lesson": "failure-stories",
+          "minutes": 17
+        },
+        {
+          "type": "speak",
+          "text": "Out loud: state the other person's position in a real disagreement the way they would state it. Then tell the full story."
+        },
+        {
+          "type": "speak",
+          "text": "Out loud: tell one real mistake, saying the mistake in your first sentence. Keep the damage to about a fifth of the answer."
+        }
+      ]
+    },
+    {
+      "id": "day-story-03",
+      "title": "Reach",
+      "kind": "acquire",
+      "blurb": "Fog into a plan, and a yes from someone who does not report to you.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "ownership-ambiguity",
+          "minutes": 17
+        },
+        {
+          "type": "read",
+          "lesson": "influence-without-authority",
+          "minutes": 17
+        },
+        {
+          "type": "speak",
+          "text": "Out loud: tell an ambiguity story and name the exact moment the problem got edges, and what you wrote down."
+        },
+        {
+          "type": "speak",
+          "text": "Out loud: tell an influence story that names what the other team cared about and what you offered to make yes cheaper."
+        }
+      ]
+    },
+    {
+      "id": "day-story-04",
+      "title": "Depth",
+      "kind": "acquire",
+      "blurb": "Three zoom levels on one project, then a deadline you bent.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "project-deep-dive",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "prioritization-deadlines",
+          "minutes": 15
+        },
+        {
+          "type": "speak",
+          "text": "Give your project's thirty-second headline, stop, then give the five-minute walkthrough with the diagram and three real numbers."
+        },
+        {
+          "type": "speak",
+          "text": "Out loud: tell a deadline story that names the cut, the reason, and the person you warned, and when."
+        }
+      ]
+    },
+    {
+      "id": "day-story-05",
+      "title": "Close",
+      "kind": "acquire",
+      "blurb": "Questions that surface how the team works, then one story bent three ways.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "closing-questions",
+          "minutes": 15
+        },
+        {
+          "type": "speak",
+          "text": "Ask your six prepared closing questions out loud, and add one follow-up to each as if you had heard an answer."
+        },
+        {
+          "type": "speak",
+          "text": "Answer three prompts out loud with the same story: a project you are proud of, a disagreement, a mistake. Pull a different beat forward each time."
+        },
+        {
+          "type": "speak",
+          "text": "Re-tell yesterday's deadline story from memory in under two minutes without notes."
+        },
+        {
+          "type": "mixed",
+          "lessons": ["story-bank", "behavioral-scoring"]
+        }
+      ]
+    },
+    {
+      "id": "day-story-06",
+      "title": "Story mix",
+      "kind": "review",
+      "blurb": "One sitting. Unlabeled behavioral prompts, answered aloud.",
+      "blocks": [
+        {
+          "type": "mixed",
+          "lessons": ["conflict-stories", "failure-stories", "ownership-ambiguity", "influence-without-authority", "prioritization-deadlines"]
+        },
+        {
+          "type": "speak",
+          "text": "Have a friend or a random timer pick one of the five topics. Start answering out loud within ten seconds, then note which scoring signals you left empty."
+        },
+        {
+          "type": "speak",
+          "text": "Do the thirty-second headline, the five-minute walkthrough, and a one-box deep dive on your project back to back, out loud, without notes."
         }
       ]
     }

@@ -1,0 +1,92 @@
+{
+  "id": "reverse-chain",
+  "entry": "reverseValues",
+  "starter": "type ListNode = { val: number; next: ListNode | null };\nfunction buildList(values: number[], loopTo = -1): ListNode | null {\n  const nodes: ListNode[] = values.map((val) => ({ val, next: null }));\n  nodes.forEach((n, i) => { n.next = nodes[i + 1] ?? null; });\n  if (loopTo >= 0 && nodes.length) nodes[nodes.length - 1].next = nodes[loopTo];\n  return nodes[0] ?? null;\n}\n\nfunction reverse(head: ListNode | null): ListNode | null {\n  // Reverse the next pointers in place and return the new head.\n  return head;\n}\n\nfunction toArray(head: ListNode | null): number[] {\n  const out: number[] = [];\n  for (let n = head; n; n = n.next) out.push(n.val);\n  return out;\n}\n\n// The tests call this with plain values.\nfunction reverseValues(values: number[]): number[] {\n  return toArray(reverse(buildList(values)));\n}\n\nconsole.log(reverseValues([4, 9, 1, 7]));\n",
+  "solution": "type ListNode = { val: number; next: ListNode | null };\nfunction buildList(values: number[], loopTo = -1): ListNode | null {\n  const nodes: ListNode[] = values.map((val) => ({ val, next: null }));\n  nodes.forEach((n, i) => { n.next = nodes[i + 1] ?? null; });\n  if (loopTo >= 0 && nodes.length) nodes[nodes.length - 1].next = nodes[loopTo];\n  return nodes[0] ?? null;\n}\n\nfunction reverse(head: ListNode | null): ListNode | null {\n  let prev: ListNode | null = null;\n  let cur = head;\n  while (cur) {\n    const nxt = cur.next;\n    cur.next = prev;\n    prev = cur;\n    cur = nxt;\n  }\n  return prev;\n}\n\nfunction toArray(head: ListNode | null): number[] {\n  const out: number[] = [];\n  for (let n = head; n; n = n.next) out.push(n.val);\n  return out;\n}\n\nfunction reverseValues(values: number[]): number[] {\n  return toArray(reverse(buildList(values)));\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "playlist",
+      "args": [
+        [
+          4,
+          9,
+          1,
+          7
+        ]
+      ],
+      "expected": [
+        7,
+        1,
+        9,
+        4
+      ]
+    },
+    {
+      "name": "single track",
+      "args": [
+        [
+          5
+        ]
+      ],
+      "expected": [
+        5
+      ]
+    },
+    {
+      "name": "empty",
+      "args": [
+        []
+      ],
+      "expected": []
+    },
+    {
+      "name": "two tracks",
+      "args": [
+        [
+          1,
+          2
+        ]
+      ],
+      "expected": [
+        2,
+        1
+      ]
+    },
+    {
+      "name": "repeated values",
+      "args": [
+        [
+          3,
+          3,
+          8,
+          3
+        ]
+      ],
+      "expected": [
+        3,
+        8,
+        3,
+        3
+      ]
+    }
+  ],
+  "hints": [
+    "You need to remember three nodes at each step. Which three?",
+    "Iterative pointer reversal: prev, current, next.",
+    "Save cur.next, point cur.next at prev, then advance prev and cur. Return prev at the end."
+  ],
+  "rubric": {
+    "signals": [
+      "Draws the three pointers before coding",
+      "Saves next before overwriting it",
+      "Handles empty and single-node lists without special cases",
+      "O(n) time, O(1) space; mentions the recursive version’s O(n) stack"
+    ],
+    "followups": [
+      "Reverse only positions left through right.",
+      "Reverse in groups of k.",
+      "Do it recursively. What is the space cost?"
+    ]
+  }
+}

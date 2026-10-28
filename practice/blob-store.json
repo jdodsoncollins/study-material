@@ -1,0 +1,24 @@
+{
+  "id": "blob-store",
+  "hints": [
+    "Before talking about disks, ask: when is an object allowed to count as finished, and who decides that?",
+    "Upload session plus verified parts plus one atomically published manifest. Readers only ever see a committed manifest.",
+    "Write the session record (tenant, object ID, version, expected length, part plan with checksums, expiry), then walk part retry, completion, and orphan cleanup against it."
+  ],
+  "rubric": {
+    "signals": [
+      "Separates upload-session metadata from immutable part bytes and publishes completion as one atomic manifest commit",
+      "Binds each part number to an expected byte range and checksum; same-content replay is safe, conflicting content is rejected",
+      "Makes completion retry return the same committed version and garbage-collects orphaned parts only after a grace period",
+      "Derives durability from a stated failure model, placement across failure domains, and a repair process rather than a replica count alone",
+      "Distinguishes deleting metadata from revoking signed URLs or cached copies that are already issued",
+      "Keeps the arithmetic honest: decimal units, raw bytes before replication or erasure-coding overhead"
+    ],
+    "followups": [
+      "One of two parts is missing when the client calls complete. What does the service return and why?",
+      "A client retries part 2 with a different checksum. How is the conflict detected and reported?",
+      "A region fails while repair is behind. Which acknowledged objects are still recoverable, and what evidence backs the durability claim?",
+      "A tenant deletes an object while a fifteen-minute signed URL is in flight. What can and cannot be revoked?"
+    ]
+  }
+}

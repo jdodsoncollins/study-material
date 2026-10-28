@@ -1,0 +1,10 @@
+title: Pull a different drawer forward
+steps:
+  - caption: "One true story, written once as five beats."
+    nodes: [story, sit, task, act, res, refl]
+  - caption: "A pride question leans on action and result."
+    nodes: [act, res, qproud]
+  - caption: "A disagreement question stretches the action into the argument and how it was settled."
+    nodes: [act, qconflict]
+  - caption: "A mistake question puts the reflection and the repair at the center."
+    nodes: [refl, act, qmistake]

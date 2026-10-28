@@ -1,0 +1,95 @@
+{
+  "id": "unpaired-id",
+  "entry": "unpaired",
+  "starter": "function unpaired(ids: number[]): number {\n  // Every id appears twice except one. Return it using O(1) extra space.\n  return -1;\n}\n\nconsole.log(unpaired([104, 77, 9, 104, 9]));\n",
+  "solution": "function unpaired(ids: number[]): number {\n  let x = 0;\n  for (const id of ids) x ^= id;\n  return x;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "crash log",
+      "args": [
+        [
+          104,
+          77,
+          9,
+          104,
+          9
+        ]
+      ],
+      "expected": 77
+    },
+    {
+      "name": "single entry",
+      "args": [
+        [
+          5
+        ]
+      ],
+      "expected": 5
+    },
+    {
+      "name": "zero is the answer",
+      "args": [
+        [
+          3,
+          0,
+          3
+        ]
+      ],
+      "expected": 0
+    },
+    {
+      "name": "negative id",
+      "args": [
+        [
+          -5,
+          3,
+          3
+        ]
+      ],
+      "expected": -5
+    },
+    {
+      "name": "unmatched first",
+      "args": [
+        [
+          42,
+          8,
+          8,
+          13,
+          13
+        ]
+      ],
+      "expected": 42
+    },
+    {
+      "name": "largest 32-bit id",
+      "args": [
+        [
+          2147483647,
+          1,
+          1
+        ]
+      ],
+      "expected": 2147483647
+    }
+  ],
+  "hints": [
+    "What operation turns a value combined with itself into nothing, regardless of order?",
+    "Bit manipulation: xor.",
+    "Start with 0 and xor in every id; each pair cancels, so what remains is the unmatched id."
+  ],
+  "rubric": {
+    "signals": [
+      "Gives the map or set solution and its O(n) space",
+      "Uses xor and states self-inverse, identity, and order-independence",
+      "Achieves O(n) time and O(1) space",
+      "Mentions the JavaScript 32-bit limit and a BigInt or map fallback"
+    ],
+    "followups": [
+      "Two ids are unmatched. Find both.",
+      "Every id appears three times except one.",
+      "Ids are 64-bit. What changes in JavaScript?"
+    ]
+  }
+}

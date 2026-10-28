@@ -1,0 +1,127 @@
+{
+  "id": "briefing-layers",
+  "entry": "briefingsFrom",
+  "starter": "type TreeNode = { v: number; L: TreeNode | null; R: TreeNode | null };\n// Level-order array, null for a missing child: [8, 3, 12, 1, 6, 10, 14]\nfunction buildTree(values: (number | null)[]): TreeNode | null {\n  if (!values.length || values[0] == null) return null;\n  const root: TreeNode = { v: values[0], L: null, R: null };\n  const q = [root];\n  let i = 1;\n  while (q.length && i < values.length) {\n    const cur = q.shift()!;\n    const l = values[i++];\n    if (l != null) { cur.L = { v: l, L: null, R: null }; q.push(cur.L); }\n    const r = values[i++];\n    if (r != null) { cur.R = { v: r, L: null, R: null }; q.push(cur.R); }\n  }\n  return root;\n}\n\nfunction briefings(root: TreeNode | null): number[][] {\n  // Return the values grouped by depth, top to bottom, left to right.\n  return [];\n}\n\n// The tests pass the tree as a level-order array.\nfunction briefingsFrom(values: (number | null)[]): number[][] {\n  return briefings(buildTree(values));\n}\n\nconsole.log(briefingsFrom([8, 3, 12, 1, 6, 10, 14]));\n",
+  "solution": "type TreeNode = { v: number; L: TreeNode | null; R: TreeNode | null };\n// Level-order array, null for a missing child: [8, 3, 12, 1, 6, 10, 14]\nfunction buildTree(values: (number | null)[]): TreeNode | null {\n  if (!values.length || values[0] == null) return null;\n  const root: TreeNode = { v: values[0], L: null, R: null };\n  const q = [root];\n  let i = 1;\n  while (q.length && i < values.length) {\n    const cur = q.shift()!;\n    const l = values[i++];\n    if (l != null) { cur.L = { v: l, L: null, R: null }; q.push(cur.L); }\n    const r = values[i++];\n    if (r != null) { cur.R = { v: r, L: null, R: null }; q.push(cur.R); }\n  }\n  return root;\n}\n\nfunction briefings(root: TreeNode | null): number[][] {\n  if (!root) return [];\n  const out: number[][] = [];\n  let q: TreeNode[] = [root];\n  while (q.length) {\n    out.push(q.map((n) => n.v));\n    const next: TreeNode[] = [];\n    for (const n of q) {\n      if (n.L) next.push(n.L);\n      if (n.R) next.push(n.R);\n    }\n    q = next;\n  }\n  return out;\n}\n\nfunction briefingsFrom(values: (number | null)[]): number[][] {\n  return briefings(buildTree(values));\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "org chart",
+      "args": [
+        [
+          8,
+          3,
+          12,
+          1,
+          6,
+          10,
+          14
+        ]
+      ],
+      "expected": [
+        [
+          8
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          1,
+          6,
+          10,
+          14
+        ]
+      ]
+    },
+    {
+      "name": "empty",
+      "args": [
+        []
+      ],
+      "expected": []
+    },
+    {
+      "name": "one lead",
+      "args": [
+        [
+          5
+        ]
+      ],
+      "expected": [
+        [
+          5
+        ]
+      ]
+    },
+    {
+      "name": "lopsided",
+      "args": [
+        [
+          1,
+          2,
+          null,
+          3,
+          null,
+          4
+        ]
+      ],
+      "expected": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ],
+        [
+          4
+        ]
+      ]
+    },
+    {
+      "name": "gaps",
+      "args": [
+        [
+          1,
+          null,
+          2,
+          3,
+          4
+        ]
+      ],
+      "expected": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ]
+    }
+  ],
+  "hints": [
+    "Which traversal visits everything at depth 1 before depth 2?",
+    "Breadth-first search with a queue, processed one level at a time.",
+    "Before draining the queue, note its length; that many nodes form the current level, and their children form the next."
+  ],
+  "rubric": {
+    "signals": [
+      "Chooses BFS and explains why DFS needs extra bookkeeping",
+      "Separates levels by queue length or a next-level array",
+      "Handles the empty tree",
+      "O(n) time, O(width) space"
+    ],
+    "followups": [
+      "Return the levels in zigzag order.",
+      "Return only the rightmost value at each level.",
+      "Do it with DFS. What do you pass down?"
+    ]
+  }
+}

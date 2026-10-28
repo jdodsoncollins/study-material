@@ -1,0 +1,12 @@
+title: Where you write the id
+steps:
+  - caption: "Preorder writes 40 first, on the way down."
+    nodes: [n40]
+  - caption: "Then all of 40's left subtree before any of the right: 20, 10, 30."
+    nodes: [n20, n10, n30]
+  - caption: "Inorder writes 10, 20, 30 before 40: everything smaller comes first in a BST."
+    nodes: [n10, n20, n30, n40]
+  - caption: "Postorder writes 10, 30, then 20: a parent waits for both children."
+    nodes: [n10, n30, n20]
+  - caption: "The right subtree finishes 50, 70, 60, and the root is written last."
+    nodes: [n50, n70, n60, n40]

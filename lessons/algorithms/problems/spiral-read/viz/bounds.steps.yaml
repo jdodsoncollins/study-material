@@ -1,0 +1,10 @@
+title: Shrink the bounds
+steps:
+  - caption: "Outer ring: top reads 7 1 4 9, right reads 3 10."
+    nodes: [topEdge, rightEdge]
+  - caption: "Rows remain, so the bottom reads 11 0 5. Columns remain, so the left reads 2."
+    nodes: [guardRows, bottomEdge, guardCols, leftEdge]
+  - caption: "Inner ring is one row: top reads 8 6, and the right edge is empty."
+    nodes: [more, topEdge, rightEdge]
+  - caption: "top is now past bottom, so the bottom edge is skipped. Without this guard the bottom edge would read 8 a second time."
+    nodes: [guardRows, guardCols, done]

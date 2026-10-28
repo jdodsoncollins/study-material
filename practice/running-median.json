@@ -1,0 +1,139 @@
+{
+  "id": "running-median",
+  "entry": "medians",
+  "starter": "class MedianTracker {\n  add(ms: number): void {\n    // Record one latency sample.\n  }\n  median(): number {\n    // Median of all samples so far; mean of the two middle values for an even count.\n    return 0;\n  }\n}\n\n// The tests feed samples one at a time and collect median() after each.\nfunction medians(samples: number[]): number[] {\n  const tracker = new MedianTracker();\n  const out: number[] = [];\n  for (const ms of samples) {\n    tracker.add(ms);\n    out.push(tracker.median());\n  }\n  return out;\n}\n\nconsole.log(medians([40, 12, 31, 55, 8]));\n",
+  "solution": "class Heap {\n  items: number[] = [];\n  before: (a: number, b: number) => boolean;\n  constructor(before: (a: number, b: number) => boolean) {\n    this.before = before;\n  }\n  get size(): number { return this.items.length; }\n  peek(): number { return this.items[0]; }\n  push(x: number): void {\n    const h = this.items;\n    h.push(x);\n    let i = h.length - 1;\n    while (i > 0 && this.before(h[i], h[(i - 1) >> 1])) {\n      [h[i], h[(i - 1) >> 1]] = [h[(i - 1) >> 1], h[i]];\n      i = (i - 1) >> 1;\n    }\n  }\n  pop(): number {\n    const h = this.items;\n    const top = h[0];\n    const last = h.pop()!;\n    if (h.length) {\n      h[0] = last;\n      let i = 0;\n      for (;;) {\n        const l = 2 * i + 1, r = l + 1;\n        let m = i;\n        if (l < h.length && this.before(h[l], h[m])) m = l;\n        if (r < h.length && this.before(h[r], h[m])) m = r;\n        if (m === i) break;\n        [h[i], h[m]] = [h[m], h[i]];\n        i = m;\n      }\n    }\n    return top;\n  }\n}\n\nclass MedianTracker {\n  low = new Heap((a, b) => a > b);  // max-heap: the smaller half\n  high = new Heap((a, b) => a < b); // min-heap: the larger half\n  add(ms: number): void {\n    if (this.low.size === 0 || ms <= this.low.peek()) this.low.push(ms);\n    else this.high.push(ms);\n    if (this.low.size > this.high.size + 1) this.high.push(this.low.pop());\n    else if (this.high.size > this.low.size) this.low.push(this.high.pop());\n  }\n  median(): number {\n    if (this.low.size === 0) throw new Error(\"no samples yet\");\n    if (this.low.size > this.high.size) return this.low.peek();\n    return (this.low.peek() + this.high.peek()) / 2;\n  }\n}\n\n// Test adapter: feed samples one at a time, collect the median after each.\nfunction medians(samples: number[]): number[] {\n  const tracker = new MedianTracker();\n  const out: number[] = [];\n  for (const ms of samples) {\n    tracker.add(ms);\n    out.push(tracker.median());\n  }\n  return out;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "gateway latencies",
+      "args": [
+        [
+          40,
+          12,
+          31,
+          55,
+          8
+        ]
+      ],
+      "expected": [
+        40,
+        26,
+        31,
+        35.5,
+        31
+      ]
+    },
+    {
+      "name": "one sample",
+      "args": [
+        [
+          250
+        ]
+      ],
+      "expected": [
+        250
+      ]
+    },
+    {
+      "name": "no samples",
+      "args": [
+        []
+      ],
+      "expected": []
+    },
+    {
+      "name": "rising stream",
+      "args": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      ],
+      "expected": [
+        1,
+        1.5,
+        2,
+        2.5,
+        3,
+        3.5
+      ]
+    },
+    {
+      "name": "falling stream",
+      "args": [
+        [
+          90,
+          70,
+          50,
+          30
+        ]
+      ],
+      "expected": [
+        90,
+        80,
+        70,
+        60
+      ]
+    },
+    {
+      "name": "repeated values",
+      "args": [
+        [
+          5,
+          5,
+          5,
+          1
+        ]
+      ],
+      "expected": [
+        5,
+        5,
+        5,
+        5
+      ]
+    },
+    {
+      "name": "ties at the middle",
+      "args": [
+        [
+          10,
+          20,
+          10,
+          20,
+          10
+        ]
+      ],
+      "expected": [
+        10,
+        15,
+        10,
+        15,
+        10
+      ]
+    }
+  ],
+  "hints": [
+    "You only ever need the one or two values in the middle. What would let you see both sides of the middle at once?",
+    "Two heaps: a max-heap for the smaller half and a min-heap for the larger half.",
+    "Route each sample by comparing it with the max-heap's top, then move one top across if the sizes differ by more than one; read the median from the tops."
+  ],
+  "rubric": {
+    "signals": [
+      "States the sort-per-read baseline and why interleaved reads make it costly",
+      "Uses a max-heap for the low half and a min-heap for the high half",
+      "Keeps the invariant: every low value is at most every high value, sizes differ by at most one",
+      "Gives O(log n) per add and O(1) per median",
+      "Handles the even case by averaging the two tops"
+    ],
+    "followups": [
+      "Report p95 instead of the median.",
+      "Only the last 1000 samples should count. What breaks?",
+      "Latencies are integers from 0 to 2000 ms. Is there a simpler structure?"
+    ]
+  }
+}

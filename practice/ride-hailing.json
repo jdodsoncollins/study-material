@@ -1,0 +1,24 @@
+{
+  "id": "ride-hailing",
+  "hints": [
+    "The map can be a little wrong. Which part of matching cannot be wrong at all?",
+    "Approximate geographic index for candidates, plus one authoritative availability record per driver changed by an atomic idle-to-offered transition carrying an offer ID and generation.",
+    "Write the compare-and-set for reserve, accept, and expire: each one checks the current offer ID and generation so stale accepts and old timers fail."
+  ],
+  "rubric": {
+    "signals": [
+      "Treats location updates as approximate candidates and keeps authoritative availability outside the spatial index",
+      "Reserves a driver with an atomic transition before sending an offer so two matchers cannot both win",
+      "Verifies driver, offer ID, generation, expiry, and trip state on accept, and commits driver and trip assignment together",
+      "Makes expiry release only the matching offer generation so a delayed timer cannot free a newer offer",
+      "Sizes location ingress (200,000 updates/s in the example) separately from search load and notes hot downtown cells",
+      "Persists delivery intent so a crash after reservation either retries the offer or expires it"
+    ],
+    "followups": [
+      "Two requests try to reserve the same idle driver. Name the atomic transition.",
+      "The driver crosses a cell boundary during an active offer. Why can't ownership live in the spatial index?",
+      "An old expiry timer fires after a new offer exists. Show the compare condition that protects the new offer.",
+      "You want to send offers to three drivers at once. What changes about cancellation and winner selection?"
+    ]
+  }
+}

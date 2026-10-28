@@ -1,0 +1,160 @@
+{
+  "id": "exact-baskets",
+  "entry": "exactBaskets",
+  "starter": "function exactBaskets(prices: number[], credit: number): number[][] {\n  // Every distinct basket (multiset of prices, reuse allowed) that totals exactly credit.\n  return [];\n}\n\nconsole.log(exactBaskets([2, 3, 5], 8));\n",
+  "solution": "function exactBaskets(prices: number[], credit: number): number[][] {\n  const menu = [...new Set(prices)].sort((a, b) => a - b);\n  const out: number[][] = [];\n  const basket: number[] = [];\n  const walk = (start: number, left: number) => {\n    if (left === 0) { out.push([...basket]); return; }\n    for (let i = start; i < menu.length; i++) {\n      if (menu[i] > left) break;\n      basket.push(menu[i]);\n      walk(i, left - menu[i]); // i, not i + 1: the same item may be ordered again\n      basket.pop();\n    }\n  };\n  walk(0, credit);\n  return out;\n}\n",
+  "compare": "nested-unordered",
+  "cases": [
+    {
+      "name": "eight dollar credit",
+      "args": [
+        [
+          2,
+          3,
+          5
+        ],
+        8
+      ],
+      "expected": [
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          3
+        ],
+        [
+          3,
+          5
+        ]
+      ]
+    },
+    {
+      "name": "ten dollar credit",
+      "args": [
+        [
+          2,
+          3,
+          5
+        ],
+        10
+      ],
+      "expected": [
+        [
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          3,
+          3
+        ],
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          5,
+          5
+        ]
+      ]
+    },
+    {
+      "name": "impossible total",
+      "args": [
+        [
+          4,
+          6
+        ],
+        7
+      ],
+      "expected": []
+    },
+    {
+      "name": "zero credit is the empty basket",
+      "args": [
+        [
+          2,
+          3
+        ],
+        0
+      ],
+      "expected": [
+        []
+      ]
+    },
+    {
+      "name": "unsorted menu",
+      "args": [
+        [
+          7,
+          3,
+          2
+        ],
+        7
+      ],
+      "expected": [
+        [
+          2,
+          2,
+          3
+        ],
+        [
+          7
+        ]
+      ]
+    },
+    {
+      "name": "single price",
+      "args": [
+        [
+          3
+        ],
+        9
+      ],
+      "expected": [
+        [
+          3,
+          3,
+          3
+        ]
+      ]
+    },
+    {
+      "name": "empty menu",
+      "args": [
+        [],
+        5
+      ],
+      "expected": []
+    }
+  ],
+  "hints": [
+    "Why would [2, 3, 3] and [3, 2, 3] both show up if you try every next item? How can you forbid going back?",
+    "Backtracking with a start index over a sorted menu.",
+    "Sort the prices; recurse with (start = i, left = left − price) so an item can repeat but nothing earlier is chosen, record when left is 0, and break when a price exceeds left."
+  ],
+  "rubric": {
+    "signals": [
+      "Explains how the start index prevents duplicate orderings of one basket",
+      "Recurses with i (not i + 1) because reuse is allowed",
+      "Sorts and prunes once a price exceeds the remaining credit",
+      "Copies the basket when recording a result",
+      "Distinguishes listing baskets (search) from counting them (DP)"
+    ],
+    "followups": [
+      "Each item may be used at most once and the menu has duplicate prices.",
+      "Only return how many baskets exist. What is the cost?",
+      "What happens if a price can be 0?"
+    ]
+  }
+}

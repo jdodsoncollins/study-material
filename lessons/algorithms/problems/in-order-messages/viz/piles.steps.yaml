@@ -1,0 +1,10 @@
+title: Patience piles
+steps:
+  - caption: "12, then 3: 3 is smaller than the only top, so it replaces 12. Tops are [3]."
+    nodes: [card, search, replace]
+  - caption: "9 is bigger than every top, so it starts a new pile. Tops are [3, 9]."
+    nodes: [search, append]
+  - caption: "4 replaces 9: a chain of length 2 can now end on 4, which leaves more room for later ids."
+    nodes: [replace, sorted]
+  - caption: "After 15, 10, 18, 6 the tops are [3, 4, 6, 18]. Four piles means the longest rising chain has length 4."
+    nodes: [sorted, count]

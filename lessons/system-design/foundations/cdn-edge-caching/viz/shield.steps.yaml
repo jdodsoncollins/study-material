@@ -1,0 +1,8 @@
+title: Edge, shield, origin
+steps:
+  - caption: "Hit: the nearby PoP answers by itself."
+    nodes: [user, edge, serve]
+  - caption: "Edge miss: ask the shield tier, not the origin."
+    nodes: [edge, shield, fill, serve]
+  - caption: "Shield miss: one fetch from origin fills both tiers."
+    nodes: [shield, origin, fill, serve]

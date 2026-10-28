@@ -1,0 +1,108 @@
+{
+  "id": "kth-largest",
+  "entry": "kthBusiest",
+  "starter": "function kthBusiest(scores: number[], k: number): number {\n  // Return the k-th highest score. Duplicates count separately.\n  return 0;\n}\n\nconsole.log(kthBusiest([31,6,18,44,18,9,25], 3));\n",
+  "solution": "function kthBusiest(scores: number[], k: number): number {\n  const heap: number[] = [];\n  const up = (i: number) => { while (i && heap[(i - 1) >> 1] > heap[i]) { [heap[i], heap[(i - 1) >> 1]] = [heap[(i - 1) >> 1], heap[i]]; i = (i - 1) >> 1; } };\n  const down = (i: number) => { for (;;) { let m = i; const l = 2 * i + 1, r = l + 1; if (l < heap.length && heap[l] < heap[m]) m = l; if (r < heap.length && heap[r] < heap[m]) m = r; if (m === i) return; [heap[i], heap[m]] = [heap[m], heap[i]]; i = m; } };\n  for (const s of scores) {\n    if (heap.length < k) { heap.push(s); up(heap.length - 1); }\n    else if (s > heap[0]) { heap[0] = s; down(0); }\n  }\n  return heap[0];\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "video views, k = 3",
+      "args": [
+        [
+          31,
+          6,
+          18,
+          44,
+          18,
+          9,
+          25
+        ],
+        3
+      ],
+      "expected": 25
+    },
+    {
+      "name": "duplicates count",
+      "args": [
+        [
+          31,
+          6,
+          18,
+          44,
+          18,
+          9,
+          25
+        ],
+        5
+      ],
+      "expected": 18
+    },
+    {
+      "name": "k = 1",
+      "args": [
+        [
+          3,
+          9,
+          2
+        ],
+        1
+      ],
+      "expected": 9
+    },
+    {
+      "name": "k = n",
+      "args": [
+        [
+          3,
+          9,
+          2
+        ],
+        3
+      ],
+      "expected": 2
+    },
+    {
+      "name": "all equal",
+      "args": [
+        [
+          5,
+          5,
+          5,
+          5
+        ],
+        2
+      ],
+      "expected": 5
+    },
+    {
+      "name": "negatives",
+      "args": [
+        [
+          -1,
+          -8,
+          -3
+        ],
+        2
+      ],
+      "expected": -3
+    }
+  ],
+  "hints": [
+    "Sorting works. What if the list is huge and k is small?",
+    "Keep a min-heap of the k largest values seen so far.",
+    "Push until the heap has k items; after that, replace the top only when a new value is larger. The top is the answer."
+  ],
+  "rubric": {
+    "signals": [
+      "Gives the sort baseline and its cost",
+      "Uses a size-k min-heap for O(n log k)",
+      "Mentions quickselect for average O(n)",
+      "Handles duplicates as separate entries"
+    ],
+    "followups": [
+      "Values arrive as a stream; answer after each one.",
+      "Return the k-th largest unique value.",
+      "Find the running median."
+    ]
+  }
+}

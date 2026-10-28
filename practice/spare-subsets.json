@@ -1,0 +1,165 @@
+{
+  "id": "spare-subsets",
+  "entry": "spareSets",
+  "starter": "function spareSets(parts: number[]): number[][] {\n  // Every subset of the distinct ids, including the empty one.\n  return [];\n}\n\nconsole.log(spareSets([7,2,9]));\n",
+  "solution": "function spareSets(parts: number[]): number[][] {\n  const out: number[][] = [];\n  const cur: number[] = [];\n  const go = (i: number) => {\n    if (i === parts.length) { out.push([...cur]); return; }\n    go(i + 1);\n    cur.push(parts[i]);\n    go(i + 1);\n    cur.pop();\n  };\n  go(0);\n  return out;\n}\n",
+  "compare": "nested-unordered",
+  "cases": [
+    {
+      "name": "three items",
+      "args": [
+        [
+          7,
+          2,
+          9
+        ]
+      ],
+      "expected": [
+        [],
+        [
+          9
+        ],
+        [
+          2
+        ],
+        [
+          2,
+          9
+        ],
+        [
+          7
+        ],
+        [
+          7,
+          9
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          7,
+          2,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "empty",
+      "args": [
+        []
+      ],
+      "expected": [
+        []
+      ]
+    },
+    {
+      "name": "one item",
+      "args": [
+        [
+          4
+        ]
+      ],
+      "expected": [
+        [],
+        [
+          4
+        ]
+      ]
+    },
+    {
+      "name": "four items",
+      "args": [
+        [
+          1,
+          2,
+          3,
+          4
+        ]
+      ],
+      "expected": [
+        [],
+        [
+          4
+        ],
+        [
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          3,
+          4
+        ],
+        [
+          1
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          3,
+          4
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          4
+        ],
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          1,
+          2,
+          3,
+          4
+        ]
+      ]
+    }
+  ],
+  "hints": [
+    "How many subsets does a list of n items have, and what decision makes each one?",
+    "Backtracking: include or skip each item.",
+    "Recurse with an index and a current list; at each index, recurse once without the item and once with it, undoing the push afterward."
+  ],
+  "rubric": {
+    "signals": [
+      "States 2ⁿ outputs, so O(n · 2ⁿ) is unavoidable",
+      "Uses include/skip recursion or bitmasks",
+      "Copies the current list when recording it",
+      "Undoes choices on the way back"
+    ],
+    "followups": [
+      "The input has duplicates; list unique subsets.",
+      "Only subsets that sum to a target.",
+      "Generate them iteratively."
+    ]
+  }
+}

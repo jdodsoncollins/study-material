@@ -1,0 +1,69 @@
+{
+  "id": "valid-brackets",
+  "entry": "strapsOk",
+  "starter": "function strapsOk(tape: string): boolean {\n  // True when every bracket closes with its matching partner in order.\n  return false;\n}\n\nconsole.log(strapsOk(\"[{()}]()\"));\n",
+  "solution": "function strapsOk(tape: string): boolean {\n  const pair: Record<string, string> = { \")\": \"(\", \"]\": \"[\", \"}\": \"{\" };\n  const stack: string[] = [];\n  for (const ch of tape) {\n    if (ch in pair) { if (stack.pop() !== pair[ch]) return false; }\n    else stack.push(ch);\n  }\n  return stack.length === 0;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "nested and sequential",
+      "args": [
+        "[{()}]()"
+      ],
+      "expected": true
+    },
+    {
+      "name": "empty",
+      "args": [
+        ""
+      ],
+      "expected": true
+    },
+    {
+      "name": "crossed",
+      "args": [
+        "([)]"
+      ],
+      "expected": false
+    },
+    {
+      "name": "unclosed",
+      "args": [
+        "(("
+      ],
+      "expected": false
+    },
+    {
+      "name": "closer first",
+      "args": [
+        ")("
+      ],
+      "expected": false
+    },
+    {
+      "name": "deep",
+      "args": [
+        "{[({[]})]}"
+      ],
+      "expected": true
+    }
+  ],
+  "hints": [
+    "When you see a closer, which opener must it match?",
+    "A stack of open brackets.",
+    "Push openers; on a closer, pop and check the pair. At the end the stack must be empty."
+  ],
+  "rubric": {
+    "signals": [
+      "Chooses a stack and explains last-opened, first-closed",
+      "Maps closers to openers",
+      "Rejects leftover openers and early closers",
+      "O(n) time and space"
+    ],
+    "followups": [
+      "Return the minimum insertions to make it valid.",
+      "Generate all valid strings of n pairs.",
+      "Ignore brackets inside quoted strings."
+    ]
+  }
+}

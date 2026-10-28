@@ -1,0 +1,22 @@
+{
+  "id": "leaderboard",
+  "hints": [
+    "Forty million entries sounds big. Estimate the bytes before deciding to shard.",
+    "This is a sorted set as a derived index over a durable best-score table, with top-k merged across shards if needed.",
+    "Write the three queries (top 100, my rank, my neighbors), pack the tie-break into the score, then compare user-hash and score-range sharding."
+  ],
+  "rubric": {
+    "signals": [
+      "Keeps a durable, idempotent best-score table as the source of truth and rebuilds the index from it",
+      "Tie-breaks deterministically with a packed score and checks the precision budget",
+      "Explains what hash sharding and score-range sharding each make cheap and expensive",
+      "Offers an approximate percentile beyond the top N and labels it as approximate",
+      "Handles weekly reset with a new key per week instead of a midnight delete"
+    ],
+    "followups": [
+      "Add friend leaderboards. Precompute or rank at read time?",
+      "A cheater is banned mid-week. What has to change, and where?",
+      "Exact rank for every player across 16 shards at peak. Estimate the cost."
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+title: offsets
+steps:
+  - caption: "The producer hashes the order ID, so every event for one order lands in the same partition, in order."
+    nodes: [prod, part]
+  - caption: "The leader appends; once the in-sync followers have the batch, the high watermark moves and the producer gets its ack."
+    nodes: [lead, foll, hw]
+  - caption: "A consumer reads from its group's committed offset, runs an idempotent handler, then commits the next offset."
+    nodes: [fetch, work, commit]
+  - caption: "A crash before the commit means the same messages are fetched again. A message that keeps failing moves to a side lane so the partition can move on."
+    nodes: [work, fetch, dlq]

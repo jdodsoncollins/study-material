@@ -1,0 +1,120 @@
+{
+  "id": "ticket-bst-check",
+  "entry": "isValidIndexFrom",
+  "starter": "type TreeNode = { v: number; L: TreeNode | null; R: TreeNode | null };\n// Level-order array, null for a missing child.\nfunction buildTree(values: (number | null)[]): TreeNode | null {\n  if (!values.length || values[0] == null) return null;\n  const root: TreeNode = { v: values[0], L: null, R: null };\n  const q = [root];\n  let i = 1;\n  while (q.length && i < values.length) {\n    const cur = q.shift()!;\n    const l = values[i++];\n    if (l != null) { cur.L = { v: l, L: null, R: null }; q.push(cur.L); }\n    const r = values[i++];\n    if (r != null) { cur.R = { v: r, L: null, R: null }; q.push(cur.R); }\n  }\n  return root;\n}\n\nfunction isValidIndex(root: TreeNode | null): boolean {\n  // True if every node is greater than everything in its left subtree\n  // and smaller than everything in its right subtree. Ids are unique.\n  return true;\n}\n\nfunction isValidIndexFrom(values: (number | null)[]): boolean {\n  return isValidIndex(buildTree(values));\n}\n\nconsole.log(isValidIndexFrom([50, 30, 70, 20, 45, 60, 80, null, null, 35, 55]));\n",
+  "solution": "type TreeNode = { v: number; L: TreeNode | null; R: TreeNode | null };\n// Level-order array, null for a missing child.\nfunction buildTree(values: (number | null)[]): TreeNode | null {\n  if (!values.length || values[0] == null) return null;\n  const root: TreeNode = { v: values[0], L: null, R: null };\n  const q = [root];\n  let i = 1;\n  while (q.length && i < values.length) {\n    const cur = q.shift()!;\n    const l = values[i++];\n    if (l != null) { cur.L = { v: l, L: null, R: null }; q.push(cur.L); }\n    const r = values[i++];\n    if (r != null) { cur.R = { v: r, L: null, R: null }; q.push(cur.R); }\n  }\n  return root;\n}\n\nfunction isValidIndex(root: TreeNode | null): boolean {\n  const check = (n: TreeNode | null, low: number, high: number): boolean => {\n    if (!n) return true;\n    if (n.v <= low || n.v >= high) return false;\n    return check(n.L, low, n.v) && check(n.R, n.v, high);\n  };\n  return check(root, -Infinity, Infinity);\n}\n\nfunction isValidIndexFrom(values: (number | null)[]): boolean {\n  return isValidIndex(buildTree(values));\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "55 hides under 50 on the left",
+      "args": [
+        [
+          50,
+          30,
+          70,
+          20,
+          45,
+          60,
+          80,
+          null,
+          null,
+          35,
+          55
+        ]
+      ],
+      "expected": false
+    },
+    {
+      "name": "fixed with 48",
+      "args": [
+        [
+          50,
+          30,
+          70,
+          20,
+          45,
+          60,
+          80,
+          null,
+          null,
+          35,
+          48
+        ]
+      ],
+      "expected": true
+    },
+    {
+      "name": "empty index",
+      "args": [
+        []
+      ],
+      "expected": true
+    },
+    {
+      "name": "duplicate on the left",
+      "args": [
+        [
+          10,
+          10
+        ]
+      ],
+      "expected": false
+    },
+    {
+      "name": "duplicate on the right",
+      "args": [
+        [
+          10,
+          null,
+          10
+        ]
+      ],
+      "expected": false
+    },
+    {
+      "name": "15 too small for the right subtree",
+      "args": [
+        [
+          20,
+          10,
+          30,
+          null,
+          null,
+          15
+        ]
+      ],
+      "expected": false
+    },
+    {
+      "name": "negative ids",
+      "args": [
+        [
+          -5,
+          -20,
+          0,
+          null,
+          -10
+        ]
+      ],
+      "expected": true
+    }
+  ],
+  "hints": [
+    "Is it enough for each node to be bigger than its left child and smaller than its right child?",
+    "Depth-first search that carries a valid range down from the ancestors (or an inorder walk that must strictly increase).",
+    "Call check(node, low, high): going left passes (low, node.v), going right passes (node.v, high); fail if node.v is not strictly inside."
+  ],
+  "rubric": {
+    "signals": [
+      "Spots that a parent-child comparison is not enough and gives a counterexample",
+      "Carries bounds from all ancestors, or checks that inorder is strictly increasing",
+      "Treats duplicates deliberately and avoids sentinel values that collide with real ids",
+      "Gives O(n) time and O(h) space"
+    ],
+    "followups": [
+      "Exactly two nodes were swapped by the bug. Find them.",
+      "Duplicates are allowed in the right subtree. What changes?",
+      "Do it without recursion."
+    ]
+  }
+}

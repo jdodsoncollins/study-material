@@ -1,0 +1,24 @@
+{
+  "id": "catalog-crawler",
+  "hints": [
+    "Global worker count is not the limit that decides when the crawl finishes. Which limit is?",
+    "A durable frontier with per-host admission: each host gets a coordinated request budget and robots check before any fetch.",
+    "Store canonical URL, next eligible time, lease, and status per entry; then decide where a Bloom filter is allowed to say 'seen' and where an exact check is required."
+  ],
+  "rubric": {
+    "signals": [
+      "Keeps durable frontier state separate from stateless fetch workers, with leases so a crashed worker's URLs are recovered",
+      "Coordinates per-host budgets across all workers instead of giving each worker its own full allowance",
+      "Computes a host-limited completion estimate (one request every two seconds is 30 per minute) and reports it honestly",
+      "Uses a Bloom filter only where a false positive is acceptable, and confirms against a durable set when a miss would skip an essential page",
+      "Validates destination addresses after DNS resolution and on every redirect so an allowlisted name cannot reach private infrastructure",
+      "Treats robots rules as crawler preferences, notes Crawl-delay is not standardized by RFC 9309, and schedules revisits from timestamps rather than the filter"
+    ],
+    "followups": [
+      "What is the maximum number of requests to one host in a minute under the scenario budget?",
+      "The Bloom filter says a new URL was seen. When do you require an exact check?",
+      "An allowed hostname resolves to a private address on a later retry. Where must destination validation run?",
+      "One host holds a third of the backlog. How do you report the crawl's completion time?"
+    ]
+  }
+}

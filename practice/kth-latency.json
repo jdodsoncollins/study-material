@@ -1,0 +1,127 @@
+{
+  "id": "kth-latency",
+  "entry": "kthLatencyFrom",
+  "starter": "type TreeNode = { v: number; L: TreeNode | null; R: TreeNode | null };\n// Level-order array, null for a missing child.\nfunction buildTree(values: (number | null)[]): TreeNode | null {\n  if (!values.length || values[0] == null) return null;\n  const root: TreeNode = { v: values[0], L: null, R: null };\n  const q = [root];\n  let i = 1;\n  while (q.length && i < values.length) {\n    const cur = q.shift()!;\n    const l = values[i++];\n    if (l != null) { cur.L = { v: l, L: null, R: null }; q.push(cur.L); }\n    const r = values[i++];\n    if (r != null) { cur.R = { v: r, L: null, R: null }; q.push(cur.R); }\n  }\n  return root;\n}\n\nfunction kthSmallest(root: TreeNode | null, k: number): number | null {\n  // Return the k-th smallest value (k starts at 1), or null if k is out of range.\n  return null;\n}\n\nfunction kthLatencyFrom(values: (number | null)[], k: number): number | null {\n  return kthSmallest(buildTree(values), k);\n}\n\nconsole.log(kthLatencyFrom([42, 17, 88, 8, 30, 61, 95, null, 12, 25], 4));\n",
+  "solution": "type TreeNode = { v: number; L: TreeNode | null; R: TreeNode | null };\n// Level-order array, null for a missing child.\nfunction buildTree(values: (number | null)[]): TreeNode | null {\n  if (!values.length || values[0] == null) return null;\n  const root: TreeNode = { v: values[0], L: null, R: null };\n  const q = [root];\n  let i = 1;\n  while (q.length && i < values.length) {\n    const cur = q.shift()!;\n    const l = values[i++];\n    if (l != null) { cur.L = { v: l, L: null, R: null }; q.push(cur.L); }\n    const r = values[i++];\n    if (r != null) { cur.R = { v: r, L: null, R: null }; q.push(cur.R); }\n  }\n  return root;\n}\n\nfunction kthSmallest(root: TreeNode | null, k: number): number | null {\n  const stack: TreeNode[] = [];\n  let cur = root;\n  let seen = 0;\n  while (cur || stack.length) {\n    while (cur) { stack.push(cur); cur = cur.L; }\n    const n = stack.pop()!;\n    if (++seen === k) return n.v;\n    cur = n.R;\n  }\n  return null;\n}\n\nfunction kthLatencyFrom(values: (number | null)[], k: number): number | null {\n  return kthSmallest(buildTree(values), k);\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "4th fastest",
+      "args": [
+        [
+          42,
+          17,
+          88,
+          8,
+          30,
+          61,
+          95,
+          null,
+          12,
+          25
+        ],
+        4
+      ],
+      "expected": 25
+    },
+    {
+      "name": "fastest",
+      "args": [
+        [
+          42,
+          17,
+          88,
+          8,
+          30,
+          61,
+          95,
+          null,
+          12,
+          25
+        ],
+        1
+      ],
+      "expected": 8
+    },
+    {
+      "name": "slowest",
+      "args": [
+        [
+          42,
+          17,
+          88,
+          8,
+          30,
+          61,
+          95,
+          null,
+          12,
+          25
+        ],
+        9
+      ],
+      "expected": 95
+    },
+    {
+      "name": "k past the end",
+      "args": [
+        [
+          42,
+          17,
+          88,
+          8,
+          30,
+          61,
+          95,
+          null,
+          12,
+          25
+        ],
+        10
+      ],
+      "expected": null
+    },
+    {
+      "name": "empty tree",
+      "args": [
+        [],
+        1
+      ],
+      "expected": null
+    },
+    {
+      "name": "right-leaning chain",
+      "args": [
+        [
+          3,
+          null,
+          5,
+          null,
+          9,
+          null,
+          14
+        ],
+        3
+      ],
+      "expected": 9
+    }
+  ],
+  "hints": [
+    "Which traversal of a binary search tree visits the values from smallest to largest?",
+    "Inorder tree traversal, stopped early.",
+    "Walk inorder with an explicit stack, count each node you pop, and return when the count reaches k."
+  ],
+  "rubric": {
+    "signals": [
+      "States that inorder of a BST is sorted",
+      "Stops at the k-th node instead of building the full list",
+      "Handles k out of range",
+      "Gives O(h + k) time and O(h) space"
+    ],
+    "followups": [
+      "Latencies are inserted constantly and the k-th query runs every second. What do you store on each node?",
+      "Return the k-th largest instead.",
+      "Return the median latency."
+    ]
+  }
+}

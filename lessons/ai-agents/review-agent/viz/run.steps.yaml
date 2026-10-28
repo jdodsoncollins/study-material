@@ -1,0 +1,12 @@
+title: run
+steps:
+  - caption: "Verify the webhook on the raw body and persist the job before acknowledging. One job per head commit."
+    nodes: [hook, intake, queue]
+  - caption: "The worker's token can read code and write comments. It cannot approve, merge, or push."
+    nodes: [worker, context]
+  - caption: "Model output is a proposal. Code checks lines, confidence, and duplicates before anything is posted."
+    nodes: [model, check, drop]
+  - caption: "A newer push supersedes this run. Post only for the current head, once."
+    nodes: [fresh, stale, post]
+  - caption: "Whether developers act on comments is the online quality signal."
+    nodes: [signal]

@@ -1,0 +1,67 @@
+{
+  "id": "desk-paths",
+  "entry": "walksToDesk",
+  "starter": "function walksToDesk(rows: number, cols: number): number {\n  // Count routes from top-left to bottom-right moving only right or down.\n  return 0;\n}\n\nconsole.log(walksToDesk(3, 4));\n",
+  "solution": "function walksToDesk(rows: number, cols: number): number {\n  if (rows <= 0 || cols <= 0) return 0;\n  const row = new Array(cols).fill(1);\n  for (let r = 1; r < rows; r++) for (let c = 1; c < cols; c++) row[c] += row[c - 1];\n  return row[cols - 1];\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "3 × 4 grid",
+      "args": [
+        3,
+        4
+      ],
+      "expected": 10
+    },
+    {
+      "name": "single cell",
+      "args": [
+        1,
+        1
+      ],
+      "expected": 1
+    },
+    {
+      "name": "one row",
+      "args": [
+        1,
+        6
+      ],
+      "expected": 1
+    },
+    {
+      "name": "square",
+      "args": [
+        4,
+        4
+      ],
+      "expected": 20
+    },
+    {
+      "name": "larger",
+      "args": [
+        10,
+        7
+      ],
+      "expected": 5005
+    }
+  ],
+  "hints": [
+    "How many ways are there to reach a cell in the top row?",
+    "2D DP: a cell’s count is the sum of the counts above and to the left.",
+    "Fill the first row and column with 1, then paths[r][c] = paths[r−1][c] + paths[r][c−1]. One row of memory is enough."
+  ],
+  "rubric": {
+    "signals": [
+      "Defines paths to each cell",
+      "Sets the base row and column",
+      "Compresses to one row",
+      "Mentions the closed form C(r+c−2, r−1)"
+    ],
+    "followups": [
+      "Some cells are blocked.",
+      "Each cell has a cost; find the cheapest path.",
+      "Allow diagonal moves too."
+    ]
+  }
+}

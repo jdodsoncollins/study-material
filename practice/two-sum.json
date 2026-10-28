@@ -1,0 +1,92 @@
+{
+  "id": "two-sum",
+  "entry": "pairIndices",
+  "starter": "function pairIndices(prices: number[], target: number): [number, number] | null {\n  // Return two different indices whose prices add to target, or null.\n  return null;\n}\n\nconsole.log(pairIndices([4, 11, 8, 3, 15], 19));\n",
+  "solution": "function pairIndices(prices: number[], target: number): [number, number] | null {\n  const seen = new Map<number, number>();\n  for (let i = 0; i < prices.length; i++) {\n    const j = seen.get(target - prices[i]);\n    if (j !== undefined) return [j, i];\n    seen.set(prices[i], i);\n  }\n  return null;\n}\n",
+  "compare": "validator",
+  "validator": "(args, out) => { const [a, t] = args; let any = false; for (let i = 0; i < a.length; i++) for (let j = i + 1; j < a.length; j++) if (a[i] + a[j] === t) any = true; if (out === null) return any ? \"a pair exists, but you returned null\" : true; if (!Array.isArray(out) || out.length !== 2) return \"return [i, j] or null\"; const [i, j] = out; if (i === j) return \"use two different positions\"; if (a[i] === undefined || a[j] === undefined) return \"index out of range\"; return a[i] + a[j] === t || \"those prices do not add to the target\"; }",
+  "cases": [
+    {
+      "name": "gift card covers 19",
+      "args": [
+        [
+          4,
+          11,
+          8,
+          3,
+          15
+        ],
+        19
+      ]
+    },
+    {
+      "name": "same price twice",
+      "args": [
+        [
+          6,
+          6,
+          2
+        ],
+        12
+      ]
+    },
+    {
+      "name": "no pair",
+      "args": [
+        [
+          1,
+          2,
+          4
+        ],
+        100
+      ]
+    },
+    {
+      "name": "negative adjustments",
+      "args": [
+        [
+          -3,
+          7,
+          10,
+          -1
+        ],
+        6
+      ]
+    },
+    {
+      "name": "one item cannot pair with itself",
+      "args": [
+        [
+          19,
+          1
+        ],
+        38
+      ]
+    },
+    {
+      "name": "empty cart",
+      "args": [
+        [],
+        0
+      ]
+    }
+  ],
+  "hints": [
+    "Each price needs exactly one partner. What value would that partner have to be?",
+    "This is the hash map as an index: remember what you have already passed.",
+    "For each price, look up target − price in a map of value → index, then record the current price after the lookup."
+  ],
+  "rubric": {
+    "signals": [
+      "States the O(n²) nested-loop baseline before optimizing",
+      "Uses a value → index map and explains the complement lookup",
+      "Checks before inserting so one item never pairs with itself",
+      "Gives O(n) time and O(n) extra space"
+    ],
+    "followups": [
+      "The prices arrive sorted. What changes, and what does it cost?",
+      "Return every pair instead of one. How does the cost change?",
+      "The cart is too large for memory on one machine. What do you do?"
+    ]
+  }
+}

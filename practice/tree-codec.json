@@ -1,0 +1,138 @@
+{
+  "id": "tree-codec",
+  "entry": "roundTrip",
+  "starter": "type TreeNode = { v: number; L: TreeNode | null; R: TreeNode | null };\n// Level-order array, null for a missing child.\nfunction buildTree(values: (number | null)[]): TreeNode | null {\n  if (!values.length || values[0] == null) return null;\n  const root: TreeNode = { v: values[0], L: null, R: null };\n  const q = [root];\n  let i = 1;\n  while (q.length && i < values.length) {\n    const cur = q.shift()!;\n    const l = values[i++];\n    if (l != null) { cur.L = { v: l, L: null, R: null }; q.push(cur.L); }\n    const r = values[i++];\n    if (r != null) { cur.R = { v: r, L: null, R: null }; q.push(cur.R); }\n  }\n  return root;\n}\n\nfunction save(root: TreeNode | null): string {\n  // Turn the tree into a string.\n  return \"\";\n}\n\nfunction restore(text: string): TreeNode | null {\n  // Rebuild the tree from save()'s output.\n  return null;\n}\n\n// Test harness: save, wipe the original, restore, and read back level-order.\nfunction toLevelOrder(root: TreeNode | null): (number | null)[] {\n  const out: (number | null)[] = [];\n  const q: (TreeNode | null)[] = [root];\n  for (let i = 0; i < q.length; i++) {\n    const n = q[i];\n    out.push(n ? n.v : null);\n    if (n) q.push(n.L, n.R);\n  }\n  while (out.length && out[out.length - 1] === null) out.pop();\n  return out;\n}\nfunction roundTrip(values: (number | null)[]): (number | null)[] | string {\n  const root = buildTree(values);\n  const text = save(root);\n  if (typeof text !== \"string\") return \"save must return a string\";\n  const wipe = (n: TreeNode | null): void => { if (n) { n.v = NaN; wipe(n.L); wipe(n.R); } };\n  wipe(root);\n  return toLevelOrder(restore(text));\n}\n\nconsole.log(roundTrip([1, 2, 3, null, 4, 5, 6, null, null, 7]));\n",
+  "solution": "type TreeNode = { v: number; L: TreeNode | null; R: TreeNode | null };\n// Level-order array, null for a missing child.\nfunction buildTree(values: (number | null)[]): TreeNode | null {\n  if (!values.length || values[0] == null) return null;\n  const root: TreeNode = { v: values[0], L: null, R: null };\n  const q = [root];\n  let i = 1;\n  while (q.length && i < values.length) {\n    const cur = q.shift()!;\n    const l = values[i++];\n    if (l != null) { cur.L = { v: l, L: null, R: null }; q.push(cur.L); }\n    const r = values[i++];\n    if (r != null) { cur.R = { v: r, L: null, R: null }; q.push(cur.R); }\n  }\n  return root;\n}\n\nfunction save(root: TreeNode | null): string {\n  const out: string[] = [];\n  const walk = (n: TreeNode | null): void => {\n    if (!n) { out.push(\"#\"); return; }\n    out.push(String(n.v));\n    walk(n.L);\n    walk(n.R);\n  };\n  walk(root);\n  return out.join(\",\");\n}\n\nfunction restore(text: string): TreeNode | null {\n  const tokens = text.split(\",\");\n  let i = 0;\n  const build = (): TreeNode | null => {\n    const t = tokens[i++];\n    if (t === \"#\" || t === undefined || t === \"\") return null;\n    const n: TreeNode = { v: Number(t), L: null, R: null };\n    n.L = build();\n    n.R = build();\n    return n;\n  };\n  return build();\n}\n\nfunction toLevelOrder(root: TreeNode | null): (number | null)[] {\n  const out: (number | null)[] = [];\n  const q: (TreeNode | null)[] = [root];\n  for (let i = 0; i < q.length; i++) {\n    const n = q[i];\n    out.push(n ? n.v : null);\n    if (n) q.push(n.L, n.R);\n  }\n  while (out.length && out[out.length - 1] === null) out.pop();\n  return out;\n}\nfunction roundTrip(values: (number | null)[]): (number | null)[] | string {\n  const root = buildTree(values);\n  const text = save(root);\n  if (typeof text !== \"string\") return \"save must return a string\";\n  const wipe = (n: TreeNode | null): void => { if (n) { n.v = NaN; wipe(n.L); wipe(n.R); } };\n  wipe(root);\n  return toLevelOrder(restore(text));\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "support flow",
+      "args": [
+        [
+          1,
+          2,
+          3,
+          null,
+          4,
+          5,
+          6,
+          null,
+          null,
+          7
+        ]
+      ],
+      "expected": [
+        1,
+        2,
+        3,
+        null,
+        4,
+        5,
+        6,
+        null,
+        null,
+        7
+      ]
+    },
+    {
+      "name": "empty tree",
+      "args": [
+        []
+      ],
+      "expected": []
+    },
+    {
+      "name": "single zero",
+      "args": [
+        [
+          0
+        ]
+      ],
+      "expected": [
+        0
+      ]
+    },
+    {
+      "name": "negative and multi-digit ids",
+      "args": [
+        [
+          -12,
+          305,
+          null,
+          7
+        ]
+      ],
+      "expected": [
+        -12,
+        305,
+        null,
+        7
+      ]
+    },
+    {
+      "name": "repeated ids",
+      "args": [
+        [
+          4,
+          4,
+          4
+        ]
+      ],
+      "expected": [
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "name": "left child versus right child",
+      "args": [
+        [
+          1,
+          null,
+          2
+        ]
+      ],
+      "expected": [
+        1,
+        null,
+        2
+      ]
+    },
+    {
+      "name": "left-leaning",
+      "args": [
+        [
+          1,
+          2,
+          null,
+          3
+        ]
+      ],
+      "expected": [
+        1,
+        2,
+        null,
+        3
+      ]
+    }
+  ],
+  "hints": [
+    "If you write only the ids in some order, can two different trees produce the same string?",
+    "Preorder traversal with an explicit marker for every missing child.",
+    "save: write the id, then save(left), then save(right), with \"#\" for null. restore: read one token with a shared cursor; \"#\" means null, otherwise build the node, then its left, then its right."
+  ],
+  "rubric": {
+    "signals": [
+      "Chooses a format and explains why it is unambiguous (markers for missing children)",
+      "Writes save and restore as mirror-image traversals with a shared cursor",
+      "Handles the empty tree and negative or multi-digit values",
+      "Gives O(n) time and space and mentions recursion depth on a chain"
+    ],
+    "followups": [
+      "Each node also stores question text that may contain commas. How does the format change?",
+      "The tree is a binary search tree. Can you drop the markers?",
+      "Make the encoding as small as possible. What would you trade?"
+    ]
+  }
+}

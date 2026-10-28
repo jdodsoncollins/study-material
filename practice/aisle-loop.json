@@ -1,0 +1,95 @@
+{
+  "id": "aisle-loop",
+  "entry": "hasLoop",
+  "starter": "type ListNode = { val: number; next: ListNode | null };\nfunction buildList(values: number[], loopTo = -1): ListNode | null {\n  const nodes: ListNode[] = values.map((val) => ({ val, next: null }));\n  nodes.forEach((n, i) => { n.next = nodes[i + 1] ?? null; });\n  if (loopTo >= 0 && nodes.length) nodes[nodes.length - 1].next = nodes[loopTo];\n  return nodes[0] ?? null;\n}\n\nfunction loops(head: ListNode | null): boolean {\n  // Return true if following next would never reach null.\n  return false;\n}\n\n// The tests call this with the values and the index the tail points back to (-1 = no loop).\nfunction hasLoop(values: number[], loopTo: number): boolean {\n  return loops(buildList(values, loopTo));\n}\n\nconsole.log(hasLoop([3, 9, 1, 4], 1));\n",
+  "solution": "type ListNode = { val: number; next: ListNode | null };\nfunction buildList(values: number[], loopTo = -1): ListNode | null {\n  const nodes: ListNode[] = values.map((val) => ({ val, next: null }));\n  nodes.forEach((n, i) => { n.next = nodes[i + 1] ?? null; });\n  if (loopTo >= 0 && nodes.length) nodes[nodes.length - 1].next = nodes[loopTo];\n  return nodes[0] ?? null;\n}\n\nfunction loops(head: ListNode | null): boolean {\n  let slow = head, fast = head;\n  while (fast && fast.next) {\n    slow = slow!.next;\n    fast = fast.next.next;\n    if (slow === fast) return true;\n  }\n  return false;\n}\n\nfunction hasLoop(values: number[], loopTo: number): boolean {\n  return loops(buildList(values, loopTo));\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "tail points back to 9",
+      "args": [
+        [
+          3,
+          9,
+          1,
+          4
+        ],
+        1
+      ],
+      "expected": true
+    },
+    {
+      "name": "ends at null",
+      "args": [
+        [
+          5,
+          8,
+          2
+        ],
+        -1
+      ],
+      "expected": false
+    },
+    {
+      "name": "one node pointing at itself",
+      "args": [
+        [
+          7
+        ],
+        0
+      ],
+      "expected": true
+    },
+    {
+      "name": "one node, no loop",
+      "args": [
+        [
+          7
+        ],
+        -1
+      ],
+      "expected": false
+    },
+    {
+      "name": "empty feed",
+      "args": [
+        [],
+        -1
+      ],
+      "expected": false
+    },
+    {
+      "name": "loop to the head",
+      "args": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        0
+      ],
+      "expected": true
+    }
+  ],
+  "hints": [
+    "A visited set works. Can you do it without extra memory?",
+    "Fast and slow pointers: two speeds on one list.",
+    "Move slow one step and fast two steps; if they ever meet, there is a loop. If fast hits null, there is not."
+  ],
+  "rubric": {
+    "signals": [
+      "Offers the O(n) visited-set approach first",
+      "Uses Floyd’s two-pointer method for O(1) space",
+      "Guards fast and fast.next before stepping",
+      "Explains why the pointers must meet inside a loop"
+    ],
+    "followups": [
+      "Return the node where the loop begins.",
+      "Return the length of the loop.",
+      "How would you detect a cycle in a general directed graph?"
+    ]
+  }
+}

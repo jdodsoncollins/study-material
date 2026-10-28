@@ -1,0 +1,10 @@
+title: Grow then shrink
+steps:
+  - caption: "Right edge walks A D B E C. After C nothing is owed: ADBEC covers, length 5."
+    nodes: [grow, debt, valid, record]
+  - caption: "Drop A from the left. A is owed again, so the window stops shrinking at DBEC."
+    nodes: [shrink, owe, valid]
+  - caption: "F, a spare B, then A: DBECFBA covers. Shrink through D, the spare B, and E to reach CFBA, length 4."
+    nodes: [grow, record, shrink]
+  - caption: "The final C lets the left edge drop F: BAC, length 3, is the answer."
+    nodes: [record]

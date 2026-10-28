@@ -1,0 +1,96 @@
+{
+  "id": "next-hotter",
+  "entry": "daysUntilHotter",
+  "starter": "function daysUntilHotter(temps: number[]): number[] {\n  // For each day, days until a strictly hotter one, or 0.\n  return [];\n}\n\nconsole.log(daysUntilHotter([62,64,61,70,63,72]));\n",
+  "solution": "function daysUntilHotter(temps: number[]): number[] {\n  const out = new Array(temps.length).fill(0);\n  const stack: number[] = [];\n  for (let i = 0; i < temps.length; i++) {\n    while (stack.length && temps[stack[stack.length - 1]] < temps[i]) {\n      const j = stack.pop()!;\n      out[j] = i - j;\n    }\n    stack.push(i);\n  }\n  return out;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "shift highs",
+      "args": [
+        [
+          62,
+          64,
+          61,
+          70,
+          63,
+          72
+        ]
+      ],
+      "expected": [
+        1,
+        2,
+        1,
+        2,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "equal is not hotter",
+      "args": [
+        [
+          70,
+          70,
+          71
+        ]
+      ],
+      "expected": [
+        2,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "only falling",
+      "args": [
+        [
+          80,
+          75,
+          70
+        ]
+      ],
+      "expected": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "empty",
+      "args": [
+        []
+      ],
+      "expected": []
+    },
+    {
+      "name": "one day",
+      "args": [
+        [
+          50
+        ]
+      ],
+      "expected": [
+        0
+      ]
+    }
+  ],
+  "hints": [
+    "For each day, scanning forward is O(n²). Which days are still waiting for an answer?",
+    "Monotonic stack of indices with falling temperatures.",
+    "When a hotter day arrives, pop every cooler waiting day and record the gap; then push today."
+  ],
+  "rubric": {
+    "signals": [
+      "Describes the waiting days as a stack",
+      "Keeps the stack decreasing",
+      "Treats equal temperatures as not hotter",
+      "O(n) amortized time, each index pushed and popped once"
+    ],
+    "followups": [
+      "Return the next hotter temperature instead of the gap.",
+      "Treat the list as circular.",
+      "Answer for the previous hotter day."
+    ]
+  }
+}

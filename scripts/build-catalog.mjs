@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import { validateLesson, validateLinksAndSteps } from "./validate-content.mjs";
+import { searchTerms, validateLesson, validateLinksAndSteps, validatePractice } from "./validate-content.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const LESSONS = path.join(ROOT, "lessons");
@@ -190,6 +190,8 @@ for (const file of files) {
       widgets,
       company_signal: data.company_signal ?? [],
       updated: data.updated,
+      practice: null,
+      search: searchTerms(body),
     });
   } catch (err) {
     errors.push(`${rel}: ${err.message}`);
@@ -197,6 +199,29 @@ for (const file of files) {
 }
 
 errors.push(...validateLinksAndSteps(lessons, ROOT));
+
+const PRACTICE = path.join(ROOT, "practice");
+const practiceFiles = fs.existsSync(PRACTICE) ? fs.readdirSync(PRACTICE).filter((n) => n.endsWith(".json")) : [];
+for (const name of practiceFiles) {
+  const rel = `practice/${name}`;
+  const id = name.replace(/\.json$/, "");
+  const lesson = lessons.find((l) => l.id === id);
+  try {
+    const data = JSON.parse(fs.readFileSync(path.join(PRACTICE, name), "utf8"));
+    errors.push(...validatePractice(data, lesson, rel));
+    if (lesson) lesson.practice = rel;
+  } catch (err) {
+    errors.push(`${rel}: ${err.message}`);
+  }
+}
+for (const lesson of lessons) {
+  if ((lesson.kind === "problem" || lesson.kind === "case-study") && !lesson.practice) {
+    const message = `${lesson.path}: ${lesson.kind} needs practice/${lesson.id}.json`;
+    // Drafting escape hatch only; CI never sets it.
+    if (process.env.ALLOW_MISSING_PRACTICE) console.warn("warning:", message);
+    else errors.push(message);
+  }
+}
 
 lessons.sort((a, b) => a.id.localeCompare(b.id));
 const allTags = [...new Set(lessons.flatMap((l) => l.tags))].sort();
@@ -259,7 +284,7 @@ try {
   errors.push(`schedule.json: ${err.message}`);
 }
 
-const BLOCK_TYPES = new Set(["read", "attempt", "speak", "mixed", "redraw"]);
+const BLOCK_TYPES = new Set(["read", "attempt", "speak", "mixed", "redraw", "mock"]);
 const DAY_KINDS = new Set(["acquire", "drill", "review"]);
 
 if (schedule) {
@@ -285,6 +310,18 @@ if (schedule) {
         }
         if (block.type === "speak") {
           if (!block.text) errors.push(`${where}: speak needs text`);
+          continue;
+        }
+        if (block.type === "mock") {
+          if (!Array.isArray(block.lessons) || block.lessons.length < 1) {
+            errors.push(`${where}: mock needs at least 1 lesson`);
+            continue;
+          }
+          for (const id of block.lessons) {
+            const lesson = lessons.find((l) => l.id === id);
+            if (!lesson) errors.push(`${where}: unknown lesson ${id}`);
+            else if (!lesson.practice) errors.push(`${where}: mock lesson ${id} has no practice companion`);
+          }
           continue;
         }
         if (block.type === "mixed") {
