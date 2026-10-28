@@ -1,0 +1,24 @@
+{
+  "id": "notification-system",
+  "hints": [
+    "'Sent' is doing too much work in that sentence. How many different facts is it hiding?",
+    "Separate the business event, the per-recipient decision, each channel attempt, and any delivery receipt, each with its own dedupe key and state.",
+    "Write the keys: logical notification (event, recipient, category) and channel attempt including device; then add the second preference check at dispatch and per-channel queues."
+  ],
+  "rubric": {
+    "signals": [
+      "Distinguishes queued, provider-accepted, delivered-when-observable, and failed, and never records delivery it cannot observe",
+      "Publishes source events through an outbox and expands recipients in bounded batches",
+      "Uses a logical notification key and a separate channel-attempt key that includes the target device for push",
+      "Checks preferences and authorization before enqueue and again at dispatch; applies quiet hours with an explicit time-zone policy",
+      "Isolates channels with separate queues and budgets so a slow email provider does not stall push or the inbox",
+      "Admits residual duplicate risk after a lost provider response when the provider offers no idempotency or lookup, and chooses a product policy"
+    ],
+    "followups": [
+      "A provider returns success. Which state can the service truthfully record?",
+      "A user opts out after enqueue but before dispatch. Where is the second check?",
+      "A provider has neither idempotency nor delivery lookup and the response is lost. Do you risk a duplicate or a miss?",
+      "One user has three devices. How do you dedupe without dropping two legitimate deliveries?"
+    ]
+  }
+}

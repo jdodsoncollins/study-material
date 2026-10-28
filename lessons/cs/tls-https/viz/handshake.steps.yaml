@@ -1,0 +1,10 @@
+title: TLS 1.3 handshake
+steps:
+  - caption: "Each side sends an ephemeral key share; both compute the same secret."
+    nodes: [hello, shello, keys]
+  - caption: "The server proves it owns the certificate's key by signing the transcript."
+    nodes: [keys, cert]
+  - caption: "The client checks chain, dates, and hostname before trusting anything."
+    nodes: [cert, verify, abort]
+  - caption: "One round trip later, application data is encrypted and tamper-evident."
+    nodes: [verify, fin, data]

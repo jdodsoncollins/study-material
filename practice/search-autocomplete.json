@@ -1,0 +1,24 @@
+{
+  "id": "search-autocomplete",
+  "hints": [
+    "The request path has tens of milliseconds. What work cannot happen inside it?",
+    "Build a versioned prefix index of top candidates offline, swap snapshots atomically, and keep read-time work to a lookup, a small filter, and a current suppression check.",
+    "Split the latency budget into debounce, network, and service time; then add client sequence IDs for out-of-order responses and a read-path suppression list for urgent removals."
+  ],
+  "rubric": {
+    "signals": [
+      "Defines normalization, locale, ranking signal, and privacy filters before picking a trie or prefix map",
+      "Budgets debounce separately from the 50 ms service-plus-network target",
+      "Precomputes candidates outside the request path, validates a new snapshot, and switches readers atomically",
+      "Uses client request sequence IDs so a stale response for a shorter prefix never overwrites a newer one",
+      "Checks an emergency suppression list on reads so removals do not wait for the next snapshot",
+      "Handles prefix skew with measured frequencies, replication, or caching rather than alphabetic partitioning alone"
+    ],
+    "followups": [
+      "The user types 'an' then 'and' and the responses arrive in reverse. Which displays?",
+      "Ranking rebuilds hourly but a private term appears now. Describe the removal path.",
+      "One locale's popular prefix takes half the traffic. Why does first-two-characters sharding need more?",
+      "Estimate memory for the prefix associations. What did the upper bound leave out?"
+    ]
+  }
+}

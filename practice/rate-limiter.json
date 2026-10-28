@@ -1,0 +1,24 @@
+{
+  "id": "rate-limiter",
+  "hints": [
+    "Twelve frontends each allowing a burst of ten is not a burst of ten. Where does the decision have to live?",
+    "One authority per limiting key that checks and consumes budget atomically; choose a sliding log for an exact rolling window and a token bucket for bursts.",
+    "Define the window as (now - 60s, now], then write the single atomic step that prunes, counts, checks both rules, and records a uniquely identified admission only on success."
+  ],
+  "rubric": {
+    "signals": [
+      "Pins down key, time rule, and burst before choosing an algorithm, and keeps overload protection separate from quotas and billing",
+      "Shows why independent local buckets multiply a global limit and routes each key to one authority",
+      "Makes the admission check and state update atomic so two requests cannot both spend the last token",
+      "Explains that a token bucket with capacity 10 and refill 0.5/s is not a strict 30-per-rolling-minute quota",
+      "Chooses fail-open, fail-closed, or a bounded emergency allowance per endpoint deliberately",
+      "Bounds overshoot for allocated local budgets from the sum of outstanding allocations, and returns retry hints that avoid synchronized retries"
+    ],
+    "followups": [
+      "Two requests arrive when one token remains. Trace the atomic result.",
+      "Compare 30 requests at second 59 and 30 at second 60 under a fixed window and a rolling window.",
+      "Allow no more than 5% overshoot during a partition. Derive the bound from leased budgets, or explain why you must reject.",
+      "Anonymous traffic shares one NAT address. What key do you limit on?"
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "desk-bot",
+  "hints": [
+    "The chat platform wants an answer in about three seconds and the agent needs twenty. What do you return first?",
+    "Verify the request, atomically store a durable job with its delivery record, acknowledge, then run a bounded worker with user-scoped tools and approval bound to an exact payload.",
+    "Write the two intake adapters (slash-command form vs Events API envelope), the atomic delivery-plus-job insert, and the approval record (user, preview hash, operation ID, expiry)."
+  ],
+  "rubric": {
+    "signals": [
+      "Acknowledges within the platform deadline and does long work asynchronously",
+      "Verifies the signature on the raw body and timestamp freshness before accepting work",
+      "Normalizes slash commands and mention events with separate adapters instead of inventing a shared envelope",
+      "Stores the accepted-delivery record and durable job atomically, so a crash cannot leave a dedup marker without a job",
+      "Enforces user authorization at every tool call and treats tool output and retrieved messages as untrusted data",
+      "Binds approval to an exact preview hash, operation ID, and expiry, and represents uncertain external outcomes honestly",
+      "Uses Little's law correctly with mean in-system time to size concurrency"
+    ],
+    "followups": [
+      "Why do slash-command input and a mention event need different parsers?",
+      "The process crashes after storing a dedup marker but before enqueueing. Replace that sequence.",
+      "The user approves one invoice preview, then the amount changes. Why can't the old approval authorize the new payload?",
+      "The user loses permission while the job waits. Where is that rechecked?"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+title: Authorization code with PKCE
+steps:
+  - caption: "The app sends the user to the authorization server with a PKCE challenge."
+    nodes: [app, authz, login]
+  - caption: "The user signs in there, never in the app; the app gets a one-time code."
+    nodes: [login, app]
+  - caption: "The app trades code plus verifier for tokens. The ID token is for the app."
+    nodes: [app, tokens]
+  - caption: "Only the access token goes to the API, which still checks this user and this resource."
+    nodes: [app, api, check]

@@ -1,0 +1,24 @@
+{
+  "id": "chat-system",
+  "hints": [
+    "Global message order is expensive and nobody needs it. Which order does a user actually see?",
+    "One authoritative ordered log per conversation, with an idempotent append keyed by the client operation ID and per-device delivery cursors.",
+    "Trace send, lost acknowledgement, and resend: show the atomic check-ID / allocate-sequence / append step, then a phone and laptop reconnecting from different cursors."
+  ],
+  "rubric": {
+    "signals": [
+      "Scopes ordering to a conversation and routes each conversation to an authoritative partition",
+      "Makes append idempotent with a client operation ID; same ID returns the prior sequence, different payload under that ID is rejected",
+      "States what the acknowledgement promises (which durability condition was met) before returning a sequence",
+      "Tracks delivery cursors per (conversation, device) separately from read state per (conversation, user); clients dedupe by message ID",
+      "Fences old leaders after failover so two owners cannot assign conflicting sequence numbers",
+      "Treats push notifications as reconnect hints, not delivery proof, and returns an explicit resync when a cursor predates retained history"
+    ],
+    "followups": [
+      "Send a message, lose the acknowledgement, resend it. How many log entries should exist?",
+      "The phone has received sequence 20 and the laptop 15. Name the two delivery cursors and the separate read state.",
+      "Fail over while the leader has acknowledged data. Which replicas may take over without breaking that acknowledgement?",
+      "A user leaves a group. What history and new messages can they still receive?"
+    ]
+  }
+}

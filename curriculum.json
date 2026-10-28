@@ -15,6 +15,12 @@
           "lessons": ["big-o", "arrays-vs-linked-lists"]
         },
         {
+          "id": "sort-cost",
+          "title": "Sort",
+          "track": "cs",
+          "lessons": ["sorting-tradeoffs"]
+        },
+        {
           "id": "drill",
           "title": "Drill",
           "track": "algorithms",
@@ -189,16 +195,34 @@
           "lessons": ["os-memory", "processes-threads"]
         },
         {
+          "id": "heap-lines",
+          "title": "Lines",
+          "track": "cs",
+          "lessons": ["cpu-caches-locality", "garbage-collection"]
+        },
+        {
           "id": "pipe",
           "title": "Pipe",
           "track": "cs",
           "lessons": ["http-and-tcp", "dns-resolution"]
         },
         {
+          "id": "secure-pipe",
+          "title": "Secure",
+          "track": "cs",
+          "lessons": ["tls-https", "web-security-basics"]
+        },
+        {
           "id": "fetch",
           "title": "Fetch",
           "track": "cs",
           "lessons": ["file-download", "ranged-download", "chunk-retry", "request-budget"]
+        },
+        {
+          "id": "sql-query",
+          "title": "Query",
+          "track": "cs",
+          "lessons": ["sql-for-interviews"]
         },
         {
           "id": "lock",
@@ -226,6 +250,12 @@
           "lessons": ["interview-framework"]
         },
         {
+          "id": "size-it",
+          "title": "Size",
+          "track": "system-design",
+          "lessons": ["capacity-estimation", "api-design-pagination"]
+        },
+        {
           "id": "nearby",
           "title": "Nearby",
           "track": "system-design",
@@ -236,6 +266,12 @@
           "title": "Split",
           "track": "system-design",
           "lessons": ["queues-delivery", "cap-and-consistency", "sharding", "unique-ids"]
+        },
+        {
+          "id": "store-copy",
+          "title": "Store",
+          "track": "system-design",
+          "lessons": ["choosing-a-datastore", "replication-and-failover"]
         }
       ]
     },
@@ -244,6 +280,12 @@
       "label": "Box",
       "blurb": "Request paths, state, and failures in focused design cases.",
       "units": [
+        {
+          "id": "guard-edge",
+          "title": "Guard",
+          "track": "system-design",
+          "lessons": ["authn-authz", "cdn-edge-caching"]
+        },
         {
           "id": "lookup",
           "title": "Lookup",
@@ -269,6 +311,12 @@
       "label": "Load",
       "blurb": "Fan-out, matching, scarce GPUs.",
       "units": [
+        {
+          "id": "stream-watch",
+          "title": "Stream",
+          "track": "system-design",
+          "lessons": ["event-streams-cdc", "observability-slos"]
+        },
         {
           "id": "fanout",
           "title": "Fan-out",

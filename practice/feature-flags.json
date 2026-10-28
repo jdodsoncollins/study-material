@@ -1,0 +1,24 @@
+{
+  "id": "feature-flags",
+  "hints": [
+    "Evaluation has to be fast and the control plane can be down. Where does the decision run?",
+    "Versioned, validated rule snapshots distributed to every process and evaluated locally, with stable hashed bucketing for percentage rollout.",
+    "Define per-flag staleness: how long a last-known snapshot stays valid and which value applies after it expires; then show the hash(subject, salt) bucket check for 10% to 20%."
+  ],
+  "rubric": {
+    "signals": [
+      "Separates authoring (validation, audit, rollback) from local evaluation against an immutable versioned snapshot",
+      "Uses notifications as a cue to fetch a validated version, with randomized polling and version checks as recovery",
+      "Hashes a stable subject ID with a flag-specific salt so raising a threshold keeps already-included subjects",
+      "Notes that changing the salt or variant boundaries reshuffles assignments unless assignments are persisted",
+      "Chooses per-flag stale-value and expiry defaults and states the availability cost of failing closed",
+      "Keeps trusted decisions server-side; a client-visible flag is not an access-control boundary"
+    ],
+    "followups": [
+      "Raise rollout from 10% to 20% with the same bucket mapping. Which existing users change?",
+      "Change a variant's allocation boundaries. Do previously assigned users stay put?",
+      "A client disconnects before a kill switch ships. State the maximum stale-use policy and its availability cost.",
+      "An invalid rule is published. What stops a fleet-wide parse failure?"
+    ]
+  }
+}

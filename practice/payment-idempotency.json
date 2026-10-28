@@ -1,0 +1,24 @@
+{
+  "id": "payment-idempotency",
+  "hints": [
+    "A retry and a brand-new payment can look identical on the wire. What tells them apart?",
+    "Scope an idempotency key to (tenant, operation, key) with a request fingerprint, and back it with a uniqueness constraint on the business operation itself.",
+    "Trace a timeout after the provider submission: persist intent first, reuse the stable capture operation ID as the provider key, mark the outcome unknown, and reconcile instead of charging again."
+  ],
+  "rubric": {
+    "signals": [
+      "Separates the logical payment operation from transport attempts and stores key, fingerprint, intent, state, and result together",
+      "Rejects key reuse with a different amount, currency, or intent as a conflict",
+      "Protects the capture-once invariant with a business uniqueness constraint so two different keys cannot both capture",
+      "Treats a timeout after submission as an unknown outcome and reconciles with the provider rather than resubmitting under a new key",
+      "Updates local state, ledger, and an outbox event atomically, and expects consumers to dedupe outbox redelivery",
+      "Keeps the business invariant alive after the replay-cache entry expires"
+    ],
+    "followups": [
+      "Replay the same intent, key, amount, and currency. What comes back?",
+      "Two different keys try to capture the same intent concurrently. Which constraint picks the winner?",
+      "The provider's key retention expires while the outcome is unknown. Why is a new key unsafe and how does reconciliation resolve it?",
+      "A webhook arrives twice and out of order. How do you apply it?"
+    ]
+  }
+}
