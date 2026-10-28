@@ -1,0 +1,8 @@
+title: The interviewer controls the zoom
+steps:
+  - caption: "Thirty seconds. Then stop and let them pick a direction."
+    nodes: [headline]
+  - caption: "Five minutes: a small diagram, one traced request, the shaping decisions, and real numbers."
+    nodes: [walk, decisions, numbers]
+  - caption: "Thirty minutes on one box: how it works, how it failed, what you would change."
+    nodes: [deep, failure, change]

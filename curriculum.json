@@ -242,6 +242,43 @@
       ]
     },
     {
+      "id": "story",
+      "label": "Story",
+      "blurb": "True work stories, told so the listener can score them.",
+      "units": [
+        {
+          "id": "bank",
+          "title": "Bank",
+          "track": "behavioral",
+          "lessons": ["story-bank", "behavioral-scoring"]
+        },
+        {
+          "id": "friction",
+          "title": "Friction",
+          "track": "behavioral",
+          "lessons": ["conflict-stories", "failure-stories"]
+        },
+        {
+          "id": "reach",
+          "title": "Reach",
+          "track": "behavioral",
+          "lessons": ["ownership-ambiguity", "influence-without-authority", "prioritization-deadlines"]
+        },
+        {
+          "id": "depth",
+          "title": "Depth",
+          "track": "behavioral",
+          "lessons": ["project-deep-dive"]
+        },
+        {
+          "id": "close",
+          "title": "Close",
+          "track": "behavioral",
+          "lessons": ["closing-questions"]
+        }
+      ]
+    },
+    {
       "id": "harness",
       "label": "Harness",
       "blurb": "Models, execution environments, tools, and permissions.",

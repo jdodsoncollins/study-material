@@ -39,6 +39,12 @@ ai-agents
   ai-agents/tools
   ai-agents/failure-modes
   ai-agents/product
+behavioral
+  behavioral/stories
+  behavioral/conflict
+  behavioral/leadership
+  behavioral/projects
+  behavioral/delivery
 cs
   cs/complexity
   cs/data-structures
@@ -51,4 +57,5 @@ interviews
   interviews/system-design
   interviews/frontend
   interviews/ai
+  interviews/behavioral
 ```

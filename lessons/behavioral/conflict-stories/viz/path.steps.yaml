@@ -1,0 +1,12 @@
+title: Move the argument off positions
+steps:
+  - caption: "Start private. Restate their view until they agree you have it."
+    nodes: [notice, restate]
+  - caption: "Positions conflict; interests often overlap. Turn shared interests into criteria."
+    nodes: [interest, criteria]
+  - caption: "Evidence against the criteria replaces louder opinions."
+    nodes: [evidence]
+  - caption: "Know who owns the call. If it is not you, hand them both cases."
+    nodes: [decide, commitYou, brief]
+  - caption: "Commit out loud. Reopen only when something new arrives."
+    nodes: [commit, reopen]

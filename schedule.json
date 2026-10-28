@@ -595,6 +595,84 @@
           "lessons": ["desk-bot", "how-to-run-proper-evals", "agent-mistakes", "interview-framework"]
         }
       ]
+    },
+    {
+      "id": "day-story-01",
+      "title": "Bank",
+      "kind": "acquire",
+      "blurb": "Write the slots, then learn what the listener writes down.",
+      "blocks": [
+        { "type": "read", "lesson": "story-bank", "minutes": 20 },
+        { "type": "read", "lesson": "behavioral-scoring", "minutes": 15 },
+        { "type": "speak", "text": "Say your strongest story out loud in five beats with a timer. Aim for about two minutes, then note where you ran long." },
+        { "type": "speak", "text": "Tell the same story again, adding one sentence each for scope, ownership, judgment, collaboration, and growth." }
+      ]
+    },
+    {
+      "id": "day-story-02",
+      "title": "Friction",
+      "kind": "acquire",
+      "blurb": "A disagreement, then a mistake. Both told with you as the subject.",
+      "blocks": [
+        { "type": "read", "lesson": "conflict-stories", "minutes": 18 },
+        { "type": "read", "lesson": "failure-stories", "minutes": 17 },
+        { "type": "speak", "text": "Out loud: state the other person's position in a real disagreement the way they would state it. Then tell the full story." },
+        { "type": "speak", "text": "Out loud: tell one real mistake, saying the mistake in your first sentence. Keep the damage to about a fifth of the answer." }
+      ]
+    },
+    {
+      "id": "day-story-03",
+      "title": "Reach",
+      "kind": "acquire",
+      "blurb": "Fog into a plan, and a yes from someone who does not report to you.",
+      "blocks": [
+        { "type": "read", "lesson": "ownership-ambiguity", "minutes": 17 },
+        { "type": "read", "lesson": "influence-without-authority", "minutes": 17 },
+        { "type": "speak", "text": "Out loud: tell an ambiguity story and name the exact moment the problem got edges, and what you wrote down." },
+        { "type": "speak", "text": "Out loud: tell an influence story that names what the other team cared about and what you offered to make yes cheaper." }
+      ]
+    },
+    {
+      "id": "day-story-04",
+      "title": "Depth",
+      "kind": "acquire",
+      "blurb": "Three zoom levels on one project, then a deadline you bent.",
+      "blocks": [
+        { "type": "read", "lesson": "project-deep-dive", "minutes": 20 },
+        { "type": "read", "lesson": "prioritization-deadlines", "minutes": 15 },
+        { "type": "speak", "text": "Give your project's thirty-second headline, stop, then give the five-minute walkthrough with the diagram and three real numbers." },
+        { "type": "speak", "text": "Out loud: tell a deadline story that names the cut, the reason, and the person you warned, and when." }
+      ]
+    },
+    {
+      "id": "day-story-05",
+      "title": "Close",
+      "kind": "acquire",
+      "blurb": "Questions that surface how the team works, then one story bent three ways.",
+      "blocks": [
+        { "type": "read", "lesson": "closing-questions", "minutes": 15 },
+        { "type": "speak", "text": "Ask your six prepared closing questions out loud, and add one follow-up to each as if you had heard an answer." },
+        { "type": "speak", "text": "Answer three prompts out loud with the same story: a project you are proud of, a disagreement, a mistake. Pull a different beat forward each time." },
+        { "type": "speak", "text": "Re-tell yesterday's deadline story from memory in under two minutes without notes." },
+        {
+          "type": "mixed",
+          "lessons": ["story-bank", "behavioral-scoring"]
+        }
+      ]
+    },
+    {
+      "id": "day-story-06",
+      "title": "Story mix",
+      "kind": "review",
+      "blurb": "One sitting. Unlabeled behavioral prompts, answered aloud.",
+      "blocks": [
+        {
+          "type": "mixed",
+          "lessons": ["conflict-stories", "failure-stories", "ownership-ambiguity", "influence-without-authority", "prioritization-deadlines"]
+        },
+        { "type": "speak", "text": "Have a friend or a random timer pick one of the five topics. Start answering out loud within ten seconds, then note which scoring signals you left empty." },
+        { "type": "speak", "text": "Do the thirty-second headline, the five-minute walkthrough, and a one-box deep dive on your project back to back, out loud, without notes." }
+      ]
     }
   ]
 }
