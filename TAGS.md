@@ -23,6 +23,7 @@ algorithms
   algorithms/intervals
   algorithms/tries
   algorithms/union-find
+  algorithms/bits
 system-design
   system-design/foundations
   system-design/ids

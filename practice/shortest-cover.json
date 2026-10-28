@@ -1,0 +1,92 @@
+{
+  "id": "shortest-cover",
+  "entry": "shortestCover",
+  "starter": "function shortestCover(log: string, need: string): string {\n  // Shortest (leftmost on ties) substring of log containing every character of need, with counts.\n  return \"\";\n}\n\nconsole.log(shortestCover(\"ADBECFBAC\", \"ABC\"));\n",
+  "solution": "function shortestCover(log: string, need: string): string {\n  if (need.length === 0) return \"\";\n  const owed = new Map<string, number>();\n  for (const ch of need) owed.set(ch, (owed.get(ch) ?? 0) + 1);\n  let missing = need.length;\n  let bestStart = 0, bestLen = Infinity;\n  let left = 0;\n  for (let right = 0; right < log.length; right++) {\n    const ch = log[right];\n    if (owed.has(ch)) {\n      if (owed.get(ch)! > 0) missing--;\n      owed.set(ch, owed.get(ch)! - 1);\n    }\n    while (missing === 0) {\n      if (right - left + 1 < bestLen) { bestLen = right - left + 1; bestStart = left; }\n      const gone = log[left];\n      if (owed.has(gone)) {\n        owed.set(gone, owed.get(gone)! + 1);\n        if (owed.get(gone)! > 0) missing++;\n      }\n      left++;\n    }\n  }\n  return bestLen === Infinity ? \"\" : log.slice(bestStart, bestStart + bestLen);\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "release audit",
+      "args": [
+        "ADBECFBAC",
+        "ABC"
+      ],
+      "expected": "BAC"
+    },
+    {
+      "name": "two tests and a build",
+      "args": [
+        "TBUTLTDB",
+        "TTB"
+      ],
+      "expected": "TBUT"
+    },
+    {
+      "name": "need more than the log has",
+      "args": [
+        "ABC",
+        "ABCD"
+      ],
+      "expected": ""
+    },
+    {
+      "name": "empty need",
+      "args": [
+        "ABC",
+        ""
+      ],
+      "expected": ""
+    },
+    {
+      "name": "empty log",
+      "args": [
+        "",
+        "A"
+      ],
+      "expected": ""
+    },
+    {
+      "name": "whole log is the cover",
+      "args": [
+        "AB",
+        "BA"
+      ],
+      "expected": "AB"
+    },
+    {
+      "name": "leftmost of equal covers",
+      "args": [
+        "ABxBA",
+        "AB"
+      ],
+      "expected": "AB"
+    },
+    {
+      "name": "cover at the end",
+      "args": [
+        "CBDAEBCA",
+        "ABC"
+      ],
+      "expected": "BCA"
+    }
+  ],
+  "hints": [
+    "Once a stretch contains everything, can you make it shorter from one side without losing anything?",
+    "Variable-size sliding window with character counts.",
+    "Grow the right edge and track how many required characters are still owed; when none are owed, record the window, then advance the left edge until something is owed again."
+  ],
+  "rubric": {
+    "signals": [
+      "Treats need as counts, not a set",
+      "Explains grow-until-valid, shrink-while-valid",
+      "Keeps a single missing counter so validity is O(1) to check",
+      "Records inside the shrink loop, before dropping the left character",
+      "Gives O(n + m) time"
+    ],
+    "followups": [
+      "Return every shortest cover, not just the leftmost.",
+      "The log is a live stream. What can you show after each event?",
+      "Make it case-insensitive and Unicode-safe."
+    ]
+  }
+}

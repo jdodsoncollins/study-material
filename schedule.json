@@ -1951,6 +1951,236 @@
           "lessons": ["capacity-estimation", "replication-and-failover", "event-streams-cdc", "authn-authz"]
         }
       ]
+    },
+    {
+      "id": "day-dp-01",
+      "title": "Merge feeds",
+      "kind": "drill",
+      "blurb": "One front per shard in a heap, then two heaps around the middle.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "merge-sorted-feeds",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "merge-sorted-feeds",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "running-median",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "running-median",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-dp-02",
+      "title": "Cover",
+      "kind": "drill",
+      "blurb": "Grow until valid, shrink while valid.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "shortest-cover",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "shortest-cover",
+          "after": "attempt"
+        },
+        {
+          "type": "read",
+          "lesson": "sliding-window"
+        },
+        {
+          "type": "speak",
+          "text": "Say how this window differs from the longest-unique window: when do you record, and which edge moves?"
+        }
+      ]
+    },
+    {
+      "id": "day-dp-03",
+      "title": "Prefix and piles",
+      "kind": "drill",
+      "blurb": "Left times right, then the longest rising chain.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "others-product",
+          "minutes": 15
+        },
+        {
+          "type": "read",
+          "lesson": "others-product",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "in-order-messages",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "in-order-messages",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-dp-04",
+      "title": "Edit table",
+      "kind": "drill",
+      "blurb": "Three arrows into one cell.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "dp-2d"
+        },
+        {
+          "type": "attempt",
+          "lesson": "typo-distance",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "typo-distance",
+          "after": "attempt"
+        },
+        {
+          "type": "speak",
+          "text": "Fill the first three rows of the fecth/fetch table out loud, naming replace, delete, or insert for each cell."
+        }
+      ]
+    },
+    {
+      "id": "day-dp-05",
+      "title": "Commit",
+      "kind": "acquire",
+      "blurb": "Greedy needs a proof; the frontier scan has one.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "greedy"
+        },
+        {
+          "type": "attempt",
+          "lesson": "reach-last-page",
+          "minutes": 15
+        },
+        {
+          "type": "read",
+          "lesson": "reach-last-page",
+          "after": "attempt"
+        },
+        {
+          "type": "speak",
+          "text": "Give a three-meeting counterexample to shortest-meeting-first, then the exchange argument for earliest end."
+        }
+      ]
+    },
+    {
+      "id": "day-dp-06",
+      "title": "Bits",
+      "kind": "acquire",
+      "blurb": "Masks, xor, and the 32-bit edge.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "bit-manipulation"
+        },
+        {
+          "type": "attempt",
+          "lesson": "unpaired-id",
+          "minutes": 10
+        },
+        {
+          "type": "read",
+          "lesson": "unpaired-id",
+          "after": "attempt"
+        },
+        {
+          "type": "speak",
+          "text": "Explain why 1 << 32 is 1 in JavaScript and what you would use for a 40-flag mask."
+        }
+      ]
+    },
+    {
+      "id": "day-dp-07",
+      "title": "Branch",
+      "kind": "drill",
+      "blurb": "Which item goes in this slot; then which items, with reuse.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "playlist-orders",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "playlist-orders",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "exact-baskets",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "exact-baskets",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-dp-08",
+      "title": "Grid",
+      "kind": "acquire",
+      "blurb": "Bounds, directions, layers.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "matrix-traversal"
+        },
+        {
+          "type": "attempt",
+          "lesson": "spiral-read",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "spiral-read",
+          "after": "attempt"
+        },
+        {
+          "type": "speak",
+          "text": "Rotate a 4 by 4 grid of 1 to 16 on paper, one four-cycle at a time."
+        }
+      ]
+    },
+    {
+      "id": "day-dp-09",
+      "title": "Choose mix",
+      "kind": "review",
+      "blurb": "Four unlabeled prompts. Name the pattern before you code.",
+      "blocks": [
+        {
+          "type": "mixed",
+          "lessons": ["running-median", "typo-distance", "reach-last-page", "exact-baskets"]
+        },
+        {
+          "type": "speak",
+          "text": "For each prompt, say in one sentence why greedy does or does not work."
+        }
+      ]
     }
   ]
 }

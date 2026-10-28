@@ -1,0 +1,109 @@
+{
+  "id": "others-product",
+  "entry": "othersProduct",
+  "starter": "function othersProduct(weights: number[]): number[] {\n  // For each i, the product of every weight except weights[i]. No division.\n  return weights.map(() => 0);\n}\n\nconsole.log(othersProduct([3, 2, 5, 4]));\n",
+  "solution": "function othersProduct(weights: number[]): number[] {\n  const out: number[] = Array(weights.length).fill(1);\n  let before = 1;\n  for (let i = 0; i < weights.length; i++) { out[i] = before; before *= weights[i]; }\n  let after = 1;\n  for (let i = weights.length - 1; i >= 0; i--) { out[i] *= after; after *= weights[i]; }\n  return out;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "ranking boosts",
+      "args": [
+        [
+          3,
+          2,
+          5,
+          4
+        ]
+      ],
+      "expected": [
+        40,
+        60,
+        24,
+        30
+      ]
+    },
+    {
+      "name": "one zero",
+      "args": [
+        [
+          4,
+          0,
+          5
+        ]
+      ],
+      "expected": [
+        0,
+        20,
+        0
+      ]
+    },
+    {
+      "name": "two zeros",
+      "args": [
+        [
+          0,
+          3,
+          0
+        ]
+      ],
+      "expected": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "empty",
+      "args": [
+        []
+      ],
+      "expected": []
+    },
+    {
+      "name": "single weight",
+      "args": [
+        [
+          7
+        ]
+      ],
+      "expected": [
+        1
+      ]
+    },
+    {
+      "name": "negatives",
+      "args": [
+        [
+          -1,
+          2,
+          -3,
+          4
+        ]
+      ],
+      "expected": [
+        -24,
+        12,
+        -8,
+        6
+      ]
+    }
+  ],
+  "hints": [
+    "Everything except i is everything to the left of i together with everything to the right of i.",
+    "Prefix and suffix products.",
+    "Fill the output with running products from the left (write before multiplying), then walk from the right with a second running product and multiply it in."
+  ],
+  "rubric": {
+    "signals": [
+      "Explains why total / weights[i] fails on zeros",
+      "Uses left and right running products, writing before multiplying",
+      "Achieves O(n) time and O(1) extra space besides the output",
+      "Mentions overflow or precision for large products"
+    ],
+    "followups": [
+      "The weights are large. How do you avoid precision loss?",
+      "Do the same for sums. Is division-free still needed?",
+      "Return the product of everything except a window of k around i."
+    ]
+  }
+}
