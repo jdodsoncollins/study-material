@@ -1,0 +1,10 @@
+title: quorum
+steps:
+  - caption: "Any node can coordinate. It hashes the session ID and finds the three home replicas clockwise on the ring."
+    nodes: [put, coord]
+  - caption: "The put is acknowledged once two replicas have appended it. The third catches up later."
+    nodes: [ra, rb, ack]
+  - caption: "With C down, D holds a hint and replays it when C returns. If hints count toward W, strict quorum overlap is gone until that replay."
+    nodes: [hint, rc]
+  - caption: "A get asks two home replicas, keeps the newest version or returns concurrent siblings, and repairs the stale copy."
+    nodes: [get, read, merge, repair]

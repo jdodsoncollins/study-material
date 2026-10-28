@@ -1,0 +1,22 @@
+{
+  "id": "seat-holds",
+  "hints": [
+    "Two shoppers click F8 at the same moment. Where is the single place that decides who gets it?",
+    "This is a lease-style reservation: a conditional write with an owner and an expiry, followed by an idempotent payment handoff.",
+    "Write the hold as one conditional update over every requested seat, then decide what confirm does when the hold has expired."
+  ],
+  "rubric": {
+    "signals": [
+      "Makes the seat row (or GA counter) authoritative and the seat map a cache",
+      "Holds multiple seats all-or-nothing in one transaction on one event partition",
+      "Uses the order ID as the payment idempotency key and handles duplicate webhooks",
+      "Has an explicit answer for payment-after-expiry: extended paying state plus automatic refund",
+      "Protects the database with a waiting room and per-account hold limits"
+    ],
+    "followups": [
+      "The floor is general admission with 4,000 tickets and 300 holds/s. What breaks?",
+      "How do you stop bots from holding and releasing the best seats repeatedly?",
+      "The payment provider is down for ten minutes during on-sale. What do shoppers see?"
+    ]
+  }
+}

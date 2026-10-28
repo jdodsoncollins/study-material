@@ -595,6 +595,106 @@
           "lessons": ["desk-bot", "how-to-run-proper-evals", "agent-mistakes", "interview-framework"]
         }
       ]
+    },
+    {
+      "id": "day-cases-01",
+      "title": "Seat holds",
+      "kind": "drill",
+      "blurb": "Blank page: two shoppers, one seat, one late payment.",
+      "blocks": [
+        { "type": "redraw", "lesson": "seat-holds", "minutes": 25 },
+        { "type": "read", "lesson": "seat-holds", "after": "attempt", "minutes": 20 },
+        { "type": "speak", "text": "Say what happens when the charge succeeds after the hold expired." }
+      ]
+    },
+    {
+      "id": "day-cases-02",
+      "title": "Leaderboard",
+      "kind": "drill",
+      "blurb": "Do the memory math before you shard.",
+      "blocks": [
+        { "type": "redraw", "lesson": "leaderboard", "minutes": 25 },
+        { "type": "read", "lesson": "leaderboard", "after": "attempt", "minutes": 20 },
+        { "type": "speak", "text": "Say why the sorted set is not the source of truth." }
+      ]
+    },
+    {
+      "id": "day-cases-03",
+      "title": "Nearby",
+      "kind": "drill",
+      "blurb": "Grid the map, then find the edge case.",
+      "blocks": [
+        { "type": "redraw", "lesson": "nearby-places", "minutes": 25 },
+        { "type": "read", "lesson": "nearby-places", "after": "attempt", "minutes": 20 },
+        { "type": "speak", "text": "Say how many cells a 1 km query reads at the equator, and why more at 60 degrees north." }
+      ]
+    },
+    {
+      "id": "day-cases-04",
+      "title": "Quorums",
+      "kind": "drill",
+      "blurb": "Three replicas, two acks, one node down.",
+      "blocks": [
+        { "type": "redraw", "lesson": "kv-store", "minutes": 25 },
+        { "type": "read", "lesson": "kv-store", "after": "attempt", "minutes": 20 },
+        { "type": "speak", "text": "Say which failure makes R + W > N stop meaning overlap." }
+      ]
+    },
+    {
+      "id": "day-cases-05",
+      "title": "Offsets",
+      "kind": "drill",
+      "blurb": "Two commits: the message and the bookmark.",
+      "blocks": [
+        { "type": "redraw", "lesson": "message-queue", "minutes": 25 },
+        { "type": "read", "lesson": "message-queue", "after": "attempt", "minutes": 20 },
+        { "type": "speak", "text": "Say what a crash between processing and committing the offset causes." }
+      ]
+    },
+    {
+      "id": "day-cases-06",
+      "title": "Telemetry",
+      "kind": "drill",
+      "blurb": "Count series, not hosts.",
+      "blocks": [
+        { "type": "redraw", "lesson": "metrics-pipeline", "minutes": 25 },
+        { "type": "read", "lesson": "metrics-pipeline", "after": "attempt", "minutes": 20 },
+        { "type": "speak", "text": "Say how many series one cart_id label adds to a 12-bucket histogram." }
+      ]
+    },
+    {
+      "id": "day-cases-07",
+      "title": "Co-editing",
+      "kind": "drill",
+      "blurb": "Two cursors, one sentence, a laptop on a plane.",
+      "blocks": [
+        { "type": "redraw", "lesson": "doc-collab", "minutes": 25 },
+        { "type": "read", "lesson": "doc-collab", "after": "attempt", "minutes": 20 },
+        { "type": "speak", "text": "Say where an edit becomes durable and why presence never reaches the log." }
+      ]
+    },
+    {
+      "id": "day-cases-08",
+      "title": "File sync",
+      "kind": "drill",
+      "blurb": "Chunks, a journal, and a conflict copy.",
+      "blocks": [
+        { "type": "redraw", "lesson": "file-sync", "minutes": 25 },
+        { "type": "read", "lesson": "file-sync", "after": "attempt", "minutes": 20 },
+        { "type": "speak", "text": "Say what the parent-version check prevents." }
+      ]
+    },
+    {
+      "id": "day-cases-09",
+      "title": "Scale mix",
+      "kind": "review",
+      "blurb": "One sitting. Four unlabeled cases from this stretch.",
+      "blocks": [
+        {
+          "type": "mixed",
+          "lessons": ["seat-holds", "kv-store", "message-queue", "file-sync"]
+        }
+      ]
     }
   ]
 }

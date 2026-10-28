@@ -219,6 +219,12 @@
           "title": "Edge",
           "track": "system-design",
           "lessons": ["rate-limiter", "notification-system", "job-scheduler", "payment-idempotency"]
+        },
+        {
+          "id": "hold",
+          "title": "Hold",
+          "track": "system-design",
+          "lessons": ["seat-holds", "leaderboard", "nearby-places"]
         }
       ]
     },
@@ -238,6 +244,25 @@
           "title": "Match",
           "track": "system-design",
           "lessons": ["ride-hailing", "llm-serving"]
+        }
+      ]
+    },
+    {
+      "id": "scale",
+      "label": "Scale",
+      "blurb": "Replicas, logs, and shared state when one box is not enough.",
+      "units": [
+        {
+          "id": "replicate",
+          "title": "Replicate",
+          "track": "system-design",
+          "lessons": ["kv-store", "message-queue", "metrics-pipeline"]
+        },
+        {
+          "id": "merge",
+          "title": "Merge",
+          "track": "system-design",
+          "lessons": ["doc-collab", "file-sync"]
         }
       ]
     },

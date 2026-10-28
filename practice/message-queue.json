@@ -1,0 +1,22 @@
+{
+  "id": "message-queue",
+  "hints": [
+    "There are two different commits in this system. Name both.",
+    "This is a partitioned, replicated append-only log with consumer-group offsets and at-least-once delivery.",
+    "Key by order ID, ack after the in-sync replicas have the batch, commit offsets after processing, and route poison events to retry and dead-letter topics."
+  ],
+  "rubric": {
+    "signals": [
+      "Chooses the partition key for per-order ordering and sizes partitions from the slowest consumer group",
+      "Defines message commit as replicated to in-sync replicas and rejects unclean leader election for orders",
+      "Commits offsets after side effects and makes handlers idempotent",
+      "Isolates poison messages without stalling the partition and states the ordering cost",
+      "Distinguishes time-based retention from consumption and alerts on lag versus retention"
+    ],
+    "followups": [
+      "Finance needs each order counted exactly once in an external table. What can the log guarantee?",
+      "One merchant produces 30% of events. What happens to its partition?",
+      "Compare this to a per-message ack queue with visibility timeouts. When would you pick that?"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "kv-store",
+  "hints": [
+    "Start with the two operations and ask: when replicas disagree, which copy is the truth?",
+    "This is leaderless replication with quorums: N replicas, W write acks, R read replies, placed by consistent hashing.",
+    "Pick N=3, W=2, R=2, then trace one put while a replica is down: who holds the hint, and which read could still miss it?"
+  ],
+  "rubric": {
+    "signals": [
+      "Places keys with consistent hashing and virtual nodes, replicas in distinct failure domains",
+      "States R + W > N and what it does not cover: concurrent writes and sloppy quorums",
+      "Handles concurrent cart writes with version vectors or siblings and an explicit merge, not silent last-write-wins",
+      "Separates hinted handoff, read repair, and anti-entropy and says when each runs",
+      "Defines the ack point as W durable commit-log appends and treats a failed write as unknown"
+    ],
+    "followups": [
+      "A node is down for six hours and hints hit their cap. What protects durability now?",
+      "Product wants read-your-writes for the cart after checkout. How do you provide it?",
+      "A thirteenth node joins. How much data moves, and from where?"
+    ]
+  }
+}

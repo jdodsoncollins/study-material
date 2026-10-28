@@ -1,0 +1,22 @@
+{
+  "id": "file-sync",
+  "hints": [
+    "Think of a file version as a list of something smaller. What is stored once and referenced many times?",
+    "This is content-addressed chunk storage plus a per-account change journal with compare-and-set commits.",
+    "Hash chunks, ask what is missing, upload those, commit the manifest against its parent version, and make a conflict copy if the parent is stale."
+  ],
+  "rubric": {
+    "signals": [
+      "Separates immutable content-hashed chunks from a versioned manifest and journal",
+      "Explains why content-defined chunking beats fixed chunks for inserts",
+      "Commits manifest and journal entry in one transaction only after chunks are durable",
+      "Resolves stale-parent commits as conflict copies rather than overwrites",
+      "Handles device catch-up by cursor, expired cursors, and chunk garbage collection with a grace period"
+    ],
+    "followups": [
+      "Add shared folders with 500 members. What happens to the journal and cursors?",
+      "Why not deduplicate chunks across all users?",
+      "A user renames a folder with 50,000 files. What changes in storage?"
+    ]
+  }
+}

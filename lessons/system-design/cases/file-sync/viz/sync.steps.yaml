@@ -1,0 +1,10 @@
+title: sync
+steps:
+  - caption: "The client cuts the file into content-defined chunks and fingerprints each one with SHA-256."
+    nodes: [save, chunk]
+  - caption: "The server reports which fingerprints the account lacks. Only those are uploaded, and the server re-hashes them on arrival."
+    nodes: [ask, up]
+  - caption: "The new manifest commits only if its parent is still the current version. Otherwise both edits survive as a conflict copy."
+    nodes: [cas, conflict]
+  - caption: "The commit and its journal entry land in one transaction. Other devices are nudged, then pull everything after their cursor."
+    nodes: [journal, nudge, pull, fetch]
