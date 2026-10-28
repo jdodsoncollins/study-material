@@ -1,0 +1,12 @@
+title: Keep the answer inside the range
+steps:
+  - caption: "Start with every slot as a candidate. hi is one past the end."
+    nodes: [start, test]
+  - caption: "Look at the middle slot."
+    nodes: [mid, cmp]
+  - caption: "Too small: it and everything before it are out."
+    nodes: [cmp, right]
+  - caption: "Big enough: it might be the answer, so keep it as the new end."
+    nodes: [cmp, left]
+  - caption: "When the range is empty, lo is the answer, or n if nothing qualifies."
+    nodes: [test, done]

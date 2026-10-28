@@ -1,0 +1,12 @@
+title: Pop the closest, relax its links
+steps:
+  - caption: "Pop relay 0 at 0 ms. Relay 1 gets 4, relay 2 gets 1."
+    nodes: [r0, r1, r2]
+  - caption: "Pop relay 2 at 1 ms. Through it, relay 1 drops to 3 and relay 3 gets 6."
+    nodes: [r2, r1, r3]
+  - caption: "Pop relay 1 at 3 ms. Relay 3 drops to 4."
+    nodes: [r1, r3]
+  - caption: "Pop relay 3 at 4 ms. Relay 4 gets 7."
+    nodes: [r3, r4]
+  - caption: "Pop relay 4 at 7 ms. Leftover heap entries are stale and skipped. Final: 0, 3, 1, 4, 7."
+    nodes: [r0, r1, r2, r3, r4]

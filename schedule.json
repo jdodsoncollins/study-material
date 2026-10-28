@@ -1456,6 +1456,198 @@
           "minutes": 30
         }
       ]
+    },
+    {
+      "id": "day-trees-01",
+      "title": "Bisect and tally",
+      "kind": "acquire",
+      "blurb": "Halve a sorted list. Then subtract two running totals.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "binary-search"
+        },
+        {
+          "type": "read",
+          "lesson": "prefix-sums"
+        },
+        {
+          "type": "speak",
+          "text": "Say the lower-bound invariant, then why negative values rule out a window."
+        }
+      ]
+    },
+    {
+      "id": "day-trees-02",
+      "title": "Calendar",
+      "kind": "drill",
+      "blurb": "Insert into sorted blocks. Then count the peak.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "insert-booking",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "insert-booking",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "room-count",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "room-count",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-03",
+      "title": "Tree walks",
+      "kind": "acquire",
+      "blurb": "Pre, in, post. Then the deepest chain.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "tree-dfs"
+        },
+        {
+          "type": "attempt",
+          "lesson": "support-flow-depth",
+          "minutes": 15
+        },
+        {
+          "type": "read",
+          "lesson": "support-flow-depth",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-04",
+      "title": "Search tree",
+      "kind": "drill",
+      "blurb": "Fences from every ancestor. Then where two lookups part.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "ticket-bst-check",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "ticket-bst-check",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "split-point",
+          "minutes": 15
+        },
+        {
+          "type": "read",
+          "lesson": "split-point",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-05",
+      "title": "Rank and save",
+      "kind": "drill",
+      "blurb": "Stop inorder at k. Then write a tree down and read it back.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "kth-latency",
+          "minutes": 15
+        },
+        {
+          "type": "read",
+          "lesson": "kth-latency",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "tree-codec",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "tree-codec",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-06",
+      "title": "Copy and trace",
+      "kind": "drill",
+      "blurb": "A map stops cycles. Unmark on the way out.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "clone-contacts",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "clone-contacts",
+          "after": "attempt"
+        },
+        {
+          "type": "attempt",
+          "lesson": "grid-word",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "grid-word",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-07",
+      "title": "Weighted",
+      "kind": "acquire",
+      "blurb": "Settle the closest node next. Then take the max.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "shortest-paths"
+        },
+        {
+          "type": "attempt",
+          "lesson": "fanout-delay",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "fanout-delay",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-trees-08",
+      "title": "Branch mix",
+      "kind": "review",
+      "blurb": "No labels. Trees, routes, calendars, and a sorted lookup.",
+      "blocks": [
+        {
+          "type": "mixed",
+          "lessons": ["ticket-bst-check", "fanout-delay", "room-count", "grid-word", "binary-search"]
+        },
+        {
+          "type": "speak",
+          "text": "For each prompt, name the traversal or sweep before you write a line."
+        }
+      ]
     }
   ]
 }

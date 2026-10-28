@@ -1,0 +1,200 @@
+{
+  "id": "clone-contacts",
+  "entry": "cloneContactsFrom",
+  "starter": "type Person = { id: number; links: Person[] };\n\nfunction cloneContacts(start: Person | null): Person | null {\n  // Return a deep copy of start: new objects for every reachable person,\n  // same ids, same link order, no references back into the original.\n  return start;\n}\n\n// Test harness: build linked people from an adjacency list, clone person 0,\n// then read the copy back as an adjacency list.\nfunction cloneContactsFrom(adj: number[][]): number[][] | string {\n  if (adj.length === 0) return cloneContacts(null) === null ? [] : \"expected null for an empty graph\";\n  const people: Person[] = adj.map((_, id) => ({ id, links: [] }));\n  adj.forEach((ns, id) => { for (const n of ns) people[id].links.push(people[n]); });\n  const originals = new Set<Person>(people);\n  const copy = cloneContacts(people[0]);\n  if (!copy) return \"returned null\";\n  const seen = new Map<number, Person>();\n  const queue: Person[] = [copy];\n  seen.set(copy.id, copy);\n  for (let head = 0; head < queue.length; head++) {\n    const p = queue[head];\n    if (originals.has(p)) return \"the copy shares a node with the original\";\n    for (const f of p.links) {\n      const known = seen.get(f.id);\n      if (known && known !== f) return \"two different copies of person \" + f.id;\n      if (!known) { seen.set(f.id, f); queue.push(f); }\n    }\n  }\n  const out: number[][] = [];\n  for (const [id, p] of [...seen].sort((x, y) => x[0] - y[0])) out[id] = p.links.map((f) => f.id);\n  return out;\n}\n\nconsole.log(cloneContactsFrom([[1, 3], [0, 2], [1, 3], [0, 2, 4], [3]]));\n",
+  "solution": "type Person = { id: number; links: Person[] };\n\nfunction cloneContacts(start: Person | null): Person | null {\n  if (!start) return null;\n  const copies = new Map<Person, Person>([[start, { id: start.id, links: [] }]]);\n  const queue: Person[] = [start];\n  for (let head = 0; head < queue.length; head++) {\n    const orig = queue[head];\n    const copy = copies.get(orig)!;\n    for (const friend of orig.links) {\n      if (!copies.has(friend)) {\n        copies.set(friend, { id: friend.id, links: [] });\n        queue.push(friend);\n      }\n      copy.links.push(copies.get(friend)!);\n    }\n  }\n  return copies.get(start)!;\n}\n\n// Test harness: build linked people from an adjacency list, clone person 0,\n// then read the copy back as an adjacency list.\nfunction cloneContactsFrom(adj: number[][]): number[][] | string {\n  if (adj.length === 0) return cloneContacts(null) === null ? [] : \"expected null for an empty graph\";\n  const people: Person[] = adj.map((_, id) => ({ id, links: [] }));\n  adj.forEach((ns, id) => { for (const n of ns) people[id].links.push(people[n]); });\n  const originals = new Set<Person>(people);\n  const copy = cloneContacts(people[0]);\n  if (!copy) return \"returned null\";\n  const seen = new Map<number, Person>();\n  const queue: Person[] = [copy];\n  seen.set(copy.id, copy);\n  for (let head = 0; head < queue.length; head++) {\n    const p = queue[head];\n    if (originals.has(p)) return \"the copy shares a node with the original\";\n    for (const f of p.links) {\n      const known = seen.get(f.id);\n      if (known && known !== f) return \"two different copies of person \" + f.id;\n      if (!known) { seen.set(f.id, f); queue.push(f); }\n    }\n  }\n  const out: number[][] = [];\n  for (const [id, p] of [...seen].sort((x, y) => x[0] - y[0])) out[id] = p.links.map((f) => f.id);\n  return out;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "five people with a cycle",
+      "args": [
+        [
+          [
+            1,
+            3
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            0,
+            2,
+            4
+          ],
+          [
+            3
+          ]
+        ]
+      ],
+      "expected": [
+        [
+          1,
+          3
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          0,
+          2,
+          4
+        ],
+        [
+          3
+        ]
+      ]
+    },
+    {
+      "name": "empty graph",
+      "args": [
+        []
+      ],
+      "expected": []
+    },
+    {
+      "name": "one person, no links",
+      "args": [
+        [
+          []
+        ]
+      ],
+      "expected": [
+        []
+      ]
+    },
+    {
+      "name": "two people",
+      "args": [
+        [
+          [
+            1
+          ],
+          [
+            0
+          ]
+        ]
+      ],
+      "expected": [
+        [
+          1
+        ],
+        [
+          0
+        ]
+      ]
+    },
+    {
+      "name": "talks to themself",
+      "args": [
+        [
+          [
+            0
+          ]
+        ]
+      ],
+      "expected": [
+        [
+          0
+        ]
+      ]
+    },
+    {
+      "name": "star",
+      "args": [
+        [
+          [
+            1,
+            2,
+            3
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ]
+      ],
+      "expected": [
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ]
+    },
+    {
+      "name": "triangle",
+      "args": [
+        [
+          [
+            1,
+            2
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      ],
+      "expected": [
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  ],
+  "hints": [
+    "When a link points back to someone you already copied, how do you find that copy?",
+    "Graph traversal (BFS or DFS) with a map from original node to its copy.",
+    "Create the copy and store it in the map the moment you first discover a node; then, for each link of an original, push the mapped copy onto the copy's links."
+  ],
+  "rubric": {
+    "signals": [
+      "Explains why a visited map is required (cycles and shared neighbours)",
+      "Inserts into the map on discovery so no node is copied twice",
+      "Gives every copy a fresh links array and preserves link order",
+      "Gives O(V + E) time and O(V) space"
+    ],
+    "followups": [
+      "The graph may be disconnected and you receive every node. What changes?",
+      "Copy a linked list where each node also has a random pointer.",
+      "Could you use structuredClone or JSON here? What happens with each?"
+    ]
+  }
+}

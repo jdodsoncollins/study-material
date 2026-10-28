@@ -1,0 +1,236 @@
+{
+  "id": "fanout-delay",
+  "entry": "slowestDelivery",
+  "starter": "function slowestDelivery(n: number, links: number[][], source: number): number {\n  // links are [from, to, ms], one-way. Return the time until all n servers\n  // have the push that starts at source, or -1 if some server never gets it.\n  return -1;\n}\n\nconsole.log(slowestDelivery(6, [[0, 1, 7], [0, 2, 2], [2, 1, 3], [1, 3, 4], [2, 4, 9], [3, 4, 1], [4, 5, 2]], 0));\n",
+  "solution": "function slowestDelivery(n: number, links: number[][], source: number): number {\n  const out: [number, number][][] = Array.from({ length: n }, () => []);\n  for (const [from, to, ms] of links) out[from].push([to, ms]);\n  const dist = new Array(n).fill(Infinity);\n  const heap: [number, number][] = [];\n  const push = (x: [number, number]) => {\n    heap.push(x);\n    for (let i = heap.length - 1; i > 0; ) {\n      const p = (i - 1) >> 1;\n      if (heap[p][0] <= heap[i][0]) break;\n      [heap[p], heap[i]] = [heap[i], heap[p]];\n      i = p;\n    }\n  };\n  const pop = (): [number, number] => {\n    const top = heap[0], last = heap.pop()!;\n    if (heap.length) {\n      heap[0] = last;\n      for (let i = 0; ; ) {\n        const l = 2 * i + 1, r = l + 1;\n        let m = i;\n        if (l < heap.length && heap[l][0] < heap[m][0]) m = l;\n        if (r < heap.length && heap[r][0] < heap[m][0]) m = r;\n        if (m === i) break;\n        [heap[m], heap[i]] = [heap[i], heap[m]];\n        i = m;\n      }\n    }\n    return top;\n  };\n  dist[source] = 0;\n  push([0, source]);\n  while (heap.length) {\n    const [t, u] = pop();\n    if (t > dist[u]) continue;\n    for (const [v, ms] of out[u]) {\n      if (t + ms < dist[v]) { dist[v] = t + ms; push([dist[v], v]); }\n    }\n  }\n  let latest = 0;\n  for (const d of dist) latest = Math.max(latest, d);\n  return latest === Infinity ? -1 : latest;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "six servers",
+      "args": [
+        6,
+        [
+          [
+            0,
+            1,
+            7
+          ],
+          [
+            0,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            3
+          ],
+          [
+            1,
+            3,
+            4
+          ],
+          [
+            2,
+            4,
+            9
+          ],
+          [
+            3,
+            4,
+            1
+          ],
+          [
+            4,
+            5,
+            2
+          ]
+        ],
+        0
+      ],
+      "expected": 12
+    },
+    {
+      "name": "server 6 has no incoming link",
+      "args": [
+        7,
+        [
+          [
+            0,
+            1,
+            7
+          ],
+          [
+            0,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            3
+          ],
+          [
+            1,
+            3,
+            4
+          ],
+          [
+            2,
+            4,
+            9
+          ],
+          [
+            3,
+            4,
+            1
+          ],
+          [
+            4,
+            5,
+            2
+          ]
+        ],
+        0
+      ],
+      "expected": -1
+    },
+    {
+      "name": "only the publisher",
+      "args": [
+        1,
+        [],
+        0
+      ],
+      "expected": 0
+    },
+    {
+      "name": "parallel links, faster wins",
+      "args": [
+        2,
+        [
+          [
+            0,
+            1,
+            5
+          ],
+          [
+            0,
+            1,
+            2
+          ]
+        ],
+        0
+      ],
+      "expected": 2
+    },
+    {
+      "name": "cycle back to the source",
+      "args": [
+        3,
+        [
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            1,
+            2,
+            4
+          ]
+        ],
+        0
+      ],
+      "expected": 5
+    },
+    {
+      "name": "publisher in the middle",
+      "args": [
+        4,
+        [
+          [
+            2,
+            0,
+            3
+          ],
+          [
+            2,
+            1,
+            1
+          ],
+          [
+            1,
+            3,
+            1
+          ],
+          [
+            0,
+            3,
+            1
+          ]
+        ],
+        2
+      ],
+      "expected": 3
+    },
+    {
+      "name": "links point the wrong way",
+      "args": [
+        2,
+        [
+          [
+            1,
+            0,
+            4
+          ]
+        ],
+        0
+      ],
+      "expected": -1
+    },
+    {
+      "name": "zero-delay links",
+      "args": [
+        3,
+        [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            2,
+            0
+          ]
+        ],
+        0
+      ],
+      "expected": 0
+    }
+  ],
+  "hints": [
+    "Each server receives the push at the earliest time any path can deliver it. What is the answer in terms of those times?",
+    "Single-source shortest paths with Dijkstra's algorithm and a min-heap.",
+    "Seed dist with Infinity and dist[source] = 0; pop the smallest time, skip stale entries, relax outgoing links; at the end return the max, or -1 if any is still Infinity."
+  ],
+  "rubric": {
+    "signals": [
+      "Restates the problem as shortest paths from one source followed by a max",
+      "Uses Dijkstra with a priority queue and explains why weights must be nonnegative",
+      "Returns -1 when any server is unreachable",
+      "Gives O(E log V) time and O(V + E) space"
+    ],
+    "followups": [
+      "Every link has the same delay. What simpler algorithm works?",
+      "Some links have negative delay (a clock correction). What breaks and what do you use?",
+      "Each server waits 3 ms before forwarding. Where does that go in your code?"
+    ]
+  }
+}
