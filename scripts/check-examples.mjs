@@ -160,5 +160,16 @@ test('unique-ids','mint',`
 const ids=new Set();for(let ms=0;ms<5;ms++)for(let worker=0;worker<5;worker++)for(let seq=0;seq<10;seq++){const id=mint(ms,worker,seq);check(!ids.has(id));ids.add(id);check(BigInt(id)<2n**63n);}
 throws(()=>mint(1,1024,0));throws(()=>mint(1,0,4096));throws(()=>mint(-1,0,0));throws(()=>mint(2**41,0,0));
 `);
+test('upload-slots','finishTimes',`
+for(let t=0;t<300;t++){const n=rand(9),k=1+rand(4),d=Array.from({length:n},()=>rand(50));const got=finishTimes(d,k);equal(got.length,n);
+let clock=0,started=0;const end=new Array(n).fill(-1),running=[];while(started<n||running.length){while(running.length<k&&started<n){running.push(started);end[started]=clock+d[started];started++;}
+const soonest=Math.min(...running.map(i=>end[i]));clock=soonest;for(let r=running.length-1;r>=0;r--)if(end[running[r]]===clock)running.splice(r,1);}
+equal(got,end);check(n===0||Math.max(...got)>=Math.ceil(d.reduce((a,b)=>a+b,0)/k));}
+throws(()=>finishTimes([1],0));
+`);
+test('session-store-levels','SessionStore',`
+const s=new SessionStore();s.set(0,'a','1',2);s.set(0,'b','2');check(s.get(1,'a')==='1');check(s.get(2,'a')===null);check(!s.delete(3,'a'));
+equal(s.scan(3,''),['b=2']);s.set(4,'b','3',1);check(s.get(5,'b')===null);equal(s.scan(5,''),[]);
+`);
 if(failures.length){for(const failure of failures)console.error(failure);process.exitCode=1;}
 console.log(`${snippets} runnable examples; ${groups} independent reference/edge-case groups; ${checks} assertions; ${failures.length} failures`);

@@ -368,6 +368,32 @@
       ]
     },
     {
+      "id": "day-build-01",
+      "title": "Levels",
+      "kind": "drill",
+      "blurb": "Pour the foundation for rooms you cannot see yet.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "progressive-spec-rounds"
+        },
+        {
+          "type": "attempt",
+          "lesson": "session-store-levels",
+          "minutes": 30
+        },
+        {
+          "type": "read",
+          "lesson": "session-store-levels",
+          "after": "attempt"
+        },
+        {
+          "type": "speak",
+          "text": "Before typing, say the row shape and the expiry boundary in one sentence each."
+        }
+      ]
+    },
+    {
       "id": "day-mock-runtime",
       "title": "Mock: Runtime",
       "kind": "review",
@@ -1089,6 +1115,28 @@
         {
           "type": "read",
           "lesson": "request-budget"
+        }
+      ]
+    },
+    {
+      "id": "day-wire-slots",
+      "title": "Slots",
+      "kind": "drill",
+      "blurb": "The next job goes where a slot frees first.",
+      "blocks": [
+        {
+          "type": "attempt",
+          "lesson": "upload-slots",
+          "minutes": 20
+        },
+        {
+          "type": "read",
+          "lesson": "upload-slots",
+          "after": "attempt"
+        },
+        {
+          "type": "speak",
+          "text": "Explain why next++ needs no lock in JavaScript but would in a threaded language."
         }
       ]
     },
@@ -2174,6 +2222,22 @@
       ]
     },
     {
+      "id": "day-ai-09",
+      "title": "Repo",
+      "kind": "acquire",
+      "blurb": "Reproduce before you repair.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "debug-unfamiliar-repo"
+        },
+        {
+          "type": "speak",
+          "text": "Walk an imaginary bug ticket out loud: map, failing test, three hypotheses, smallest fix, full rerun."
+        }
+      ]
+    },
+    {
       "id": "day-ai-08",
       "title": "AI mix",
       "kind": "review",
@@ -2320,6 +2384,26 @@
         {
           "type": "mixed",
           "lessons": ["story-bank", "behavioral-scoring"]
+        }
+      ]
+    },
+    {
+      "id": "day-story-07",
+      "title": "Tools",
+      "kind": "acquire",
+      "blurb": "Name the check, not the vibe.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "ai-judgment-stories"
+        },
+        {
+          "type": "speak",
+          "text": "Out loud: tell the story of a time a tool was confidently wrong, and name the exact check that caught it."
+        },
+        {
+          "type": "speak",
+          "text": "Finish the sentence \"I don't use it for…\" with a true reason."
         }
       ]
     },

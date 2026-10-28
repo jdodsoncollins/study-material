@@ -1,0 +1,128 @@
+{
+  "id": "upload-slots",
+  "entry": "finishTimes",
+  "starter": "// Jobs start in queue order; at most `limit` run at once. Return each job's finish time, in queue order.\nfunction finishTimes(durations: number[], limit: number): number[] {\n  return [];\n}\n\nconsole.log(finishTimes([400, 250, 300, 100, 500, 200], 2));\n",
+  "solution": "function finishTimes(durations: number[], limit: number): number[] {\n  if (!Number.isInteger(limit) || limit < 1) throw new Error(\"limit must be a positive integer\");\n  const free = new Array(Math.min(limit, durations.length)).fill(0);\n  return durations.map((ms) => {\n    let best = 0;\n    for (let s = 1; s < free.length; s++) if (free[s] < free[best]) best = s;\n    free[best] += ms;\n    return free[best];\n  });\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "six photos, two slots",
+      "args": [
+        [
+          400,
+          250,
+          300,
+          100,
+          500,
+          200
+        ],
+        2
+      ],
+      "expected": [
+        400,
+        250,
+        550,
+        500,
+        1000,
+        750
+      ]
+    },
+    {
+      "name": "one slot is serial",
+      "args": [
+        [
+          100,
+          200,
+          50
+        ],
+        1
+      ],
+      "expected": [
+        100,
+        300,
+        350
+      ]
+    },
+    {
+      "name": "more slots than photos",
+      "args": [
+        [
+          300,
+          300
+        ],
+        5
+      ],
+      "expected": [
+        300,
+        300
+      ]
+    },
+    {
+      "name": "empty queue",
+      "args": [
+        [],
+        3
+      ],
+      "expected": []
+    },
+    {
+      "name": "zero-length jobs",
+      "args": [
+        [
+          0,
+          0,
+          40,
+          10
+        ],
+        2
+      ],
+      "expected": [
+        0,
+        0,
+        40,
+        10
+      ]
+    },
+    {
+      "name": "three slots, uneven",
+      "args": [
+        [
+          90,
+          30,
+          60,
+          20,
+          50,
+          10
+        ],
+        3
+      ],
+      "expected": [
+        90,
+        30,
+        60,
+        50,
+        100,
+        70
+      ]
+    }
+  ],
+  "hints": [
+    "Picture each slot as a stopwatch that says when it is next free.",
+    "Greedy scheduling: the next job goes to the earliest free slot (a min-heap when k is large).",
+    "Keep an array of k free times; for each duration, pick the smallest, add the duration, and record the new value as that job's finish time."
+  ],
+  "rubric": {
+    "signals": [
+      "States the greedy rule before coding",
+      "Returns results in queue order, not completion order",
+      "Handles limit >= n and an empty queue",
+      "Compares an O(n·k) scan with an O(n log k) heap",
+      "Translates the idea into k async workers sharing a next index"
+    ],
+    "followups": [
+      "Write the real async pool with promises.",
+      "One upload fails. Does the pool stop or keep going, and how does the caller find out?",
+      "Add cancellation when the user leaves the screen."
+    ]
+  }
+}

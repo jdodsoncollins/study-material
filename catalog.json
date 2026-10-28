@@ -1,7 +1,7 @@
 {
   "version": 5,
   "generated": "2026-10-28",
-  "lesson_count": 163,
+  "lesson_count": 168,
   "tags": [
     "ai-agents",
     "ai-agents/evals",
@@ -401,6 +401,15 @@
               "merge-sorted-feeds",
               "running-median"
             ]
+          },
+          {
+            "id": "levels",
+            "title": "Levels",
+            "track": "algorithms",
+            "lessons": [
+              "progressive-spec-rounds",
+              "session-store-levels"
+            ]
           }
         ]
       },
@@ -620,7 +629,8 @@
               "file-download",
               "ranged-download",
               "chunk-retry",
-              "request-budget"
+              "request-budget",
+              "upload-slots"
             ]
           },
           {
@@ -938,6 +948,14 @@
             "lessons": [
               "ai-pairing-interview"
             ]
+          },
+          {
+            "id": "repo",
+            "title": "Repo",
+            "track": "ai-agents",
+            "lessons": [
+              "debug-unfamiliar-repo"
+            ]
           }
         ]
       },
@@ -988,6 +1006,14 @@
             "track": "behavioral",
             "lessons": [
               "closing-questions"
+            ]
+          },
+          {
+            "id": "tools",
+            "title": "Tools",
+            "track": "behavioral",
+            "lessons": [
+              "ai-judgment-stories"
             ]
           }
         ]
@@ -1373,6 +1399,32 @@
             "type": "read",
             "lesson": "running-median",
             "after": "attempt"
+          }
+        ]
+      },
+      {
+        "id": "day-build-01",
+        "title": "Levels",
+        "kind": "drill",
+        "blurb": "Pour the foundation for rooms you cannot see yet.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "progressive-spec-rounds"
+          },
+          {
+            "type": "attempt",
+            "lesson": "session-store-levels",
+            "minutes": 30
+          },
+          {
+            "type": "read",
+            "lesson": "session-store-levels",
+            "after": "attempt"
+          },
+          {
+            "type": "speak",
+            "text": "Before typing, say the row shape and the expiry boundary in one sentence each."
           }
         ]
       },
@@ -2134,6 +2186,28 @@
           {
             "type": "read",
             "lesson": "request-budget"
+          }
+        ]
+      },
+      {
+        "id": "day-wire-slots",
+        "title": "Slots",
+        "kind": "drill",
+        "blurb": "The next job goes where a slot frees first.",
+        "blocks": [
+          {
+            "type": "attempt",
+            "lesson": "upload-slots",
+            "minutes": 20
+          },
+          {
+            "type": "read",
+            "lesson": "upload-slots",
+            "after": "attempt"
+          },
+          {
+            "type": "speak",
+            "text": "Explain why next++ needs no lock in JavaScript but would in a threaded language."
           }
         ]
       },
@@ -3260,6 +3334,22 @@
         ]
       },
       {
+        "id": "day-ai-09",
+        "title": "Repo",
+        "kind": "acquire",
+        "blurb": "Reproduce before you repair.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "debug-unfamiliar-repo"
+          },
+          {
+            "type": "speak",
+            "text": "Walk an imaginary bug ticket out loud: map, failing test, three hypotheses, smallest fix, full rerun."
+          }
+        ]
+      },
+      {
         "id": "day-ai-08",
         "title": "AI mix",
         "kind": "review",
@@ -3421,6 +3511,26 @@
         ]
       },
       {
+        "id": "day-story-07",
+        "title": "Tools",
+        "kind": "acquire",
+        "blurb": "Name the check, not the vibe.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "ai-judgment-stories"
+          },
+          {
+            "type": "speak",
+            "text": "Out loud: tell the story of a time a tool was confidently wrong, and name the exact check that caught it."
+          },
+          {
+            "type": "speak",
+            "text": "Finish the sentence \"I don't use it for…\" with a true reason."
+          }
+        ]
+      },
+      {
         "id": "day-story-06",
         "title": "Story mix",
         "kind": "review",
@@ -3522,6 +3632,39 @@
       "updated": "2026-10-26",
       "practice": null,
       "search": "snapshot why it shows up in interviews core idea eli5 worked example easy medium hard common mistakes how to talk about it cross-links absence absent actions actually adding addresses agent aggregate ai-assisted allows alternatives ambiguity ambiguous answer appropriate area authorization authorized automatically available backward behavior bounded broad budgets build call calling candidate capability case cases cause change changes changing checks choose claims classes classify coding coding-agent-evals common component confident configuration contract contracts core correct correctness create debugging defective define denied departed deploy diagnose diff different disambiguation discussions distinguish document endless enforceable enough entire environment error errors evaluate evaluation every evidence example execution exists expected explanation explicitly fail failed failure failures faulty first fixture gate graded grader grading guessing handling hide honestly how-to-run-proper-evals idea identity ignoring incident incorrect information inspect inspecting instruction insufficient interview-ai-round interviews judge keep legitimate list long longer lookup loop make mandatory matters meaningful measured missing mistakes necessary normal observable observed order outcome outside overfitting part pass passes patch patches permission permit point policy polling practice preferred preservation preserved prevalence problem prompt proof proposed rather re-evaluate read reasoning record regression rejection release repair repeated repeatedly reported reporting reports requested require required resolve responsible result results retries retrieval retry returned review rubric scope searches sequence shows signal size special-case start state step stop stronger successful system talk targeted task test tests tool tool-call tool-calling tool-side trace traces traces-trajectories treating trusted types universal update without work wrong"
+    },
+    {
+      "id": "ai-judgment-stories",
+      "title": "Show judgment about the tools you use",
+      "slug": "ai-judgment-stories",
+      "kind": "strategy",
+      "track": "behavioral",
+      "difficulty": "core",
+      "estimated_minutes": 14,
+      "summary": "Answer questions about AI coding tools with specific stories of verification, a case where the tool was wrong, and a case where you chose not to use it, so the interviewer hears judgment rather than enthusiasm or avoidance.",
+      "tags": [
+        "behavioral",
+        "behavioral/stories",
+        "interviews",
+        "interviews/behavioral",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "story-bank"
+      ],
+      "related": [
+        "story-bank",
+        "failure-stories",
+        "behavioral-scoring",
+        "ai-pairing-interview"
+      ],
+      "path": "lessons/behavioral/ai-judgment-stories.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [],
+      "updated": "2026-10-28",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea eli5 three stories to prepare worked example easy medium hard common mistakes how to talk about it cross-links accept accepted actual added afterward ai-pairing-interview always answer anything arithmetic asked asking assistant assistants avoids bank beats behavioral behavioral-scoring bend blaming boilerplate boundary briefly build building calendar careful carefully carries carry case cases catch caught change changed check checks choice chose chosen claim clearly code coding common composites concrete confidently core crosses date date-boundary daylight-saving days decide defects defend delegate describing design diff draft drafting drifted drive edit everything evidence exactly example exercise existing expansion expect explain extra extremes failed failing failure-stories fast fictional file first five fixture follows found friction generated growth guard guideline habit habits hallucinated happy-path haven hears helpers hire hour hours idea instead interviewer interviewers interviews judgment kept know large last later lead lesson like line lines live longer looked lookup loops meeting meetings method migration misses mistake mistakes mostly much multiplier myself name named names needed never notebook notes numbers outlasted overlaps oversell overselling ownership paid paper part partly passed permissions plausible-looking point possible pre-written prepare produced productivity pushes quarter questions reached read read-through ready reason reasons recurring-event reject repair review reviewed reviewers rewrote right risk round search sentence seven shows stated stories story story-bank take talk task team teammate tell test tests three time tool tools trust two-line underline used verification whether worked write writes written wrong wrote yourself"
     },
     {
       "id": "ai-pairing-interview",
@@ -4631,6 +4774,45 @@
       "updated": "2026-10-28",
       "practice": null,
       "search": "snapshot why it shows up in interviews core idea eli5 illustrative latencies layout choices false sharing worked example easy medium hard common mistakes how to talk about it cross-links access accesses accumulate actually adding addresses adjacent align allocator already another apart appears array arrays arrays-vs-linked-lists assume assuming b-trees back batching big-o bounces bring brings byte bytes cache caches carries chasing cheap check checks choices code cold column column-major columnar combine common commonly consecutive consider contiguous conversation copy core cores correctness cost costs count counter counters counts cycles data decide deliberately design designs desk desktop differ different drop edited editor effect effort eight even every everywhere evicted eviction example explains explanation facts false falsely fast faster fetching fight figures first fixes frequency friendliest full garbage garbage-collection generously goes grid hall happens hardware hash hide hierarchy holding holds hundreds idea illustrative in-memory in-order increments integers interviewers interviews invalidates items jump jumps keep keeps keys label large larger latencies latency layout least least-recently-used level library line lines linked list live load local locality locally locals locks locks-and-concurrency long loop loops machine main make many matters measure measuring memory micro-optimizing million miss misses mistakes model moves much needs neighbors next node nodes number numbers order order-of-magnitude os-memory owning packs padding per-thread pixels pointer price prices reads real reason reasoning request rough row-major scan section separate several share shared sharing shelf shows slower small speed step tens thread threads time times traversal values variables walk walking walks whole write"
+    },
+    {
+      "id": "debug-unfamiliar-repo",
+      "title": "Find the bug in a repo you have never seen",
+      "slug": "debug-unfamiliar-repo",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "In an open-codebase round, map the repo, reproduce the bug as a failing test, trace it with search before trusting any suggestion, make the smallest fix, and rerun everything before extending the feature.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/failure-modes",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "ai-pairing-interview"
+      ],
+      "related": [
+        "ai-pairing-interview",
+        "interview-ai-round",
+        "coding-agent-evals",
+        "agent-mistakes"
+      ],
+      "path": "lessons/ai-agents/debug-unfamiliar-repo.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "https://interviewing.io/blog/how-to-use-ai-in-meta-s-ai-assisted-coding-interview-with-real-prompts-and-examples",
+          "year": 2026,
+          "confidence": "low"
+        }
+      ],
+      "updated": "2026-10-28",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea eli5 where an assistant helps and where it does not worked example easy medium hard common mistakes how to talk about it cross-links accepting across actual adding afterward agent agent-mistakes ai-allowed ai-assisted ai-pairing-interview algorithm allowed alongside already api-design-pagination asked assistant baseline becomes behaves behavior boilerplate bottom called caller callers candidate case cases causes change changes changing check claim close closed code coding coding-agent-evals comes command commit common compare concrete confidently confirm contracts core covered created cursor cursors data debug deleted deleted-cursor deletes describe design diagnose diagnosis discussions door draft drills drive drive-by else empty-last-page endpoint engineering entry evaluate evaluation every everything evidence example existing expected explain exports extend fail failed failing fails failures feature feed file files find first fixing folder follow-up following format front full function furniture give gone good guess habit handed happen helps hire hour hypothesize idea imports including index-based indexof input inside interview-ai-round interviewer interviews irrelevant judgment keep know later lesson likely list live loud make makes many mentions minutes mistakes mixing module moving multi-file name names narrowed never newest nextpage note often older one-line ones open open-codebase open-source order output page page-two pages pagination paging parts pass passed patches path performance pick plan plus point possible post posts practice prep preserved problem project prompt prove proved read reading reason refactor report reported reproduce rerun restate round says search sees shows small smallest start summarize test tests three ticket time timestamp trace whether write"
     },
     {
       "id": "desk-bot",
@@ -7308,6 +7490,51 @@
       "search": "snapshot why it shows up in interviews core idea eli5 comparison common mistakes how to talk about it cross-links accept access account address addresses advisory affect allocate alone always another answer anyway async bound boundary browser browsers burst cache callbacks changes cheap cheaper child children choose claim code common communication compared concurrently container contains context conversation cooks copies copy-on-write-clones core cores correctness corrupts cost cpu-bound crash credentials define definition dependencies descriptors design didn dies different duplication edge equating event execution exhaustion extra failures faster fault faults feature fewer file filesystem follows food force fork fridge fridges globals goroutines great green handing handle happens hash hashing heap heaps heavier heavily hosts http http-and-tcp huge idea in-memory inaccessible inherently inside interviews isolate isolation javascript jobs keep keyspace kills latency leak line local locality lock locks locks-and-concurrency loop memory might mistakes modify moment multiplex mutable mutate native need needs network next node object onto ordinary os-memory others ownership page pages paid parallelism permissions physical pick pipe pipes plan plugin pointer pool pools prefer process processes product program protect races reach read-mostly recursion recursion-call-stack references registers remove request requests resource resources restore restricted right route routing rule runnable runtime sandbox save schedulable scheduler separate serialization serialize service services sharding share shared sharing shows sides single-threaded size sockets someone space spaces spawning speed splitting stack stacks state stay switch switching talk thread threads using usually virtual want work worker workers"
     },
     {
+      "id": "progressive-spec-rounds",
+      "title": "Pass a leveled spec without rewriting",
+      "slug": "progressive-spec-rounds",
+      "kind": "strategy",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 15,
+      "summary": "Practical coding rounds that unlock one level at a time reward a small extensible design, reading every test first, and finishing levels cleanly over clever code.",
+      "tags": [
+        "algorithms",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "pattern-first-prep",
+        "hash-maps"
+      ],
+      "related": [
+        "session-store-levels",
+        "pattern-first-prep",
+        "lru-cache",
+        "ai-pairing-interview"
+      ],
+      "path": "lessons/algorithms/strategy/progressive-spec-rounds.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "https://www.sundeepteki.org/advice/anthropic-codesignal-assessment-guide",
+          "year": 2026,
+          "confidence": "low"
+        },
+        {
+          "name": "Ramp",
+          "evidence": "https://www.techprep.app/blog/ramp-interview-process",
+          "year": 2026,
+          "confidence": "low"
+        }
+      ],
+      "updated": "2026-10-28",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea eli5 time budget for a four-level, 90-minute round worked example easy medium hard common mistakes how to talk about it cross-links abstractions adapter adds ai-pairing-interview algorithms allowed almost alone already always amounts answer arrives asks assessments assistant avoid balance bank bare beat become boundaries boundary break broken budget buffer build building cache call calls candidates cases catch cents change changing chasing check choices choose class clean cleanly code coding commit common company core cost create creation credit current data decide delay delete depends deposit describe description drills drive earlier edge edges enough even every everything eviction exactly example exclusive expiry field fields file filtered finish first format formats foundation four four-level fourth frontmatter functions gain general global gone grow grows habit half-working happens hardcoding harder helper helpers history hold house idea ignores in-memory include including inclusive inspection integer interviews invent keep keeping keeps kept key-value known language later least-recently-used leave ledger lesson level leveled levels like likely line list little live lives look lookup loop lost loud low-confidence lru-cache made make many memory mentally merge merged method methods minute minutes miss misses mistakes money move names needs never next null object often ones online open order pass passes passing pending plain private rather read record returns rewrite rewriting room round scheduling sent session session-store-levels shape small sorted spec store test tests three tie-break ties time timestamp transfer transfers undo usually visible wallet wallets whether without wrong"
+    },
+    {
       "id": "project-deep-dive",
       "title": "Explain a system you built at three zoom levels",
       "slug": "project-deep-dive",
@@ -8089,6 +8316,40 @@
       "updated": "2026-10-28",
       "practice": "practice/seat-holds.json",
       "search": "snapshot what this round is actually scoring company signal requirements back-of-envelope design eli5 operation and authoritative state commit boundary and payment handoff recovery behavior tradeoffs failure modes follow-ups an interviewer may ask cross-links abandoned acceptable across actually admission admissions admits admitted all-or-nothing amount another answer area arrives assigned assume assumptions attempts authoritative automatically availability average awaiting away back becomes behave behavior benefit bots boundary boxes break browse budgets cache cached caching call card carries case ceiling changed charge charged cheap check checking choice cleanup click client clients clock clocks commit commits committed common company company-specific compute concert concurrent condition conditional confirm confirmation confirming confirms contention controlled coordination correctness cost count counter counts covered crash creating cross-shard current customer database decide decrement default defines delivers demand details differently difficulty directly disagree disagreement distributed double-click double-clicks double-sold draw drivers easy eight either enforce engine engines equals error even event ever every everyone everything evidence exact exactly example exist existing expensive expirations expire expired expires expiry extend extended extension fails failure fair fairness familiar floor hard held hold holds illustrative instead isolation limits lock make makes matches minute minutes move near nothing open operation order orders overselling partition path paying payment pool position processor provider rare rate rebuilt refund release request requested reserve retries retry return room roughly rows seat seats second seconds servers shopper shoppers show signed single sold split state still sub-pools sweeper table tags ticket tickets time transaction transactions update version waiting waits walk webhook whether without write"
+    },
+    {
+      "id": "session-store-levels",
+      "title": "A session store that grows one level at a time",
+      "slug": "session-store-levels",
+      "kind": "problem",
+      "track": "algorithms",
+      "difficulty": "core",
+      "estimated_minutes": 20,
+      "summary": "Build an in-memory key-value store in levels (set/get/delete, then sorted prefix scans, then per-key expiry) without rewriting the earlier levels.",
+      "tags": [
+        "algorithms",
+        "algorithms/hash-maps",
+        "algorithms/strings",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "hash-maps",
+        "progressive-spec-rounds"
+      ],
+      "related": [
+        "progressive-spec-rounds",
+        "lru-cache",
+        "hash-maps",
+        "kv-store"
+      ],
+      "path": "lessons/algorithms/problems/session-store-levels.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [],
+      "updated": "2026-10-28",
+      "practice": "practice/session-store-levels.json",
+      "search": "snapshot prompt recognition signals worked approach eli5 syntax then the details complexity walkthrough easy medium hard pitfalls interview moves cross-links accept adding alone alphabetical already answer answers appears approach array arrives asked asks attime away behavior binary binary-search boundary break build cache call calls card cards carries cases change changes changing chat check checked checks choose cleanly clerk code coming common count current default define delete deleting design details dominate drops eagerly earlier edge else even every eviction exactly example existed exists expected expired expires expiresat expiries expiring expiry extra fails false fields filter find finish first footgun format formatted four frees fresh front getat gets gives gone grows half half-written halve happens hash hash-maps heap helper helpers history holds index infinity insert insertion instead interview interviewer keep keeps kept key-value keys kv-store large later lazy least-recently-used leave letters letting level level-one leveled levels line linger list live login look lookup lookups lost loud lru-cache makes maps matters means memory mention method methods min-heap moves name names never next notes nothing null numbers off-by-one ones operation order output overwrite overwriting pass passed passes passing permanent pick place plain plus prefix pressure private progressive-spec-rounds pulling purge putting question range read result return returns rows says scan scans search second shape signature sort sorted spec store test tests three throw time timestamp tok-3 tok-4 tok-7 touches trap true typing value versus visible without write"
     },
     {
       "id": "sharding",
@@ -9304,6 +9565,41 @@
       "updated": "2026-10-28",
       "practice": "practice/unpaired-id.json",
       "search": "snapshot prompt recognition signals worked approach eli5 syntax then the details complexity walkthrough easy medium hard pitfalls interview moves cross-links answer anything anyway appear appears approach back baseline big-o bigint binary bit-manipulation bits cancel cancellation cancelled cancels carry caveat check constant contract conversation converts copies count counts crash default delete details different differing ecmascript either element elements error even every everything exactly example exceed except exists expected extra facts final find finish first flags flip flipping flips follow-up footgun found give gives group group-anagrams groups happens hash hash-maps huge identity imagine index input instead integer integers intermediate interview inverse javascript keep land lands leftover letters light line lines list logic longer look lookup lost lowest many maps matter matters meaningless means memory merged might moves multiple multiplicities mutates mutation need needed needs negatives neighbors nested never next none nonzero notes number numbers operands order order-free packed pair pairs pick plus position positions question random range ready rebuilds recognition replies reply report request requests result return runs says scanning search second self-inverse sent sentence sentinel separately service shape shows sight signals signed simplify single sort sorting space spell split start starts state string strings switch switches tell three time times together toint32 tokens trap treating truncates twice two-sum two-unmatched type unmatched unpaired uses using usual valid validate values volunteer were whichever whole whose width without worked works writes wrong zero"
+    },
+    {
+      "id": "upload-slots",
+      "title": "Finish times when only k uploads run at once",
+      "slug": "upload-slots",
+      "kind": "problem",
+      "track": "cs",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "Compute when each queued upload finishes under a fixed concurrency limit by always handing the next job to the slot that frees first, then turn the same idea into a real async pool.",
+      "tags": [
+        "cs",
+        "cs/concurrency",
+        "algorithms",
+        "algorithms/heaps",
+        "interviews",
+        "interviews/leetcode"
+      ],
+      "prerequisites": [
+        "request-budget",
+        "heaps-top-k"
+      ],
+      "related": [
+        "request-budget",
+        "heaps-top-k",
+        "room-count",
+        "locks-and-concurrency"
+      ],
+      "path": "lessons/cs/upload-slots.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [],
+      "updated": "2026-10-28",
+      "practice": "practice/upload-slots.json",
+      "search": "snapshot prompt recognition signals worked approach eli5 syntax then the details complexity walkthrough easy medium hard pitfalls interview moves cross-links allows always another answer approach array async atomic awaits back backoff bars batch become becomes belong bookings bound browsers budget budgets callback caller cancellation client clients code collect completion concurrent continue count counter default details differs done draw duration durations earliest empty entries errors every everything example expect failure fast find finish finishes first flight follow-up follow-ups footgun forward free frees give goes greedy handling happens heap heaps heaps-top-k horizontal hottest idea identical in-flight increment index infinite instead interview invariants javascript jobs keep known lane lanes language large leaves limit lock locks locks-and-concurrency make matters means meetings mention millisecond milliseconds min-heap moment moves multi-threaded need needed never next next-index notes number offer order overlapping photo photos picture plus point pool position predecessor previous promise promises pulling push pushed queue queued read real recognition record reject rejects repeat replace request request-budget requests result results retry return returned reuse room room-count rooms rule runs safe scan schedule scrambled screen sentence serial server share shared sharing showing signals simulate slot slots small smallest space start starting starts state stop stopwatch take takes thing threaded throw time timeline times total track trap unprompted upload uploads user validate value wait whichever whole without words worked worker workers write writers writing wrong zero"
     },
     {
       "id": "url-shortener",
