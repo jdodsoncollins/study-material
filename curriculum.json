@@ -118,6 +118,12 @@
           "title": "Merge",
           "track": "algorithms",
           "lessons": ["merge-sorted-feeds", "running-median"]
+        },
+        {
+          "id": "levels",
+          "title": "Levels",
+          "track": "algorithms",
+          "lessons": ["progressive-spec-rounds", "session-store-levels"]
         }
       ]
     },
@@ -265,7 +271,7 @@
           "id": "fetch",
           "title": "Fetch",
           "track": "cs",
-          "lessons": ["file-download", "ranged-download", "chunk-retry", "request-budget"]
+          "lessons": ["file-download", "ranged-download", "chunk-retry", "request-budget", "upload-slots"]
         },
         {
           "id": "sql-query",
@@ -483,6 +489,12 @@
           "title": "Pair",
           "track": "ai-agents",
           "lessons": ["ai-pairing-interview"]
+        },
+        {
+          "id": "repo",
+          "title": "Repo",
+          "track": "ai-agents",
+          "lessons": ["debug-unfamiliar-repo"]
         }
       ]
     },
@@ -520,6 +532,12 @@
           "title": "Close",
           "track": "behavioral",
           "lessons": ["closing-questions"]
+        },
+        {
+          "id": "tools",
+          "title": "Tools",
+          "track": "behavioral",
+          "lessons": ["ai-judgment-stories"]
         }
       ]
     }

@@ -1,0 +1,291 @@
+{
+  "id": "session-store-levels",
+  "entry": "simulate",
+  "starter": "class SessionStore {\n  // Level 1: set / get / delete. Level 2: scan(prefix), sorted \"key=value\". Level 3: optional ttl on set.\n  set(t: number, key: string, value: string, ttl?: number): void {}\n  get(t: number, key: string): string | null {\n    return null;\n  }\n  delete(t: number, key: string): boolean {\n    return false;\n  }\n  scan(t: number, prefix: string): string[] {\n    return [];\n  }\n}\n\n// The tests replay operations: [\"set\", t, key, value, ttl?], [\"get\", t, key], [\"delete\", t, key], [\"scan\", t, prefix].\n// Every get, delete, and scan result is collected in order.\ntype Op = [string, number, string, string?, number?];\nfunction simulate(ops: Op[]): (string | string[] | boolean | null)[] {\n  const store = new SessionStore();\n  const out: (string | string[] | boolean | null)[] = [];\n  for (const [op, t, key, value, ttl] of ops) {\n    if (op === \"set\") store.set(t, key, value!, ttl);\n    else if (op === \"get\") out.push(store.get(t, key));\n    else if (op === \"delete\") out.push(store.delete(t, key));\n    else out.push(store.scan(t, key));\n  }\n  return out;\n}\n\nconsole.log(simulate([[\"set\", 0, \"u:ana\", \"tok-7\"], [\"set\", 1, \"u:bo\", \"tok-3\", 5], [\"set\", 2, \"g:ops\", \"tok-9\"], [\"scan\", 3, \"u:\"], [\"get\", 4, \"u:bo\"], [\"get\", 6, \"u:bo\"], [\"delete\", 7, \"u:ana\"], [\"delete\", 8, \"u:ana\"], [\"scan\", 9, \"u:\"]]));\n",
+  "solution": "type Row = { value: string; expiresAt: number };\n\nclass SessionStore {\n  private rows = new Map<string, Row>();\n\n  set(t: number, key: string, value: string, ttl?: number): void {\n    this.rows.set(key, { value, expiresAt: ttl === undefined ? Infinity : t + ttl });\n  }\n  private live(t: number, key: string): Row | null {\n    const row = this.rows.get(key);\n    if (!row) return null;\n    if (t >= row.expiresAt) {\n      this.rows.delete(key);\n      return null;\n    }\n    return row;\n  }\n  get(t: number, key: string): string | null {\n    return this.live(t, key)?.value ?? null;\n  }\n  delete(t: number, key: string): boolean {\n    const had = this.live(t, key) !== null;\n    this.rows.delete(key);\n    return had;\n  }\n  scan(t: number, prefix: string): string[] {\n    return [...this.rows.keys()]\n      .filter((k) => k.startsWith(prefix))\n      .sort()\n      .filter((k) => this.live(t, k) !== null)\n      .map((k) => `${k}=${this.rows.get(k)!.value}`);\n  }\n}\n\n// The tests replay operations: [\"set\", t, key, value, ttl?], [\"get\", t, key], [\"delete\", t, key], [\"scan\", t, prefix].\n// Every get, delete, and scan result is collected in order.\ntype Op = [string, number, string, string?, number?];\nfunction simulate(ops: Op[]): (string | string[] | boolean | null)[] {\n  const store = new SessionStore();\n  const out: (string | string[] | boolean | null)[] = [];\n  for (const [op, t, key, value, ttl] of ops) {\n    if (op === \"set\") store.set(t, key, value!, ttl);\n    else if (op === \"get\") out.push(store.get(t, key));\n    else if (op === \"delete\") out.push(store.delete(t, key));\n    else out.push(store.scan(t, key));\n  }\n  return out;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "lesson example",
+      "args": [
+        [
+          [
+            "set",
+            0,
+            "u:ana",
+            "tok-7"
+          ],
+          [
+            "set",
+            1,
+            "u:bo",
+            "tok-3",
+            5
+          ],
+          [
+            "set",
+            2,
+            "g:ops",
+            "tok-9"
+          ],
+          [
+            "scan",
+            3,
+            "u:"
+          ],
+          [
+            "get",
+            4,
+            "u:bo"
+          ],
+          [
+            "get",
+            6,
+            "u:bo"
+          ],
+          [
+            "delete",
+            7,
+            "u:ana"
+          ],
+          [
+            "delete",
+            8,
+            "u:ana"
+          ],
+          [
+            "scan",
+            9,
+            "u:"
+          ]
+        ]
+      ],
+      "expected": [
+        [
+          "u:ana=tok-7",
+          "u:bo=tok-3"
+        ],
+        "tok-3",
+        null,
+        true,
+        false,
+        []
+      ]
+    },
+    {
+      "name": "level 1 only",
+      "args": [
+        [
+          [
+            "set",
+            0,
+            "a",
+            "1"
+          ],
+          [
+            "get",
+            1,
+            "a"
+          ],
+          [
+            "set",
+            2,
+            "a",
+            "2"
+          ],
+          [
+            "get",
+            3,
+            "a"
+          ],
+          [
+            "get",
+            4,
+            "zz"
+          ]
+        ]
+      ],
+      "expected": [
+        "1",
+        "2",
+        null
+      ]
+    },
+    {
+      "name": "scan sorts and filters by prefix",
+      "args": [
+        [
+          [
+            "set",
+            0,
+            "cart:9",
+            "x"
+          ],
+          [
+            "set",
+            0,
+            "cart:10",
+            "y"
+          ],
+          [
+            "set",
+            0,
+            "car",
+            "z"
+          ],
+          [
+            "scan",
+            1,
+            "cart:"
+          ],
+          [
+            "scan",
+            1,
+            ""
+          ]
+        ]
+      ],
+      "expected": [
+        [
+          "cart:10=y",
+          "cart:9=x"
+        ],
+        [
+          "car=z",
+          "cart:10=y",
+          "cart:9=x"
+        ]
+      ]
+    },
+    {
+      "name": "expires exactly at t + ttl",
+      "args": [
+        [
+          [
+            "set",
+            10,
+            "s",
+            "on",
+            3
+          ],
+          [
+            "get",
+            12,
+            "s"
+          ],
+          [
+            "get",
+            13,
+            "s"
+          ],
+          [
+            "scan",
+            13,
+            ""
+          ]
+        ]
+      ],
+      "expected": [
+        "on",
+        null,
+        []
+      ]
+    },
+    {
+      "name": "plain set clears an old ttl",
+      "args": [
+        [
+          [
+            "set",
+            1,
+            "u:bo",
+            "tok-3",
+            5
+          ],
+          [
+            "set",
+            2,
+            "u:bo",
+            "tok-4"
+          ],
+          [
+            "get",
+            10,
+            "u:bo"
+          ]
+        ]
+      ],
+      "expected": [
+        "tok-4"
+      ]
+    },
+    {
+      "name": "deleting an expired key is false",
+      "args": [
+        [
+          [
+            "set",
+            0,
+            "k",
+            "v",
+            1
+          ],
+          [
+            "delete",
+            5,
+            "k"
+          ],
+          [
+            "delete",
+            5,
+            "missing"
+          ]
+        ]
+      ],
+      "expected": [
+        false,
+        false
+      ]
+    },
+    {
+      "name": "empty store",
+      "args": [
+        [
+          [
+            "scan",
+            0,
+            "u:"
+          ],
+          [
+            "get",
+            0,
+            "u:ana"
+          ]
+        ]
+      ],
+      "expected": [
+        [],
+        null
+      ]
+    }
+  ],
+  "hints": [
+    "Every call has a timestamp. What does a row need to remember so a later call can tell if it is still valid?",
+    "Hash map from key to a small record, with lazy expiry checked on read.",
+    "Store { value, expiresAt } with Infinity for no TTL; write one private live(t, key) helper that drops expired rows, and have get, delete, and scan all go through it."
+  ],
+  "rubric": {
+    "signals": [
+      "Reads the tests first and states the expiry boundary (live while t < expiresAt)",
+      "Chooses one row shape that later levels extend instead of rewriting",
+      "Centralizes expiry in one helper",
+      "Sorts keys at scan time and explains why a hash map has no useful order",
+      "Overwrites the TTL on a plain set"
+    ],
+    "followups": [
+      "Add getAt(t, key, atTime) that returns the value as of an earlier second.",
+      "Expired rows that are never read stay in memory. How would you purge them?",
+      "Make scan fast when there are a million keys and scans are frequent."
+    ]
+  }
+}
