@@ -1,0 +1,154 @@
+{
+  "id": "room-count",
+  "entry": "roomCount",
+  "starter": "function roomCount(meetings: number[][]): number {\n  // meetings are half-open [start, end). Return the fewest rooms that fit all of them.\n  return meetings.length > 0 ? 1 : 0;\n}\n\nconsole.log(roomCount([[10, 40], [15, 25], [20, 50], [30, 35], [45, 60]]));\n",
+  "solution": "function roomCount(meetings: number[][]): number {\n  const starts = meetings.map((m) => m[0]).sort((a, b) => a - b);\n  const ends = meetings.map((m) => m[1]).sort((a, b) => a - b);\n  let rooms = 0;\n  let j = 0;\n  for (const s of starts) {\n    if (s >= ends[j]) j++;\n    else rooms++;\n  }\n  return rooms;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "morning requests",
+      "args": [
+        [
+          [
+            10,
+            40
+          ],
+          [
+            15,
+            25
+          ],
+          [
+            20,
+            50
+          ],
+          [
+            30,
+            35
+          ],
+          [
+            45,
+            60
+          ]
+        ]
+      ],
+      "expected": 3
+    },
+    {
+      "name": "no meetings",
+      "args": [
+        []
+      ],
+      "expected": 0
+    },
+    {
+      "name": "one meeting",
+      "args": [
+        [
+          [
+            0,
+            30
+          ]
+        ]
+      ],
+      "expected": 1
+    },
+    {
+      "name": "back to back",
+      "args": [
+        [
+          [
+            0,
+            10
+          ],
+          [
+            10,
+            20
+          ],
+          [
+            20,
+            30
+          ]
+        ]
+      ],
+      "expected": 1
+    },
+    {
+      "name": "identical meetings",
+      "args": [
+        [
+          [
+            5,
+            9
+          ],
+          [
+            5,
+            9
+          ],
+          [
+            5,
+            9
+          ]
+        ]
+      ],
+      "expected": 3
+    },
+    {
+      "name": "short ones inside a long one",
+      "args": [
+        [
+          [
+            0,
+            100
+          ],
+          [
+            10,
+            20
+          ],
+          [
+            30,
+            40
+          ]
+        ]
+      ],
+      "expected": 2
+    },
+    {
+      "name": "unsorted with string-sort trap",
+      "args": [
+        [
+          [
+            100,
+            120
+          ],
+          [
+            15,
+            110
+          ],
+          [
+            9,
+            16
+          ]
+        ]
+      ],
+      "expected": 2
+    }
+  ],
+  "hints": [
+    "At the busiest instant of the morning, how many meetings are running?",
+    "Interval sweep: sort start times and end times separately (or keep a min-heap of end times).",
+    "Walk the sorted starts with a pointer into the sorted ends; if a start is at or after the earliest unused end, advance that pointer and reuse the room, otherwise open a new room."
+  ],
+  "rubric": {
+    "signals": [
+      "Restates the goal as peak simultaneous meetings",
+      "Uses the start/end sweep or a min-heap of end times and explains why rooms are interchangeable",
+      "Applies the half-open rule so back-to-back meetings share a room",
+      "Gives O(n log n) time and O(n) space"
+    ],
+    "followups": [
+      "Return which room each meeting gets, not just the count.",
+      "Times are whole minutes within one day. Is there an O(n + T) approach?",
+      "Can one person attend every meeting? How is that simpler?"
+    ]
+  }
+}

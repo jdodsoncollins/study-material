@@ -1,0 +1,334 @@
+{
+  "id": "insert-booking",
+  "entry": "insertBooking",
+  "starter": "function insertBooking(busy: number[][], booking: number[]): number[][] {\n  // busy is sorted and non-overlapping, half-open [start, end).\n  // Return the busy blocks after adding booking. Touching blocks stay separate.\n  return busy;\n}\n\nconsole.log(insertBooking([[1, 3], [5, 7], [8, 10], [12, 15]], [6, 9]));\n",
+  "solution": "function insertBooking(busy: number[][], booking: number[]): number[][] {\n  const out: number[][] = [];\n  let [start, end] = booking;\n  let i = 0;\n  while (i < busy.length && busy[i][1] <= start) out.push(busy[i++]);\n  while (i < busy.length && busy[i][0] < end) {\n    start = Math.min(start, busy[i][0]);\n    end = Math.max(end, busy[i][1]);\n    i++;\n  }\n  out.push([start, end]);\n  while (i < busy.length) out.push(busy[i++]);\n  return out;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "new meeting [6, 9]",
+      "args": [
+        [
+          [
+            1,
+            3
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            12,
+            15
+          ]
+        ],
+        [
+          6,
+          9
+        ]
+      ],
+      "expected": [
+        [
+          1,
+          3
+        ],
+        [
+          5,
+          10
+        ],
+        [
+          12,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "after everything",
+      "args": [
+        [
+          [
+            1,
+            3
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            12,
+            15
+          ]
+        ],
+        [
+          16,
+          18
+        ]
+      ],
+      "expected": [
+        [
+          1,
+          3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          8,
+          10
+        ],
+        [
+          12,
+          15
+        ],
+        [
+          16,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "before everything",
+      "args": [
+        [
+          [
+            1,
+            3
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            12,
+            15
+          ]
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "expected": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          8,
+          10
+        ],
+        [
+          12,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "empty calendar",
+      "args": [
+        [],
+        [
+          2,
+          4
+        ]
+      ],
+      "expected": [
+        [
+          2,
+          4
+        ]
+      ]
+    },
+    {
+      "name": "swallows every block",
+      "args": [
+        [
+          [
+            1,
+            3
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            12,
+            15
+          ]
+        ],
+        [
+          0,
+          20
+        ]
+      ],
+      "expected": [
+        [
+          0,
+          20
+        ]
+      ]
+    },
+    {
+      "name": "touches on both sides",
+      "args": [
+        [
+          [
+            1,
+            3
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            12,
+            15
+          ]
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "expected": [
+        [
+          1,
+          3
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          8,
+          10
+        ],
+        [
+          12,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "inside an existing block",
+      "args": [
+        [
+          [
+            1,
+            3
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            12,
+            15
+          ]
+        ],
+        [
+          13,
+          14
+        ]
+      ],
+      "expected": [
+        [
+          1,
+          3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          8,
+          10
+        ],
+        [
+          12,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "bridges two blocks exactly",
+      "args": [
+        [
+          [
+            1,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "expected": [
+        [
+          1,
+          7
+        ]
+      ]
+    }
+  ],
+  "hints": [
+    "The list is already sorted. Which existing blocks can the new meeting possibly touch?",
+    "Interval insertion: a single three-phase scan, no sort.",
+    "Copy blocks that end at or before the new start; then while a block starts before the new end, widen the new meeting to cover it; push the new meeting; copy the rest."
+  ],
+  "rubric": {
+    "signals": [
+      "Uses the existing order instead of re-sorting",
+      "Names the three phases and widens both start and end while absorbing",
+      "Applies one consistent rule for touching blocks and states it",
+      "Gives O(n) time and O(n) output space"
+    ],
+    "followups": [
+      "Touching blocks should merge into one. What exactly changes?",
+      "You insert thousands of bookings into the same calendar. What structure would you keep?",
+      "Instead of inserting, answer whether the new booking fits without overlap in O(log n)."
+    ]
+  }
+}

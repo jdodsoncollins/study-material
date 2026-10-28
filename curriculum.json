@@ -38,6 +38,12 @@
           "title": "Squeeze",
           "track": "algorithms",
           "lessons": ["two-pointers", "three-sum", "tarp-span"]
+        },
+        {
+          "id": "bisect",
+          "title": "Bisect",
+          "track": "algorithms",
+          "lessons": ["binary-search"]
         }
       ]
     },
@@ -53,6 +59,12 @@
           "lessons": ["sliding-window", "longest-unique-window"]
         },
         {
+          "id": "running",
+          "title": "Running",
+          "track": "algorithms",
+          "lessons": ["prefix-sums"]
+        },
+        {
           "id": "stack",
           "title": "Stack",
           "track": "algorithms",
@@ -63,6 +75,12 @@
           "title": "Span",
           "track": "algorithms",
           "lessons": ["merge-intervals"]
+        },
+        {
+          "id": "book",
+          "title": "Book",
+          "track": "algorithms",
+          "lessons": ["insert-booking", "room-count"]
         },
         {
           "id": "chain",
@@ -103,10 +121,28 @@
           "lessons": ["recursion-call-stack"]
         },
         {
+          "id": "tree",
+          "title": "Tree",
+          "track": "algorithms",
+          "lessons": ["tree-dfs", "support-flow-depth", "ticket-bst-check", "split-point", "kth-latency", "tree-codec"]
+        },
+        {
           "id": "walk",
           "title": "Walk",
           "track": "algorithms",
           "lessons": ["bfs", "briefing-layers", "dfs-backtracking", "spare-subsets", "number-of-islands"]
+        },
+        {
+          "id": "trace",
+          "title": "Trace",
+          "track": "algorithms",
+          "lessons": ["clone-contacts", "grid-word"]
+        },
+        {
+          "id": "route",
+          "title": "Route",
+          "track": "algorithms",
+          "lessons": ["shortest-paths", "fanout-delay"]
         },
         {
           "id": "order",

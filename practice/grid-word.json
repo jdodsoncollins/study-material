@@ -1,0 +1,126 @@
+{
+  "id": "grid-word",
+  "entry": "hasWord",
+  "starter": "function hasWord(rows: string[], word: string): boolean {\n  // rows are equal-length strings. Move up, down, left, or right; use each tile at most once.\n  return false;\n}\n\nconsole.log(hasWord([\"CATS\", \"OREA\", \"DELM\"], \"CORE\"));\n",
+  "solution": "function hasWord(rows: string[], word: string): boolean {\n  if (word.length === 0) return true;\n  const g = rows.map((r) => r.split(\"\"));\n  const R = g.length, C = g[0]?.length ?? 0;\n  const dfs = (r: number, c: number, i: number): boolean => {\n    if (r < 0 || c < 0 || r >= R || c >= C || g[r][c] !== word[i]) return false;\n    if (i === word.length - 1) return true;\n    const keep = g[r][c];\n    g[r][c] = \"#\";\n    const found = dfs(r + 1, c, i + 1) || dfs(r - 1, c, i + 1) || dfs(r, c + 1, i + 1) || dfs(r, c - 1, i + 1);\n    g[r][c] = keep;\n    return found;\n  };\n  for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) if (dfs(r, c, 0)) return true;\n  return false;\n}\n",
+  "compare": "exact",
+  "cases": [
+    {
+      "name": "CORE",
+      "args": [
+        [
+          "CATS",
+          "OREA",
+          "DELM"
+        ],
+        "CORE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "TEAM",
+      "args": [
+        [
+          "CATS",
+          "OREA",
+          "DELM"
+        ],
+        "TEAM"
+      ],
+      "expected": true
+    },
+    {
+      "name": "DEAL dead-ends",
+      "args": [
+        [
+          "CATS",
+          "OREA",
+          "DELM"
+        ],
+        "DEAL"
+      ],
+      "expected": false
+    },
+    {
+      "name": "RER would reuse the only R",
+      "args": [
+        [
+          "CATS",
+          "OREA",
+          "DELM"
+        ],
+        "RER"
+      ],
+      "expected": false
+    },
+    {
+      "name": "no diagonals",
+      "args": [
+        [
+          "CATS",
+          "OREA",
+          "DELM"
+        ],
+        "CRL"
+      ],
+      "expected": false
+    },
+    {
+      "name": "empty grid",
+      "args": [
+        [],
+        "A"
+      ],
+      "expected": false
+    },
+    {
+      "name": "single tile",
+      "args": [
+        [
+          "A"
+        ],
+        "A"
+      ],
+      "expected": true
+    },
+    {
+      "name": "single tile, two letters",
+      "args": [
+        [
+          "A"
+        ],
+        "AA"
+      ],
+      "expected": false
+    },
+    {
+      "name": "needs a turn back up",
+      "args": [
+        [
+          "AB",
+          "DC"
+        ],
+        "ABCD"
+      ],
+      "expected": true
+    }
+  ],
+  "hints": [
+    "From a tile that matches the first letter, where can the second letter be?",
+    "Depth-first search with backtracking.",
+    "Recurse on (row, col, index): fail on bounds or mismatch, mark the tile in use, try four neighbours for index + 1, then restore the tile before returning."
+  ],
+  "rubric": {
+    "signals": [
+      "Marks tiles on the way in and restores them on the way out",
+      "Prunes on the first mismatched letter and stops at the first full match",
+      "Handles empty grid, single tile, and words longer than the grid",
+      "States the worst case O(R · C · 3^(L−1)) time and O(L) recursion space"
+    ],
+    "followups": [
+      "You have a list of 5,000 words to find in the same grid. What changes?",
+      "You may not modify the grid. How do you track tiles in use?",
+      "What cheap checks could reject a word before searching?"
+    ]
+  }
+}
