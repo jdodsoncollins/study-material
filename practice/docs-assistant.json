@@ -1,0 +1,24 @@
+{
+  "id": "docs-assistant",
+  "hints": [
+    "Before drawing boxes, ask: who is allowed to read which docs, how fast must an edit show up, and what should happen when the docs do not answer the question?",
+    "This is retrieval-augmented generation with permission-aware retrieval: chunk with metadata, hybrid search filtered by the asker's groups, rerank, answer with citations, abstain on weak evidence.",
+    "Draw the ingest path (change events, chunk, embed, tombstone old versions) and the query path (resolve groups, filtered retrieve 40, rerank to 6, threshold, generate with chunk ids, verify citations), then say how you would measure recall@k and faithfulness separately."
+  ],
+  "rubric": {
+    "signals": [
+      "Applies document permissions inside the retrieval query using the verified user's groups, not after generation or from model-supplied values",
+      "Designs freshness explicitly: change events, versioned chunks with tombstones, ACL-only metadata updates, and a reconcile job",
+      "Defines a generation contract: answer only from supplied chunks, cite chunk ids, verify citations in code, and abstain below a calibrated score",
+      "Does back-of-envelope math for corpus size, vector memory, query rate, and tokens per answer",
+      "Evaluates retrieval (recall@k on labeled questions, no-answer cases) separately from answer faithfulness, with zero-tolerance permission tests",
+      "Treats doc text as untrusted data and gives the assistant no write tools"
+    ],
+    "followups": [
+      "An agent moves off the fraud team. How quickly do their answers stop using fraud runbooks, and what makes that happen?",
+      "Why not put every document into a very large context window instead of retrieving?",
+      "You must switch to a new embedding model. How do you migrate without degrading answers?",
+      "Leadership wants the assistant to answer customers directly. What changes?"
+    ]
+  }
+}

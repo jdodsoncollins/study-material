@@ -1300,6 +1300,162 @@
           "lessons": ["seat-holds", "kv-store", "message-queue", "file-sync"]
         }
       ]
+    },
+    {
+      "id": "day-ai-01",
+      "title": "Tokens",
+      "kind": "acquire",
+      "blurb": "One model call, structure out of it, then the token math.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "llm-basics"
+        },
+        {
+          "type": "read",
+          "lesson": "prompting-structured-output"
+        },
+        {
+          "type": "read",
+          "lesson": "cost-latency-budgets"
+        },
+        {
+          "type": "speak",
+          "text": "Explain why temperature 0 still does not promise the same answer twice."
+        }
+      ]
+    },
+    {
+      "id": "day-ai-02",
+      "title": "Vectors",
+      "kind": "acquire",
+      "blurb": "Similarity and filters, a pipeline you can evaluate, then when to tune instead.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "embeddings-vector-search"
+        },
+        {
+          "type": "read",
+          "lesson": "rag-pipeline"
+        },
+        {
+          "type": "read",
+          "lesson": "fine-tune-vs-prompt-vs-retrieve"
+        }
+      ]
+    },
+    {
+      "id": "day-ai-03",
+      "title": "Docs desk",
+      "kind": "drill",
+      "blurb": "Blank page: a cited assistant over permissioned docs.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "docs-assistant",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "docs-assistant",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-ai-04",
+      "title": "Guard",
+      "kind": "acquire",
+      "blurb": "Untrusted text, what the model sees, and the protocol boundary.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "prompt-injection-guardrails"
+        },
+        {
+          "type": "read",
+          "lesson": "agent-memory-context"
+        },
+        {
+          "type": "read",
+          "lesson": "tool-protocols"
+        }
+      ]
+    },
+    {
+      "id": "day-ai-05",
+      "title": "Review bot",
+      "kind": "drill",
+      "blurb": "Blank page: a comment-only agent on every push.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "review-agent",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "review-agent",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-ai-06",
+      "title": "Summary suite",
+      "kind": "drill",
+      "blurb": "Blank page: the evals that gate a summarizer change.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "summarizer-evals",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "summarizer-evals",
+          "after": "attempt"
+        }
+      ]
+    },
+    {
+      "id": "day-ai-07",
+      "title": "Pair",
+      "kind": "acquire",
+      "blurb": "Run the assistant routine on a problem you already know.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "ai-pairing-interview"
+        },
+        {
+          "type": "attempt",
+          "lesson": "two-sum",
+          "minutes": 25
+        },
+        {
+          "type": "speak",
+          "text": "Narrate every line you accepted from the assistant and why."
+        }
+      ]
+    },
+    {
+      "id": "day-ai-08",
+      "title": "AI mix",
+      "kind": "review",
+      "blurb": "Unlabeled prompts, then one timed design.",
+      "blocks": [
+        {
+          "type": "mixed",
+          "lessons": ["rag-pipeline", "prompt-injection-guardrails", "cost-latency-budgets", "agent-memory-context"]
+        },
+        {
+          "type": "mock",
+          "lessons": ["docs-assistant", "review-agent"],
+          "minutes": 30
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,10 @@
+title: assemble
+steps:
+  - caption: "Every call is rebuilt from parts. Pinned instructions and current task state come first and are never trimmed."
+    nodes: [pinned, state, pack]
+  - caption: "Recent turns fill what is left, newest first. Older turns survive only through the summary."
+    nodes: [recent, summary, trim]
+  - caption: "Long-term memory is retrieved like documents, with a source and a date attached."
+    nodes: [recall, call]
+  - caption: "Writing memory is a decision. Keep decisions and stated preferences; let chatter and untrusted text expire."
+    nodes: [write, store, forget]

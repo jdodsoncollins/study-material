@@ -39,6 +39,8 @@ ai-agents
   ai-agents/tools
   ai-agents/failure-modes
   ai-agents/product
+  ai-agents/models
+  ai-agents/retrieval
 behavioral
   behavioral/stories
   behavioral/conflict
