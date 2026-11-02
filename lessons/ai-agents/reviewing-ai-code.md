@@ -20,27 +20,18 @@ related:
   - interview-ai-round
   - ai-policy-bands
 company_signal:
-  - company: Polar
-    roles: [Engineering]
-    signal: Review an AI-drafted PR in a fork of Polar's open-source repo (Next.js and FastAPI stack)
-    source_url: https://github.com/polarsource/polar
-    accessed: 2026-11-02
-    confidence: med
-    notes: Candidate-reported from interview notes
-  - company: Coinbase
-    roles: [SWE]
-    signal: Repo-based code-review tasks as part of AI-assisted interview loop
-    source_url: https://www.coinbase.com/blog/interviewing-engineers-in-the-ai-era-lessons-from-a-year-of-rebuilding
-    accessed: 2026-11-02
-    confidence: med
-    notes: Search synthesis from blog post discussed on Hacker News
-  - company: Sierra
-    roles: [Engineering]
-    signal: Piloting a round where you review and improve a colleague's draft PR using coding agents
-    source_url: https://sierra.ai/blog/the-ai-native-interview
-    accessed: 2026-11-02
+  - name: Polar
+    evidence: https://github.com/polarsource/polar
+    year: 2026
+    confidence: low
+  - name: Coinbase
+    evidence: https://news.ycombinator.com/item?id=49162299
+    year: 2026
+    confidence: medium
+  - name: Sierra
+    evidence: https://sierra.ai/blog/the-ai-native-interview
+    year: 2026
     confidence: high
-    notes: Primary source, Sierra blog Apr 22 2026
 sources_consulted:
   - https://sierra.ai/blog/the-ai-native-interview
   - https://coderpad.io/survey-reports/coderpad-state-of-tech-hiring-2026/
@@ -88,14 +79,22 @@ How to catch it: ask "would we ever have a second implementation?" If no, inline
 
 The AI wraps a call in try-catch and logs the error but doesn't propagate it or record failure.
 
-Example:
+Example: the caller cannot tell a failed send from a successful one.
+
 ```ts
-try {
-  await notify(user);
-} catch (e) {
-  console.error('Notify failed', e);
-  // Nothing else; the caller thinks it succeeded
+function deliverAlert(send: () => void): string {
+  try {
+    send();
+    return "sent";
+  } catch {
+    return "sent";
+  }
 }
+
+console.log(deliverAlert(() => {
+  throw new Error("mailbox down");
+}));
+console.log(deliverAlert(() => {}));
 ```
 
 How to catch it: trace every error path. Does the caller know it failed? Is there a retry or a fallback?
@@ -162,7 +161,7 @@ Lead with blockers. Then should-fix. Then nits if time permits.
 
 Write at least one comment that explains the principle, not just the fix.
 
-## Worked approach
+## Worked example
 
 ### First pass (5–10 minutes, no comments yet)
 
@@ -186,7 +185,7 @@ Write at least one comment that explains the principle, not just the fix.
 3. Read the diff. Did it add the dedupe, or did it mock the threshold function?
 4. Run the tests.
 
-## Practice drills
+### Practice drills
 
 ### Drill 1: Usage alerts PR
 
@@ -230,7 +229,7 @@ Write at least one comment that explains the principle, not just the fix.
 2. An unused `PermissionChecker` interface with one implementation.
 3. The cache isn't cleared when roles change.
 
-## Pitfalls
+### Pitfalls
 
 - Style nitpicks while a logic bug ships
 - Rewriting the PR instead of reviewing it
@@ -240,7 +239,7 @@ Write at least one comment that explains the principle, not just the fix.
 - Trusting the tests without reading them (test theater)
 - Writing "this is wrong" without explaining why or how to fix it
 
-## Interview moves
+### Interview moves
 
 - "I'll read the PR description, then the tests, then the main logic, and list the top issues before I write comments."
 - "This is a blocker: the alert fires on every event after 80% with no 'already sent' state. It needs a dedupe key per (workspace, period, threshold)."

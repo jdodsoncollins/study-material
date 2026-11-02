@@ -20,34 +20,22 @@ related:
   - ai-policy-bands
   - interview-integrity
 company_signal:
-  - company: Shopify
-    roles: [SWE]
-    signal: Two bring-your-own-IDE AI rounds, empty repo or README only, evolving low-level design problem (robot grid navigation → collisions; LRU cache → pluggable storage), push a branch at the end, screen-share in Google Meet
-    source_url: https://newsletter.pragmaticengineer.com/
-    accessed: 2026-11-02
+  - name: Shopify
+    evidence: https://www.hellointerview.com/blog/shopify-ai-enabled-coding
+    year: 2026
+    confidence: medium
+  - name: Canva
+    evidence: https://www.canva.dev/blog/engineering/yes-you-can-use-ai-in-our-interviews/
+    year: 2025
     confidence: high
-    notes: Pragmatic Engineer reporting from Farhan Thawar, plus candidate reports via Hello Interview
-  - company: Canva
-    roles: [SWE, Frontend]
-    signal: AI insisted on, Plan → develop → discuss, Frontend variant "Build Canva with AI" where candidates scope to toolbar, drag shapes onto canvas, or canvas drawing with text
-    source_url: https://www.canva.dev/blog/engineering/yes-you-can-use-ai-in-our-interviews/
-    accessed: 2026-11-02
+  - name: Vercel
+    evidence: https://v0-eng-prep-guide.vercel.app/
+    year: 2026
     confidence: high
-    notes: Primary source plus candidate reports via GreatFrontEnd
-  - company: Vercel
-    roles: [Fullstack]
-    signal: Any tools on your own machine, screen share shows AI use, upload the project afterward, may be recorded with BrightHire
-    source_url: https://v0-eng-prep-guide.vercel.app/
-    accessed: 2026-11-02
+  - name: WorkOS
+    evidence: https://workos.com/blog/designing-the-ai-proof-interview
+    year: 2026
     confidence: high
-    notes: Primary source from Vercel prep guide
-  - company: WorkOS
-    roles: [SWE]
-    signal: About 50 minutes on a multi-stage backend problem, prompt shared beforehand, "favorite tools totally fine" but heavy delegation penalized, rubric is think-before-code, schema, error handling, debugging, communication
-    source_url: https://workos.com/blog/designing-the-ai-proof-interview
-    accessed: 2026-11-02
-    confidence: high
-    notes: Primary source from WorkOS blog
 sources_consulted:
   - https://www.hellointerview.com/blog/shopify-ai-enabled-coding
   - https://www.canva.dev/blog/engineering/yes-you-can-use-ai-in-our-interviews/
@@ -177,7 +165,7 @@ From Shopify (Hello Interview), June 2026: a candidate was rejected for using AI
 
 The target is the middle: delegate aggressively, verify visibly.
 
-## Worked approach
+## Worked example
 
 ### Drill setup (practice this format)
 
@@ -233,7 +221,7 @@ Score 0–3 per area.
 
 12/12 is exceptional. 9/12 is a hire signal.
 
-## Practice timeline (45-minute version, compressed)
+### Practice timeline (45-minute version, compressed)
 
 - 0–3 min: scope out loud, choose the data model
 - 3–6 min: delegate UI scaffolding, own the reducer
@@ -245,7 +233,7 @@ Score 0–3 per area.
 - 35–40 min: follow-up #3 is a discussion (collaboration); name operation-based sync (CRDT or OT) vs. last-writer-wins
 - 40–45 min: demo and summary
 
-## Pitfalls
+### Pitfalls
 
 - Pasting the whole prompt into the agent within 60 seconds
 - Building 5 half-features instead of 1 complete vertical slice
@@ -256,7 +244,7 @@ Score 0–3 per area.
 - Freezing when a test fails instead of forming a hypothesis
 - Over-scoping (building auth, persistence, and a styles panel when the prompt is "mini designer")
 
-## Interview moves
+### Interview moves
 
 - "I'm scoping this to canvas, add box or text, drag, select, edit text. Out of scope: styles panel, persistence."
 - "I'll use a flat `nodes: Record<id, Node>` with `parentId` because nesting and undo will be cheaper later."

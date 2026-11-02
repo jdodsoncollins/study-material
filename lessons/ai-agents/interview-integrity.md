@@ -17,27 +17,18 @@ related:
   - interview-ai-round
   - ai-pairing-interview
 company_signal:
-  - company: Amazon
-    roles: [SDE]
-    signal: Recruiter guidance lists behavioral tells including typing while being asked a question, reading answers aloud with self-corrections on misread words, eyes tracking text off-screen, and confident answers that don't address the question
-    source_url: https://www.businessinsider.com/amazon-stop-people-using-ai-cheat-job-interviews-2025-2
-    accessed: 2026-11-02
+  - name: Amazon
+    evidence: https://www.businessinsider.com/amazon-stop-people-using-ai-cheat-job-interviews-2025-2
+    year: 2025
     confidence: high
-    notes: Business Insider Feb 27 2025 report citing internal recruiter guidelines
-  - company: HackerRank
-    roles: [Platform users]
-    signal: Proctor Mode takes screenshots every 15 seconds (5 seconds when suspicious), analyzes for invisible overlay applications and conversation detection typing patterns, enforces full-screen, monitors tabs, disables copy-paste
-    source_url: https://support.hackerrank.com/articles/5663779659-proctor-mode
-    accessed: 2026-11-02
+  - name: HackerRank
+    evidence: https://support.hackerrank.com/articles/5663779659-proctor-mode
+    year: 2026
     confidence: high
-    notes: Primary source from HackerRank support documentation
-  - company: Meta
-    roles: [SWE]
-    signal: Interviewers mark whether they suspect cheating across nearly all interview types; candidates share entire screen with background filters off
-    source_url: https://interviewing.io/blog/how-to-use-ai-in-meta-s-ai-assisted-coding-interview-with-real-prompts-and-examples
-    accessed: 2026-11-02
-    confidence: med
-    notes: Candidate-reported via interviewing.io
+  - name: Meta
+    evidence: https://interviewing.io/blog/how-to-use-ai-in-meta-s-ai-assisted-coding-interview-with-real-prompts-and-examples
+    year: 2026
+    confidence: medium
 sources_consulted:
   - https://www.businessinsider.com/amazon-stop-people-using-ai-cheat-job-interviews-2025-2
   - https://support.hackerrank.com/articles/5663779659-proctor-mode

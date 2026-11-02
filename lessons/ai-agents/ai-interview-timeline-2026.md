@@ -70,7 +70,7 @@ The focus shifted from detecting misuse to measuring productive use:
 - Companies began reviewing candidate AI transcripts as graded artifacts
 - A visible minority dropped coding interviews entirely in favor of AI-native formats (Sierra, some Anthropic teams)
 
-## Timeline: key events
+### Timeline: key events
 
 Dates are Pacific time unless otherwise noted. Each entry includes its source tag.
 
@@ -152,14 +152,14 @@ Dates are Pacific time unless otherwise noted. Each entry includes its source ta
 
 **November 17, 2026** (upcoming) – Ashby's AI Interviewer launches publicly. [P]
 
-## The pattern
+### The pattern
 
 Early 2025 was reactive: companies banned AI and built detection. H1 2026 was additive: big companies added AI rounds and kept DSA. H2 2026 brought three shifts:
 1. AI fluency became a written requirement (Google, Zapier)
 2. Transcripts became graded artifacts
 3. A visible minority dropped algorithm rounds altogether (Sierra, Rieseberg)
 
-## Comparison: early vs. late 2026
+## Comparison
 
 | Dimension | Early 2026 | Late 2026 |
 |---|---|---|

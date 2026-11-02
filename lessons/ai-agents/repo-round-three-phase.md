@@ -20,34 +20,22 @@ related:
   - interview-integrity
   - reviewing-ai-code
 company_signal:
-  - company: Meta
-    roles: [SWE]
-    signal: Three-phase AI-enabled CoderPad round with provided assistant (Claude, GPT, Gemini, Llama); assistant can read files but not edit them; Phase 1 fix a bug with failing tests given, Phase 2 implement core feature 120+ LOC, Phase 3 optimize against larger tiered data files
-    source_url: https://interviewing.io/blog/how-to-use-ai-in-meta-s-ai-assisted-coding-interview-with-real-prompts-and-examples
-    accessed: 2026-11-02
+  - name: Meta
+    evidence: https://www.metacareers.com/hiring-process/
+    year: 2026
     confidence: high
-    notes: Candidate-reported via interviewing.io and Hello Interview, consistent across multiple sources
-  - company: Google
-    roles: [SWE L3/L4]
-    signal: Code comprehension round with Gemini available, 200–500 LOC, about 60 minutes; read, find bugs, explain design choices, propose fixes; graded on AI fluency, prompt engineering, and catching when Gemini is wrong
-    source_url: https://www.businessinsider.com/google-interview-process-ai-gemini-coding-comprehension-software-engineer-2026-10
-    accessed: 2026-11-02
+  - name: Google
+    evidence: https://www.businessinsider.com/google-interview-process-ai-gemini-coding-comprehension-software-engineer-2026-10
+    year: 2026
     confidence: high
-    notes: Business Insider Oct 20 2026 report plus candidate reports
-  - company: Amazon
-    roles: [SDE]
-    signal: Online assessment includes ~60-min AI-assisted repo task fixing about 6 failing tests across controller, service, and repository layers in a Node/MERN, Django, or Spring Boot service, after a ~40-min DSA problem without AI
-    source_url: https://www.aboutamazon.com/news/workplace/artificial-intelligence-resume-jobs-hiring-amazon
-    accessed: 2026-11-02
+  - name: Amazon
+    evidence: https://www.aboutamazon.com/news/workplace/artificial-intelligence-resume-jobs-hiring-amazon
+    year: 2026
     confidence: high
-    notes: Primary source from Amazon Jan 2026 plus candidate reports on LeetCode and Reddit
-  - company: Coinbase
-    roles: [SWE]
-    signal: AI-assisted, repo-based debugging and code-review tasks with an explicit AI-fluency rubric covering effective use, appropriate application, and understanding model limits
-    source_url: https://www.coinbase.com/blog/interviewing-engineers-in-the-ai-era-lessons-from-a-year-of-rebuilding
-    accessed: 2026-11-02
-    confidence: med
-    notes: Search synthesis from blog post; discussed on Hacker News Aug 2026
+  - name: Coinbase
+    evidence: https://news.ycombinator.com/item?id=49162299
+    year: 2026
+    confidence: medium
 sources_consulted:
   - https://interviewing.io/blog/how-to-use-ai-in-meta-s-ai-assisted-coding-interview-with-real-prompts-and-examples
   - https://www.hellointerview.com/blog/meta-ai-enabled-coding
@@ -143,7 +131,7 @@ Amazon's online assessment (as of January 2026) runs two back-to-back segments:
 
 Candidates report: "provided AI won't save you" and "more about your prompting ability." Practice switching modes mid-session: fluent typing for DSA, then hypothesis-driven prompting for the repo.
 
-## Worked approach
+## Worked example
 
 ### Reading order (5–8 minutes, no prompting yet)
 
@@ -183,7 +171,7 @@ A 60-minute sample timeline:
 - 45–57 min: phase 3 (measure, fix Big-O, measure again)
 - 57–60 min: summary
 
-## Practice drills
+### Practice drills
 
 ### Drill 1: Usage metering (TS, 600 LOC)
 
@@ -247,7 +235,7 @@ A 60-minute sample timeline:
 1. **With the AI panel limited to read-only** (as Meta reportedly does): ask "explain this function" but type the fix yourself
 2. **With no AI at all**: pure fluency, as in Stripe's Bug Squash or Amazon's DSA segment
 
-## Pitfalls
+### Pitfalls
 
 - Pasting the whole task into the assistant within 60 seconds
 - Not noticing the AI is wrong (Meta's assistant is sometimes "nerfed")
@@ -256,7 +244,7 @@ A 60-minute sample timeline:
 - Running out of time before phase 3 because you over-engineered phase 2
 - Accepting AI-generated tests as proof that AI-generated code is correct (circular validation)
 
-## Interview moves
+### Interview moves
 
 - "I'll read the tests first, then the entry point, then the data model, and say my mental model before I ask the AI anything."
 - "This test expects UTC. The bug is likely in `window.ts` where we call `new Date()` without a timezone."

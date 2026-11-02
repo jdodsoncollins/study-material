@@ -1,7 +1,7 @@
 {
   "version": 5,
   "generated": "2026-11-02",
-  "lesson_count": 168,
+  "lesson_count": 174,
   "tags": [
     "ai-agents",
     "ai-agents/evals",
@@ -905,6 +905,16 @@
         "blurb": "Measure outcomes and practice explaining the evidence.",
         "units": [
           {
+            "id": "mode",
+            "title": "Mode",
+            "track": "ai-agents",
+            "lessons": [
+              "ai-policy-bands",
+              "ai-interview-timeline-2026",
+              "interview-integrity"
+            ]
+          },
+          {
             "id": "run",
             "title": "Run",
             "track": "ai-agents",
@@ -954,7 +964,24 @@
             "title": "Repo",
             "track": "ai-agents",
             "lessons": [
-              "debug-unfamiliar-repo"
+              "debug-unfamiliar-repo",
+              "repo-round-three-phase"
+            ]
+          },
+          {
+            "id": "review",
+            "title": "Review",
+            "track": "ai-agents",
+            "lessons": [
+              "reviewing-ai-code"
+            ]
+          },
+          {
+            "id": "build",
+            "title": "Build",
+            "track": "ai-agents",
+            "lessons": [
+              "greenfield-ai-build"
             ]
           }
         ]
@@ -3335,17 +3362,77 @@
       },
       {
         "id": "day-ai-09",
-        "title": "Repo",
+        "title": "Mode",
         "kind": "acquire",
-        "blurb": "Reproduce before you repair.",
+        "blurb": "Know which rounds allow AI, which tools, and what gets graded.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "ai-policy-bands"
+          },
+          {
+            "type": "read",
+            "lesson": "ai-interview-timeline-2026"
+          },
+          {
+            "type": "read",
+            "lesson": "interview-integrity"
+          },
+          {
+            "type": "speak",
+            "text": "Before your next interview, ask the recruiter: which rounds allow AI? Which tools? Will my screen be recorded? Do you review the AI transcript?"
+          }
+        ]
+      },
+      {
+        "id": "day-ai-10",
+        "title": "Repo round",
+        "kind": "drill",
+        "blurb": "Read, fix bugs, add features, optimize—with and without AI.",
         "blocks": [
           {
             "type": "read",
             "lesson": "debug-unfamiliar-repo"
           },
           {
+            "type": "read",
+            "lesson": "repo-round-three-phase"
+          },
+          {
             "type": "speak",
-            "text": "Walk an imaginary bug ticket out loud: map, failing test, three hypotheses, smallest fix, full rerun."
+            "text": "Set a 60-minute timer. Practice a three-phase repo drill: read 5–8 min, fix bugs with hypotheses, add a feature, then optimize with before/after timing."
+          }
+        ]
+      },
+      {
+        "id": "day-ai-11",
+        "title": "Review",
+        "kind": "drill",
+        "blurb": "Catch hallucinated APIs, missing error paths, and test theater.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "reviewing-ai-code"
+          },
+          {
+            "type": "speak",
+            "text": "Generate an AI-drafted PR with planted defects. Review it in 30 minutes, leading with blockers. Write one comment that teaches."
+          }
+        ]
+      },
+      {
+        "id": "day-ai-12",
+        "title": "Greenfield",
+        "kind": "drill",
+        "blurb": "Build from scratch with your own IDE and AI, absorbing follow-ups.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "greenfield-ai-build"
+          },
+          {
+            "type": "speak",
+            "text": "Pick a 60-minute greenfield drill (mini designer, LRU cache, or role grants). Scope out loud, own the data model, delegate scaffolding, test every step."
           }
         ]
       },
@@ -3634,6 +3721,34 @@
       "search": "snapshot why it shows up in interviews core idea eli5 worked example easy medium hard common mistakes how to talk about it cross-links absence absent actions actually adding addresses agent aggregate ai-assisted allows alternatives ambiguity ambiguous answer appropriate area authorization authorized automatically available backward behavior bounded broad budgets build call calling candidate capability case cases cause change changes changing checks choose claims classes classify coding coding-agent-evals common component confident configuration contract contracts core correct correctness create debugging defective define denied departed deploy diagnose diff different disambiguation discussions distinguish document endless enforceable enough entire environment error errors evaluate evaluation every evidence example execution exists expected explanation explicitly fail failed failure failures faulty first fixture gate graded grader grading guessing handling hide honestly how-to-run-proper-evals idea identity ignoring incident incorrect information inspect inspecting instruction insufficient interview-ai-round interviews judge keep legitimate list long longer lookup loop make mandatory matters meaningful measured missing mistakes necessary normal observable observed order outcome outside overfitting part pass passes patch patches permission permit point policy polling practice preferred preservation preserved prevalence problem prompt proof proposed rather re-evaluate read reasoning record regression rejection release repair repeated repeatedly reported reporting reports requested require required resolve responsible result results retries retrieval retry returned review rubric scope searches sequence shows signal size special-case start state step stop stronger successful system talk targeted task test tests tool tool-call tool-calling tool-side trace traces traces-trajectories treating trusted types universal update without work wrong"
     },
     {
+      "id": "ai-interview-timeline-2026",
+      "title": "How AI interview policies changed from 2025 through 2026",
+      "slug": "ai-interview-timeline-2026",
+      "kind": "concept",
+      "track": "ai-agents",
+      "difficulty": "intro",
+      "estimated_minutes": 14,
+      "summary": "A dated timeline showing when major companies added, piloted, or restricted AI in technical interviews.",
+      "tags": [
+        "ai-agents",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [],
+      "related": [
+        "ai-policy-bands",
+        "interview-ai-round",
+        "interview-integrity"
+      ],
+      "path": "lessons/ai-agents/ai-interview-timeline-2026.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea the three phases timeline: key events 2025 2026 the pattern comparison common mistakes how to talk about it cross-links accountability acquiring acquisition added addition additive adds agent agentic aggregator ai-allowed ai-assisted ai-enabled ai-expected ai-fluency ai-generated ai-native ai-policy-bands ai-resistant ai-use ai-written algorithm algorithms allow allows aloud altogether amazon announced announces answers anthropic applicants applies approximate april artifacts ashby asked asking assess assessment assessments assistant assistants assuming august autocomplete autonomy avatar axios backend bands banned bans beating became become becomes began behavioral beyond brings broadly brought build building built business candidate candidates canva case catches central changed changing chat chatgpt cheating checking choice cisco claude clean clear cline cluely cnbc code codebase coder coderpad codex coding coinbase common companies company completion comprehension confirm confirms constraints cursor decide design detecting detection dropped early entirely every existing february feedback fluency focus formats gemini google graded guidance hackerrank hiring idea in-person includes industry insider interview interviewer interviews january jobs july june keeping kept late list live loop loops march measuring meta minority mistakes misuse model november october one-third onsite openai otherwise overlay pilot piloted plan plus policies policy proctoring productive publishes reacted reactive real recruiter recruiters redesigned reintroducing report reports required requirement review rieseberg rolled round rounds rubric runs says shows sierra skills slope split stage still system take-home take-homes talent tasks technical tells testing thinking third three timeline tools transcript transcripts typing unless updates using vary vendor visible watch without written zapier"
+    },
+    {
       "id": "ai-judgment-stories",
       "title": "Show judgment about the tools you use",
       "slug": "ai-judgment-stories",
@@ -3697,6 +3812,36 @@
       "updated": "2026-10-28",
       "practice": null,
       "search": "snapshot why it shows up in interviews core idea eli5 the routine what to say worked example easy medium hard common mistakes how to talk about it cross-links accept accepted accepting adds agent agent-mistakes ai-assisted allow allowed aloud already ambiguous amounts answer anything anywhere applies applycoupons asking asks assistant assume behavior better beyond block bottom boundaries boundary branches broken calls cart case cases cause cent cents change changed changes changing check checks clarify class clear code codebase coding coding-agent-evals comment common companion confident confirm constraints contracts core correctly count coupon coupons covers debugging decide decimals decisions defect deleted dependencies describe describing diagnose diff direction discount discuss discussions docs draft drive edit empty evaluate evaluating evaluation even every exactly example exercise exist expected explain explicit exports extra fail failures fast faster file first five floating-point floats follow-up format four fractions function functions generated gives goes good graded hallucinated hand happy helper hoping idea in-room input inputs instead integer interview interview-ai-round interviewer interviews invented judgment junior keep keeping kept know larger left lesson line lines live loop loops loud made make many matches math method minimal minute minutes misses mistakes module money move much multiplies myself name naming narrate nearest never notation note one-line ones open order output part pass path point practice prompt prompting prompts read reading reject renamed request round rounding routine rule rules running short small take tested three time total twice typed understanding units whether whole without write wrong yourself zero"
+    },
+    {
+      "id": "ai-policy-bands",
+      "title": "Three AI policy bands and how to ask which one applies",
+      "slug": "ai-policy-bands",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "intro",
+      "estimated_minutes": 18,
+      "summary": "Know which rounds allow AI, which tools, and what gets graded so you prepare in the right mode.",
+      "tags": [
+        "ai-agents",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "interview-ai-round"
+      ],
+      "related": [
+        "ai-interview-timeline-2026",
+        "interview-integrity",
+        "ai-pairing-interview"
+      ],
+      "path": "lessons/ai-agents/ai-policy-bands.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea the three bands when ai is \"allowed,\" what does that mean? recruiter questions to ask company reference table (late 2026) legend worked example easy medium hard common mistakes how to talk about it cross-links accelerator across adapting agent aggressively ai-allowed ai-assisted ai-drafted ai-enabled ai-fluency ai-free ai-interview-timeline-2026 ai-pairing-interview ai-trap ai-written algorithms allow allowed allows almost alone aloud already always amazon announced answer anthropic anything apis applications applies applying aren array artifact ashby asking assess assessment assistant assume autocomplete band bands blog build candidate candidates canva case cases catch change claude code codebase coderpad coding coinbase companies company comprehension confidence confirm constraints cursor data datadog deep design different directing disqualify dive duplicate edge engineering every examples exceptional expected explicitly favorite fewer files fine first fluency forbid forbids fullstack gemini genai given google graded guidelines heavy high hiring in-person includes independent indicated insisted intent interview interviewer interviews january judgment karat know knowing least like list listed live loop machine mandatory mapping means meta minutes misses mode model modes named narrate narrow nerfed no-ai non-disclosure often one-third online optional others otherwise outside overflow page pairing password performance permitted plan platform policies policy post practical practice prep primary problem product prohibit prompting prompts provided react read real recorded recruiter removed repo repo-based reported reports required resources review reviewed round rounds screen screens setup share shopify shows single skill skills sometimes stack stage still stripe system table take-home take-homes task tasks team technical test tests three tool tools totally transcript unknown unless ux-eng varies vercel warp whether without workos write"
     },
     {
       "id": "aisle-loop",
@@ -5688,6 +5833,63 @@
       "search": "snapshot prompt recognition signals worked approach eli5 syntax then the details complexity walkthrough easy medium hard pitfalls interview moves cross-links activity adversarial algorithm already amount amounts another answer answers appears approach approve approved argument array arrives attached back back-to-back baseline beats begins besides best big-o booking breaks brute busy calendar call caller case change choice clashes classic clerk closed code coding coin-change coins collapse commit compatible conference conversation copy correct count counterexample counterexamples customer data demo details different dominates dp-1d drops earliest earliest-end earliest-ending ended ending endpoints ends every everything example exchange exists extra fail fails failure family fare fast feels fewest find fine finish finishing first force forever four-meeting fractional free freeat frees frontier gets greedy greedy-by-largest happens heap heaps-top-k holds hours hunch immediately input instead interesting interval intervals interview interviewer intuition item jumps keep keeps knapsack largest-first last later leaves left length line list looks loses loud luck makes manager many matters maximize maximum meeting meetings merge-intervals min-heap move moves much mutating name need never non-overlapping none notes number numbers obvious often ones open optimal original otherwise output overlap overlapping page part picking pivot place plausible possible problem proof propose prove ranges ratio reach reach-last-page recognition rejected request requests return reuse room rule safe schedule scheduling sentence skip small sort sorted start starts still swap take test three time tiny tokens total trap usually valid value weighted whether worth wrong"
     },
     {
+      "id": "greenfield-ai-build",
+      "title": "Greenfield builds in your own environment with AI",
+      "slug": "greenfield-ai-build",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 22,
+      "summary": "Build a working feature from scratch in 45–60 minutes with your own IDE and AI, absorbing requirements that arrive mid-session.",
+      "tags": [
+        "ai-agents",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "ai-pairing-interview",
+        "progressive-spec-rounds"
+      ],
+      "related": [
+        "repo-round-three-phase",
+        "reviewing-ai-code",
+        "ai-policy-bands",
+        "interview-integrity"
+      ],
+      "path": "lessons/ai-agents/greenfield-ai-build.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Shopify",
+          "evidence": "https://www.hellointerview.com/blog/shopify-ai-enabled-coding",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Canva",
+          "evidence": "https://www.canva.dev/blog/engineering/yes-you-can-use-ai-in-our-interviews/",
+          "year": 2025,
+          "confidence": "high"
+        },
+        {
+          "name": "Vercel",
+          "evidence": "https://v0-eng-prep-guide.vercel.app/",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "WorkOS",
+          "evidence": "https://workos.com/blog/designing-the-ai-proof-interview",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea the three phases (your own internal structure, not always visible to the interviewer) environment preset (before the call starts) workflow: two conversations at once canva's three failure modes (avoid these) rejection patterns from the field worked example drill setup (practice this format) rubric (canva's three areas plus workos) practice timeline (45-minute version, compressed) pitfalls interview moves common mistakes how to talk about it cross-links absorb absorbs accepting adapt adding agency agent aggressively ai-generated ai-integrated ai-pairing-interview ai-policy-bands allowed aloud always anything apis applies archive area areas arrive arrives asked assistant assume attribute audit auth automerge avoid away backend bands basic beats boxes breadth bring broad browser build building builds bunch button buttons cache call camera candidate candidates canva canvas change changes cheaper choose claude code collaboration complete component container control conversations core crdt cursor data delegate delegation deny design designer diff discussion drag edit elements environment every example examples expensive expiry explain explicitly fails failure feature file flat follow-up follow-ups format freezing generate good greenfield half-working handler hands-off hidden hypothesis inside instead intent interview interviewer invite keep last-writer-wins later layer least like looks losing loud make makes marathon mid-round mini minute minutes mode model modes moves narrate nested nesting next node nodes operation-based output over-delegating overrides ownership panel parentid paste pasting persistence phase pick plan planning plus position positions practice problem prompt prompting prompts quality read reading ready record redo reducer rejection repo require rewrite role running scaffolding scope scoping screen-share select shopify shopify-style showcase showing slice starting starts state stating step storage storing structure styles suggestion switching sync test testing tests text three throughout toolbar tools touch undo updates users vercel verify vertical visible whether whole without work working workos workos-style works write"
+    },
+    {
       "id": "grid-word",
       "title": "Trace a word through a letter grid",
       "slug": "grid-word",
@@ -6133,6 +6335,53 @@
       "updated": "2026-10-26",
       "practice": null,
       "search": "snapshot why it shows up in interviews core idea eli5 worked example easy medium hard common mistakes how to talk about it cross-links abuse access action actions adapt adding adds allocation alternative answer assume assumptions atomic authoritative authorization average behavior benchmark beside better billion bottleneck boundary bounded boxes browser build cache cached caching caller cap-and-consistency capacity challenge change changes check choice choose choosing clear close code commit committed common compare components conflict conflicts consistency contention control conversation core correct crash create creating creation creations data database decisions deep deeper defensible define degradation demand depends depth design designs diagram difficult discuss discussion dive downtime drawing durability durable enforce estimate estimates evaluated evaluating every evidence example existing expensive explain explanation explicit extent fails failure failures fanout features feed first follow forty-five freshness give goal habit happens hardware helps http http-and-tcp idea immediate important include includes initial inputs interrupt interviewer interviews invalidate invalidation keep keys keyspace latency leave leaves lesson lifetime lifetimes limits links list load-balancing long lost main make mapping mappings measurable measured measurements million minute minutes miss mistakes model name naming navigation nearby needed news-feed next normal number observes open-ended optional ordering outlive owning owns particular partner path pattern peak permitted pick pipe plausible possible practice prevents problem product promise promises prompt queries question queue rate reach read reads reasoning records recovery redirect region rehearsal remembering request required resolve resolves response service short start stop treat user without write"
+    },
+    {
+      "id": "interview-integrity",
+      "title": "What proctoring flags and how to stay clean",
+      "slug": "interview-integrity",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "Understand what detection tools watch for so you can present honest work without triggering false positives.",
+      "tags": [
+        "ai-agents",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [],
+      "related": [
+        "ai-policy-bands",
+        "interview-ai-round",
+        "ai-pairing-interview"
+      ],
+      "path": "lessons/ai-agents/interview-integrity.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Amazon",
+          "evidence": "https://www.businessinsider.com/amazon-stop-people-using-ai-cheat-job-interviews-2025-2",
+          "year": 2025,
+          "confidence": "high"
+        },
+        {
+          "name": "HackerRank",
+          "evidence": "https://support.hackerrank.com/articles/5663779659-proctor-mode",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Meta",
+          "evidence": "https://interviewing.io/blog/how-to-use-ai-in-meta-s-ai-assisted-coding-interview-with-real-prompts-and-examples",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea what platforms detect how to stay clean the integrity cost of cheating worked example easy medium hard common mistakes how to talk about it cross-links across activity added address adjust agent ai-allowed ai-assisted ai-enabled ai-interview-timeline-2026 ai-pairing-interview ai-policy-bands allow allowed allowed-resource allows aloud amazon analysis anomalies answer answers application applications applies approach array artifact asked assistant autocomplete background backgrounds bands basics beats became behavioral beyond boundary breaks browser built candidate catch caught changed changes chat cheating check checking checks citing claude clean clever close closed closing cluely code code-similarity codebase coder coderpad codesignal codility coding cody comfortable common companies confident confusedly constraints constructed conversation conversation-like copy copy-paste core cosmo cost cursor cycles damage data datadog date default deleting deliveroo describe designed desktop detect detection detects different disabled disclose disclosing discussions disqualification disqualify documentation edit editor enforcement entire every explicitly extra flagged fluent full gets gives google graded guidance guidelines hackerrank hiring history honest integrity interactions interview interviewer invisible karat keep language like look lookups loom meta mode monitoring monitors narrate need no-ai notification off-screen output outside overflow overlay overlays patterns permitted platforms plus practice problem proctoring produce prompts prototype provided question read reading records recruiter replay reported require resources results retry review reviewed reviewers round rounds screen screenshots seconds secrets server session setup short shows signature sort stable stack standard-library stay stripe suggested switches take-home team tells test tool tools transcript transcripts turn type typing unless using visible warns watch webcam window without"
     },
     {
       "id": "job-scheduler",
@@ -7956,6 +8205,63 @@
       "search": "snapshot why it shows up in interviews core idea eli5 synchronous, asynchronous, and in between replication lag and what readers see leaderless quorums failover and split brain consensus at a conceptual level worked example easy medium hard common mistakes how to talk about it cross-links accept accepting access acknowledge acknowledged acknowledgement acknowledges acknowledging actual agree agreement allowed almost alone already always anyone append appends applied apply asks async asynchronous asynchronously attachment availability back become behind believing belongs bookkeeping brain candidate cap-and-consistency carry chat chat-system check checks choose choosing choosing-a-datastore client cluster come comes comment commit committed common comparison conceptual concurrent confirm confirmation confirmed conflict consensus consistency conversation coordination copied copies copy core cost count crashed crashes current data database date dead decides declared defenses defines deliberately delivery design detecting different disappears disk documentation done downstream drops dynamo elected election elections elsewhere ends engine enough entries entry epochs even every everything exactly example fail failed failover failure failures fencing fine first five flushed follow-up follower followers four garbage-collection group guarantee guarantees happens higher highest hold hope idea implement includes increases independently indexes keeps later leader leaders least lose losing loss lost machine machines majority make means message messages need needs never nodes nothing object older order overlap partial partition pause paxos plus position product promises protocol quorum quorums raft read read-your-writes reading reads reject remaining replacement replicas replicate replicated replication resource route rule safety seconds service shows slow split stale standby standbys still store stores survives synchronous term terms three time timeout token tolerate tolerates uses version vote votes waits write writes"
     },
     {
+      "id": "repo-round-three-phase",
+      "title": "Multi-phase repo rounds with an AI assistant",
+      "slug": "repo-round-three-phase",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 20,
+      "summary": "Read an unfamiliar 400–1200 line codebase, fix bugs, add features, and optimize—with or without AI—in about 60 minutes.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "debug-unfamiliar-repo",
+        "interview-ai-round"
+      ],
+      "related": [
+        "ai-policy-bands",
+        "interview-integrity",
+        "reviewing-ai-code"
+      ],
+      "path": "lessons/ai-agents/repo-round-three-phase.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Meta",
+          "evidence": "https://www.metacareers.com/hiring-process/",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "https://www.businessinsider.com/google-interview-process-ai-gemini-coding-comprehension-software-engineer-2026-10",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Amazon",
+          "evidence": "https://www.aboutamazon.com/news/workplace/artificial-intelligence-resume-jobs-hiring-amazon",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Coinbase",
+          "evidence": "https://news.ycombinator.com/item?id=49162299",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea the three-phase structure when the ai assistant is read-only mode-switching: amazon oa variant worked example reading order (5–8 minutes, no prompting yet) hypothesis log prompts that stay checkable time plan practice drills drill 1: usage metering (ts, 600 loc) drill 2: permission resolver (ts, 800 loc) drill 3: webhook delivery worker (ts, 900 loc) run each drill twice pitfalls interview moves common mistakes how to talk about it cross-links ability accepting access across adding agency ai-assisted ai-generated ai-policy-bands algorithm algorithmic allow allows aloud always amazon amount another answer anything applies approach aren asking assertions asserts assessment assistant available back-to-back bands bandwidth baseline bases batch beats behavior big-o billing blindly boilerplate bottleneck boundaries boundary break breaks buckets bugs cache call calls came candidate-reported candidates canva case cases catch catches caught chain change changes changing characters check checkable checked circular class classes clean clear closing code codebase coderpad coding coinbase common communication confirm constructed continuing control controller core correct current data date defects delegate deny double-counted drill drills duplicate edge edit enough entry event events every exactly examples expect expects explain failing feature file files first fixing fluency form format function google green hash huge hypothesis implement ingest inheritance inputs instead interview keep large limited line list local lookup loud make measure mental meta minute minutes misses mistakes mixes mock model modes multi-phase narrow nerfed next off-by-one often online optimize optimizing overrides panel pass passes pasting per-workspace phase planted point practice price pricing prompting pure rate read read-only reading replace repo report reportedly retries round rounds schemas seconds session setup signal sometimes stay strategy suggestion task tasks test tests think three tier tiered time timezone type types unfamiliar uses verify whole window windows without work workspace write writing wrong yourself"
+    },
+    {
       "id": "request-budget",
       "title": "A budget for in-flight requests",
       "slug": "request-budget",
@@ -8073,6 +8379,57 @@
       "updated": "2026-10-28",
       "practice": "practice/review-agent.json",
       "search": "snapshot what this round is actually scoring company signal requirements functional non-functional back-of-envelope design eli5 intake worker and permissions model step output checks evaluation tradeoffs failure modes follow-ups an interviewer may ask cross-links abilities access acknowledging across actually adoption agent already approve approver area around asks assistant assume assumed assumptions at-least-once atomic author authorization authorized average averages base behavior benefit blocking body bounded boxes branch budget bugs build bursts call cancellation capabilities capability-vs-regression capped careful case cases category caught change changed changes chat check checks choice clean code coding-agent-evals colleague comment comment-only comments commit commits common company company-specific compare concurrency confidence config conflict contents context contracts controls cost credentials cross-file data dead-letter dedupe deduplicate deduplication default defects degrade delivery delivery-id depends description desk-bot developer developers diff disable discards dismissals drafts drop duplicate durable durably easier easy effect enabled environment error established estimate eval evaluate event-driven every everything evidence exact example exceeded exclusions execute executed existing exists explanation failure file findings follow full generated guidelines head human idempotency incremental injection input instead instructions interviewer issues jobs judged keep line lines measure merge model network never newer noise older ones online output path permissions post posted posting practice prompt pull push pushes quality re-push read reading real repo repository request results retry review reviewed reviewer reviews rewrite rollout roughly rules runs sandbox says secret secrets security seeded severity share short signal size store suggested summary superseding take test text threshold token tokens twice untrusted verify webhook whether whose wrong"
+    },
+    {
+      "id": "reviewing-ai-code",
+      "title": "Reviewing AI-generated code and PRs",
+      "slug": "reviewing-ai-code",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 18,
+      "summary": "Spot hallucinated APIs, missing error paths, security gaps, and test theater in code an AI drafted, then decide approve or request changes.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/failure-modes",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "review-agent",
+        "agent-mistakes"
+      ],
+      "related": [
+        "repo-round-three-phase",
+        "interview-ai-round",
+        "ai-policy-bands"
+      ],
+      "path": "lessons/ai-agents/reviewing-ai-code.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Polar",
+          "evidence": "https://github.com/polarsource/polar",
+          "year": 2026,
+          "confidence": "low"
+        },
+        {
+          "name": "Coinbase",
+          "evidence": "https://news.ycombinator.com/item?id=49162299",
+          "year": 2026,
+          "confidence": "medium"
+        },
+        {
+          "name": "Sierra",
+          "evidence": "https://sierra.ai/blog/the-ai-native-interview",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea seven common ai defect patterns severity rubric comment tone worked example first pass (5–10 minutes, no comments yet) second pass (15–25 minutes, write comments) if the round includes fixing the blocker with an agent (10–15 minutes) practice drills drill 1: usage alerts pr drill 2: webhook retry pr drill 3: rbac inheritance pr pitfalls interview moves common mistakes how to talk about it cross-links abstraction accepting access adding adds agency agent agent-generated agent-mistakes agents ai-assisted ai-code-review ai-drafted ai-generated ai-policy-bands ai-specific ai-written alert alerts allow allows already always apis applies approve argument asking assert assistant assuming auth backoff bands bandwidth based beats became better bloat block blocker blockers break build cache cached caching calibration call called caller candidates catch catches caught change changes changesets changing check checked checking checkthreshold clarity class cleared code code-review coderpad codes coding coinbase colleague comment comments common companies compile concrete core correct correctness cost count cover data debt decide dedupe defaults defect defects define defined definitions deny description doesn drill email error errors event every example failed failure fetched file fires first fixes format found function good hallucinated happens idempotency implementation imports ingest insecure inside instead intent interface issues layer lead least line lines list logic logs lookup loop mailer main method minutes missing mistakes mock mocks needs network nits over-abstraction owner pass passes paths performance period permission permits plan planted points practice principle problem production read reading real recipient request retries retry review reviewing round rounds rubric running second secrets security send sendbatch sent setup severity should-fix sierra signal state style supposed swallowed teaches teams tell test tested tests theater thing threshold time tone trace twice unused usage used vacuously verify webhook without workspace write writes writing wrong"
     },
     {
       "id": "ride-hailing",

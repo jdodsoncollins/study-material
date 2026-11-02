@@ -119,7 +119,7 @@ Your AI transcript is increasingly graded:
 
 Non-disclosure can disqualify you (Datadog's guidelines state this explicitly as of May 2026).
 
-## Recruiter questions to ask
+### Recruiter questions to ask
 
 Before any loop, get clarity per round. Do not assume the policy is the same across all stages. Ask:
 
@@ -129,7 +129,7 @@ Before any loop, get clarity per round. Do not assume the policy is the same acr
 4. **Can I use Google or documentation?** (Stripe explicitly allows these; others may not)
 5. **Is there an in-person round?** (Some companies reintroduced in-person interviews in 2026 to reduce cheating)
 
-## Company reference table (late 2026)
+### Company reference table (late 2026)
 
 This table shows reported or published policies as of November 2026. Policies change frequently—confirm with your recruiter.
 
