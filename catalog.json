@@ -1,7 +1,7 @@
 {
   "version": 5,
   "generated": "2026-11-02",
-  "lesson_count": 174,
+  "lesson_count": 192,
   "tags": [
     "ai-agents",
     "ai-agents/evals",
@@ -983,6 +983,85 @@
             "lessons": [
               "greenfield-ai-build"
             ]
+          },
+          {
+            "id": "fluency",
+            "title": "Fluency",
+            "track": "ai-agents",
+            "lessons": [
+              "no-ai-fluency"
+            ]
+          },
+          {
+            "id": "trial",
+            "title": "Trial",
+            "track": "ai-agents",
+            "lessons": [
+              "take-home-artifacts"
+            ]
+          },
+          {
+            "id": "board",
+            "title": "Board",
+            "track": "ai-agents",
+            "lessons": [
+              "ai-system-design-round"
+            ]
+          },
+          {
+            "id": "onsite",
+            "title": "Onsite",
+            "track": "ai-agents",
+            "lessons": [
+              "plan-build-review"
+            ]
+          },
+          {
+            "id": "incident",
+            "title": "Incident",
+            "track": "ai-agents",
+            "lessons": [
+              "incident-debug-with-agent"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "domain",
+        "label": "Domain",
+        "blurb": "Core designs: metering, roles, edge rules, and a tool platform. Before the optional stage.",
+        "units": [
+          {
+            "id": "meter",
+            "title": "Meter",
+            "track": "system-design",
+            "lessons": [
+              "usage-metering"
+            ]
+          },
+          {
+            "id": "access",
+            "title": "Access",
+            "track": "system-design",
+            "lessons": [
+              "multi-tenant-rbac"
+            ]
+          },
+          {
+            "id": "edge-rules",
+            "title": "Edge",
+            "track": "system-design",
+            "lessons": [
+              "edge-waf"
+            ]
+          },
+          {
+            "id": "platform",
+            "title": "Platform",
+            "track": "system-design",
+            "lessons": [
+              "mcp-tool-platform"
+            ]
           }
         ]
       },
@@ -1040,7 +1119,65 @@
             "title": "Tools",
             "track": "behavioral",
             "lessons": [
-              "ai-judgment-stories"
+              "ai-judgment-stories",
+              "ai-fluency-slope"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "optional",
+        "label": "Optional",
+        "blurb": "After the core path. Skip until Judge, the domain designs, and the slope stories are done.",
+        "units": [
+          {
+            "id": "opt-ui",
+            "title": "UI",
+            "track": "ai-agents",
+            "lessons": [
+              "frontend-practical"
+            ]
+          },
+          {
+            "id": "opt-sense",
+            "title": "Sense",
+            "track": "behavioral",
+            "lessons": [
+              "product-sense"
+            ]
+          },
+          {
+            "id": "opt-critique",
+            "title": "Critique",
+            "track": "system-design",
+            "lessons": [
+              "reverse-deep-dive"
+            ]
+          },
+          {
+            "id": "opt-show",
+            "title": "Show",
+            "track": "ai-agents",
+            "lessons": [
+              "portfolio-prototypes",
+              "novel-constraint-puzzle"
+            ]
+          },
+          {
+            "id": "opt-screen",
+            "title": "Screen",
+            "track": "ai-agents",
+            "lessons": [
+              "async-ai-screen"
+            ]
+          },
+          {
+            "id": "opt-read",
+            "title": "Read",
+            "track": "cs",
+            "lessons": [
+              "go-reading",
+              "sql-with-ai"
             ]
           }
         ]
@@ -3642,6 +3779,248 @@
             "text": "Do the thirty-second headline, the five-minute walkthrough, and a one-box deep dive on your project back to back, out loud, without notes."
           }
         ]
+      },
+      {
+        "id": "day-ai-13",
+        "title": "No AI",
+        "kind": "drill",
+        "blurb": "A 45-minute transfer with no assistant. Narrate any doc lookup.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "no-ai-fluency"
+          },
+          {
+            "type": "speak",
+            "text": "Close the assistant. Implement transfer for 40 from ada to bo with key k-19, then the replay and the conflict, and say which result you expect before you run it."
+          }
+        ]
+      },
+      {
+        "id": "day-ai-14",
+        "title": "Transcript",
+        "kind": "acquire",
+        "blurb": "Decisions, a catch log, and a chat you would let someone grade.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "take-home-artifacts"
+          },
+          {
+            "type": "speak",
+            "text": "Write three DECISIONS headings and five AI-LOG lines for a webhook sender. Include one rejection. Score yourself on the 1 to 4 guide."
+          }
+        ]
+      },
+      {
+        "id": "day-ai-15",
+        "title": "Board",
+        "kind": "drill",
+        "blurb": "Failure modes first, then the eval, on one of the three prompts.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "ai-system-design-round"
+          },
+          {
+            "type": "speak",
+            "text": "Pick prompt B or C. Spend 20 minutes. Start with three failure modes before you name a model."
+          }
+        ]
+      },
+      {
+        "id": "day-ai-16",
+        "title": "Half-day",
+        "kind": "drill",
+        "blurb": "Plan the cut, then say the review out loud. A full two-hour build can be a later sitting.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "plan-build-review"
+          },
+          {
+            "type": "speak",
+            "text": "State the site-health cut line, what is mocked, and the permission check. Then give the review order: demo, model, mocks, production path, how the AI was used."
+          }
+        ]
+      },
+      {
+        "id": "day-ai-17",
+        "title": "Incident",
+        "kind": "drill",
+        "blurb": "Hypothesis before the agent searches. Two changes only.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "incident-debug-with-agent"
+          },
+          {
+            "type": "speak",
+            "text": "For the publish latency jump, say the hypothesis, the trace you would ask for, the reproduction, and the two changes. Then name the prevention."
+          }
+        ]
+      },
+      {
+        "id": "day-dom-01",
+        "title": "Meter",
+        "kind": "drill",
+        "blurb": "Blank page: dedupe, UTC windows, tiers, a frozen invoice.",
+        "blocks": [
+          {
+            "type": "redraw",
+            "lesson": "usage-metering",
+            "minutes": 25
+          },
+          {
+            "type": "read",
+            "lesson": "usage-metering",
+            "after": "attempt"
+          },
+          {
+            "type": "speak",
+            "text": "Say what a second delivery of the same event id does, and where a 40-hour-late event goes if the invoice is closed."
+          }
+        ]
+      },
+      {
+        "id": "day-dom-02",
+        "title": "Roles",
+        "kind": "drill",
+        "blurb": "Blank page: inheritance, deny, and a cache generation.",
+        "blocks": [
+          {
+            "type": "redraw",
+            "lesson": "multi-tenant-rbac",
+            "minutes": 25
+          },
+          {
+            "type": "read",
+            "lesson": "multi-tenant-rbac",
+            "after": "attempt"
+          },
+          {
+            "type": "speak",
+            "text": "Agency allow, site deny. Say the answer, then what the cache key includes after a role write."
+          }
+        ]
+      },
+      {
+        "id": "day-dom-03",
+        "title": "Edge and tools",
+        "kind": "drill",
+        "blurb": "Rules that cannot stall a publish, then a write tool that cannot run twice.",
+        "blocks": [
+          {
+            "type": "redraw",
+            "lesson": "edge-waf",
+            "minutes": 22
+          },
+          {
+            "type": "redraw",
+            "lesson": "mcp-tool-platform",
+            "minutes": 22
+          },
+          {
+            "type": "speak",
+            "text": "Say what the 2 ms rule budget does to one request, and what a repeated client_request_id does to tickets."
+          }
+        ]
+      },
+      {
+        "id": "day-story-08",
+        "title": "Slope",
+        "kind": "acquire",
+        "blurb": "Four slots, each with a number you can defend.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "ai-fluency-slope"
+          },
+          {
+            "type": "speak",
+            "text": "In your notes, draft the four slots. Leave a slot blank if you do not have a real number. Say the hard answer out loud in under two minutes."
+          }
+        ]
+      },
+      {
+        "id": "day-opt-01",
+        "title": "Optional UI",
+        "kind": "drill",
+        "blurb": "Optional. One frontend drill, no assistant, then say what you would delegate.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "frontend-practical"
+          },
+          {
+            "type": "speak",
+            "text": "Pick the virtualized list or the optimistic toggle. State the cut line, then where the selected id or the previous value lives."
+          }
+        ]
+      },
+      {
+        "id": "day-opt-02",
+        "title": "Optional sense",
+        "kind": "acquire",
+        "blurb": "Optional. One product prompt, four beats, and a reverse critique.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "product-sense"
+          },
+          {
+            "type": "read",
+            "lesson": "reverse-deep-dive"
+          },
+          {
+            "type": "speak",
+            "text": "Say a user, a pain, a metric, and a trade-off for one practice prompt. Then name one public system and the single change you would argue for."
+          }
+        ]
+      },
+      {
+        "id": "day-opt-03",
+        "title": "Optional show",
+        "kind": "acquire",
+        "blurb": "Optional. A taste memo, a tooling log, and a camera rehearsal.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "portfolio-prototypes"
+          },
+          {
+            "type": "read",
+            "lesson": "novel-constraint-puzzle"
+          },
+          {
+            "type": "read",
+            "lesson": "async-ai-screen"
+          },
+          {
+            "type": "speak",
+            "text": "If you have a real prototype, say the cut and the gap. If you do not, say so. Then state one tooling decision you would write down before editing a puzzle."
+          }
+        ]
+      },
+      {
+        "id": "day-opt-04",
+        "title": "Optional read",
+        "kind": "acquire",
+        "blurb": "Optional. Enough Go to find shared state, and a SQL join that doubles a sum.",
+        "blocks": [
+          {
+            "type": "read",
+            "lesson": "go-reading"
+          },
+          {
+            "type": "read",
+            "lesson": "sql-with-ai"
+          },
+          {
+            "type": "speak",
+            "text": "Say why a package-level slice leaks across requests, and why Ada's 10 and 30 become 80 after the alerts join. Reject SUM DISTINCT out loud."
+          }
+        ]
       }
     ]
   },
@@ -3719,6 +4098,59 @@
       "updated": "2026-10-26",
       "practice": null,
       "search": "snapshot why it shows up in interviews core idea eli5 worked example easy medium hard common mistakes how to talk about it cross-links absence absent actions actually adding addresses agent aggregate ai-assisted allows alternatives ambiguity ambiguous answer appropriate area authorization authorized automatically available backward behavior bounded broad budgets build call calling candidate capability case cases cause change changes changing checks choose claims classes classify coding coding-agent-evals common component confident configuration contract contracts core correct correctness create debugging defective define denied departed deploy diagnose diff different disambiguation discussions distinguish document endless enforceable enough entire environment error errors evaluate evaluation every evidence example execution exists expected explanation explicitly fail failed failure failures faulty first fixture gate graded grader grading guessing handling hide honestly how-to-run-proper-evals idea identity ignoring incident incorrect information inspect inspecting instruction insufficient interview-ai-round interviews judge keep legitimate list long longer lookup loop make mandatory matters meaningful measured missing mistakes necessary normal observable observed order outcome outside overfitting part pass passes patch patches permission permit point policy polling practice preferred preservation preserved prevalence problem prompt proof proposed rather re-evaluate read reasoning record regression rejection release repair repeated repeatedly reported reporting reports requested require required resolve responsible result results retries retrieval retry returned review rubric scope searches sequence shows signal size special-case start state step stop stronger successful system talk targeted task test tests tool tool-call tool-calling tool-side trace traces traces-trajectories treating trusted types universal update without work wrong"
+    },
+    {
+      "id": "ai-fluency-slope",
+      "title": "Tell the slope of your AI practice",
+      "slug": "ai-fluency-slope",
+      "kind": "strategy",
+      "track": "behavioral",
+      "difficulty": "core",
+      "estimated_minutes": 15,
+      "summary": "Prepare four true stories of what you tried, abandoned, systematized, and caught, each with a number you can defend.",
+      "tags": [
+        "behavioral",
+        "behavioral/stories",
+        "interviews",
+        "interviews/ai",
+        "interviews/behavioral"
+      ],
+      "prerequisites": [
+        "story-bank",
+        "ai-judgment-stories"
+      ],
+      "related": [
+        "ai-judgment-stories",
+        "story-bank",
+        "behavioral-scoring",
+        "project-deep-dive"
+      ],
+      "path": "lessons/behavioral/ai-fluency-slope.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Zapier",
+          "evidence": "https://zapier.com/blog/raising-ai-fluency-bar-in-hiring",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "https://www.anthropic.com/research/employment-at-anthropic",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Google",
+          "evidence": "https://www.businessinsider.com/google-interview-process-ai-gemini-coding-comprehension-software-engineer-2026-10",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea four slots a composite, not your story worked example easy medium hard common mistakes how to talk about it cross-links abandoned accepted accountability actually adapt added adds adversarial ai-judgment-stories ai-tooling allow allowed analysis answer answers anthropic assistant attempt audit auth autonomy back bank beats behavioral behavioral-scoring bend better biography blank borrowed boundary broke build built cadence calendar candidates case cases catch caught caught-before-ship changed check checklist claiming closed-book common composite confidently confirm contrast core corpus count counted counts cover coworker customers damage dates decision defects define delegate delegated deny description diff draft drafted drop dropped else emphasis every example explain failed fails failures faster felt finished first fits five fluency followed form four friday gains generated generating getting google grades grew habit hiring human idea inflate interview interviewer interviewers interviews invariant invent inventing iteration join judgment keep kept know largest last leave lesson letting levels line lines live loop loud made manager many march memorize mentions merge metric migration minutes miss missed missing mistakes model month multiplier name names need needs never notebook notes noticed noun null number numbers october often outage pass passed passes permission personal personally policy polished practice predicate prevented process produced project-deep-dive prompt prose public pull question read required result review rubric second shape shipped show slope slot slots still stop stopped stories story story-bank system systematized talk team tell test tests three time tool tools tried users week write writes zapier"
     },
     {
       "id": "ai-interview-timeline-2026",
@@ -3844,6 +4276,49 @@
       "search": "snapshot why it shows up in interviews core idea the three bands when ai is \"allowed,\" what does that mean? recruiter questions to ask company reference table (late 2026) legend worked example easy medium hard common mistakes how to talk about it cross-links accelerator across adapting agent aggressively ai-allowed ai-assisted ai-drafted ai-enabled ai-fluency ai-free ai-interview-timeline-2026 ai-pairing-interview ai-trap ai-written algorithms allow allowed allows almost alone aloud already always amazon announced answer anthropic anything apis applications applies applying aren array artifact ashby asking assess assessment assistant assume autocomplete band bands blog build candidate candidates canva case cases catch change claude code codebase coderpad coding coinbase companies company comprehension confidence confirm constraints cursor data datadog deep design different directing disqualify dive duplicate edge engineering every examples exceptional expected explicitly favorite fewer files fine first fluency forbid forbids fullstack gemini genai given google graded guidelines heavy high hiring in-person includes independent indicated insisted intent interview interviewer interviews january judgment karat know knowing least like list listed live loop machine mandatory mapping means meta minutes misses mode model modes named narrate narrow nerfed no-ai non-disclosure often one-third online optional others otherwise outside overflow page pairing password performance permitted plan platform policies policy post practical practice prep primary problem product prohibit prompting prompts provided react read real recorded recruiter removed repo repo-based reported reports required resources review reviewed round rounds screen screens setup share shopify shows single skill skills sometimes stack stage still stripe system table take-home take-homes task tasks team technical test tests three tool tools totally transcript unknown unless ux-eng varies vercel warp whether without workos write"
     },
     {
+      "id": "ai-system-design-round",
+      "title": "Whiteboard an AI system starting from failure and evals",
+      "slug": "ai-system-design-round",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 22,
+      "summary": "Run three 45-minute prompts for eval design, a cited contract assistant, and an agent that repeats a side effect.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "ai-agents/tools",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "how-to-run-proper-evals",
+        "summarizer-evals",
+        "tool-calling"
+      ],
+      "related": [
+        "summarizer-evals",
+        "how-to-run-proper-evals",
+        "llm-as-judge-calibration",
+        "agent-mistakes",
+        "mcp-tool-platform"
+      ],
+      "path": "lessons/ai-agents/ai-system-design-round.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Zapier",
+          "evidence": "https://zapier.com/blog/raising-ai-fluency-bar-in-hiring",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea order on the board worked example prompt a — support summaries prompt b — contract questions prompt c — the ticket that opens three times common mistakes how to talk about it cross-links action action-item agent agent-mistakes agents agreement ai-engineer aligned allowed already another answer answers anthropic architecture artifacts asks assistant audit autonomy bandwidth bank behind board borrow boxes broke broken build cache calibrate calibrated calibration call candidate carve-out catch cause causes change changed changes changing check checked checklist checks chunks citation citations cite claim claim-to-span clause clause-sized clears clicks client code common company conclusions condition confidence confirmation contract contracts copied core corpus correctness cost counsel cover created customer data defend define demands demo demos describe design deterministic diagnose document documents dropped drops easy effect effects else embed embedding emphasis enums errors escalate escalations eval evals evaluate evaluation events every evidence example exists explicit failed failure failures faithfulness fetches file filtered filters finished first gained gate golden good groundedness guardrails guide hallucinated happens hiring historical hosted-site human hybrid idempotency include judge labeled labels latency lawyers leads llm-as-judge llm-as-judge-calibration loop mcp-tool-platform measurement metrics minutes missed model modes number online open opens order path paths pipeline plan platform plus points practice production prompt prompts quality questions range recall refusal regression report reported reports restated retrieval round says schemas scopes score ship ships side signal site skeleton sometimes split start step story strong suite summaries summarizer summarizer-evals summary support swap system take-home-artifacts task tenant three threshold thumbs-down ticket tickets timeout tool usage version whether wrong"
+    },
+    {
       "id": "aisle-loop",
       "title": "A next-pointer that loops",
       "slug": "aisle-loop",
@@ -3951,6 +4426,45 @@
       "updated": "2026-10-26",
       "practice": null,
       "search": "snapshot why it shows up in interviews core idea eli5 predict before reading the table comparison common mistakes how to talk about it cross-links access actual address addresses allocation already amortized answer append arbitrary array arrays asks assume beats big-o block buffer cache caller capacity change changes chasing check choosing claiming common compare comparing constant contains contiguous conversation core costs current data delete deleting depends deque different dynamic efficient element else elsewhere ends envelope everyone exclude explain extra faster find finding first fixed-size fixed-width follow following follows forgetting fourth frequent function geometric geometrically good grow grows growth guarantees hands hashing-internals head helps hold holding hunt idea identifying identities ignoring index insert inserting inserts instead interface interviews invalid item items javascript k-th keep keeping large layout lines link linked list lists lives loads locality locating locker lockers lookup loop make means memory middle miss missing mistakes model nearby need needs neighbors neither nested next node nodes note notes null numbered offers often operation operations os-memory overhead pages pair particular physical pick playlist plus pointer pointers position preceding predict preserving prev previous promise puzzle random reach read reading reference reference-stability references report representation require reserved resize reuse reverse rewrites ring saying scan scanning scans scattered scavenger seats second share shift shifts shows singly sliding slots speed splice spot squeeze start state stated still storage straight structures supports swings table tail take talk target task three time track tracks tradeoffs walk want width"
+    },
+    {
+      "id": "async-ai-screen",
+      "title": "Optional: sit an interview where the interviewer is software",
+      "slug": "async-ai-screen",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "Optional. Practice a timed screen you do alone, on camera, assuming the transcript is what gets read.",
+      "tags": [
+        "ai-agents",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "take-home-artifacts",
+        "interview-integrity"
+      ],
+      "related": [
+        "take-home-artifacts",
+        "interview-integrity",
+        "ai-policy-bands",
+        "no-ai-fluency"
+      ],
+      "path": "lessons/ai-agents/async-ai-screen.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Ashby",
+          "evidence": "https://x.com/benjaminencz/status/2110411083781640192",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea what changes when nobody is in the room a 25-minute rehearsal worked example easy medium hard common mistakes how to talk about it cross-links acquiring ai-fluency-slope ai-policy-bands allowed allows alone already announced announcement answer answers anyway applies apply approach artifacts ashby asked assistant assists assume assuming assumption async asynchronous bands behavioral camera candidate candidates case changes chat check clarify clarifying clean code coderpad coding coherent common company complete completeness content conversation core customers deliverable description different edge employer ending engineers even example explicitly failure finish first fits flags gemini generated given going google graded handle help hidden hiring human idea informative input inputs inside integrity interview interview-integrity interviewer interviewers interviews keeps know last launch leave less like live llama looking looks lost loud makes manager memory minute minutes mistakes mode mumble mumbled narrate narrow no-ai nobody notes november october optional output overlay paragraph pick piloting plan point policies policy posts practice prepare proceed proctoring product prompt provided public published question read reading ready reasoning record recording records rehearsal reject rejecting rejection replaces reported restart restarting restarts room rubric rubrics rules score screen screens scripted second sentence sentences separate shape short show shows silence silent slope smell software solved sometimes sounds speaking spoken stall state stay staying stop stories stream structured take take-home take-home-artifacts talent talk tell thread three time track trade-off transcript treating truly type unfinished unless using usually vendor voice wait watch were whether whispering worked worse yourself"
     },
     {
       "id": "authn-authz",
@@ -5271,6 +5785,41 @@
       "search": "snapshot prompt recognition signals worked approach eli5 syntax then the details complexity walkthrough easy medium hard pitfalls interview moves cross-links adding answer answers approach assumes back backward base big-o bigint block blocked bonus bottom-right bottom-up branch budget buildings cache capacity cell cells changes city coin-change cols column come common compression contributes conversation correct count counts default definition dependency destination details determines dfs-backtracking direction distance dp-1d draft drop edit english every exact example exceed expand explore exponential extra fare fewest fill filling fine first forbid forward four graph graphs grid grids happens index indices integer interview item keep knapsack large larger last leak left letters level longest longest-unique-window makes match matters memo memory mention modulus moves moving much neighbor never next notes number open order overlapping pair parts path paths promise range reach recognition rectangular recurrence recursing recursion remaining repeated representable required rest reuse right robot rolling rows safe safely seeding signals skip sometimes space specified stack start state stay stays step streets string subproblems subsequence substring swap table time tiny tokens top-left top-right trap trees trees-graphs twice undo unique-paths-with-obstacles used usually visible walk walks ways whether whole without worked write zero zeroing"
     },
     {
+      "id": "edge-waf",
+      "title": "Push edge rules without freezing a publish",
+      "slug": "edge-waf",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "Distribute per-site edge rules quickly, reject patterns that can stall a request, and record false positives.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/caching",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "cdn-edge-caching",
+        "rate-limiter"
+      ],
+      "related": [
+        "cdn-edge-caching",
+        "rate-limiter",
+        "usage-metering",
+        "incident-debug-with-agent",
+        "observability-slos"
+      ],
+      "path": "lessons/system-design/cases/edge-waf.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [],
+      "updated": "2026-11-02",
+      "practice": "practice/edge-waf.json",
+      "search": "snapshot what this round is actually scoring company signal requirements back-of-envelope design eli5 pieces what you graph tradeoffs failure modes follow-ups an interviewer may ask cross-links according across action actor actually admin agent allow allowed already another area attack audit audited back backstop backtracking bandwidth belong benefit bill blast block blocked blocking blocks body booklet briefly budget budgets cache canary capacity catastrophic catch cdn-edge-caching change changes check checked choice choose claim clean closed cloud company config control cost couple create cron custom customer data debug default deleted deletes depend described desired diff disable disagree dominated double-counting drill drops easy edge edges enforce enumerate evaluate evaluated evaluation events every everywhere exception exercise exists expire expires expiresat expiry expression fail fails failure false fault feature fetch finish fits flight follow-ups force freezing freshness full gets global graph happens hard healthy hears hours hundred illustrative incident incident-debug-with-agent incident-style include infrastructure intent interview interviewer invalidation janitor keeps know latency launch lesson limits logs loop loud machines many matching means meant measured medium memory metrics milliseconds minutes miss missed mistake mixed mode modes moves named need needs nested never next notice notification notify number numbers object observability-slos observe one-hour open order origin original outage owner page path pattern plane poll positive practice problem publish push quantifiers radius real record reload request requests rollback round rule rules ruleset safety save seconds serving site siteid sites skip stalls take target telemetry thing time timed trips version versions whether without"
+    },
+    {
       "id": "embeddings-vector-search",
       "title": "Find nearby meaning with vectors and filters",
       "slug": "embeddings-vector-search",
@@ -5724,6 +6273,52 @@
       "search": "snapshot why it shows up in interviews core idea eli5 worked example easy medium hard common mistakes how to talk about it cross-links accept acceptable accumulated adding adjacent algorithms allocate already always among amount answer answers application appropriate approximate approximation arguments arithmetic assumes assuming automatically base based big-o bigint bill binary binary64 bits boundaries boundary budget bytes calling cent cents characters check choose choosing collapse common comparator comparison comparisons contract contrast conversation converting copies core count crossing cure currency decide decimal decimals define deliberately deterministic differ different differs digits divide dollar domain encoding encoding-unicode epsilon error every everyone exact exactly example expansions expected explain explicit explicitly extra false final finite first fixed floating floats forever format fractions function gets giving handling hashing-internals helper idea identifier identifiers ieee-754 implicit include including independently indexes inexact infinities information inputs instead integer integers intended interchangeable interviews inventory javascript json keep large larger last leading lookup loses lost mean means measurement measurements minor mistakes multiplying need needs nested nonnegative normal notation number numbers numeric numerical opaque ordinary original overflow pair parse part people physical point policy precision precomputed predict preserve price problem produces random range reconciling recover rejecting remainder repeats representable representation required result rounded rounding rounds rule rules running safe sample scale scanning scientific serialization serialize share shares shows signed significand sorting specified split starts stated stay stores string stringify strings subnormal suitable talk tenth three tolerance units value values whether"
     },
     {
+      "id": "frontend-practical",
+      "title": "Optional: a frontend round in two modes",
+      "slug": "frontend-practical",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 18,
+      "summary": "Optional. Practice a React UI twice: once with no assistant, once with one, on charts, lists, canvas, a combobox, and optimistic updates.",
+      "tags": [
+        "ai-agents",
+        "interviews",
+        "interviews/ai",
+        "interviews/frontend"
+      ],
+      "prerequisites": [
+        "no-ai-fluency",
+        "greenfield-ai-build"
+      ],
+      "related": [
+        "no-ai-fluency",
+        "greenfield-ai-build",
+        "web-security-basics",
+        "encoding-unicode"
+      ],
+      "path": "lessons/ai-agents/frontend-practical.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Canva",
+          "evidence": "https://www.canva.dev/blog/engineering/yes-you-can-use-ai-in-our-interviews/",
+          "year": 2025,
+          "confidence": "high"
+        },
+        {
+          "name": "Vercel",
+          "evidence": "https://v0-eng-prep-guide.vercel.app/",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea two clocks what \"done\" means for a ui drill worked example five drills a tiny rollback you should be able to write either way common mistakes how to talk about it cross-links able accepting accessible adding ai-assisted algorithms applies areas arrow assistant assistant-written back bandwidth baseline breaks broad browser build building builds bytes calling candidates canva canvas chart class click clocks code coding collaboration combobox common companies component control coordinates core corpus cs-fundamentals daily describe described diff disabled done drag dragging drew drill drills editor either encoding-unicode enforces engineering enough environment error even example exist explain extend extension fails failure fast feature filters finish first five fixed flight fluency framing frontend fullstack generated graphemes greenfield greenfield-ai-build heavy height heights hover idea immediately including instead interview interviews judge keep keeps keyboard keyboard-usable keys know latest least lesson lessons library line list lives loading look loop loops machine make marathon means mini-designer minutes mistakes mode modes mouse move multi-select name names narrate narrowed nesting newer no-ai no-ai-fluency node nodes older ones optimistic optional ownership page parentid pass path pick picker plain pointer points positions posts previous problem product prompt published puts putting react real rectangle reject renders replaced reports request requirement restore returns roll rollback rolls round rows rules score screen scroll scrolls second selectable selected selection series services shape shapes share show showing shows single site skills slow state stays still stores supposed surface talk text thread three timer tiny toggle toggles toggling toolbar tools touch track trapped value visible works"
+    },
+    {
       "id": "garbage-collection",
       "title": "Reachable or garbage, and who pays for the pause",
       "slug": "garbage-collection",
@@ -5756,6 +6351,45 @@
       "updated": "2026-10-28",
       "practice": null,
       "search": "snapshot why it shows up in interviews core idea eli5 tracing styles generations and barriers pauses and tuning knobs leaks in collected languages worked example easy medium hard common mistakes how to talk about it cross-links accumulates address addresses algorithm alive allocate allocation alone alongside anything application arrays arrow assuming backup barrier barriers behavior blaming blog bound bounding break buffer buffers byte cache caches capturing cause causes change chat cheap climbs closure closures coding collect collected collecting collection collections collector collectors come common concurrent copied copies copy copying core correctly correlate cost count counting counts cpu-caches-locality current cycles cyclic delete design details didn difference different differs discard drops either entry event every everything evict evidence example expensive expose fast find flags follow following forgotten fragment fragmentation free freed frees frequency frequent fresh garbage generation generational generations globals goals gogc graph graphs grow growing grows guide handler handles happen happens headroom heap hear help hide high history holding holds hypothesis idea immediately in-process included including incremental interviewers interviews items java javascript jump keep keeps keyed keys killed knobs know language languages large latency lead leads leak leaks less limit line listener live logged-out logout logs maps mark mark-compact mark-sweep marking memory metrics minor move msg9 never object objects often pause pauses phases point process profile1 profile2 program questions rate reach reachable reaches reference references region removed request roots runtime sessions several shows size small socket stack sticker still survive tracing tuning unbounded used user uses variables version weak whole without work young"
+    },
+    {
+      "id": "go-reading",
+      "title": "Optional: read Go without pretending to ship it",
+      "slug": "go-reading",
+      "kind": "strategy",
+      "track": "cs",
+      "difficulty": "intro",
+      "estimated_minutes": 16,
+      "summary": "Optional. Learn enough Go to follow a handler, an error return, and a slice in a comprehension round if your daily language is TypeScript.",
+      "tags": [
+        "cs",
+        "cs/data-structures",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "http-and-tcp"
+      ],
+      "related": [
+        "http-and-tcp",
+        "no-ai-fluency",
+        "sql-with-ai",
+        "debug-unfamiliar-repo"
+      ],
+      "path": "lessons/cs/go-reading.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Render",
+          "evidence": "https://render.com/blog/so-you-want-to-hire-a-ux-engineer",
+          "year": 2021,
+          "confidence": "low"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea the three translations a typescript picture of the error check worked example a 40-minute comprehension what you may look up rubric common mistakes how to talk about it cross-links access across ai-policy-bands algorithm allocate allows append appends argument array assistant assuming back backing bands baseline blog bytes caller calls candidate capacity check checked citing closure comes common companies compile comprehension connection copied copy core course created current data dated debug debug-unfamiliar-repo defect defined describe described detail docs edit elements elixir enough error errors evening-before every example expect expects explain failing failure field find first follow found function functions given handler handlerfunc happy http http-and-tcp hypothesis idea ignores ignoring infrastructure inside interview interviews involved keep language leak learning length lesson level library like little load local look looked looks loop loud message minute mistakes module mutable mutates mutating narrate need never no-ai no-ai-fluency notes number often online optional order package package-level panics passing path picture point pointer points policy post practical pretending process production public query range read reading recruiter render repo request requests resources return returning reused rewriting rewrote round rounds router safe said second seen sees service session share shared ship shipped shows signal signature site slice slices small solve spending spread sql-with-ai stack standard start starts state still store string surprises system take-home talk talks test tests thin three throw timer times track translations treat treating typescript understand unfamiliar using ux-engineering value values version versus whether whole without worked write year zero"
     },
     {
       "id": "graders",
@@ -6170,6 +6804,53 @@
       "updated": "2026-10-28",
       "practice": "practice/in-order-messages.json",
       "search": "snapshot prompt recognition signals worked approach eli5 syntax then the details complexity walkthrough easy medium hard pitfalls interview moves cross-links actual adjacent allowed already already-ordered always another answer answers anything approach arrive arrived ascending back best better big-o biggest binary binary-search binary-search-on-answer board bookkeeping bound boxes burst card cards chain chaining chains chat choose clearly clever client command comparison contents contiguous conversation copy correct counts deal default define descending details dimensions distinct dp-1d earlier edits empty ending ends envelopes equal every explain feasible fewest final first fits follow found four frames free future gives guard happens height heights image increasing index indices infinity inner inside instead integers interview interviewer introduce invariant item items keep keeps large last left leftmost length lets like links list listening longest longestrising look loop lower lower-bound many math matters maximum meaningful message messages mine move moves need nest non-decreasing none note notes number offer onto order ordered overall parent parents patience phrase pile piles placed plus possible previous printing problem re-inserts real receives recognition reconnecting recurrence relative remove reordering replace replaces required rest retries return returning reuse right rising scan scrambled search seed sentence shape sides signals single skip skip-bay slower smaller smallest solitaire sort sorted space stack start state stay step stops store strict strictly subarray subsequence table tail tie-break ties time tops trap treating unless valid value version walk width without works write"
+    },
+    {
+      "id": "incident-debug-with-agent",
+      "title": "Debug an incident with an agent on the telemetry",
+      "slug": "incident-debug-with-agent",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "Form a hypothesis from the deploy and the metrics, then use an agent on logs and traces with a hard limit on code changes.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/tools",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "traces-trajectories",
+        "observability-slos"
+      ],
+      "related": [
+        "traces-trajectories",
+        "observability-slos",
+        "edge-waf",
+        "agent-mistakes",
+        "repo-round-three-phase"
+      ],
+      "path": "lessons/ai-agents/incident-debug-with-agent.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Replit",
+          "evidence": "https://x.com/niallohiggins/status/2028634203429232951",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Datadog",
+          "evidence": "https://careers.datadoghq.com/candidate-experience/interviewing-at-datadog-ai-guidelines/",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea order of moves a local lab shape worked example fault 1 — a rule that explodes on long paths fault 2 — a retry double-count fault 3 — a stale allow rubric common mistakes how to talk about it cross-links account adds agent agent-mistakes ai-allowed ai-assisted allow allowed allows already among announces answers assistant assumes attempt back backtracks bandwidth believe broke budget cache cached canary catastrophically catches change changes changing class cloud code coderpad coding common compile-time compose confident connected constraint copied core counter counts dashboard database datadog debug denied deny deploy design diagnose diff double-count drill edge edge-rule edge-waf edit engineering enough error evaluation event evidence example exemplar exemplars expects explodes expression failing failure failures falsify fault faults file files find first fixes fixing follow-up freezing generation graph green grep however hypothesis idea incident include including infrastructure-as-code ingest input inside instead interviewer interviews judgment keyed large latency leader like limit lines lint list live local logs long loud lucky matches means member memorize metering metrics missing mistake mistakes move moved moves multi-phase multi-tenant multi-tenant-rbac name names narrow need nested observability-slos often open opened order outage partly patch path pathological paths pattern patterns permission plant planted point points poor post practice prevention production project prompt proposed publish pulling push puts quantifiers queries query rate read read-and-repair real refactors regression regular reject related replit repo repo-round-three-phase reports reproduce reproduced reproduction restated retry review rewrite roles roll rotate round rounds route rule rules ruleset runs said save search searches searching shape slow spend still symptom telemetry test time traces worker"
     },
     {
       "id": "indexes",
@@ -6867,6 +7548,43 @@
       "search": "snapshot prompt recognition signals worked approach eli5 syntax then the details complexity walkthrough easy medium hard pitfalls interview moves cross-links adjacent allocate along always answers anything approach around array arrays arrays-vs-linked-lists asking become border bottom bottom-left bottom-middle bottom-right bounds brighter brightness buffer caller cell cells center change changes chasing cheapest check checking clockwise clusters cols column columns comparing connected contiguous copy corner corners count crash cycle-following cycles data desk-paths destroyed details diagonal direction dirs done dp-2d drop easier edge eight empty entries equivalent error-prone every exactly expand extra falling fill first flag flat flood fluency formula four four-cycles four-way frame frames goes graph grid grids habit hand happens harder held helper hold holding idea image impossible in-bounds in-place inclusive indexing inner input inside insists interview interviewer inward islands land lands last layer left left-middle length less lessons level logic longer loop many mark marking marks math matrix matters means mention move moves moving much mutate n-1-r name negating negation negative neighbor neighbors nested never next non-square notes number number-of-islands odd-size offer order original outer outside overlapping overwriting pairs path peak peels photo picture pixel pixels place plainly plus pointer pressure problem problem-specific promising qualifies read reads recognition region repeat required restore result reverse right rotate rotated rotation routes rows scan second shrinking space spiral spiral-read square swap table thumbnail tile time top-left top-right transpose twice undefined versus visited walk whether without write"
     },
     {
+      "id": "mcp-tool-platform",
+      "title": "Design a tool platform with scopes and an audit log",
+      "slug": "mcp-tool-platform",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 18,
+      "summary": "Register tools an agent may call, scope each one, make side effects idempotent, and keep an audit trail.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/genai",
+        "interviews",
+        "interviews/system-design",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "tool-protocols",
+        "authn-authz",
+        "prompt-injection-guardrails"
+      ],
+      "related": [
+        "tool-protocols",
+        "prompt-injection-guardrails",
+        "tool-calling",
+        "multi-tenant-rbac",
+        "ai-system-design-round"
+      ],
+      "path": "lessons/system-design/cases/mcp-tool-platform.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [],
+      "updated": "2026-11-02",
+      "practice": "practice/mcp-tool-platform.json",
+      "search": "snapshot what this round is actually scoring company signal requirements back-of-envelope design eli5 components tradeoffs failure modes follow-ups an interviewer may ask cross-links accept accidental active acts actually adds admin agency agent agentsession ai-system-design-round allow allowed allows alone amplify another append-only area args argument arrives asking asks assistant assume audit auth authenticates average badge becomes belongs benefit blast body boolean budget busy call caller calls change channel check checks choice cited clerk client collapse company concatenate concatenated confirm confirmation conflict context cost counts create creates customer data denied denies deny deploy describe details different document documents done easy effects enforces error evals events every everything exact exist expand explicitly expose extra failure fewer field finish first follow follow-up follow-ups form free full gets given grant granted grants handle handler happened hard hash hashed higher hour hours human idea idempotency idempotent ignore illustrative include injection inserts inside instruction instructions internal interview interviewer invoked join json latency leak leaves ledger legitimate lesson limit look loop loops makes many medium missing model modes multi-tenant-rbac name named narrowed narrower need never number open order orders original output path paths person platform product prompt protocol rate read reads registry replay request result results retries retry returns roles round runner schema schemas scope scopes second separate session sessions side site siteid step still stores structured summary system take text ticket tickets timeout token tool tools turn twice usage user version whether whose write writes"
+    },
+    {
       "id": "merge-intervals",
       "title": "Collapse overlapping ranges",
       "slug": "merge-intervals",
@@ -7045,6 +7763,48 @@
       "search": "snapshot prompt recognition signals worked approach eli5 syntax then the details complexity walkthrough easy medium hard pitfalls interview moves cross-links amortized answer answers approach area array arrays-vs-linked-lists arrives asked asking bait big-o board brackets breaks build candidate changes chasing code colder coldest collapse comparison compute contiguous conversation counts current days decreasing default details distance early ends equal equals even every everyone extra facing family fifo fill fine fire forgetting greater happens heaps-top-k histogram hour hours increasing index indices inequality inner instead interesting interview invariant joins keep largest later left leftover line looking looks loop many mash match matched matching matters merge-intervals monotonic moves nearest need nested never next non-increasing non-strict none notes order outdoor overkill overlapping parentheses people pick pile pivot plain pointer popped pops producing push pushed query queue ranges reading readings recognition records rectangle right scan side sides signals slots smaller space sparse squeeze stack state stay stick still store storing strict strictly strictly-warmer strip table temp temperature temperatures temps textbook thermometer though time timeout told trap twice two-pointers unresolved using valid-brackets validate value values versus wait waited waiting waits walk want warmer whether while-condition word worked write wrong zeros"
     },
     {
+      "id": "multi-tenant-rbac",
+      "title": "Resolve agency, workspace, and site roles",
+      "slug": "multi-tenant-rbac",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 18,
+      "summary": "Inherit permissions from agency to workspace to site, let a deny win, and keep a cache from serving a stale allow.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/consistency",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "authn-authz",
+        "caching"
+      ],
+      "related": [
+        "authn-authz",
+        "caching",
+        "usage-metering",
+        "mcp-tool-platform",
+        "incident-debug-with-agent"
+      ],
+      "path": "lessons/system-design/cases/multi-tenant-rbac.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Figma",
+          "evidence": "https://www.figma.com/blog/",
+          "year": 2026,
+          "confidence": "low"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": "practice/multi-tenant-rbac.json",
+      "search": "snapshot what this round is actually scoring company signal requirements back-of-envelope design eli5 model cache audit and invites tradeoffs failure modes follow-ups an interviewer may ask cross-links action acts actually admin agencies agency agent allow allows amplification ancestor ancestors answer append append-only applies area asked asset audit authn-authz backstop bandwidth bearer beats benefit best-effort bill billing bindings blog bug-shaped bump bumped cached caching caller candidates carefully chain change changed changes check checked checks child choice claim client company computed confidence confirm confirms copied copy copying correctness cost counter cover cron cross-agency dangerous database debug define denies deny describe description double-counting drops easy effect effective enough even events ever every everything evidence exercise exists expectations expensive expired expiry explain explicit failure fan-out fast figma find first follow-ups four fresh freshness function generation given globally goes granting hard http illustrative incident incident-debug-with-agent including index inheritance inherited interview interviewer interviewers invalidating invalidation invisible invite invites keep keys late later leak lesson level link load looks loops lost match matches matching materialize mcp-tool-platform means medium memory merge might million misses modes move multi-tenant name nearby needed next node nodes nothing numbers onto original otherwise parent path peak performance permission permission-reachability permissions person pile platform practice precedence primary principal problem product-design prompt public publish pure question read reads real receive remembering remove request requests requirement resolve return role roles round rows says seconds site sites stale story tree walk whether wins without workspace write"
+    },
+    {
       "id": "nearby-places",
       "title": "Find open places near a shopper",
       "slug": "nearby-places",
@@ -7165,6 +7925,57 @@
       "search": "snapshot prompt recognition signals worked approach eli5 syntax then the details complexity walkthrough easy medium hard pitfalls interview moves cross-links already answer approach arrives asked asks brackets changed code colder collapse cooler counts days deque details distance draw empty ends equal equals everyone explain extra fill forgetting found greater happens heap histogram holds hotter index indices instead interview invariant joins keep last later left leftover leftovers line loop many matched matters maximum merge-intervals monotonic monotonic-stack moves need nested never next next-warmer-day non-increasing none notes nothing overlapping pile pops previous problems push ranges reading recognition recover rectangle repeat resolves return right scan scanning scans shift shift-high signals sliding space squeeze stack stay still store strict strictly switching tape temperatures temps thatindex time timeout today trap two-pointers unless unresolved valid-brackets values wait waiters waiting waits walk warmer widths window worked write writes"
     },
     {
+      "id": "no-ai-fluency",
+      "title": "Keep a no-AI baseline under a timer",
+      "slug": "no-ai-fluency",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "Practice timed TypeScript with no assistant so rounds that forbid AI still show fluency, tests, and narrated lookups.",
+      "tags": [
+        "ai-agents",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "interview-integrity",
+        "ai-policy-bands"
+      ],
+      "related": [
+        "interview-integrity",
+        "payment-idempotency",
+        "repo-round-three-phase",
+        "take-home-artifacts"
+      ],
+      "path": "lessons/ai-agents/no-ai-fluency.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Stripe",
+          "evidence": "https://www.linkedin.com/posts/eugenetherecruiter_in-part-1-i-talked-about-why-keyword-stuffing-activity-7420386143898181634-hsr5",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Anthropic",
+          "evidence": "https://www.anthropic.com/candidate-ai-guidance",
+          "year": 2025,
+          "confidence": "high"
+        },
+        {
+          "name": "Cursor",
+          "evidence": "https://www.businessinsider.com/cursor-interview-process-no-ai-on-site-project-coding-tool-2025-6",
+          "year": 2025,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea what to keep in your head allowed-resource etiquette weekly control worked example the 45-minute control rubric for the control bug squash, google only common mistakes how to talk about it cross-links able actually added ai-allowed ai-assisted ai-policy-bands algorithmic allow allowed allowed-resource allows amazon amount answer anthropic applies array artifacts asking assertion assessment assistant autocomplete bands baseline beyond big-company body break bug-squash candidate candidates case chat check checking claims claude clean coderpad common companies company comparators concurrent conflict conflicts control copies core correctness covered cursor date debugging decay delete described design different discussion docs drill dropped edit eight etiquette example exercises exist expected expects expires explicitly faang failing features february file finished first flags forbids format found generative given google group-by guidance guide hand head help hiring http-shaped huge hypothesis idea idempotency idempotencykey implement in-memory including inside integers integration interview-integrity interviewer interviewers interviewing interviews iterating iteration keep kept keys know language leaked leave ledger letting library live live-loop local lookup lookups loop loops loud make manager many means measure medium methods minute minutes miss mistakes month multi-phase myself name narrate narrating narration next night no-ai none notes nothing number older online open operation otherwise overflow part password past paste payload payment payment-idempotency points policy post practice problem proctoring prompt provider purpose question questions reach read reading real recruiter repo reported results retries return round rounds says search server signal sketch small sort squash stack still stripe survey take-home-artifacts test tests three trace transcript transfer unless week weekly were without write written"
+    },
+    {
       "id": "notification-system",
       "title": "Route notifications without confusing acceptance and delivery",
       "slug": "notification-system",
@@ -7205,6 +8016,43 @@
       "updated": "2026-10-26",
       "practice": "practice/notification-system.json",
       "search": "snapshot what this round is actually scoring company signal requirements back-of-envelope design eli5 state and dispatch tradeoffs failure modes follow-ups an interviewer may ask cross-links acceptance accepted accepts accompanies across actual actually apply area assume assumed assumptions at-least-once attempt attempts authorization available average backoff batches benefit best-effort better billion block bound bounded budgets build bursts business bypass capacity categories category change changes channel channel-attempt channels chat-system check checks choice choose chooses claiming collapse company company-specific confusing cost count cover coverage create database dead-letter decision dedupe deduplication delay delivered deliveries delivery determines device device-specific devices diagnostics different dispatch distinguish document dropping duplicate duplicates durable easy effect eligible email enforce enqueueing errors event events evidence exceed expand expire explain explicit expose fact fail failed failure failures fanout feed fields follow-ups forty-five four frequency guidance handles hard hidden history honor hours idempotency identify identity illustrative important in-app inappropriate inbox include including independently information inspectable intended interview-framework interviewer invalid isolates job-scheduler keys lane later leased less local logical lookup lost management measure measurements medium message messages million minimized minutes missed modes multi-device navigation need needed neither news-feed noise notification notifications observability observable observe occurrences offers opt-outs opts order original outbox outcome payload payloads peak permanent person poison policy possible practice preference preferences preserve priority problem produces product production prove provider provider-accepted publish push queue queued queues quiet receive receiving recipient record recover request response retries retry route separate service state users vendor whether without work"
+    },
+    {
+      "id": "novel-constraint-puzzle",
+      "title": "Optional: try a puzzle where the tooling is the signal",
+      "slug": "novel-constraint-puzzle",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "deep",
+      "estimated_minutes": 14,
+      "summary": "Optional. Practice a novel constraint where models have little training data, and write down how you spent time on tools versus the puzzle.",
+      "tags": [
+        "ai-agents",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "take-home-artifacts"
+      ],
+      "related": [
+        "take-home-artifacts",
+        "no-ai-fluency",
+        "coding-agent-evals"
+      ],
+      "path": "lessons/ai-agents/novel-constraint-puzzle.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "https://www.anthropic.com/engineering/AI-resistant-technical-evaluations",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea what they changed how to practice without spoiling the only puzzle worked example a tooling decision, composite rubric common mistakes how to talk about it cross-links accelerator actually agent ai-log already another answer anthropic assignment assistant assuming baseline beat behavior best blind building built candidate caught challenge change changed cheaper check checked choice claim claiming claude closer coding coding-agent-evals common composite constrained constraint contest contracts core cost count cycle cycles debugger debugging decide deciding decision describes documentation dump dumps early edit editing edits engineering evaluate every everywhere example executing explain faster finished first forty four framework game gets give good guidance hand harder harness helped hiring honest hour hours idea instead instruction interpreter interviewer interviews invest january judgment keep knew knowledge later leave less little live long longer loop luxury machine made make manager minute minutes mismatch misses mistakes model models moved neither never no-ai no-ai-fluency normal notice novel number opcode open optional original otherwise part passed pasting patches performance picked played points post practice preparation preserved print printer prior probe program programming-puzzle prompt prompting public published puzzle puzzles read readable reading realism record redesign redesigned register remaining reported response restate round runs says score second seconds shape shows signal simulated simulator solution solve something spend spent spoiling start statement still stop stopped strong submitting successive take take-home take-home-artifacts talk task test tests think three time timer times tiny tool tooling tools touch trace traced track transcript transfer version whether without write write-up"
     },
     {
       "id": "number-of-islands",
@@ -7607,6 +8455,51 @@
       "search": "snapshot what this round is actually scoring company signal requirements back-of-envelope design eli5 state and provider boundary tradeoffs failure modes follow-ups an interviewer may ask cross-links according account acknowledgement across actual actually allowed alone amount apply area assume assumptions at-least-once atomically attempt attempts automatic become benchmark benefit billion blocks boundary budgets business bypass cache cached callers canonical cap-and-consistency capacity capture captured captures carries charge choice claim clear commit company company-specific concurrent concurrently confirming conflict consistency constraint consumers continues contract cost crash create currency daily dead-letter decides deduplicate defines delayed deliver depends different different-key disappeared disk documented downstream drivers duplicate duplicates durability durable duration easy effects either eliminate enforce entries entry established even event events evidence expire expires explain explicitly failed failure failures fast final fingerprint follow-ups forty-five frequency fresh growth handles hard hashing hours idempotency idempotently identify identity illustrative independently indexes intent interview-framework interviewer invariant isolation job-scheduler keys kilobyte known lane lasted leased leaves ledger lifecycle local logical longer-lived make match matching mean measurements medium merely minutes modeled modes multiple name navigation network observe occurrences operation operational original out-of-order outbox outcome outcomes partial particular path payload payloads payment peak pending perform persist planning policy practice problem production promises protect protects provider provider-specific publish query queues-delivery rate rate-limiter reconcile reconciliation record records recover recovery reduces refer reject relay replay replicas replication request requests require resolves responses result retain retention retries retry return reuse scenario scope state status submission ticket timeout uncertain unknown work"
     },
     {
+      "id": "plan-build-review",
+      "title": "Plan, build, and review in one half-day",
+      "slug": "plan-build-review",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 18,
+      "summary": "Practice a scoped plan, a two-hour solo build with any tools, and a review of the demo, the data model, and how you used AI.",
+      "tags": [
+        "ai-agents",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "greenfield-ai-build",
+        "take-home-artifacts"
+      ],
+      "related": [
+        "greenfield-ai-build",
+        "take-home-artifacts",
+        "reviewing-ai-code",
+        "project-deep-dive"
+      ],
+      "path": "lessons/ai-agents/plan-build-review.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Sierra",
+          "evidence": "https://sierra.ai/blog/the-ai-native-interview",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Cursor",
+          "evidence": "https://www.businessinsider.com/cursor-interview-process-no-ai-on-site-project-coding-tool-2025-6",
+          "year": 2025,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea the three blocks worked example the practice prompt rubric common mistakes how to talk about it cross-links able abstractions acceptable account across adding advance agency agent agents agree ai-generated ai-written algorithm algorithms allowed alone anthropic approach april artifacts audit background beats becomes beside block blocks breadth broken budget build builds built check checks clickable client code coding colleague common company component copies core covers crawl crawler creates criteria cursor cutting data decides delegated demo depend diffs disables disabling done draft drafted drill dropped drops edge edits employee environment every evidenceurl example experimental explain extensibility fake feature felix fetch file final finding findingid fine finished finishes first five fixes flag flows format gates greenfield greenfield-ai-build guide habit half-built half-day health hiding hire hiring honest hours idea in-person includes instead interview interviewer interviews issue issues jobs keep kind labor leaked lease leased leave levels limits line links list loop loud manager memo minutes mistakes mock mocked model moved name named names never next non-zero none october offers one-click ones onsite openai optional order ownership page pages panel path per-site permission pick piloting plan points policy portfolio-prototypes post practice primary-source process product production project-deep-dive prompt prototype published pull query rank ranker ranking ranks rate read real records rejected rejection removed reported request reversible review reviewing reviewing-ai-code role round rules shape shows sierra site sites slice slow spike storing strong take-home take-home-artifacts talk taste team three tools two-day used wrote"
+    },
+    {
       "id": "playlist-orders",
       "title": "Every play order for a short queue",
       "slug": "playlist-orders",
@@ -7638,6 +8531,45 @@
       "updated": "2026-10-28",
       "practice": "practice/playlist-orders.json",
       "search": "snapshot prompt recognition signals worked approach eli5 syntax then the details complexity walkthrough easy medium hard pitfalls interview moves cross-links algorithm allocate alone already always approach arrangement arrangements array back backtracking based basket big-o branch branches builds check choice choose coding combinations come confirm contrast conversation copies copy count counts covers credit currently details dfs-backtracking didn difference different distinct done draw duplicate-skipping duplicates empty entry enumeration equal equals every exact-baskets exactly expect explore factorial false fills finally fine first first-slot flag flags follow forgetting front full gives goes hangs happens heap hears in-place include includes input insert instead interview interviewer item items jazz k-th know last later leaf leaves left length levels like line list listing lofi loop makes many matter matters meal memory million mirrors missing moves music mutates names needed news next notes nothing number optimal order ordering orderings orders original output path permutation permutations pick place placed play plus point possible preview previous produced produces punk push queue reason reasonable recognition record recurse recursion recursion-call-stack relative remaining repeats result results return rule scan scanning schedules screen selected sentence separately serves shape shared short shuffling signals single size skip slot slots slower sort space spare-subsets spends stack start starting starts state step still stores subset subsets swap swap-in-place system take tests think third three three-track time times tonight track tracks trap tree un-choose undo unused used values without"
+    },
+    {
+      "id": "portfolio-prototypes",
+      "title": "Optional: show a small prototype and a taste memo",
+      "slug": "portfolio-prototypes",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "intro",
+      "estimated_minutes": 12,
+      "summary": "Optional. Prepare a five-minute demo of something you shipped, plus a one-page note on why you built it, what you cut, and what you learned.",
+      "tags": [
+        "ai-agents",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "product-sense",
+        "project-deep-dive"
+      ],
+      "related": [
+        "product-sense",
+        "project-deep-dive",
+        "plan-build-review",
+        "ai-fluency-slope"
+      ],
+      "path": "lessons/ai-agents/portfolio-prototypes.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Anthropic",
+          "evidence": "https://felixrieseberg.com/hunger-beats-tenure-advice-for-junior-engineers/",
+          "year": 2026,
+          "confidence": "medium"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea the memo what not to bring worked example a composite memo rubric you can apply to your own memo common mistakes how to talk about it cross-links account actually agreed ai-fluency-slope algorithm already anthropic apply artifact asks assistant audio borrow bring build built capture case chat chatbot claiming coding common company company-wide composite core corpus cursor cuts decision decisions defend demo different draft dropped edge else empathy employer enough every example exists explain fails feature features felix fictional find first five-minute followed force frame generated good habit half-day happy headings hide hiding hiring idea includes instead interesting interview interviews invent jumps keep kept known labels land laptop learned learning lesson levels liked line link live looks loses loud make manager meeting memo mention metric minority miss missing mistakes model multiplayer name narrow needs network next notebook notes number october one-page onsite opened optional page pain path people pick piece plan plan-build-review play played plus points policy post practice primary principled private product product-sense project project-deep-dive prototype prototypes proud published rather readme real reason records replace reported review rieseberg rounds rubric said screen scrolling search searches seconds sense sentence shape shipped show shows signal single-player skip slope small someone something source speaker specific stage stance still story study summary surprise system talk taste team teams tell thing thinking three timed times tour track trade-off traditional trains transcript user version visible week whether without word work worked write written wrote zoom"
     },
     {
       "id": "prefix-sums",
@@ -7737,6 +8669,38 @@
       "updated": "2026-10-26",
       "practice": null,
       "search": "snapshot why it shows up in interviews core idea eli5 comparison common mistakes how to talk about it cross-links accept access account address addresses advisory affect allocate alone always another answer anyway async bound boundary browser browsers burst cache callbacks changes cheap cheaper child children choose claim code common communication compared concurrently container contains context conversation cooks copies copy-on-write-clones core cores correctness corrupts cost cpu-bound crash credentials define definition dependencies descriptors design didn dies different duplication edge equating event execution exhaustion extra failures faster fault faults feature fewer file filesystem follows food force fork fridge fridges globals goroutines great green handing handle happens hash hashing heap heaps heavier heavily hosts http http-and-tcp huge idea in-memory inaccessible inherently inside interviews isolate isolation javascript jobs keep keyspace kills latency leak line local locality lock locks locks-and-concurrency loop memory might mistakes modify moment multiplex mutable mutate native need needs network next node object onto ordinary os-memory others ownership page pages paid parallelism permissions physical pick pipe pipes plan plugin pointer pool pools prefer process processes product program protect races reach read-mostly recursion recursion-call-stack references registers remove request requests resource resources restore restricted right route routing rule runnable runtime sandbox save schedulable scheduler separate serialization serialize service services sharding share shared sharing shows sides single-threaded size sockets someone space spaces spawning speed splitting stack stacks state stay switch switching talk thread threads using usually virtual want work worker workers"
+    },
+    {
+      "id": "product-sense",
+      "title": "Optional: frame a user, a metric, and a trade-off",
+      "slug": "product-sense",
+      "kind": "strategy",
+      "track": "behavioral",
+      "difficulty": "intro",
+      "estimated_minutes": 14,
+      "summary": "Optional. Answer a product prompt by naming the user, the pain, the metric you would move, and the cost of the fix.",
+      "tags": [
+        "behavioral",
+        "behavioral/projects",
+        "interviews",
+        "interviews/behavioral"
+      ],
+      "prerequisites": [
+        "project-deep-dive"
+      ],
+      "related": [
+        "project-deep-dive",
+        "behavioral-scoring",
+        "closing-questions",
+        "portfolio-prototypes"
+      ],
+      "path": "lessons/behavioral/product-sense.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea four beats worked example three practice prompts a weak answer and a stronger one common mistakes how to talk about it cross-links abuse accept accuracy across actually adding allowed alongside already answer anyway asking attempts auto-replace automated beats behavioral-scoring better block borrow brainstorming build building built calendar candidate changed clicks clone cloned clones cloning closing-questions common companies company configure confirmed confirms consent conversation core corpus correct corrupt cost count deciding default define delight described design drop-off editing empathy engineering episode example explain explicitly fast feature features fewer find fixing force forward four frame gets growing hiring history hits hours hurts idea ignoring improve including increase internal interview interviewer interviews language leaked legitimate lesson lessons levels line list listener lists look loop loops make manager manual measure memo mention metric minutes minutes-to-trusted-transcript misspelled mistakes month move moves name naming narrow no-shows note notebook notes number numbers optional pain path people person pick picks places podcaster portfolio portfolio-prototypes practical practice preview product project project-deep-dive prompts prototype prototypes public publishes quarter query questions queue read recorded recruiter refuse repeated replace-all replacements request rewrite right rounds rumor scheduled scheduling second sentence several share sharing ship shipping shopify-style shorten show shows silent silently skip skipping slot slots small someone speaker speed spend step still stop stops strict strong stronger substitute system talk talking taste team templates thing three time today track trade-off transcript treat trust trying twelve upload used user users versus voice weak write"
     },
     {
       "id": "progressive-spec-rounds",
@@ -8334,6 +9298,46 @@
       "updated": "2026-10-26",
       "practice": "practice/reverse-chain.json",
       "search": "snapshot prompt recognition signals worked approach eli5 syntax then the details complexity walkthrough easy medium hard pitfalls interview moves cross-links acyclic aisle-loop allocate already already-reversed always approach array arrays arrays-vs-linked-lists arrows auxiliary base blowup boundaries boxes cache call case chain chasing contiguous continue conversion copy cycle default demonstration details different doubly draw dummy empty eviction extra fast-slow-pointers fine first follow-up forgetting four group groups handles happens head helpers immediately in-place infinite input interview iterative k-group keep later least-recently-used lesson link linked links list lookup loops loud lru-cache matters meet move moves narrate next next-pointer node nodes notes null operation orphan overwrite place playlist plus point pointer pointers prefix preserve prev range recognition recurse recursing recursion redirecting remains requirement rest return returning reversal reverse reverse-linked-list reversed rewind save saved signals single singly slide slots space speeds stack stale storage subarray sublist suffix swing swung tail target three time trap untouched uses values versus walk want whether whiteboard without worked works"
+    },
+    {
+      "id": "reverse-deep-dive",
+      "title": "Optional: critique a system someone else is running",
+      "slug": "reverse-deep-dive",
+      "kind": "strategy",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "Optional. Spend 45 minutes on a public architecture, naming the goal, the bottleneck, the failure, and one change.",
+      "tags": [
+        "system-design",
+        "system-design/foundations",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "interview-framework",
+        "project-deep-dive"
+      ],
+      "related": [
+        "interview-framework",
+        "project-deep-dive",
+        "cdn-edge-caching",
+        "observability-slos"
+      ],
+      "path": "lessons/system-design/cases/reverse-deep-dive.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Vercel",
+          "evidence": "https://v0-eng-prep-guide.vercel.app/",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea four boxes how to spend 45 minutes worked example a public cache, practiced what you say when you lack numbers common mistakes how to talk about it cross-links aloud already architecture background beside blocks bookmark bottleneck boxes break budget built cache calling cdn-edge-caching change changes cite coding common concrete concurrency concurrent config content conversation core cost critique critiquing data deep describe description design designing different disagree dive dives docs document drains draw drawing drill drop edge edges else enough every everywhere example exercise exists expires expiry explain fails failure fan-out fetches first forty-five forward four fresh full fullstack gets global goal guess guessing guide herd human idea includes incremental interview-framework interviewer interviews invalidation invent inventing keep know knows label lack lesson levels lists logs long longer loop loss many marketing mechanism metrics minutes mistakes model modification name navigation number numbers observability-slos optional origin page pages paragraph part pencil pick piece point popular practiced prep presenting pretending previous private problem production project project-deep-dive public publish published purge pushed quickly rather read reading real rebuild rebuilding rebuilds refresh refuse regeneration region request requests resource retelling reverse risk running saying scarce second secret sentence serve serving shape share shared show shows signal similar site size someone source spend stale stale-while-revalidate static still storm surface system talk thing three thundering time tool traces track underlying understood values vendor vercel vibe whether window without worked worse write-up wrong zoom"
     },
     {
       "id": "review-agent",
@@ -9105,6 +10109,38 @@
       "search": "snapshot why it shows up in interviews core idea eli5 joins grouping window functions worked example easy medium hard common mistakes how to talk about it cross-links access across aggregate aggregated aggregates aggregating aggregation answer answers anti-join anything appear arbitrarily arrays away back backend becomes biggest broken change child choose choosing-a-datastore city clause collapsing column columns come common compute computed computes concurrent condition conditions confusing core correlated count cross customers data-heavy date defines dense deterministic different dropped error errors every everything example exercise exists explain fail fills filter filtered filtering filters finally first forgetting function functions gaps gives glue goes group grouped groups happens hash hash-maps idea include index indexes inflates inner instead interviewers interviews isolation join joining keep keeps kept know largest later latest least left limit lisbon list listen logical looks loops makes many maps match matches matching merging missing mistakes move multiplication name never nothing notice null null-filled nullable nulls number observe order ordered orders oslo output outside pairs partition partitioned pattern pick picks pile piles placed plus precomputed pune query questions rank rather read refer related rest result results returned returns right right-table roles rows running runs safe select selected serves short show shows silently single sketch skips small solves sort spend spent star start stays store subquery sums survive table tables talk test threshold throw tiebreaker ties together top-n-per-group total totals transactions transactions-isolation trap true turns user users want whether window without wrap zero"
     },
     {
+      "id": "sql-with-ai",
+      "title": "Optional: explain a query an assistant rewrote",
+      "slug": "sql-with-ai",
+      "kind": "strategy",
+      "track": "cs",
+      "difficulty": "core",
+      "estimated_minutes": 16,
+      "summary": "Optional. Fix a doubled aggregate with an assistant if the round allows it, then explain every join and every count in your own words.",
+      "tags": [
+        "cs",
+        "cs/databases",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "sql-for-interviews"
+      ],
+      "related": [
+        "sql-for-interviews",
+        "usage-metering",
+        "take-home-artifacts",
+        "no-ai-fluency"
+      ],
+      "path": "lessons/cs/sql-with-ai.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea what to ask before you accept a rewrite a doubled sum, in miniature worked example a 30-minute drill rubric common mistakes how to talk about it cross-links accept actually added adding aggregate aggregates alert alerts allowed allows analytics answer appear artifacts asking assistant attach bandwidth baseline behind believes beside bill broken byte bytes candidate chat check collapse column common company core count counts daily decision distinct distinct-sum domain double-counting doubled drill drops duplicate editing engineering event events every example exercise expected explain explaining explanation fails failure figure first fluency forbade force forgetting found four grain green groups happens hides hiring idea inside instead interviews join joins keep keeps leave left legitimate look loud made make manager mention mentioned metering miniature minute mistakes mode moved multiplication multiplicity multiplies multiply multiplying name named narrate need no-ai no-ai-fluency none notes number numbers online optional order percent placeholder plain plausible point points policy practical prompt prose publishing query question quickly quoting react read real records rejected repair repeated report reported restated result returns rewrite rewrote right round rows runs screen second separate shape short show shows signal site sites skill small sometimes source sql-for-interviews state statistic still subquery table tables take-home take-home-artifacts talk test timer total track transcript trap twice understand unsourced usage-metering using values want were windows without worked writes yourself zero"
+    },
+    {
       "id": "story-bank",
       "title": "Build a small bank of stories you can bend",
       "slug": "story-bank",
@@ -9209,6 +10245,64 @@
       "updated": "2026-10-28",
       "practice": "practice/support-flow-depth.json",
       "search": "snapshot prompt recognition signals worked approach eli5 syntax then the details complexity walkthrough easy medium hard pitfalls interview moves cross-links adds allocate answer answers approach array asked asks bigger binary bottom-up branch breadth-first briefing-layers briefings call card case chain check child children cleanest copying count counter counting counts deep deepest depends depth depthbylayers depths detail details didn drain edges empty engine equals every everywhere exceed exist expand explain explicit first flow follow-up frames global goes handled handles happens height help-center image instead interview interviewer iterative know layer layers leaf leaves left level level-order limit logic long longest lopsided many matters max-depth maximum mention min-depth minimum mirror missing moves mutated needed needs no-card node nodes notes null offer one-child option optional path people postorder product prompts question questions reaching recognition recursion recursion-call-stack recursive report restore result return returning returns reverse right root-to-leaf save sees shallowest shape share shift sibling side signals single small space stack starting state steps stops subtract subtree support takes time trace trap tree tree-codec tree-dfs trip true two-line user values version visit wants width worked works write writing wrong yes-card"
+    },
+    {
+      "id": "take-home-artifacts",
+      "title": "Leave a transcript you would let a hiring manager read",
+      "slug": "take-home-artifacts",
+      "kind": "strategy",
+      "track": "ai-agents",
+      "difficulty": "core",
+      "estimated_minutes": 18,
+      "summary": "Ship an AI-allowed take-home with decisions, a catch log, and a chat transcript that shows plan, check, and what you rejected.",
+      "tags": [
+        "ai-agents",
+        "ai-agents/evals",
+        "interviews",
+        "interviews/ai"
+      ],
+      "prerequisites": [
+        "ai-policy-bands",
+        "greenfield-ai-build"
+      ],
+      "related": [
+        "greenfield-ai-build",
+        "reviewing-ai-code",
+        "no-ai-fluency",
+        "plan-build-review"
+      ],
+      "path": "lessons/ai-agents/take-home-artifacts.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [
+        {
+          "name": "Rootly",
+          "evidence": "https://x.com/jjrichardtang/status/2027502646223921256",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "OpenAI",
+          "evidence": "https://openai.com/interview-guide/",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "Datadog",
+          "evidence": "https://careers.datadoghq.com/candidate-experience/interviewing-at-datadog-ai-guidelines/",
+          "year": 2026,
+          "confidence": "high"
+        },
+        {
+          "name": "CodeSignal",
+          "evidence": "https://codesignal.com/blog/introducing-ai-assisted-coding-assessments-interviews/",
+          "year": 2026,
+          "confidence": "high"
+        }
+      ],
+      "updated": "2026-11-02",
+      "practice": null,
+      "search": "snapshot why it shows up in interviews core idea three files, even if they only ask for the repo what the assistant usually misses transcript hygiene comparison take-home rubric strong versus weak chat common mistakes how to talk about it cross-links absorbs accepts account adds adversarial agent agents aggregator ai-assisted ai-enabled ai-generated ai-log ai-proof allow aloud alternative announced another anthropic artifact asks assistant async attempts automated-test back backoff baseline beating blind boilerplate build builds call called candidate candidates canva capability catches catching caught change chat chats check checks choice choices chunks cited claude clock code coderpad codesignal codility coding collapses column come comments common companies constraints contest core correctness credentials criteria customer datadog dead dead-letter debugging decision decisions dedupe deep defend defense degrades delegated delegates delegation delete deliveroo delivery describe described design diff discipline disclose discriminating disqualify dive documented done drill drill-down drives drop embarrassing environment error even events every expected explain explained explains exported extension failed failure fastest file files first five five-minute formats framing friend full fully gergely gitlab gives grade graded green greenfield greenfield-ai-build guide guidelines hackerrank half-day hand handler headings hiding higher hiring history hitting honest hour http hygiene idea idempotency includes interviews judgment keep kept least line lines live long loom loop minute missed misses mistakes mode next novel-constraint-puzzle openai pass path plan points policy practice prompting prompts puzzle read receiver rejected rejection rejects repo reported retries retry rootly says scaffold score secrets short shows signal strong submit survey take-home take-homes test tests three tooling tools transcript used vague verification video weak write wrote"
     },
     {
       "id": "tarp-span",
@@ -10001,6 +11095,43 @@
       "updated": "2026-10-26",
       "practice": "practice/url-shortener.json",
       "search": "snapshot what this round is actually scoring company signal requirements back-of-envelope design eli5 data and request paths tradeoffs failure modes follow-ups an interviewer may ask cross-links abuse abusive account across actually agree allocation allocator already alternative analytics another answer apply area assume assumptions atomic atomically attempt attempts authenticated authoritative average base-62 behavior benefit billion billions block bottleneck briefly budgets bytes cache cached caches caching candidate candidates capacity carefully characters check choice choose code codes collides collision collisions commit committed company company-specific constraint consumption controls conversation copies cost crash-safe create created creating creation creations creator current data database decide declare define destination destinations different directives disconnected distinct distributed easy edits eliminate enforce estimate evaluate even evidence exists expensive expiration expired expiry explain explicit failure failures faster fewer fill fingerprint five follow-ups forty-five frequency freshness generate guessable hard hide hold http http-and-tcp idempotency illustrative impossible indexes inherently insert interview-framework interviewer invalidation keyspace label large lifetime lifetimes link links load-balancing long lookup lost make many mapping mappings measurements medium million minutes miss modes navigation nearby need negative newly occupied operate operation optional origin original owner ownership path paths payload peak per-worker persist pipe plus policy pool possible practice pre-generated predictable preserve probability problem produces product production promise promises protect provide public random rate-limiter read reads redirect redirecting refresh region reject rejection remains remembering removed replay replicas replicated request require requirement resolve response result retries retry revocation short takedown takedowns target trace traffic unique users whether"
+    },
+    {
+      "id": "usage-metering",
+      "title": "Bill bandwidth from events without double-counting",
+      "slug": "usage-metering",
+      "kind": "case-study",
+      "track": "system-design",
+      "difficulty": "core",
+      "estimated_minutes": 18,
+      "summary": "Ingest usage events, dedupe them, window in UTC, apply tiers, and reconcile late arrivals into an invoice.",
+      "tags": [
+        "system-design",
+        "system-design/product-cases",
+        "system-design/messaging",
+        "system-design/consistency",
+        "interviews",
+        "interviews/system-design"
+      ],
+      "prerequisites": [
+        "payment-idempotency",
+        "queues-delivery",
+        "metrics-pipeline"
+      ],
+      "related": [
+        "payment-idempotency",
+        "metrics-pipeline",
+        "rate-limiter",
+        "edge-waf",
+        "incident-debug-with-agent"
+      ],
+      "path": "lessons/system-design/cases/usage-metering.md",
+      "dir": null,
+      "widgets": [],
+      "company_signal": [],
+      "updated": "2026-11-02",
+      "practice": "practice/usage-metering.json",
+      "search": "snapshot what this round is actually scoring company signal requirements back-of-envelope design eli5 pipeline what you measure tradeoffs failure modes follow-ups an interviewer may ask cross-links accept across actually adds adjust adjustment adjustments admin agent aggregate aggregates already anecdote append-only apply area asking at-least-once auditable auto-rewrite backfill bandwidth benefit bill billion bookmark boundary buckets budgets byte bytes capture change changed charge cheap choice cited clock closed coding collect collector commit company compare compares confirm conflict constraint consumer contracts correct cost counted counter counts crash customer daily data database daylight-saving days dead-letter debug dedupe delivered delivery differ division document double-count double-counting drop drowning duplicate easy edge edge-waf edit enforce event eventid events every exact exactly exercise expires failure family first fleet floating follow-ups forever freeze freezing fresh frozen function gets half-open happened hard heard history holds hour hours human idempotency idempotent illustrative incident incident-debug-with-agent inclusive increment increments indexes ingest insert inserts interviewer interviewers invoice keep labels land lane late later least line listen live local logs loud make mark matching means measure measurement medium metering metrics metrics-pipeline mismatch misses modes month monthly months moves moving multi-phase need never next number numbers offset open operation original override overrides pages path payment payment-idempotency peak per-site place practice price proof rate rated rating recompute reconciliation request retention retry rewrite round rows safe site siteid state store stored table ticket tier tiers time total transaction treat twice unique uniqueness used window without worker write writes"
     },
     {
       "id": "valid-brackets",

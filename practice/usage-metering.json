@@ -1,0 +1,22 @@
+{
+  "id": "usage-metering",
+  "hints": [
+    "A retry must not move the daily total. Name the key that makes a second delivery a no-op, and the clock the month boundary uses.",
+    "This is an append-only event log plus a uniqueness constraint in the same transaction as a per-site daily aggregate, then a pure tier function and a frozen invoice with adjustments.",
+    "Draw ingest, the (siteId, eventId) insert, the UTC daily row, price() at the 100 GB and 1000 GB cuts, and the 36-hour open window. Say what a replay does after the uniqueness row has expired."
+  ],
+  "rubric": {
+    "signals": [
+      "Dedupes on event id in the same transaction as the aggregate so a retry cannot double-charge",
+      "Windows in UTC with a half-open boundary and states the byte unit at the tier cut",
+      "Freezes a closed invoice and writes an adjustment for late events instead of rewriting the original total",
+      "Keeps raw events for recompute and does not scan them on the request path at the stated volume",
+      "Records which price version rated the invoice when a per-site override exists"
+    ],
+    "followups": [
+      "The same event id is delivered twice. What is stored?",
+      "The event is 40 hours late and the invoice is closed. Where do the bytes go?",
+      "The uniqueness row expired and the log is replayed. Why must the daily total stay still?"
+    ]
+  }
+}

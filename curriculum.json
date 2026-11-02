@@ -513,6 +513,67 @@
           "title": "Build",
           "track": "ai-agents",
           "lessons": ["greenfield-ai-build"]
+        },
+        {
+          "id": "fluency",
+          "title": "Fluency",
+          "track": "ai-agents",
+          "lessons": ["no-ai-fluency"]
+        },
+        {
+          "id": "trial",
+          "title": "Trial",
+          "track": "ai-agents",
+          "lessons": ["take-home-artifacts"]
+        },
+        {
+          "id": "board",
+          "title": "Board",
+          "track": "ai-agents",
+          "lessons": ["ai-system-design-round"]
+        },
+        {
+          "id": "onsite",
+          "title": "Onsite",
+          "track": "ai-agents",
+          "lessons": ["plan-build-review"]
+        },
+        {
+          "id": "incident",
+          "title": "Incident",
+          "track": "ai-agents",
+          "lessons": ["incident-debug-with-agent"]
+        }
+      ]
+    },
+    {
+      "id": "domain",
+      "label": "Domain",
+      "blurb": "Core designs: metering, roles, edge rules, and a tool platform. Before the optional stage.",
+      "units": [
+        {
+          "id": "meter",
+          "title": "Meter",
+          "track": "system-design",
+          "lessons": ["usage-metering"]
+        },
+        {
+          "id": "access",
+          "title": "Access",
+          "track": "system-design",
+          "lessons": ["multi-tenant-rbac"]
+        },
+        {
+          "id": "edge-rules",
+          "title": "Edge",
+          "track": "system-design",
+          "lessons": ["edge-waf"]
+        },
+        {
+          "id": "platform",
+          "title": "Platform",
+          "track": "system-design",
+          "lessons": ["mcp-tool-platform"]
         }
       ]
     },
@@ -555,7 +616,50 @@
           "id": "tools",
           "title": "Tools",
           "track": "behavioral",
-          "lessons": ["ai-judgment-stories"]
+          "lessons": ["ai-judgment-stories", "ai-fluency-slope"]
+        }
+      ]
+    },
+    {
+      "id": "optional",
+      "label": "Optional",
+      "blurb": "After the core path. Skip until Judge, the domain designs, and the slope stories are done.",
+      "units": [
+        {
+          "id": "opt-ui",
+          "title": "UI",
+          "track": "ai-agents",
+          "lessons": ["frontend-practical"]
+        },
+        {
+          "id": "opt-sense",
+          "title": "Sense",
+          "track": "behavioral",
+          "lessons": ["product-sense"]
+        },
+        {
+          "id": "opt-critique",
+          "title": "Critique",
+          "track": "system-design",
+          "lessons": ["reverse-deep-dive"]
+        },
+        {
+          "id": "opt-show",
+          "title": "Show",
+          "track": "ai-agents",
+          "lessons": ["portfolio-prototypes", "novel-constraint-puzzle"]
+        },
+        {
+          "id": "opt-screen",
+          "title": "Screen",
+          "track": "ai-agents",
+          "lessons": ["async-ai-screen"]
+        },
+        {
+          "id": "opt-read",
+          "title": "Read",
+          "track": "cs",
+          "lessons": ["go-reading", "sql-with-ai"]
         }
       ]
     }

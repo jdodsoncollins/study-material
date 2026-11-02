@@ -1,0 +1,22 @@
+{
+  "id": "edge-waf",
+  "hints": [
+    "One site's ruleset must not reload every site. A pattern that runs too long must not own the request.",
+    "Version rules per site, notify edges, and keep a short poll as a backstop. Cap evaluation time per rule and canary pattern changes.",
+    "Draw desired version versus the version in flight, the 2 ms budget, fail-open versus fail-closed, and a timed path exception with an audit row."
+  ],
+  "rubric": {
+    "signals": [
+      "Scopes a ruleset to one site and rolls a version forward without a global reload",
+      "Meets a stated freshness target with a push plus a poll backstop",
+      "Rejects or time-boxes catastrophic patterns so one rule cannot stall publish",
+      "Offers a reversible, audited exception for a false positive instead of disabling rules globally",
+      "Names the cost of fail-open versus fail-closed and canaries a pattern change"
+    ],
+    "followups": [
+      "A rule exceeds the time budget. What happens to this request, and what is logged?",
+      "Some machines missed the notification. What still gets them the new version?",
+      "A launch is blocked by a false positive. What do you ship in ten minutes that you can undo?"
+    ]
+  }
+}

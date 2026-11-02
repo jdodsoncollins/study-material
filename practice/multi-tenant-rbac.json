@@ -1,0 +1,22 @@
+{
+  "id": "multi-tenant-rbac",
+  "hints": [
+    "Do not copy parent allows onto the site. Say which row wins when both an ancestor and the site speak, and what happens when nobody speaks.",
+    "Walk site, then workspace, then agency. The first explicit row wins, and a deny beats an inherited allow. Cache keys include a generation bumped on every role write.",
+    "Draw the chain, the cross-agency deny that does not reveal existence, the generation cache key, and the audit row. Say why publish skips the cache."
+  ],
+  "rubric": {
+    "signals": [
+      "Resolves by walking ancestors and lets the nearest explicit row win, with deny beating an inherited allow",
+      "Defaults to deny when no row matches, and does not leak cross-agency existence",
+      "Invalidates or misses cache using a generation bumped on write, within the stated freshness",
+      "Skips the cache for the dangerous actions and writes an audit row for denies and sensitive allows",
+      "Does not materialize inherited allows in a way that can serve a stale allow"
+    ],
+    "followups": [
+      "The agency allows publish and the site denies it. What is the answer?",
+      "Ada is removed and still holds a cached allow. What changes in the key?",
+      "Two agencies merge. What keeps an old generation from granting the old tree?"
+    ]
+  }
+}
