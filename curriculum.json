@@ -461,6 +461,12 @@
       "blurb": "Measure outcomes and practice explaining the evidence.",
       "units": [
         {
+          "id": "mode",
+          "title": "Mode",
+          "track": "ai-agents",
+          "lessons": ["ai-policy-bands", "ai-interview-timeline-2026", "interview-integrity"]
+        },
+        {
           "id": "run",
           "title": "Run",
           "track": "ai-agents",
@@ -494,7 +500,19 @@
           "id": "repo",
           "title": "Repo",
           "track": "ai-agents",
-          "lessons": ["debug-unfamiliar-repo"]
+          "lessons": ["debug-unfamiliar-repo", "repo-round-three-phase"]
+        },
+        {
+          "id": "review",
+          "title": "Review",
+          "track": "ai-agents",
+          "lessons": ["reviewing-ai-code"]
+        },
+        {
+          "id": "build",
+          "title": "Build",
+          "track": "ai-agents",
+          "lessons": ["greenfield-ai-build"]
         }
       ]
     },

@@ -2223,17 +2223,77 @@
     },
     {
       "id": "day-ai-09",
-      "title": "Repo",
+      "title": "Mode",
       "kind": "acquire",
-      "blurb": "Reproduce before you repair.",
+      "blurb": "Know which rounds allow AI, which tools, and what gets graded.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "ai-policy-bands"
+        },
+        {
+          "type": "read",
+          "lesson": "ai-interview-timeline-2026"
+        },
+        {
+          "type": "read",
+          "lesson": "interview-integrity"
+        },
+        {
+          "type": "speak",
+          "text": "Before your next interview, ask the recruiter: which rounds allow AI? Which tools? Will my screen be recorded? Do you review the AI transcript?"
+        }
+      ]
+    },
+    {
+      "id": "day-ai-10",
+      "title": "Repo round",
+      "kind": "drill",
+      "blurb": "Read, fix bugs, add features, optimize—with and without AI.",
       "blocks": [
         {
           "type": "read",
           "lesson": "debug-unfamiliar-repo"
         },
         {
+          "type": "read",
+          "lesson": "repo-round-three-phase"
+        },
+        {
           "type": "speak",
-          "text": "Walk an imaginary bug ticket out loud: map, failing test, three hypotheses, smallest fix, full rerun."
+          "text": "Set a 60-minute timer. Practice a three-phase repo drill: read 5–8 min, fix bugs with hypotheses, add a feature, then optimize with before/after timing."
+        }
+      ]
+    },
+    {
+      "id": "day-ai-11",
+      "title": "Review",
+      "kind": "drill",
+      "blurb": "Catch hallucinated APIs, missing error paths, and test theater.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "reviewing-ai-code"
+        },
+        {
+          "type": "speak",
+          "text": "Generate an AI-drafted PR with planted defects. Review it in 30 minutes, leading with blockers. Write one comment that teaches."
+        }
+      ]
+    },
+    {
+      "id": "day-ai-12",
+      "title": "Greenfield",
+      "kind": "drill",
+      "blurb": "Build from scratch with your own IDE and AI, absorbing follow-ups.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "greenfield-ai-build"
+        },
+        {
+          "type": "speak",
+          "text": "Pick a 60-minute greenfield drill (mini designer, LRU cache, or role grants). Scope out loud, own the data model, delegate scaffolding, test every step."
         }
       ]
     },
