@@ -1,0 +1,22 @@
+{
+  "id": "mcp-tool-platform",
+  "hints": [
+    "The model does not decide that it is allowed. Name the badge check and the one write tool that must not run twice.",
+    "This is a versioned tool registry, scopes narrower than the user, a site check in the handler, and an idempotency ledger for writes. Tool text stays data.",
+    "Draw the token scopes, the can() check inside the read tool, the client_request_id row, the audit hash, and where a path string is prevented from becoming an instruction."
+  ],
+  "rubric": {
+    "signals": [
+      "Checks a scope on the caller's token before the handler, narrower than the human's full access",
+      "Enforces site visibility in the handler rather than trusting a flag from the model",
+      "Makes writes idempotent on client_request_id and treats a timeout retry as a replay",
+      "Audits the call without storing raw customer documents",
+      "Treats tool results as untrusted data and caps steps and rate"
+    ],
+    "followups": [
+      "The same client_request_id arrives twice with the same summary. How many tickets exist?",
+      "The token can read usage, and the model names a site the person cannot see. Where is that denied?",
+      "A path string tells the model to open a ticket. What stops the write?"
+    ]
+  }
+}

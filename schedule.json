@@ -2486,6 +2486,248 @@
           "text": "Do the thirty-second headline, the five-minute walkthrough, and a one-box deep dive on your project back to back, out loud, without notes."
         }
       ]
+    },
+    {
+      "id": "day-ai-13",
+      "title": "No AI",
+      "kind": "drill",
+      "blurb": "A 45-minute transfer with no assistant. Narrate any doc lookup.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "no-ai-fluency"
+        },
+        {
+          "type": "speak",
+          "text": "Close the assistant. Implement transfer for 40 from ada to bo with key k-19, then the replay and the conflict, and say which result you expect before you run it."
+        }
+      ]
+    },
+    {
+      "id": "day-ai-14",
+      "title": "Transcript",
+      "kind": "acquire",
+      "blurb": "Decisions, a catch log, and a chat you would let someone grade.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "take-home-artifacts"
+        },
+        {
+          "type": "speak",
+          "text": "Write three DECISIONS headings and five AI-LOG lines for a webhook sender. Include one rejection. Score yourself on the 1 to 4 guide."
+        }
+      ]
+    },
+    {
+      "id": "day-ai-15",
+      "title": "Board",
+      "kind": "drill",
+      "blurb": "Failure modes first, then the eval, on one of the three prompts.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "ai-system-design-round"
+        },
+        {
+          "type": "speak",
+          "text": "Pick prompt B or C. Spend 20 minutes. Start with three failure modes before you name a model."
+        }
+      ]
+    },
+    {
+      "id": "day-ai-16",
+      "title": "Half-day",
+      "kind": "drill",
+      "blurb": "Plan the cut, then say the review out loud. A full two-hour build can be a later sitting.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "plan-build-review"
+        },
+        {
+          "type": "speak",
+          "text": "State the site-health cut line, what is mocked, and the permission check. Then give the review order: demo, model, mocks, production path, how the AI was used."
+        }
+      ]
+    },
+    {
+      "id": "day-ai-17",
+      "title": "Incident",
+      "kind": "drill",
+      "blurb": "Hypothesis before the agent searches. Two changes only.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "incident-debug-with-agent"
+        },
+        {
+          "type": "speak",
+          "text": "For the publish latency jump, say the hypothesis, the trace you would ask for, the reproduction, and the two changes. Then name the prevention."
+        }
+      ]
+    },
+    {
+      "id": "day-dom-01",
+      "title": "Meter",
+      "kind": "drill",
+      "blurb": "Blank page: dedupe, UTC windows, tiers, a frozen invoice.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "usage-metering",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "usage-metering",
+          "after": "attempt"
+        },
+        {
+          "type": "speak",
+          "text": "Say what a second delivery of the same event id does, and where a 40-hour-late event goes if the invoice is closed."
+        }
+      ]
+    },
+    {
+      "id": "day-dom-02",
+      "title": "Roles",
+      "kind": "drill",
+      "blurb": "Blank page: inheritance, deny, and a cache generation.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "multi-tenant-rbac",
+          "minutes": 25
+        },
+        {
+          "type": "read",
+          "lesson": "multi-tenant-rbac",
+          "after": "attempt"
+        },
+        {
+          "type": "speak",
+          "text": "Agency allow, site deny. Say the answer, then what the cache key includes after a role write."
+        }
+      ]
+    },
+    {
+      "id": "day-dom-03",
+      "title": "Edge and tools",
+      "kind": "drill",
+      "blurb": "Rules that cannot stall a publish, then a write tool that cannot run twice.",
+      "blocks": [
+        {
+          "type": "redraw",
+          "lesson": "edge-waf",
+          "minutes": 22
+        },
+        {
+          "type": "redraw",
+          "lesson": "mcp-tool-platform",
+          "minutes": 22
+        },
+        {
+          "type": "speak",
+          "text": "Say what the 2 ms rule budget does to one request, and what a repeated client_request_id does to tickets."
+        }
+      ]
+    },
+    {
+      "id": "day-story-08",
+      "title": "Slope",
+      "kind": "acquire",
+      "blurb": "Four slots, each with a number you can defend.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "ai-fluency-slope"
+        },
+        {
+          "type": "speak",
+          "text": "In your notes, draft the four slots. Leave a slot blank if you do not have a real number. Say the hard answer out loud in under two minutes."
+        }
+      ]
+    },
+    {
+      "id": "day-opt-01",
+      "title": "Optional UI",
+      "kind": "drill",
+      "blurb": "Optional. One frontend drill, no assistant, then say what you would delegate.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "frontend-practical"
+        },
+        {
+          "type": "speak",
+          "text": "Pick the virtualized list or the optimistic toggle. State the cut line, then where the selected id or the previous value lives."
+        }
+      ]
+    },
+    {
+      "id": "day-opt-02",
+      "title": "Optional sense",
+      "kind": "acquire",
+      "blurb": "Optional. One product prompt, four beats, and a reverse critique.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "product-sense"
+        },
+        {
+          "type": "read",
+          "lesson": "reverse-deep-dive"
+        },
+        {
+          "type": "speak",
+          "text": "Say a user, a pain, a metric, and a trade-off for one practice prompt. Then name one public system and the single change you would argue for."
+        }
+      ]
+    },
+    {
+      "id": "day-opt-03",
+      "title": "Optional show",
+      "kind": "acquire",
+      "blurb": "Optional. A taste memo, a tooling log, and a camera rehearsal.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "portfolio-prototypes"
+        },
+        {
+          "type": "read",
+          "lesson": "novel-constraint-puzzle"
+        },
+        {
+          "type": "read",
+          "lesson": "async-ai-screen"
+        },
+        {
+          "type": "speak",
+          "text": "If you have a real prototype, say the cut and the gap. If you do not, say so. Then state one tooling decision you would write down before editing a puzzle."
+        }
+      ]
+    },
+    {
+      "id": "day-opt-04",
+      "title": "Optional read",
+      "kind": "acquire",
+      "blurb": "Optional. Enough Go to find shared state, and a SQL join that doubles a sum.",
+      "blocks": [
+        {
+          "type": "read",
+          "lesson": "go-reading"
+        },
+        {
+          "type": "read",
+          "lesson": "sql-with-ai"
+        },
+        {
+          "type": "speak",
+          "text": "Say why a package-level slice leaks across requests, and why Ada's 10 and 30 become 80 after the alerts join. Reject SUM DISTINCT out loud."
+        }
+      ]
     }
   ]
 }
